@@ -1,0 +1,727 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 17px;
+}
+
+.logo {
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    width: 130px;
+    height: 52px;
+    margin-right: 10px;
+}
+
+#searchInput {
+    padding: 6px;
+    font-size: 17px;
+    border: none;
+    border-radius: 4px;
+	height: 30px;
+	width: 300px; /* Increase width as needed */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #333;
+    color: white;
+    padding: 14px 16px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+	border-radius: 7px;
+	font-weight: bold;
+	text-decoration: none;
+}
+.dropbtn:hover{
+	background-color: #1A8F83;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #468c86;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 200;
+    margin-top: 15px; /* Reduced margin */
+    border-radius: 7px;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+	font-weight: bold;
+	transition: transform .2s;
+}
+
+.dropdown-content a:hover {
+    background-color: #5FB0AA;
+	border-radius: 7px;
+	transform: scale(1.1);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.filter-container {
+    display: inline-block;
+    position: relative;
+    border-radius: 7px;
+    margin-left: 10px; /* Adjust margin to ensure alignment with navbar */
+}
+
+.filter-icon {
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
+    cursor: pointer;
+    vertical-align: middle;
+    border-radius: 7px;
+}
+
+.filter-icon:hover {
+    background-color: #1A8F83;
+    border-radius: 7px;
+}
+
+.filter-container:hover .dropdown-content {
+    display: block;
+}
+.settings-icon{
+	width: 22px;
+	height: 22px;
+	margin-left: 7px;
+    cursor: pointer;
+    vertical-align: middle;
+	border-radius: 7px;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 90px;
+	margin-bottom: 30px;
+}
+
+.item {
+    margin: 10px 10px 10px 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.item img {
+    width: 200px;
+    height: auto;
+    transition: transform 0.2s ease-in-out;
+}
+
+.item:hover img {
+    transform: scale(1.1);
+}
+
+.caption {
+    text-align: center;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    width: 100%;
+}
+
+.subtitle {
+    font-size: 0.8em;
+    color: #cccccc;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 999;
+    text-align: center;
+    overflow: auto;
+}
+
+.overlay.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay .expanded-images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    position: relative
+    max-width: 95%;
+    max-height: 95%;
+    overflow: auto;
+}
+
+.overlay img {
+    max-width: 100%;
+    max-height: 100%;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.overlay .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: white;
+    font-size: 35px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.overlay .close-btn:hover {
+    color: #999;
+}
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.video-container iframe {
+    width: 280px;
+    height: 157.5px;
+    margin: 10px;
+}
+
+/* Dropdown styling */
+.dropdown-content-setting {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 200;
+    padding: 15px;
+    left: 0;
+	margin-top: 5px;
+    transform: translateX(-40%);
+}
+
+.dropdown-content-setting.show {
+    display: block;
+}
+
+.dropdown-content-setting a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content-setting {
+    display: block;
+}
+
+/* Form styling within dropdown */
+.settings-dropdown form {
+    width: 200px;
+}
+
+.settings-dropdown label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.settings-dropdown select {
+    width: calc(100% - 16px);
+    padding: 8px;
+    margin-bottom: 15px;
+}
+
+.settings-dropdown button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.settings-dropdown button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+.color-box {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.custom-select {
+    position: relative;
+    display: inline-block;
+    width: 200px;
+}
+
+.selected-option {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.options {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    width: 100%;
+    z-index: 100;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.option {
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.option:hover {
+    background-color: #f1f1f1;
+}
+
+.custom-select.open .options {
+    display: block;
+}
+
+
+
+
+/* SAmmlungen CSS */
+.grid-container {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+grid-template-rows: repeat(2, 1fr); /* 2 statt 3 Zeilen für das Beispiel */
+gap: 20px;
+width: 80%;
+height: 80vh;
+margin: 100px auto 40px auto;
+}
+        
+/* Stile für das spezielle Grid-Element mit Hintergrundbild */
+.grid-item-classic {
+position: relative; /* Positionierung für das spezielle Element */
+padding: 20px;
+text-align: center;
+display: flex;
+border-radius: 15px;
+align-items: center;
+justify-content: center;
+background-image: url('Bilder/Klasssik Background.jpg');
+background-size: cover; /* Passt das Bild an die Größe des Containers an */
+background-position: center; /* Zentriert das Bild im Container */
+background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+}
+        
+/* Stile für den überlagernden Text */
+.grid-item-classic::before {
+content: 'KLASSIK'; /* Verwendet das data-text Attribut als Inhalt */
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.7); /* Hintergrundfarbe des überlagernden Elements */
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 15px;
+font-size: 36px;
+font-style: italic;
+font-family:'Dancing Script';
+text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Text-Schatten für eine handgeschriebene Optik */
+letter-spacing: 4px; /* Vergrößerter Buchstabenabstand für eine handgeschriebene Optik */
+font-weight: bold;
+opacity: 0; /* Startet mit einer Opazität von 0 (unsichtbar) */
+transition: opacity 0.3s ease; /* Übergangseffekt für die Opazität */
+}
+        
+/* Stile für den überlagernden Text beim Hover */
+.grid-item-classic:hover::before {
+opacity: 0.9;
+border-radius: 15px; /* Ändert die Opazität auf 1 (sichtbar), wenn gehovert wird */
+}
+
+
+
+
+        
+/* Stile für das spezielle Grid-Element mit Hintergrundbild */
+.grid-item-soundtracks {
+position: relative; /* Positionierung für das spezielle Element */
+padding: 20px;
+text-align: center;
+display: flex;
+border-radius: 15px;
+align-items: center;
+justify-content: center;
+background-image: url('Bilder/Soundtracks Background.jpg');
+background-size: cover; /* Passt das Bild an die Größe des Containers an */
+background-position: center; /* Zentriert das Bild im Container */
+background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+}
+        
+/* Stile für den überlagernden Text */
+.grid-item-soundtracks::before {
+content: 'SOUNDTRACKS'; /* Verwendet das data-text Attribut als Inhalt */
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.7); /* Hintergrundfarbe des überlagernden Elements */
+color: white;
+display: flex;
+align-items: center;
+border-radius: 15px;
+justify-content: center;
+font-size: 36px;
+font-style: italic;
+font-family:'Dancing Script';
+text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Text-Schatten für eine handgeschriebene Optik */
+letter-spacing: 4px; /* Vergrößerter Buchstabenabstand für eine handgeschriebene Optik */
+font-weight: bold;
+opacity: 0; /* Startet mit einer Opazität von 0 (unsichtbar) */
+transition: opacity 0.3s ease; /* Übergangseffekt für die Opazität */
+}
+        
+/* Stile für den überlagernden Text beim Hover */
+.grid-item-soundtracks:hover::before {
+opacity: 0.9; /* Ändert die Opazität auf 1 (sichtbar), wenn gehovert wird */
+border-radius: 15px;
+}
+
+        
+/* Stile für das spezielle Grid-Element mit Hintergrundbild */
+.grid-item-songs {
+position: relative; /* Positionierung für das spezielle Element */
+padding: 20px;
+text-align: center;
+display: flex;
+border-radius: 15px;
+align-items: center;
+justify-content: center;
+background-image: url('Bilder/Songs Background.jpg');
+background-size: cover; /* Passt das Bild an die Größe des Containers an */
+background-position: center; /* Zentriert das Bild im Container */
+background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+}
+        
+/* Stile für den überlagernden Text */
+.grid-item-songs::before {
+content: 'SONGS'; /* Verwendet das data-text Attribut als Inhalt */
+position: absolute;
+top: 0;
+left: 0;
+border-radius: 15px;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.7); /* Hintergrundfarbe des überlagernden Elements */
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 36px;
+font-style: italic;
+font-family:'Dancing Script';
+text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Text-Schatten für eine handgeschriebene Optik */
+letter-spacing: 4px; /* Vergrößerter Buchstabenabstand für eine handgeschriebene Optik */
+font-weight: bold;
+opacity: 0; /* Startet mit einer Opazität von 0 (unsichtbar) */
+transition: opacity 0.3s ease; /* Übergangseffekt für die Opazität */
+}
+        
+/* Stile für den überlagernden Text beim Hover */
+.grid-item-songs:hover::before {
+opacity: 0.9; /* Ändert die Opazität auf 1 (sichtbar), wenn gehovert wird */
+border-radius: 15px;
+}
+
+        
+/* Stile für das spezielle Grid-Element mit Hintergrundbild */
+.grid-item-notes {
+position: relative; /* Positionierung für das spezielle Element */
+padding: 20px;
+text-align: center;
+display: flex;
+border-radius: 15px;
+align-items: center;
+justify-content: center;
+background-image: url('Bilder/Notes Background.jpg');
+background-size: cover; /* Passt das Bild an die Größe des Containers an */
+background-position: center; /* Zentriert das Bild im Container */
+background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+}
+        
+/* Stile für den überlagernden Text */
+.grid-item-notes::before {
+content: 'NOTES'; /* Verwendet das data-text Attribut als Inhalt */
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+border-radius: 15px;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.7); /* Hintergrundfarbe des überlagernden Elements */
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 36px;
+font-style: italic;
+font-family:'Dancing Script';
+text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Text-Schatten für eine handgeschriebene Optik */
+letter-spacing: 4px; /* Vergrößerter Buchstabenabstand für eine handgeschriebene Optik */
+font-weight: bold;
+opacity: 0; /* Startet mit einer Opazität von 0 (unsichtbar) */
+transition: opacity 0.3s ease; /* Übergangseffekt für die Opazität */
+}
+        
+/* Stile für den überlagernden Text beim Hover */
+.grid-item-notes:hover::before {
+opacity: 0.9; /* Ändert die Opazität auf 1 (sichtbar), wenn gehovert wird */
+border-radius: 15px;
+}
+
+        
+/* Stile für das spezielle Grid-Element mit Hintergrundbild */
+.grid-item-disney {
+position: relative; /* Positionierung für das spezielle Element */
+padding: 20px;
+text-align: center;
+display: flex;
+border-radius: 15px;
+align-items: center;
+justify-content: center;
+background-image: url('Bilder/Disney Background.jpg');
+background-size: cover; /* Passt das Bild an die Größe des Containers an */
+background-position: center; /* Zentriert das Bild im Container */
+background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+}
+        
+/* Stile für den überlagernden Text */
+.grid-item-disney::before {
+content: 'Disney'; /* Verwendet das data-text Attribut als Inhalt */
+position: absolute;
+top: 0;
+left: 0;
+border-radius: 15px;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.7); /* Hintergrundfarbe des überlagernden Elements */
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 36px;
+font-style: italic;
+font-family:'Dancing Script';
+text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Text-Schatten für eine handgeschriebene Optik */
+letter-spacing: 4px; /* Vergrößerter Buchstabenabstand für eine handgeschriebene Optik */
+font-weight: bold;
+opacity: 0; /* Startet mit einer Opazität von 0 (unsichtbar) */
+transition: opacity 0.3s ease; /* Übergangseffekt für die Opazität */
+}
+        
+/* Stile für den überlagernden Text beim Hover */
+.grid-item-disney:hover::before {
+opacity: 0.9; /* Ändert die Opazität auf 1 (sichtbar), wenn gehovert wird */
+border-radius: 15px;
+}
+      
+/* Stile für das spezielle Grid-Element mit Hintergrundbild */
+.grid-item-favorites {
+position: relative; /* Positionierung für das spezielle Element */
+padding: 20px;
+text-align: center;
+display: flex;
+border-radius: 15px;
+align-items: center;
+justify-content: center;
+background-image: url('Bilder/Favorites Background.jpeg');
+background-size: cover; /* Passt das Bild an die Größe des Containers an */
+background-position: center; /* Zentriert das Bild im Container */
+background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+}
+        
+/* Stile für den überlagernden Text */
+.grid-item-favorites::before {
+content: 'FAVORITES'; /* Verwendet das data-text Attribut als Inhalt */
+position: absolute;
+top: 0;
+left: 0;
+border-radius: 15px;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.7); /* Hintergrundfarbe des überlagernden Elements */
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 36px;
+font-style: italic;
+font-family:'Dancing Script';
+text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Text-Schatten für eine handgeschriebene Optik */
+letter-spacing: 4px; /* Vergrößerter Buchstabenabstand für eine handgeschriebene Optik */
+font-weight: bold;
+opacity: 0; /* Startet mit einer Opazität von 0 (unsichtbar) */
+transition: opacity 0.3s ease; /* Übergangseffekt für die Opazität */
+}
+        
+/* Stile für den überlagernden Text beim Hover */
+.grid-item-favorites:hover::before {
+opacity: 0.9; /* Ändert die Opazität auf 1 (sichtbar), wenn gehovert wird */
+border-radius: 15px;
+}
+
+
+
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+/* Stil für die zweite Zeile im Footer */
+.footer-text2 {
+font-size: 10px;
+line-height: 18px;
+}
+.footer-text1 a {
+	text-decoration: none;
+	font-size: 13px;
+	color: white;
+line-height: 10px;
+}.article-section {
+    padding: 20px;
+    background-color: #ffffff;
+    margin: 90px auto;
+    max-width: 900px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.article-section h2 {
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    color: #333;
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+.articles-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.article {
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(20px);
+}
+
+.article-title {
+    font-size: 1.8em;
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    transition: transform .2s;
+    margin-bottom: 5px;
+	margin-left: 7px;
+    display: inline-block;
+}
+
+.article-subtitle {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.article-content {
+    font-size: 1em;
+    color: #666;
+    margin-top: 0;
+}
+
+.article:hover {
+    background-color: #f9f9f9;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.article:hover .article-title {
+    color: #D74CE4;
+    transform: scale(1.1);
+}
+
+.article.loaded {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Animation beim Scrollen */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.articles-container .article {
+    animation: fadeInUp 0.5s ease forwards;
+}
