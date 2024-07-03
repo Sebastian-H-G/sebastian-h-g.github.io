@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>  <nav class="navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="navbar-logo"></a>
+        <ul class="navbar-menu">
+            <li class="navbar-item dropdown">
+                <a href="#" class="dropdown-toggle">Capital Quizzes</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Europa Capital-Quiz.html">Europe</a></li>
+                    <li><a href="Asia Capital-Quiz.html">Asia</a></li>
+                    <li><a href="Africa Capital-Quiz.html">Africa</a></li>
+                    <li><a href="North America Capital-Quiz.html">North America</a></li>
+                    <li><a href="South America Capital-Quiz.html">South America</a></li>
+                </ul>
+            </li>
+            <li class="navbar-item dropdown">
+                <a href="#" class="dropdown-toggle">Game</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Capital Map Game.html">Map</a></li>
+                    <li><a href="Match Madness.html">Match Madness</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+    <button id="languageButton" onclick="toggleLanguage()">Switch to German</button>
+    <div class="container">
+      <u><h1 id="quizTitle">South America Capital Quiz</h1></u>
+        <div id="question"></div>
+        <div id="options" class="options-container"></div>
+        <div id="result"></div>
+    </div>
+    <script src="script-south-america.js"></script>
+</body>
+</html>

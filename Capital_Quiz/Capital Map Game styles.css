@@ -1,0 +1,220 @@
+body {
+    background: linear-gradient(to right, #E8E8E8, #CECECE); /* Gradient from white to light gray */
+    width: 100%;
+    height: 100%;
+    font-family: sans-serif;
+}
+.navbar {
+    background-color: #333;
+    width: 100%;
+    height: 60px; /* Reduced height for smaller screens */
+    top: 0;
+    right: 0;
+    left: 0;
+    border: none;
+    position: fixed;
+    z-index: 1000;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    margin: 0;
+    padding: 0 20px;
+}
+
+.navbar-logo {
+    width: 60px; /* Adjusted for smaller navbar */
+    height: 60px; /* Adjusted for smaller navbar */
+    background-image: url('Bilder/Erde-Logo.png'); 
+    background-size: cover;
+    background-position: center; 
+    border-radius: 50%; 
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    font-size: 25px; /* Adjusted for smaller screens */
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-item {
+    position: relative;
+}
+
+.navbar-item a {
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    margin: 0 10px;
+}
+
+.navbar-item a:hover,
+.navbar-item.dropdown:hover > a {
+    background-color: #9B9B9B;
+    border-radius: 15px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #575757;
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    border-radius: 15px;
+}
+
+.dropdown-menu a {
+    padding: 10px 15px;
+    color: white;
+    background-color: #575757;
+    border-radius: 15px;
+}
+
+.dropdown-menu a:hover {
+    background-color: #9B9B9B;
+}
+.navbar-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+svg {
+	width: 100%; 
+	height: auto;
+}
+#map {
+    width: 80%;
+    max-width: 800px;
+    margin: 100px auto 0 auto;
+}
+
+.country {
+    cursor: pointer;
+    stroke: #000;
+    stroke-width: 1;
+    transition: fill 0.3s ease;
+}
+.africa {
+    fill: #FFA07A; /* Light Salmon */
+}
+
+.asia {
+    fill: #98FB98; /* Pale Green */
+}
+
+.europe {
+    fill: #87CEEB; /* Sky Blue */
+}
+
+.north-america {
+    fill: #FFD700; /* Gold */
+}
+
+.south-america {
+    fill: #FF6347; /* Tomato */
+}
+
+.oceania {
+    fill: #9370DB; /* Medium Purple */
+}
+
+.africa:hover {
+    fill: #F2875C; /* Darker shade of Light Salmon */
+}
+
+.asia:hover {
+    fill: #76EE00; /* Darker shade of Pale Green */
+}
+
+.europe:hover {
+    fill: #6495ED; /* Darker shade of Sky Blue */
+}
+
+.north-america:hover {
+    fill: #FEBF21; /* Darker shade of Gold */
+}
+
+.south-america:hover {
+    fill: #DC3C00; /* Darker shade of Tomato */
+}
+
+.oceania:hover {
+    fill: #7A67EE; /* Darker shade of Medium Purple */
+}
+
+
+#info {
+    text-align: center;
+	margin-bottom: 20px;
+}
+
+button.choice {
+    margin: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button.choice:hover {
+    background-color: #459047;
+}
+
+#result {
+    font-weight: bold;
+    margin-top: 10px;
+}
+path[title] {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Tooltip text */
+path[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: -1.5em;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 3px;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 10;
+    font-size: 12px;
+}
+
+/* Tooltip arrow */
+path[title]:hover::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent rgba(0, 0, 0, 0.7) transparent;
+    z-index: 10;
+}
+/* Smaller font sizes for mobile */
+@media (max-width: 480px) {
+    .navbar-menu {
+        font-size: 20px;
+    }
+
+    .navbar-item a {
+        padding: 5px 10px;
+    }
+}
