@@ -109,11 +109,22 @@ const optionsElement = document.getElementById('options');
 const resultElement = document.getElementById('result');
 const languageButton = document.getElementById('languageButton');
 const quizTitle = document.getElementById('quizTitle');
+const flagContainer = document.getElementById('flag-container');
 
 let capitals = capitalsEnglish;
 let currentCountry = '';
 let currentCapital = '';
 let isAnswered = false;
+let map;
+let marker;
+
+function initMap() {
+    map = L.map('map').setView([51.505, -0.09], 2); // Default view
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+}
 
 function getRandomCountry() {
     const countries = Object.keys(capitals);
@@ -133,6 +144,30 @@ function getRandomCapital() {
     const allCapitals = Object.values(capitals);
     const randomIndex = Math.floor(Math.random() * allCapitals.length);
     return allCapitals[randomIndex];
+}
+
+function updateMapAndFlag(country) {
+    fetch(`https://restcountries.com/v3.1/name/${country}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.length > 0) {
+                const countryData = data[0];
+                const latlng = countryData.latlng;
+                const flagUrl = countryData.flags.svg;
+
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+
+                map.setView(latlng, 4);
+                marker = L.marker(latlng).addTo(map).bindPopup(`<b>${country}</b>`).openPopup();
+
+                flagContainer.innerHTML = `<img src="${flagUrl}" alt="Flag of ${country}" style="width: 200px; height: auto; margin-top: 20px;">`;
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching country data:', error);
+        });
 }
 
 function displayQuestion() {
@@ -169,6 +204,8 @@ function displayQuestion() {
     resultElement.textContent = ''; // Clear the result message
     resultElement.classList.remove('result-correct', 'result-incorrect'); // Remove any previous result class
     isAnswered = false; // Reset the answer status
+
+    updateMapAndFlag(currentCountry);
 }
 
 function checkAnswer(selectedOption) {
@@ -200,15 +237,17 @@ function checkAnswer(selectedOption) {
 function toggleLanguage() {
     if (languageButton.textContent === 'Switch to German') {
         languageButton.textContent = 'Switch to English';
-        quizTitle.textContent = 'Europa Hauptstadt-Quiz';
+        quizTitle.textContent = 'Hauptstadt-Quiz';
         capitals = capitalsGerman;
     } else {
         languageButton.textContent = 'Switch to German';
-        quizTitle.textContent = 'Europe Capital Quiz';
+        quizTitle.textContent = 'Capital Quiz';
         capitals = capitalsEnglish;
     }
     displayQuestion(); // Refresh the current question after switching language
 }
 
-displayQuestion();
-
+document.addEventListener('DOMContentLoaded', () => {
+    initMap();
+    displayQuestion();
+});
