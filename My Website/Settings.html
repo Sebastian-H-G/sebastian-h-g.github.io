@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="heading">Settings</h1>
+    <div class="settings-grid">
+	<div id="main-content" style="display: none;">
+	<!-- User Info Box -->
+        <div id="user-info" style="display:none; margin-top:20px; padding:20px; border:1px solid #ccc;">
+            <h3>Welcome, <span id="display-username"></span></h3>
+            <p><strong>Username:</strong> <span id="info-username"></span></p>
+            <img id="user-avatar" alt="User Avatar" class="avatar" style="width:100px;height:100px;">
+        </div>
+		 </div>
+        <div class="setting">
+            <button onclick="document.getElementById('id01').style.display='block'" id="flashButton" class="button-login" style="width:auto;">Login</button>
+            <div id="id01" class="modal">
+                <form class="modal-content animate" onsubmit="handleLogin(event)">
+                    <div class="imgcontainer">
+                        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <img src="Bilder/neutral profile.jpg" alt="neutral profile picture" class="avatar">
+                    </div>
+                    <div class="container">
+                        <label for="uname"><b>Username</b></label>
+                        <input type="text" id="uname" placeholder="Enter Username" name="uname" required>
+                        <label for="psw"><b>Password</b></label>
+                        <input type="password" id="psw" placeholder="Enter Password" name="psw" required>
+                        <div class="avatar-selection">
+                            <h3>Select Your Avatar</h3>
+                            <div class="avatar-options">
+                                <label>
+                                    <input type="radio" name="avatar" value="Bilder/Avatar1.png">
+                                    <img src="Bilder/Avatar1.png" alt="Avatar 1" class="avatars1">
+                                </label>
+                                <label>
+                                    <input type="radio" name="avatar" value="Bilder/Avatar2.png">
+                                    <img src="Bilder/Avatar2.png" alt="Avatar 2" class="avatars">
+                                </label>
+                                <label>
+                                    <input type="radio" name="avatar" value="Bilder/Avatar3.png">
+                                    <img src="Bilder/Avatar3.png" alt="Avatar 3" class="avatars1">
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="button-login1">Login</button>
+                    </div>
+                    <div class="container" style="border: 2px solid grey; margin: 20px;">
+                        <label>
+                            <input type="checkbox" id="remember" name="remember"> Remember me
+                        </label>
+                        <br>
+                        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="setting">
+    <h2>Dark Mode</h2>
+    <label class="switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider"></span>
+    </label>
+</div>
+
+        <div class="setting">
+            <h2>Setting 2</h2>
+            <p>Description of setting 2.</p>
+        </div>
+        <div class="setting">
+            <h2>Setting 2</h2>
+            <p>Description of setting 2.</p>
+        </div>
+    </div>
+    <div class="navbar">
+        <div class="navbar-icons">
+            <a href="index.html"><img src="Bilder/Home.png" class="icon" alt="Home"></a>
+            <a href="Games.html"><img src="Bilder/Games.png" class="icon" alt="Games"></a>
+            <a href="Education.html"><img src="Bilder/Education.png" class="icons" alt="Education"></a>
+            <a href="Favorites.html"><img src="Bilder/Favorites.png" class="icons" alt="Favorites"></a>
+            <a href="Settings.html"><img src="Bilder/Settings.png" class="icons" alt="Settings"></a>
+        </div>
+    </div>
+	<div id="success-modal" class="modal">
+    <div class="modal-content">
+        <p>Login successful!</p>
+    </div>
+</div>
+	<!-- Error Modal -->
+<div id="error-modal" class="modal" onclick="document.getElementById('error-modal').style.display='none'">
+    <div class="modal-content">
+        <p>Invalid username or password!</p>
+    </div>
+</div>
+    <div class="navbar">
+        <div class="navbar-icons">
+            <a href="index.html"><img src="Bilder/Home.png" class="icon" alt="Home"></a>
+            <a href="Games.html"><img src="Bilder/Games.png" class="icon" alt="Games"></a>
+            <a href="Education.html"><img src="Bilder/Education.png" class="icons" alt="Education"></a>
+            <a href="Favorites.html"><img src="Bilder/Favorites.png" class="icons" alt="Favorites"></a>
+            <a href="Settings.html"><img src="Bilder/Settings.png" class="icons" alt="Settings"></a>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

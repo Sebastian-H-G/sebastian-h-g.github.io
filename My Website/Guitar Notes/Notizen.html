@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Notes</title>
+    <link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap">
+	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+			background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 900px;
+			margin-top: 120px;
+        }
+        #editor {
+            height: 200px;
+            background: white;
+            color: black;
+            border-radius: 5px;
+            margin-bottom: 10px;
+			padding-left: 0px;
+        }
+		/* Container des Quill-Editors */
+.ql-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+/* Toolbar des Quill-Editors */
+.ql-toolbar {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+	background-color: #F0ECEC;
+}
+
+/* Stil der Formatierungsoptionen (z.B. Schaltflächen für Fett, Kursiv, Unterstreichen) */
+.ql-toolbar .ql-formats {
+    margin-right: 10px;
+}
+
+/* Schaltflächen-Stil für Formatierungen */
+.ql-toolbar button {
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    border-radius: 3px;
+    padding: 6px 12px;
+    margin-right: 2px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Hover-Stil für Schaltflächen */
+.ql-toolbar button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Aktivierte Schaltflächen-Stil */
+.ql-toolbar button.ql-active {
+    background-color: #D7E5F3;
+    color: white;
+}
+
+/* Dropdown-Menüs */
+.ql-toolbar .ql-picker {
+    width: auto;
+    margin-right: 10px;
+}
+
+/* Dropdown-Optionen */
+.ql-toolbar .ql-picker-options {
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+/* Dropdown-Optionen - Hover-Stil */
+.ql-toolbar .ql-picker-options li:hover {
+    background-color: #f0f0f0;
+}
+
+/* Dropdown-Pfeil */
+.ql-picker-label::after {
+    border-bottom-color: #333;
+}
+
+/* Farben-Palette (Color Picker) */
+.ql-toolbar .ql-color-picker .ql-picker-label {
+    border: none;
+    padding: 0;
+}
+
+.ql-toolbar .ql-color-picker .ql-picker-item {
+    border-radius: 2px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.ql-toolbar .ql-color-picker .ql-picker-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Tooltips */
+.ql-tooltip {
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    font-size: 12px;
+}
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff7e5f;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #feb47b;
+        }
+        .message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #FEA80A;
+            color: white;
+			margin-top: 80px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        } 1000;
+        }
+    </style>
+<body>
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="logo"><img src="Bilder/logo3.png" alt="Logo" class="logo-img"></a>
+        <div style="display: none;"><input type="text" id="searchInput" placeholder="Search..."></div>
+        <div class="dropdown">
+            <a href="Sammlungen.html" class="dropbtn">Sammlungen</a>
+            <div class="dropdown-content">
+                <a href="Klassik.html">Klassik</a>
+                <a href="Soundtracks.html">Soundtracks</a>
+                <a href="Songs.html">Songs</a>
+				<a href="Notes.html">Notes</a>
+				<a href="Disney.html">Disney</a>
+				<a href="Favorites.html">Favorites</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#" class="dropbtn">Inspiration</a>
+            <div class="dropdown-content">
+                <a href="Gitarren-Blog.html">Blog</a>
+                <a href="Akkorde-Sammlung.html">Akkorde-Sammlung</a>
+                <a href="Notizen.html">Song Ideas</a>
+            </div>
+        </div>
+		<div style="display: none;">
+        <div class="filter-container">
+            <a class="dropbtn">Filter<img src="Bilder/Filter Icon.png" alt="Filter Icon" class="filter-icon"></a>
+            <div class="dropdown-content" id="filterDropdown">
+                <a href="#" data-category="all">All</a>
+                <a href="#" data-category="Notes">Notes</a>
+                <a href="#" data-category="Songs">Songs</a>
+                <a href="#" data-category="Videos">Videos</a>
+				<a href="#" data-category="Klassik">Klassik</a>
+				<a href="#" data-category="Soundtracks">Soundtracks</a>
+				<a href="#" data-category="#">#</a>
+                <!-- Add more categories as needed -->
+            </div>
+        </div>
+		</div>
+        <div class="dropdown">
+            <button class="dropbtn" id="settingsBtn">Settings<img src="Bilder/Settings Icon.png" alt="Settings Icon" class="settings-icon"></button>
+            <div class="dropdown-content-setting settings-dropdown" id="settingsDropdown">
+                <form id="settingsForm">
+                    <div class="form-group">
+                        <label for="logoSelect">Choose Logo:</label>
+                        <select id="logoSelect" name="logoSelect">
+                            <option value="logo1">Logo 1</option>
+                            <option value="logo2">Logo 2</option>
+                            <option value="logo3">Logo 3</option>
+							<option value="logo5">Logo 4</option>
+                            <!-- Add more logo options as needed -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="colorSelect">Choose Navbar Color:</label>
+                        <div class="custom-select" id="colorSelectCustom">
+                            <div class="selected-option">Select Color ⬇️</div>
+                            <div class="options">
+                                <div class="option" data-value="#333">
+                                    <div class="color-box" style="background-color: #333;"></div> Dark
+                                </div>
+                                <div class="option" data-value="#C0E4CB">
+                                    <div class="color-box" style="background-color: #C0E4CB;"></div> Light
+                                </div>
+                                <div class="option" data-value="#007bff">
+                                    <div class="color-box" style="background-color: #007bff;"></div> Sky Blue
+                                </div>
+                                <div class="option" data-value="#E44CA6">
+                                    <div class="color-box" style="background-color: #E44CA6;"></div> Pink
+                                </div>
+								<div class="option" data-value="#AD4CE4">
+                                    <div class="color-box" style="background-color: #AD4CE4;"></div> Purple
+                                </div>
+								<div class="option" data-value="#A0698A">
+                                    <div class="color-box" style="background-color: #A0698A;"></div> Lavender
+                                </div>
+								<div class="option" data-value="#B41C76">
+                                    <div class="color-box" style="background-color: #B41C76;"></div> Magenta
+                                </div>
+								<div class="option" data-value="#321EE2">
+                                    <div class="color-box" style="background-color: #321EE2;"></div> Indigo
+                                </div>
+								<div class="option" data-value="#1E9BE2">
+                                    <div class="color-box" style="background-color: #1E9BE2;"></div> Cyan
+                                </div>
+								<div class="option" data-value="#1EE2DF">
+                                    <div class="color-box" style="background-color: #1EE2DF;"></div> Turquoise
+                                </div>
+								<div class="option" data-value="#E3F302">
+                                    <div class="color-box" style="background-color: #E3F302;"></div> Yellow
+                                </div>
+								<div class="option" data-value="#F30202">
+                                    <div class="color-box" style="background-color: #F30202;"></div> Red
+                                </div>
+                            </div>
+                        </div>
+                        <select id="colorSelect" name="colorSelect" style="display: none;">
+                            <option value="#333">Dark</option>
+                            <option value="#C0E4CB">Light</option>
+                            <option value="#007bff">Sky Blue</option>
+                            <option value="#E44CA6">Pink</option>
+                            <option value="#AD4CE4">Purple</option>
+							<option value="#A0698A">Lavender</option>
+                            <option value="#B41C76">Magenta</option>
+                            <option value="#321EE2">Indigo</option>
+                            <option value="#1E9BE2">Cyan</option>
+							<option value="#1EE2DF">Turquoise</option>
+                            <option value="#E3F302">Yellow</option>
+                            <option value="#F30202">Red</option>
+                        </select>
+                    </div>
+                    <button type="submit">Apply</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+ <div class="container">
+        <h1>Song Ideas</h1>
+        <div id="editor"></div>
+        <button onclick="saveText()">Speichern</button>
+        <div id="message" class="message"></div>
+    </div>
+<footer>
+<div class="footer-text1"><a href="../index.html">GO BACKT TO MAIN PAGE</a></div>
+<div class="footer-text2">© 2024 Guitar Notes GmbH™ ® Alle Rechte vorbehalten. Designed and Created by Sebastian Hermes Garcia</div>
+</footer>
+<!-- Quill.js -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <!-- Grammark.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/grammark.js/0.0.2/grammark.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

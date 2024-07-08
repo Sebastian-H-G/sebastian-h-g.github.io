@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Notes</title>
+    <link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap">
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="logo"><img src="Bilder/logo3.png" alt="Logo" class="logo-img"></a>
+        <div style="display: none;"><input type="text" id="searchInput" placeholder="Search..."></div>
+        <div class="dropdown">
+            <a href="Sammlungen.html" class="dropbtn">Sammlungen</a>
+            <div class="dropdown-content">
+                <a href="Klassik.html">Klassik</a>
+                <a href="Soundtracks.html">Soundtracks</a>
+                <a href="Songs.html">Songs</a>
+				<a href="Notes.html">Notes</a>
+				<a href="Disney.html">Disney</a>
+				<a href="Favorites.html">Favorites</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#" class="dropbtn">Inspiration</a>
+            <div class="dropdown-content">
+                <a href="Gitarren-Blog.html">Blog</a>
+                <a href="Akkorde-Sammlung.html">Akkorde-Sammlung</a>
+                <a href="Notizen.html">Song Ideas</a>
+            </div>
+        </div>
+		<div style="display: none;">
+        <div class="filter-container">
+            <a class="dropbtn">Filter<img src="Bilder/Filter Icon.png" alt="Filter Icon" class="filter-icon"></a>
+            <div class="dropdown-content" id="filterDropdown">
+                <a href="#" data-category="all">All</a>
+                <a href="#" data-category="Notes">Notes</a>
+                <a href="#" data-category="Songs">Songs</a>
+                <a href="#" data-category="Videos">Videos</a>
+				<a href="#" data-category="Klassik">Klassik</a>
+				<a href="#" data-category="Soundtracks">Soundtracks</a>
+				<a href="#" data-category="#">#</a>
+                <!-- Add more categories as needed -->
+            </div>
+        </div>
+		</div>
+        <div class="dropdown">
+            <button class="dropbtn" id="settingsBtn">Settings<img src="Bilder/Settings Icon.png" alt="Settings Icon" class="settings-icon"></button>
+            <div class="dropdown-content-setting settings-dropdown" id="settingsDropdown">
+                <form id="settingsForm">
+                    <div class="form-group">
+                        <label for="logoSelect">Choose Logo:</label>
+                        <select id="logoSelect" name="logoSelect">
+                            <option value="logo1">Logo 1</option>
+                            <option value="logo2">Logo 2</option>
+                            <option value="logo3">Logo 3</option>
+							<option value="logo5">Logo 4</option>
+                            <!-- Add more logo options as needed -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="colorSelect">Choose Navbar Color:</label>
+                        <div class="custom-select" id="colorSelectCustom">
+                            <div class="selected-option">Select Color ⬇️</div>
+                            <div class="options">
+                                <div class="option" data-value="#333">
+                                    <div class="color-box" style="background-color: #333;"></div> Dark
+                                </div>
+                                <div class="option" data-value="#C0E4CB">
+                                    <div class="color-box" style="background-color: #C0E4CB;"></div> Light
+                                </div>
+                                <div class="option" data-value="#007bff">
+                                    <div class="color-box" style="background-color: #007bff;"></div> Sky Blue
+                                </div>
+                                <div class="option" data-value="#E44CA6">
+                                    <div class="color-box" style="background-color: #E44CA6;"></div> Pink
+                                </div>
+								<div class="option" data-value="#AD4CE4">
+                                    <div class="color-box" style="background-color: #AD4CE4;"></div> Purple
+                                </div>
+								<div class="option" data-value="#A0698A">
+                                    <div class="color-box" style="background-color: #A0698A;"></div> Lavender
+                                </div>
+								<div class="option" data-value="#B41C76">
+                                    <div class="color-box" style="background-color: #B41C76;"></div> Magenta
+                                </div>
+								<div class="option" data-value="#321EE2">
+                                    <div class="color-box" style="background-color: #321EE2;"></div> Indigo
+                                </div>
+								<div class="option" data-value="#1E9BE2">
+                                    <div class="color-box" style="background-color: #1E9BE2;"></div> Cyan
+                                </div>
+								<div class="option" data-value="#1EE2DF">
+                                    <div class="color-box" style="background-color: #1EE2DF;"></div> Turquoise
+                                </div>
+								<div class="option" data-value="#E3F302">
+                                    <div class="color-box" style="background-color: #E3F302;"></div> Yellow
+                                </div>
+								<div class="option" data-value="#F30202">
+                                    <div class="color-box" style="background-color: #F30202;"></div> Red
+                                </div>
+                            </div>
+                        </div>
+                        <select id="colorSelect" name="colorSelect" style="display: none;">
+                            <option value="#333">Dark</option>
+                            <option value="#C0E4CB">Light</option>
+                            <option value="#007bff">Sky Blue</option>
+                            <option value="#E44CA6">Pink</option>
+                            <option value="#AD4CE4">Purple</option>
+							<option value="#A0698A">Lavender</option>
+                            <option value="#B41C76">Magenta</option>
+                            <option value="#321EE2">Indigo</option>
+                            <option value="#1E9BE2">Cyan</option>
+							<option value="#1EE2DF">Turquoise</option>
+                            <option value="#E3F302">Yellow</option>
+                            <option value="#F30202">Red</option>
+                        </select>
+                    </div>
+                    <button type="submit">Apply</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="article-section">
+    <h2>Neueste Artikel</h2>
+    <div class="articles-container">
+        <div class="article">
+            <h3 class="article-title">Einführung in die Gitarre</h3>
+            <h4 class="article-subtitle">Geschichte der Gitarre</h4>
+            <p class="article-content">
+                Die Gitarre ist eines der ältesten und vielseitigsten Instrumente der Welt. Ihre Ursprünge lassen sich bis zu antiken Zupfinstrumenten zurückverfolgen, die vor mehreren tausend Jahren in verschiedenen Kulturen existierten. Die moderne Gitarre entwickelte sich im Laufe der Jahrhunderte, wobei die spanische Gitarre des 16. Jahrhunderts als direkter Vorläufer der heutigen akustischen Gitarre gilt. Mit der Erfindung der elektrischen Gitarre in den 1930er Jahren erlebte das Instrument eine Revolution, die die Musiklandschaft für immer veränderte.
+            </p>
+            <h4 class="article-subtitle">Verschiedene Arten von Gitarren</h4>
+            <p class="article-content">
+                Es gibt viele verschiedene Arten von Gitarren, jede mit ihrem eigenen Klang und Verwendungszweck:
+                <ul class="article-content">
+                    <li>Akustische Gitarre: Diese Gitarre hat einen hohlen Körper, der den Klang der Saiten verstärkt. Sie wird häufig in Folk, Country und Popmusik verwendet.</li>
+                    <li>Elektrische Gitarre: Diese Gitarre verwendet Pickups, um die Schwingungen der Saiten in elektrische Signale umzuwandeln, die dann über einen Verstärker wiedergegeben werden. Sie ist in Genres wie Rock, Blues und Metal sehr beliebt.</li>
+                    <li>Bassgitarre: Diese Gitarre hat einen tieferen Klang und wird hauptsächlich zur Begleitung in verschiedenen Musikrichtungen verwendet. Sie kann sowohl akustisch als auch elektrisch sein.</li>
+                </ul>
+            </p>
+            <h4 class="article-subtitle">Grundlegende Komponenten der Gitarre</h4>
+            <p class="article-content">
+                Unabhängig vom Typ haben alle Gitarren einige gemeinsame Komponenten:
+                <ul class="article-content">
+                    <li>Korpus: Der Hauptteil der Gitarre, der den Klang verstärkt (bei akustischen Gitarren) oder hält (bei elektrischen Gitarren).</li>
+                    <li>Hals: Der lange, schmale Teil der Gitarre, auf dem die Bünde und Saiten befestigt sind.</li>
+                    <li>Griffbrett: Das Vorderteil des Halses, wo die Finger die Saiten niederdrücken.</li>
+                    <li>Bünde: Metallstäbe auf dem Griffbrett, die helfen, die Töne zu definieren.</li>
+                    <li>Saiten: Die Komponenten, die gezupft oder geschlagen werden, um Töne zu erzeugen.</li>
+                    <li>Steg und Sattel: Teile, die die Saiten an Ort und Stelle halten und die richtige Saitenhöhe gewährleisten.</li>
+                </ul>
+            </p>
+        </div>
+        <div class="article">
+            <h3 class="article-title">Anfänger-Tipps</h3>
+            <h4 class="article-subtitle">Wie man die richtige Gitarre auswählt</h4>
+            <p class="article-content">
+                Die Wahl der richtigen Gitarre hängt von mehreren Faktoren ab:
+            </p>
+            <ul class="article-content">
+                <li>Spielstil: Akustische Gitarren eignen sich gut für Folk und Country, während elektrische Gitarren für Rock und Metal besser geeignet sind.</li>
+                <li>Budget: Anfänger sollten mit einer preiswerten, aber qualitativ guten Gitarre starten.</li>
+                <li>Komfort: Die Gitarre sollte gut in der Hand liegen und nicht zu schwer sein.</li>
+            </ul>
+            <h4 class="article-subtitle">Erste Songs für Anfänger</h4>
+            <p class="article-content">
+                Einfache Songs mit wenigen Akkorden sind ideal für Anfänger. Einige Beispiele sind:
+            </p>
+            <ul class="article-content">
+                <li>"Knockin' on Heaven's Door" von Bob Dylan</li>
+                <li>"Horse with No Name" von America</li>
+                <li>"Love Me Do" von The Beatles</li>
+            </ul>
+            <h4 class="article-subtitle">Tipps zur Pflege und Wartung der Gitarre</h4>
+            <ul class="article-content">
+                <li>Reinigen Sie die Saiten nach jedem Spielen: Dies verhindert Korrosion und verlängert die Lebensdauer der Saiten.</li>
+                <li>Lagern Sie die Gitarre richtig: Bewahren Sie sie in einem Gitarrenkoffer auf, um sie vor Staub und Feuchtigkeit zu schützen.</li>
+                <li>Stimmen Sie Ihre Gitarre regelmäßig: Ein Stimmgerät kann dabei sehr hilfreich sein.</li>
+            </ul>
+        </div>
+        <div class="article">
+            <h3 class="article-title">Spieltechniken</h3>
+            <h4 class="article-subtitle">Fingerpicking vs. Plektrum</h4>
+            <p class="article-content">
+                Die Wahl zwischen Fingerpicking und Plektrum hängt vom gewünschten Klang ab:
+            </p>
+            <ul class="article-content">
+                <li>Fingerpicking: Erzeugt einen weicheren, komplexeren Klang, ideal für Folk und Klassik.</li>
+                <li>Plektrum: Liefert einen schärferen Klang, gut für Rock und Pop.</li>
+            </ul>
+            <h4 class="article-subtitle">Slide-Gitarre</h4>
+            <ul class="article-content">
+                <li>Technik: Verwenden Sie einen Metall- oder Glasslide, um sanfte Übergänge zwischen den Noten zu erzeugen.</li>
+                <li>Musikrichtungen: Besonders beliebt im Blues.</li>
+            </ul>
+            <h4 class="article-subtitle">Hammer-ons und Pull-offs</h4>
+            <ul class="article-content">
+                <li>Hammer-ons: Erzeugen einen zusätzlichen Ton durch schnelles Aufsetzen eines Fingers auf die Saite.</li>
+                <li>Pull-offs: Erzeugen einen Ton durch schnelles Abziehen eines Fingers von der Saite.</li>
+            </ul>
+            <h4 class="article-subtitle">Bendings und Vibrato</h4>
+            <ul class="article-content">
+                <li>Bendings: Erhöhen die Tonhöhe durch Ziehen oder Drücken der Saite.</li>
+                <li>Vibrato: Verleiht dem Ton Tiefe durch schnelles Hin- und Herbewegen der Saite.</li>
+            </ul>
+        </div>
+        <div class="article">
+            <h3 class="article-title">Musiktheorie für Gitarristen</h3>
+            <h4 class="article-subtitle">Grundlegende Musiktheorie</h4>
+            <p class="article-content">
+                Die Grundlagen der Musiktheorie helfen Gitarristen, Musik besser zu verstehen:
+            </p>
+            <ul class="article-content">
+                <li>Noten und Tonleitern: Verstehen Sie die Grundlagen der Musiknoten und Tonleitern.</li>
+                <li>Intervalle: Der Abstand zwischen zwei Tönen.</li>
+            </ul>
+            <h4 class="article-subtitle">Skalen und Modes</h4>
+            <ul class="article-content">
+                <li>Pentatonik: Eine einfache und weit verbreitete Skala.</li>
+                <li>Dur- und Moll-Tonleitern: Grundlegende Skalen, die in vielen Musikstilen verwendet werden.</li>
+            </ul>
+            <h4 class="article-subtitle">Harmonielehre und Akkordprogressionen</h4>
+            <ul class="article-content">
+                <li>Akkordaufbau: Wie Akkorde aus Tonleitern gebildet werden.</li>
+                <li>Akkordprogressionen: Häufige Abfolgen von Akkorden, wie die I-IV-V-Progression.</li>
+            </ul>
+        </div>
+        <div class="article">
+            <h3 class="article-title">Fortgeschrittene Techniken</h3>
+            <h4 class="article-subtitle">Tapping</h4>
+            <p class="article-content">
+                Tapping ist eine fortgeschrittene Spieltechnik, die auf schnelle Fingerbewegungen setzt:
+            </p>
+            <ul class="article-content">
+                <li>Technik: Verwenden Sie beide Hände, um auf das Griffbrett zu tippen und Noten zu erzeugen.</li>
+                <li>Beispiele: Eddie Van Halen ist bekannt für seine Tapping-Technik.</li>
+            </ul>
+            <h4 class="article-subtitle">Sweep Picking</h4>
+            <ul class="article-content">
+                <li>Technik: Verwenden Sie eine schnelle, wischende Bewegung mit dem Plektrum, um arpeggierte Akkorde zu spielen.</li>
+                <li>Musikrichtungen: Besonders in Metal und Shred-Gitarrenstilen beliebt.</li>
+            </ul>
+            <h4 class="article-subtitle">Hybrid Picking</h4>
+            <p class="article-content">
+                Hybrid Picking kombiniert Fingerpicking und Plektrumspiel für komplexe Rhythmen:
+            </p>
+            <ul class="article-content">
+                <li>Technik: Kombiniert Plektrum- und Fingerpicking, um komplexe Rhythmen zu erzeugen.</li>
+                <li>Beispiele: Gitarristen wie Brent Mason verwenden häufig Hybrid Picking.</li>
+            </ul>
+            <h4 class="article-subtitle">Legato und Staccato</h4>
+            <ul class="article-content">
+                <li>Legato: Erzeugt einen fließenden Klang durch nahtlose Übergänge zwischen den Noten.</li>
+                <li>Staccato: Erzeugt kurze, abgehackte Töne durch schnelles Loslassen der Saiten.</li>
+            </ul>
+        </div>
+        <div class="article">
+            <h3 class="article-title">Gitarre und Equipment</h3>
+            <h4 class="article-subtitle">Verstärker und Effektgeräte</h4>
+            <ul class="article-content">
+                <li>Verstärkerarten: Röhrenverstärker, Transistorverstärker, Modeling-Verstärker.</li>
+                <li>Effektgeräte: Verzerrer, Chorus, Delay, Reverb und ihre Verwendung.</li>
+            </ul>
+            <h4 class="article-subtitle">Pedalboards und ihre Konfiguration</h4>
+            <ul class="article-content">
+                <li>Pedalboard-Grundlagen: Aufbau eines Pedalboards und Verkabelung.</li>
+                <li>Signalfluss: Die Reihenfolge der Effekte und ihre Auswirkung auf den Klang.</li>
+            </ul>
+            <h4 class="article-subtitle">Die Wahl der richtigen Saiten und Plektren</h4>
+            <ul class="article-content">
+                <li>Saitenstärken: Leichte vs. schwere Saiten und ihre Auswirkungen auf Spielbarkeit und Klang.</li>
+                <li>Plektren: Materialien, Formen und ihre Auswirkungen auf das Spielgefühl.</li>
+            </ul>
+        </div>
+        <div class="article">
+    <h3 class="article-title">Berühmte Gitarristen und ihre Stile</h3>
+    <h4 class="article-subtitle">Eric Clapton</h4>
+    <ul class="article-content">
+        <li>Stil: Eric Clapton ist bekannt für seinen Blues-Rock-Stil und seine emotionale Spielweise. Er verwendet häufig Techniken wie Bendings und Vibrato, um seinen Soli Ausdruck zu verleihen.</li>
+        <li>Einflussreiche Songs: Einige seiner bekanntesten Songs sind "Layla" und "Tears in Heaven". Studieren Sie seine Soli, um ein Gefühl für seine Technik zu bekommen.</li>
+    </ul>
+
+    <h4 class="article-subtitle">Jimi Hendrix</h4>
+    <ul class="article-content">
+        <li>Stil: Jimi Hendrix revolutionierte die Gitarrenmusik mit seinem psychedelischen Rock-Stil und innovativen Techniken. Er verwendete häufig Feedback, Wah-Wah-Pedale und ungewöhnliche Akkorde.</li>
+        <li>Einflussreiche Songs: "Purple Haze" und "All Along the Watchtower" sind Beispiele für Hendrix' einzigartigen Stil. Hören Sie sich seine Aufnahmen an, um seine Techniken zu verstehen.</li>
+    </ul>
+
+    <h4 class="article-subtitle">Carlos Santana</h4>
+    <ul class="article-content">
+        <li>Stil: Carlos Santana ist bekannt für seinen Latin Rock-Stil und seinen einzigartigen Gitarrenton. Er verwendet häufig rhythmische Muster und melodische Soli.</li>
+        <li>Einflussreiche Songs: "Black Magic Woman" und "Smooth" sind Beispiele für Santanas Stil. Achten Sie auf seine Verwendung von Skalen und Rhythmen.</li>
+    </ul>
+
+    <h4 class="article-subtitle">Moderne Gitarrenhelden</h4>
+    <ul class="article-content">
+        <li>Beispiele: Gitarristen wie John Mayer, Joe Bonamassa und Tosin Abasi haben moderne Einflüsse und innovative Spielweisen. Sie kombinieren verschiedene Techniken und Stile, um ihren eigenen Sound zu schaffen.</li>
+        <li>Stile und Techniken: Moderne Gitarristen verwenden eine Vielzahl von Techniken, darunter Hybrid Picking, Tapping und Sweep Picking, um komplexe und dynamische Musik zu erzeugen.</li>
+    </ul>
+</div>
+</div></div>
+<footer>
+<div class="footer-text1"><a href="../index.html">GO BACKT TO MAIN PAGE</a></div>
+<div class="footer-text2">© 2024 Guitar Notes GmbH™ ® Alle Rechte vorbehalten. Designed and Created by Sebastian Hermes Garcia</div>
+</footer>
+<script src="blog-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: url(https://img.freepik.com/free-photo/colorful-sky-after-sunset_661209-461.jpg?t=st=1718043772~exp=1718047372~hmac=334f7bb4535b0ad4111092701d9341e5a31b781496dab8efe207cdb262386aa0&w=900);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navbar {
+  width: 100%;
+  padding: 20px 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .nav-links {
+  display: flex;
+  list-style: none;
+}
+
+.navbar .nav-links li {
+  margin: 0 15px;
+}
+
+.navbar .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.navbar .nav-links a:hover {
+  color: #f0a500;
+}
+
+.section {
+  display: none;
+  width: 100%;
+  max-width: 600px;
+  min-height: 100vh;
+  padding: 20px;
+  background: rgba(255, 255, 255, .1);
+  backdrop-filter: blur(30px);
+  border: 2px solid rgba(255, 255, 255, .2);
+  border-radius: 16px;
+  margin-top: 80px; /* Adjust for navbar height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.section h2 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.section p {
+  font-size: 18px;
+  max-width: 800px;
+  text-align: center;
+}
+
+/* Ensure that only the first section is displayed by default */
+#home {
+  display: flex;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-box {
+  position: relative;
+  width: 100%;
+  height: 55px;
+  display: flex;
+  align-items: center;
+}
+
+.search-box i {
+  position: absolute;
+  left: 10px;
+  font-size: 28px;
+}
+
+.search-box input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  outline: none;
+  border-radius: 10px;
+  font-size: 22px;
+  color: #fff;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 0 48px 0 42px;
+}
+
+.search-box input::placeholder {
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.search-box button {
+  position: absolute;
+  right: 0;
+  width: 40px;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 28px;
+  color: #fff;
+  padding: 0 40px 0 5px;
+  cursor: pointer;
+}
+
+.weather-box {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.weather-box img {
+  width: 60%;
+}
+
+.weather-box .temperature {
+  position: relative;
+  font-size: 64px;
+  line-height: 1;
+  font-weight: 700;
+  margin: 20px 0 6px -30px;
+}
+
+.weather-box .temperature span {
+  position: absolute;
+  font-size: 24px;
+  margin-left: 4px;
+}
+
+.weather-box .description {
+  font-size: 22px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.weather-details {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  color: white;
+  margin-top: 20px;
+}
+
+.weather-details .humidity, .weather-details .wind {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.weather-details .humidity i, .weather-details .wind i {
+  margin-right: 10px;
+  font-size: 30px;
+}
+
+.weather-details .humidity span, .weather-details .wind span {
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.weather-details p {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: grey;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+	margin-top: 20px;
+}
+/* Stil für die zweite Zeile im Footer */
+.footer-text2 {
+font-size: 10px;
+line-height: 18px;
+}
+.footer-text1 a {
+	text-decoration: none;
+	font-size: 13px;
+	color: white;
+line-height: 10px;
+}

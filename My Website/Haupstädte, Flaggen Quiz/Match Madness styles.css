@@ -1,0 +1,293 @@
+/* Match Madness styles.css */
+body {
+    background: linear-gradient(to right, #E8E8E8, #CECECE); /* Gradient from white to light gray */
+    width: 100%;
+    height: 100%;
+    font-family: sans-serif;
+	padding: 0;
+	margin: 0;
+}
+.navbar {
+    background-color: #333;
+    width: 100%;
+    height: 60px; /* Reduced height for smaller screens */
+    top: 0;
+    right: 0;
+    left: 0;
+    border: none;
+    position: fixed;
+    z-index: 1000;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    margin: 0;
+    padding: 0 20px;
+}
+
+.navbar-logo {
+    width: 60px; /* Adjusted for smaller navbar */
+    height: 60px; /* Adjusted for smaller navbar */
+    background-image: url('Bilder/Erde-Logo.png'); 
+    background-size: cover;
+    background-position: center; 
+    border-radius: 50%; 
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    font-size: 25px; /* Adjusted for smaller screens */
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-item {
+    position: relative;
+}
+
+.navbar-item a {
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    margin: 0 10px;
+}
+
+.navbar-item a:hover,
+.navbar-item.dropdown:hover > a {
+    background-color: #9B9B9B;
+    border-radius: 15px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #575757;
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    border-radius: 15px;
+}
+
+.dropdown-menu a {
+    padding: 10px 15px;
+    color: white;
+    background-color: #575757;
+    border-radius: 15px;
+}
+
+.dropdown-menu a:hover {
+    background-color: #9B9B9B;
+}
+.navbar-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+h1 {
+    font-size: 45px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 150px auto 0;
+    text-align: center;
+}
+
+button#languageButton {
+	position: fixed;
+	margin-right: 15px;
+	right: 0;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button#languageButton:hover {
+    background-color: #45a049;
+}
+
+button {
+    padding: 20px 30px;
+    font-size: 18px;
+    background-color: #3498db; /* Blue */
+    border: none;
+    color: white;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0F5D91; /* Darker Blue */
+}
+
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .navbar {
+        height: auto;
+    }
+
+    .navbar-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-logo {
+        margin: 10px 0;
+    }
+
+    .navbar-hamburger {
+        display: block;
+    }
+
+    .navbar-menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .navbar-menu.active {
+        display: flex;
+    }
+
+    .navbar-item {
+        width: 100%;
+    }
+
+    .navbar-item a {
+        padding: 10px;
+        margin: 0;
+    }
+
+    .dropdown-menu {
+        position: relative;
+        top: 0;
+        left: 0;
+    }
+
+    .container {
+        margin-top: 100px;
+    }
+}
+
+
+
+#game-container {
+    text-align: center;
+	margin-top: 10px;
+}
+
+#timer {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#columns {
+    display: flex;
+    justify-content: center;
+}
+
+#countries, #capitals {
+    width: 200px;
+    margin: 0 20px;
+}
+
+#countries div, #capitals div {
+    background-color: #fff;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#countries div.correct, #capitals div.correct {
+    background-color: #4caf50; /* green */
+}
+
+#countries div.wrong, #capitals div.wrong {
+    background-color: #f44336; /* red */
+}
+#score {
+	margin-top: 30px;
+}
+.Match-Madness-Container {
+	text-align: center;
+	margin: 10px 20px 0 20px;
+	display: flex; /* Flexbox verwenden */
+    justify-content: center; /* Zentriert die Items horizontal */
+    gap: 10px; /* Abstand zwischen den Items */
+}
+.Match-Madness-Item {
+    width: 200px;
+    height: 50px;
+    background-color: #76E0B1;
+    color: black;
+    font-weight: bold;
+    font-family: sans-serif;
+    font-size: 20px;
+    border-radius: 5px;
+    display: flex; /* Flexbox verwenden */
+    justify-content: center; /* Horizontal zentrieren */
+    align-items: center; /* Vertikal zentrieren */
+    text-decoration: none; /* Unterstrich bei Links entfernen */
+    text-align: center; /* Text zentrieren */
+}
+a {text-decoration: none;}
+.text-match-madness {
+	font-size: 30px;
+	font-weight: bold;
+	font-family: sans-serif;
+	text-align: center;
+	margin-top: 100px;
+}
+
+/* Smaller font sizes for mobile */
+@media (max-width: 480px) {
+    .navbar-menu {
+        font-size: 20px;
+    }
+
+    .navbar-item a {
+        padding: 5px 10px;
+    }
+}
+#map {
+    height: 400px;
+    width: 100%;
+    margin: 20px auto 50px auto;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+/* Stil für die zweite Zeile im Footer */
+.footer-text2 {
+font-size: 10px;
+line-height: 18px;
+}
+.footer-text1 a {
+	text-decoration: none;
+	font-size: 13px;
+	color: white;
+line-height: 10px;
+}
