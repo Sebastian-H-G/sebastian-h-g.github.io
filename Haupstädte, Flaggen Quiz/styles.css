@@ -93,12 +93,47 @@ body {
 h1 {
     font-size: 45px;
 }
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr auto; /* Left column takes remaining space, right column adjusts to content */
+    justify-content: center; /* Center content horizontally within the grid */
+    max-width: 1200px; /* Maximum width of the grid container */
+    margin: 80px 20px 0 auto; /* Margin for top spacing */
+}
 
 .container {
-    max-width: 600px;
-    margin: 80px auto 0;
-    text-align: center;
+	margin: 0 auto 0 auto;
+    max-width: 800px; /* Maximum width of the quiz content */
+    text-align: center; /* Center text and inline elements */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
 }
+
+.side-container {
+    width: 200px; /* Minimum width of the side container */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-self: start; /* Align side container to the top of its grid cell */
+}
+
+.score-container,  {
+    font-size: 20px; /* Font size for score and timer containers */
+	text-align: center;
+}
+
+/* Additional styling for specific elements if needed */
+#quizTitle {
+    text-decoration: underline; /* Underline the quiz title */
+    margin-bottom: 10px; /* Margin below the quiz title */
+}
+
+.timer-container {
+    margin-top: auto; /* Push timer container to the bottom of its parent (side-container) */
+}
+
+
 
 button#languageButton {
 	position: fixed;
@@ -222,3 +257,28 @@ line-height: 10px;
 	width: 23px;
 	height: 23px;
 }
+canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f00; /* initial color */
+      pointer-events: none;
+      animation: confetti-fall 2s linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-20vh) rotateZ(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotateZ(720deg);
+        opacity: 0;
+      }
+    }

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weltkugel-Karte mit CesiumJS</title>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.88/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.88/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <style>
+	body {
+    background: linear-gradient(to right, #E8E8E8, #CECECE); /* Gradient from white to light gray */
+    width: 100%;
+    height: 100%;
+	padding: 0;
+	margin: 0;
+    font-family: sans-serif;
+}
+
+.navbar {
+    background-color: #333;
+    width: 100%;
+    height: 60px; /* Reduced height for smaller screens */
+    top: 0;
+    right: 0;
+    left: 0;
+    border: none;
+    position: fixed;
+    z-index: 1000;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    margin: 0;
+    padding: 0 20px;
+}
+
+.navbar-logo {
+    width: 58px; /* Adjusted for smaller navbar */
+    height: 58px; /* Adjusted for smaller navbar */
+    background-image: url('Bilder/Erde-Logo.png'); 
+    background-size: cover;
+    background-position: center; 
+    border-radius: 50%; 
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    font-size: 25px; /* Adjusted for smaller screens */
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-item {
+    position: relative;
+}
+
+.navbar-item a {
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    margin: 0 10px;
+}
+
+.navbar-item a:hover,
+.navbar-item.dropdown:hover > a {
+    background-color: #9B9B9B;
+    border-radius: 15px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #575757;
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    border-radius: 15px;
+}
+
+.dropdown-menu a {
+    padding: 10px 15px;
+    color: white;
+    background-color: #575757;
+    border-radius: 15px;
+}
+
+.dropdown-menu a:hover {
+    background-color: #9B9B9B;
+}
+.navbar-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+        #cesiumContainer {
+            width: 100%;
+			margin-top: 60px;
+            height: 90vh;
+            display: block;
+        }
+        #searchBar {
+            width: 40%;
+            padding: 10px;
+    background-color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+        }
+        #searchInput {
+            width: 500px;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #searchButton {
+            padding: 10px;
+            font-size: 14px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        #searchButton:hover {
+            background-color: #0056b3;
+        }
+		button#languageButton {
+	position: fixed;
+	margin-right: 15px;
+	right: 0;
+	margin-top: 7px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button#languageButton:hover {
+    background-color: #45a049;
+}
+
+footer {
+    position: relative;
+	left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+
+    text-align: center;
+}
+/* Stil für die zweite Zeile im Footer */
+.footer-text2 {
+font-size: 10px;
+line-height: 18px;
+}
+.footer-text1 a {
+	text-decoration: none;
+	font-size: 13px;
+	color: white;
+line-height: 10px;
+}
+    </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="navbar-logo"></a>
+        <ul class="navbar-menu">
+            <li class="navbar-item dropdown">
+                <a href="#" class="dropdown-toggle">Capital Quizzes</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Europa Capital-Quiz.html">Europe</a></li>
+                    <li><a href="Asia Capital-Quiz.html">Asia</a></li>
+                    <li><a href="Africa Capital-Quiz.html">Africa</a></li>
+                    <li><a href="North America Capital-Quiz.html">North America</a></li>
+                    <li><a href="South America Capital-Quiz.html">South America</a></li>
+                </ul>
+            </li>
+			<li class="navbar-item dropdown">
+                <a href="world-flags.html" class="dropdown-toggle">Flags</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Europa-Flaggen.html">Europe</a></li>
+                    <li><a href="Asien-Flaggen.html">Asia</a></li>
+                    <li><a href="Afrika-Flaggen.html">Africa</a></li>
+                    <li><a href="Nordamerika-Flaggen.html">North America</a></li>
+                    <li><a href="Südamerika-Flaggen.html">South America</a></li>
+                </ul>
+            </li>
+<li class="navbar-item dropdown">
+                <a href="#" class="dropdown-toggle">Game</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Capital Map Game.html">Countries Map</a></li>
+					<li><a href="weltkarte.html">Map</a></li>
+                    <li><a href="weltkugel.html">Globe</a></li>
+                    <li><a href="Match Madness.html">Match Madness</a></li>
+                </ul>
+            </li>
+			    <li id="searchBar">
+        <input type="text" id="searchInput" placeholder="Enter location...">
+        <button id="searchButton">Search</button>
+    </li>
+			<li class="navbar-item">
+                <button id="languageButton" onclick="toggleLanguage()">Switch to German</button>
+            </li>
+        </ul>
+    </div>
+</nav>
+    <div id="cesiumContainer"></div>
+	<footer>
+<div class="footer-text1"><a href="../index.html">GO BACKT TO MAIN PAGE</a></div>
+<div class="footer-text2">© 2024 Guitar Notes GmbH™ ® Alle Rechte vorbehalten. Designed and Created by Sebastian Hermes Garcia</div>
+</footer>
+    <script>
+        // Initialisierung des Cesium Viewers
+        var viewer = new Cesium.Viewer('cesiumContainer', {
+            terrainProvider: Cesium.createWorldTerrain()
+        });
+
+        // Beispiel für einen Marker
+        viewer.entities.add({
+            position : Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883),
+            point : {
+                pixelSize : 10,
+                color : Cesium.Color.RED
+            },
+            label : {
+                text : 'Ein Beispiel Marker',
+                font : '14pt monospace',
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                outlineWidth : 2,
+                verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+                pixelOffset : new Cesium.Cartesian2(0, -9)
+            }
+        });
+
+        // Fokussieren auf den Marker
+        viewer.zoomTo(viewer.entities);
+
+        // Suchfunktion
+        function searchLocation() {
+            var location = document.getElementById('searchInput').value;
+            if (location) {
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.length > 0) {
+                            var place = data[0];
+                            var latitude = parseFloat(place.lat);
+                            var longitude = parseFloat(place.lon);
+                            viewer.camera.flyTo({
+                                destination : Cesium.Cartesian3.fromDegrees(longitude, latitude, 15000.0)
+                            });
+                        } else {
+                            alert('Location not found!');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while searching for the location.');
+                    });
+            } else {
+                alert('Please enter a location.');
+            }
+        }
+
+        // Event Listener für den Such-Button
+        document.getElementById('searchButton').addEventListener('click', searchLocation);
+
+        // Event Listener für die Eingabetaste
+        document.getElementById('searchInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                searchLocation();
+            }
+        });
+    </script>
+</body>
+</html>

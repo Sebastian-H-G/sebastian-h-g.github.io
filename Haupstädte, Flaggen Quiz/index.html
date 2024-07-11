@@ -24,7 +24,7 @@
                 </ul>
             </li>
 			<li class="navbar-item dropdown">
-                <a href="world-flags.html" class="dropdown-toggle">Flags <img src="Bilder/Flag.png" class="flag-icon" alt="Flag"></a>
+                <a href="world-flags.html" class="dropdown-toggle">Flags</a>
                 <ul class="dropdown-menu">
                     <li><a href="Europa-Flaggen.html">Europe</a></li>
                     <li><a href="Asien-Flaggen.html">Asia</a></li>
@@ -36,7 +36,9 @@
             <li class="navbar-item dropdown">
                 <a href="#" class="dropdown-toggle">Game</a>
                 <ul class="dropdown-menu">
-                    <li><a href="Capital Map Game.html">Map</a></li>
+                    <li><a href="Capital Map Game.html">Countries Map</a></li>
+					<li><a href="weltkarte.html">Map</a></li>
+                    <li><a href="weltkugel.html">Globe</a></li>
                     <li><a href="Match Madness.html">Match Madness</a></li>
                 </ul>
             </li>
@@ -46,15 +48,26 @@
         </ul>
     </div>
 </nav>
+<div class="main-grid">
+    <div class="container-flex">
+    <div class="container">
+        <u><h1 id="quizTitle">Capital Quiz</h1></u>
+        <div id="question"></div>
+        <div id="options" class="options-container"></div>
+        <div id="result"></div>
+        <div id="flag-container"></div>
+        <div id="map" style="height: 400px; margin-top: 20px;"></div>
+    </div>
+	</div>
+    <div class="side-container">
+        <div class="score-container">
+            <div>Current Score: <span id="currentScore">0</span></div>
+            <div>High Score: <span id="highScore">0</span></div>
+        </div>
 
-<div class="container">
-  <u><h1 id="quizTitle">Capital Quiz</h1></u>
-    <div id="question"></div>
-    <div id="options" class="options-container"></div>
-    <div id="result"></div>
-	<div id="flag-container"></div>
-	<div id="map" style="height: 400px; margin-top: 20px;"></div>
+    </div>
 </div>
+  <canvas id="confettiCanvas"></canvas>
 <footer>
 <div class="footer-text1"><a href="../index.html">GO BACKT TO MAIN PAGE</a></div>
 <div class="footer-text2">© 2024 Guitar Notes GmbH™ ® Alle Rechte vorbehalten. Designed and Created by Sebastian Hermes Garcia</div>

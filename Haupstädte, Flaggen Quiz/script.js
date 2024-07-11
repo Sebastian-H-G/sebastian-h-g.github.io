@@ -376,7 +376,6 @@ const capitalsGerman = {
     "Sambia": "Lusaka",
     "Simbabwe": "Harare"
 };
-
 const questionElement = document.getElementById('question');
 const optionsElement = document.getElementById('options');
 const resultElement = document.getElementById('result');
@@ -390,6 +389,10 @@ let currentCapital = '';
 let isAnswered = false;
 let map;
 let marker;
+
+let currentScore = 0;
+let highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
+document.getElementById('highScore').innerText = highScore;
 
 function initMap() {
     map = L.map('map').setView([51.505, -0.09], 2); // Default view
@@ -495,6 +498,7 @@ function checkAnswer(selectedOption) {
             resultElement.textContent = "Richtig!";
         }
         resultElement.classList.add('result-correct');
+        updateScore(1);
     } else {
         if (languageButton.textContent === 'Switch to German') {
             resultElement.textContent = `Incorrect! The correct answer is ${currentCapital}.`;
@@ -502,9 +506,24 @@ function checkAnswer(selectedOption) {
             resultElement.textContent = `Falsch! Die richtige Antwort ist ${currentCapital}.`;
         }
         resultElement.classList.add('result-incorrect');
+        updateScore(-currentScore);
+        currentScore = 0;
     }
     
     setTimeout(displayQuestion, 2000); // Transition to next question after 2 seconds
+}
+
+function updateScore(change) {
+    currentScore += change;
+    document.getElementById('currentScore').innerText = currentScore;
+    if (currentScore > highScore) {
+        highScore = currentScore;
+        localStorage.setItem('highScore', highScore);
+        document.getElementById('highScore').innerText = highScore;
+
+        // Trigger confetti when high score is broken
+        createConfetti();
+    }
 }
 
 function toggleLanguage() {
@@ -524,3 +543,28 @@ document.addEventListener('DOMContentLoaded', () => {
     initMap();
     displayQuestion();
 });
+
+// Confetti animation function
+function createConfetti() {
+    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+
+    function createPiece() {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti');
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = Math.random() * 20 + 'px';
+        piece.style.height = Math.random() * 20 + 'px';
+        piece.style.left = (Math.random() * window.innerWidth) + 'px';
+        piece.style.top = '-20px';
+        piece.style.animationDuration = (Math.random() * 4 + 1) + 's';
+        document.body.appendChild(piece);
+        piece.addEventListener('animationend', function() {
+            piece.parentNode.removeChild(piece);
+        });
+    }
+
+    // Adjust the number of confetti pieces
+    for (let i = 0; i < 1000; i++) {
+        createPiece();
+    }
+}

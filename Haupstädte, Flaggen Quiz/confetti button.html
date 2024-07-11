@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confetti Button</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f00; /* initial color */
+      pointer-events: none;
+      animation: confetti-fall 2s linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-20vh) rotateZ(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotateZ(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="confettiButton">Click me for confetti!</button>
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <script>
+    // Function to create confetti
+    function createConfetti() {
+      // Confetti colors
+      const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+
+      // Create confetti piece
+      function createPiece() {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti');
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = Math.random() * 20 + 'px'; // Vary size
+        piece.style.height = Math.random() * 20 + 'px'; // Vary size
+        piece.style.left = (Math.random() * window.innerWidth) + 'px';
+        piece.style.top = '-20px'; // Start above the viewport
+        piece.style.animationDuration = (Math.random() * 4 + 1) + 's'; // Vary animation duration
+        document.body.appendChild(piece);
+
+        // Remove the confetti piece after animation
+        piece.addEventListener('animationend', function() {
+          piece.parentNode.removeChild(piece);
+        });
+      }
+
+      // Create multiple pieces of confetti with staggered animation
+      for (let i = 0; i < 500; i++) {
+        setTimeout(createPiece, Math.random() * 4000); // Stagger creation
+      }
+    }
+
+    // Event listener for button click
+    document.getElementById('confettiButton').addEventListener('click', function() {
+      createConfetti();
+    });
+  </script>
+</body>
+</html>
