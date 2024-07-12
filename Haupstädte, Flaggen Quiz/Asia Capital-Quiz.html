@@ -47,14 +47,25 @@
         </ul>
     </div>
 </nav>
-    <div class="container">
-      <u><h1 id="quizTitle">Asia Capital Quiz</h1></u>
-        <div id="question"></div>
-        <div id="options" class="options-container"></div>
-        <div id="result"></div>
-		<div id="flag-container"></div>
-	<div id="map" style="height: 400px; margin-top: 20px;"></div>
+<div class="main-grid">
+    <div class="container-flex">
+        <div class="container">
+            <u><h1 id="quizTitle">Capital Quiz</h1></u>
+            <div id="question"></div>
+            <div id="options" class="options-container"></div>
+            <div id="result"></div>
+            <div id="flag-container"></div>
+            <div id="map" style="height: 400px; margin-top: 20px;"></div>
+        </div>
     </div>
+    <div class="side-container">
+        <div class="score-container">
+            <div id="current-score">Current Score: <span id="currentScore">0</span></div>
+            <div id="high-score">High Score: <div id="fire-background"></div><span id="highScore">0</span></div>
+        </div>
+    </div>
+</div>
+<canvas id="confettiCanvas"></canvas>
 	<footer>
 <div class="footer-text1"><a href="../index.html">GO BACKT TO MAIN PAGE</a></div>
 <div class="footer-text2">© 2024 Guitar Notes GmbH™ ® Alle Rechte vorbehalten. Designed and Created by Sebastian Hermes Garcia</div>

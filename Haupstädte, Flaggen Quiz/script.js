@@ -391,8 +391,14 @@ let map;
 let marker;
 
 let currentScore = 0;
-let highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
+const uniqueKey = 'uniqueGameIdentifier2'; // Change this for each game/file
+
+// Retrieve high score from localStorage using the unique key
+let highScore = localStorage.getItem(`highScore_${uniqueKey}`) ? parseInt(localStorage.getItem(`highScore_${uniqueKey}`)) : 0;
+
+// Update the high score display
 document.getElementById('highScore').innerText = highScore;
+
 
 function initMap() {
     map = L.map('map').setView([51.505, -0.09], 2); // Default view
@@ -493,17 +499,17 @@ function checkAnswer(selectedOption) {
     
     if (selectedOption === currentCapital) {
         if (languageButton.textContent === 'Switch to German') {
-            resultElement.textContent = "Correct!";
+            resultElement.textContent = "Correct! 🎉";
         } else {
-            resultElement.textContent = "Richtig!";
+            resultElement.textContent = "Richtig! 🎉";
         }
         resultElement.classList.add('result-correct');
         updateScore(1);
     } else {
         if (languageButton.textContent === 'Switch to German') {
-            resultElement.textContent = `Incorrect! The correct answer is ${currentCapital}.`;
+            resultElement.textContent = `❌ Incorrect! The correct answer is ${currentCapital}.`;
         } else {
-            resultElement.textContent = `Falsch! Die richtige Antwort ist ${currentCapital}.`;
+            resultElement.textContent = `❌ Falsch! Die richtige Antwort ist ${currentCapital}.`;
         }
         resultElement.classList.add('result-incorrect');
         updateScore(-currentScore);
@@ -513,16 +519,20 @@ function checkAnswer(selectedOption) {
     setTimeout(displayQuestion, 2000); // Transition to next question after 2 seconds
 }
 
+// Function to update the score
 function updateScore(change) {
+    let currentScore = parseInt(document.getElementById('currentScore').innerText);
     currentScore += change;
     document.getElementById('currentScore').innerText = currentScore;
+    
     if (currentScore > highScore) {
         highScore = currentScore;
-        localStorage.setItem('highScore', highScore);
+        localStorage.setItem(`highScore_${uniqueKey}`, highScore);
         document.getElementById('highScore').innerText = highScore;
 
-        // Trigger confetti when high score is broken
+        // Trigger confetti and update high score animation when high score is broken
         createConfetti();
+        showHighScoreAnimation(highScore);
     }
 }
 
@@ -556,7 +566,7 @@ function createConfetti() {
         piece.style.height = Math.random() * 20 + 'px';
         piece.style.left = (Math.random() * window.innerWidth) + 'px';
         piece.style.top = '-20px';
-        piece.style.animationDuration = (Math.random() * 4 + 1) + 's';
+        piece.style.animationDuration = '3s'; // Set animation duration to 3 seconds
         document.body.appendChild(piece);
         piece.addEventListener('animationend', function() {
             piece.parentNode.removeChild(piece);
@@ -564,7 +574,34 @@ function createConfetti() {
     }
 
     // Adjust the number of confetti pieces
-    for (let i = 0; i < 1000; i++) {
+    const totalPieces = 700;
+    const interval = 5; // milliseconds
+
+    let i = 0;
+    let intervalId = setInterval(function() {
         createPiece();
-    }
+        i++;
+        if (i >= totalPieces) {
+            clearInterval(intervalId);
+        }
+    }, interval);
+}
+
+
+
+// New high score animation function
+function showHighScoreAnimation(newScore) {
+    const highScoreSpan = document.getElementById('highScore');
+    const fireBackground = document.getElementById('fire-background');
+    
+    highScoreSpan.textContent = newScore;
+    highScoreSpan.classList.add('grow');
+    document.getElementById('high-score').classList.add('wiggle');
+
+    fireBackground.style.display = 'block';
+    setTimeout(() => {
+        highScoreSpan.classList.remove('grow');
+        document.getElementById('high-score').classList.remove('wiggle');
+        fireBackground.style.display = 'none';
+    }, 4000); // Delay in milliseconds
 }

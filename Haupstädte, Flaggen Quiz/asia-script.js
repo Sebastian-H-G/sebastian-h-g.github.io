@@ -49,11 +49,22 @@ const flags = [
 ];
 
 let currentFlagIndex;
+let currentScore = 0;
+// Set a unique key for this game/file
+const uniqueKey = 'uniqueGameIdentifier10'; // Change this for each game/file
+
+// Retrieve high score from localStorage using the unique key
+let highScore = localStorage.getItem(`highScore_${uniqueKey}`) ? parseInt(localStorage.getItem(`highScore_${uniqueKey}`)) : 0;
+
+// Update the high score display
+document.getElementById('highScore').innerText = highScore;
+
 
 document.addEventListener('DOMContentLoaded', () => {
-    currentFlagIndex = Math.floor(Math.random() * flags.length); // Zufälliger Startindex
+    currentFlagIndex = Math.floor(Math.random() * flags.length);
     loadFlag();
     document.getElementById('toggleMapButton').addEventListener('click', toggleMap);
+    document.getElementById('highScore').textContent = highScore; // Set initial high score on page load
 });
 
 function loadFlag() {
@@ -71,7 +82,7 @@ function loadFlag() {
     });
 
     updateHighlight(flag.id);
-    removeMessage(); // Ensure message removal on flag load
+    removeMessage();
 }
 
 function generateRandomOptions(correctCountry) {
@@ -99,14 +110,81 @@ function shuffleArray(array) {
 function checkAnswer(selectedOption) {
     const flag = flags[currentFlagIndex];
     if (selectedOption === flag.country) {
-        showMessage('Richtig!', 'green');
+        showMessage('Richtig! 🎉', 'green');
         setTimeout(() => {
             currentFlagIndex = Math.floor(Math.random() * flags.length);
             loadFlag();
-        }, 1000); // Verzögerung von 1 Sekunde für den Übergang zur nächsten Frage
+        }, 1000);
+        updateScore(1); // Update score on correct answer
     } else {
-        showMessage('Falsch, versuche es nochmal.', 'red');
+        showMessage('✖️ Falsch, versuche es nochmal.', 'red');
     }
+}
+
+
+// Function to update the score
+function updateScore(change) {
+    let currentScore = parseInt(document.getElementById('currentScore').innerText);
+    currentScore += change;
+    document.getElementById('currentScore').innerText = currentScore;
+    
+    if (currentScore > highScore) {
+        highScore = currentScore;
+        localStorage.setItem(`highScore_${uniqueKey}`, highScore);
+        document.getElementById('highScore').innerText = highScore;
+
+        // Trigger confetti and update high score animation when high score is broken
+        createConfetti();
+        showHighScoreAnimation(highScore);
+    }
+}
+
+
+function showHighScoreAnimation(newScore) {
+    const highScoreSpan = document.getElementById('highScore');
+    const fireBackground = document.getElementById('fire-background');
+    
+    highScoreSpan.textContent = newScore;
+    highScoreSpan.classList.add('grow');
+    document.getElementById('high-score').classList.add('wiggle');
+
+    fireBackground.style.display = 'block';
+    setTimeout(() => {
+        highScoreSpan.classList.remove('grow');
+        document.getElementById('high-score').classList.remove('wiggle');
+        fireBackground.style.display = 'none';
+    }, 4000); // Delay in milliseconds
+}
+
+function createConfetti() {
+    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+
+    function createPiece() {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti');
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = Math.random() * 20 + 'px';
+        piece.style.height = Math.random() * 20 + 'px';
+        piece.style.left = (Math.random() * window.innerWidth) + 'px';
+        piece.style.top = '-20px';
+        piece.style.animationDuration = '3s'; // Set animation duration to 3 seconds
+        document.body.appendChild(piece);
+        piece.addEventListener('animationend', function() {
+            piece.parentNode.removeChild(piece);
+        });
+    }
+
+    const totalPieces = 700;
+    const interval = 5;
+
+    let i = 0;
+    let intervalId = setInterval(function() {
+        createPiece();
+        i++;
+        if (i >= totalPieces) {
+            clearInterval(intervalId);
+        }
+    }, interval);
 }
 
 function updateHighlight(countryId) {
@@ -123,6 +201,7 @@ function removeHighlight() {
         element.classList.remove('highlight');
     });
 }
+
 function showMessage(message, color) {
     let messageElement = document.getElementById('message');
     if (!messageElement) {
@@ -133,28 +212,24 @@ function showMessage(message, color) {
     messageElement.textContent = message;
     messageElement.style.backgroundColor = color;
 
-    // Add class based on correctness of answer
     if (color === 'red') {
         messageElement.classList.add('wrong');
     } else {
         messageElement.classList.remove('wrong');
     }
 
-    messageElement.classList.add('show'); // Add show class to trigger animation
+    messageElement.classList.add('show');
 
     setTimeout(() => {
-        messageElement.classList.remove('show'); // Remove show class after animation
-        messageElement.classList.remove('wrong'); // Remove wrong class after animation
-    }, 500); // Duration of the shake animation (0.5 seconds)
+        messageElement.classList.remove('show');
+        messageElement.classList.remove('wrong');
+    }, 1500);
 }
-
-
-
 
 function removeMessage() {
     const messageElement = document.getElementById('message');
     if (messageElement) {
-        messageElement.classList.remove('show'); // Remove 'show' class to hide message
+        messageElement.classList.remove('show');
     }
 }
 

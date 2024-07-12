@@ -101,7 +101,7 @@ h1 {
     margin: 80px 20px 0 auto; /* Margin for top spacing */
 }
 
-.container {
+.container-flex {
 	margin: 0 auto 0 auto;
     max-width: 800px; /* Maximum width of the quiz content */
     text-align: center; /* Center text and inline elements */
@@ -111,26 +111,98 @@ h1 {
     justify-content: center; /* Center items vertically */
 }
 
+#current-score {
+	padding: 20px;
+	font-weight: bold;
+	border: 2px solid;
+	border-radius: 7px;
+	background-color: #007BFF;
+}
+#high-score {
+	margin-top: 10px;
+	border: 2px solid;
+	font-weight: bold;
+	padding: 20px;
+	z-index: 100000000;
+	border-radius: 7px;
+	background-color: #FFD700;
+}
 .side-container {
-    width: 200px; /* Minimum width of the side container */
     display: flex;
-    flex-direction: column; /* Stack items vertically */
+    justify-content: flex-start;
+    align-items: center;
+    height: auto;
+	flex-direction: column; /* Stack items vertically */
     align-self: start; /* Align side container to the top of its grid cell */
+	width: auto;
 }
 
-.score-container,  {
-    font-size: 20px; /* Font size for score and timer containers */
-	text-align: center;
+.score-container {
+	font-size: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    padding: 15px;
+    border-radius: 8px;
+    position: relative; /* Ensure relative positioning for absolute children */
+}
+
+#current-score,
+#high-score {
+	z-index: 100000000;
+	box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
+}
+
+#current-score span,
+#high-score span {
+    font-weight: bold;
+	z-index: 100000000;
+}
+
+#fire-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+	margin-bottom: 10px;
+    width: 100%;
+    height: 100%;
+    background-image: url('fire.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -9999;
+    display: none; /* Initially hidden */
+}
+
+#high-score.wiggle {
+    animation: wiggle 1s ease-in-out;
+}
+
+@keyframes wiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: rotate(10deg);
+    }
+    20%, 40%, 60%, 80% {
+        transform: rotate(-10deg);
+    }
+}
+
+#highScore.grow {
+    color: #FF0003;
+    transform: scale(2.0);
+	    display: block;
+
+}
+
+#highScore.grow + #fire-background {
+    display: block; /* Show the fire background when highscore grows */
 }
 
 /* Additional styling for specific elements if needed */
 #quizTitle {
     text-decoration: underline; /* Underline the quiz title */
     margin-bottom: 10px; /* Margin below the quiz title */
-}
-
-.timer-container {
-    margin-top: auto; /* Push timer container to the bottom of its parent (side-container) */
 }
 
 
@@ -190,6 +262,7 @@ button:hover {
     75% { transform: translateX(-50px); }
     100% { transform: translateX(0); }
 }
+
 
 #question {
     font-size: 30px;
@@ -267,6 +340,7 @@ canvas {
       position: absolute;
       width: 10px;
       height: 10px;
+	  z-index: 50000000000;
       background-color: #f00; /* initial color */
       pointer-events: none;
       animation: confetti-fall 2s linear forwards;

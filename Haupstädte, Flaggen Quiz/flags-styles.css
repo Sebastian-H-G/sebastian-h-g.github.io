@@ -94,16 +94,9 @@ body {
     display: block;
 }
 
-#quiz-container {
-    text-align: center;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-	height: auto;
-	margin-top: 150px; /* Add margin at the bottom to separate from map */
-}
 #title {
-	margin-top: 200px;
+	margin-top: 0px;
+	font-size: 45px;
 	text-decoration: underline;
 }
 #flag-container {
@@ -113,7 +106,7 @@ body {
 #flag-image {
     width: 300px; /* Increase the width of the flag image */
     height: auto; /* Maintain aspect ratio */
-    margin-bottom: 20px; /* Add some space below the flag */
+    margin-bottom: 5px; /* Add some space below the flag */
 }
 
 #options-container {
@@ -121,7 +114,8 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
-    margin-top: 20px;
+    margin-top: 5px;
+	margin-bottom: 5px;
 }
 /* Style for each option button */
 #options-container button {
@@ -143,7 +137,6 @@ body {
 #toggleMapButton {
     font-size: 18px; /* Increase the font size of the button */
     padding: 10px 20px; /* Increase the padding for the button */
-    margin-top: 20px; /* Add some space above the button */
     cursor: pointer;
     border: 1px solid #ccc; /* Add a border to the button */
     border-radius: 5px; /* Rounded corners for the button */
@@ -153,33 +146,35 @@ body {
 }
 
 #toggleMapButton:hover {
-    background-color: #45a049; /* Darker green background color on hover */
+    background-color: #A44797; /* Darker green background color on hover */
 }
 
 /* Message Styling */
 #message {
-    position: fixed;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px 20px;
+    position: relative;
+    padding: 10px;
     background-color: rgba(0, 128, 0, 0.8); /* Green background */
     color: white;
-    font-size: 1.2rem;
+    font-size: 20px;
     font-weight: bold;
+	display: none;
+	margin: 10px auto 0 auto;
     text-align: center;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Drop shadow */
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.2); /* Drop shadow */
     opacity: 0; /* Initially hidden */
     transition: opacity 0.3s ease-in-out;
 }
 
 #message.show {
     opacity: 1; /* Show message with smooth transition */
+	display: block;
 }
 #toggleMapButton {
-	background-color: green;
+	background-color: #CB7EC0;
 	margin-top: 20px;
+	color: black;
+	font-weight: bold;
 }
 
 #map-container {
@@ -223,4 +218,139 @@ line-height: 18px;
 	font-size: 13px;
 	color: white;
 line-height: 10px;
+}
+canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+	  z-index: 50000000000;
+      background-color: #f00; /* initial color */
+      pointer-events: none;
+      animation: confetti-fall 2s linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-20vh) rotateZ(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotateZ(720deg);
+        opacity: 0;
+      }
+    }
+	.main-grid {
+    display: grid;
+    grid-template-columns: 1fr auto; /* Left column takes remaining space, right column adjusts to content */
+    justify-content: start; /* Center content horizontally within the grid */
+    max-width: 1200px; /* Maximum width of the grid container */
+    margin: 350px 20px 0 auto; /* Margin for top spacing */
+}
+
+#quiz-container {
+	margin: 0 220px 0 auto;
+    max-width: 800px; /* Maximum width of the quiz content */
+    text-align: center; /* Center text and inline elements */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+	height: auto;
+}
+
+#current-score {
+	padding: 20px;
+	font-weight: bold;
+	border: 2px solid;
+	border-radius: 7px;
+	background-color: #007BFF;
+}
+#high-score {
+	margin-top: 10px;
+	border: 2px solid;
+	font-weight: bold;
+	padding: 20px;
+	z-index: 100000000;
+	border-radius: 7px;
+	background-color: #FFD700;
+}
+.side-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: auto;
+	flex-direction: column; /* Stack items vertically */
+    align-self: start; /* Align side container to the top of its grid cell */
+	width: auto;
+}
+
+.score-container {
+	font-size: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    padding: 15px;
+    border-radius: 8px;
+    position: relative; /* Ensure relative positioning for absolute children */
+}
+
+#current-score,
+#high-score {
+	z-index: 100000000;
+	box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
+}
+
+#current-score span,
+#high-score span {
+    font-weight: bold;
+	z-index: 100000000;
+}
+
+#fire-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+	margin-bottom: 10px;
+    width: 100%;
+    height: 100%;
+    background-image: url('fire.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -9999;
+    display: none; /* Initially hidden */
+}
+
+#high-score.wiggle {
+    animation: wiggle 1s ease-in-out;
+}
+
+@keyframes wiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: rotate(10deg);
+    }
+    20%, 40%, 60%, 80% {
+        transform: rotate(-10deg);
+    }
+}
+
+#highScore.grow {
+    color: #FF0003;
+    transform: scale(2.0);
+	    display: block;
+
+}
+
+#highScore.grow + #fire-background {
+    display: block; /* Show the fire background when highscore grows */
 }
