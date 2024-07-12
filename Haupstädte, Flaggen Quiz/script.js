@@ -490,6 +490,7 @@ function displayQuestion() {
     updateMapAndFlag(currentCountry);
 }
 
+// Function to check the answer
 function checkAnswer(selectedOption) {
     if (isAnswered) return; // Prevent multiple answer checks
     
@@ -512,8 +513,8 @@ function checkAnswer(selectedOption) {
             resultElement.textContent = `❌ Falsch! Die richtige Antwort ist ${currentCapital}.`;
         }
         resultElement.classList.add('result-incorrect');
-        updateScore(-currentScore);
-        currentScore = 0;
+        currentScore = 0; // Reset current score
+        document.getElementById('currentScore').innerText = currentScore; // Update UI immediately
     }
     
     setTimeout(displayQuestion, 2000); // Transition to next question after 2 seconds

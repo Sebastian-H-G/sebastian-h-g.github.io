@@ -72,6 +72,7 @@ function shuffleArray(array) {
     return array;
 }
 
+// Function to check the answer
 function checkAnswer(selectedOption) {
     const flag = flags[currentFlagIndex];
     if (selectedOption === flag.country) {
@@ -83,8 +84,11 @@ function checkAnswer(selectedOption) {
         updateScore(1); // Update score on correct answer
     } else {
         showMessage('✖️ Falsch, versuche es nochmal.', 'red');
+        currentScore = 0; // Reset current score
+        document.getElementById('currentScore').innerText = currentScore; // Update UI immediately
     }
 }
+
 
 // Function to update the score
 function updateScore(change) {
