@@ -356,8 +356,7 @@ canvas {
         opacity: 0;
       }
     }
-	/* Example of nested media queries */
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 414px) and (orientation: landscape) {
     /* CSS rules for screens smaller than 600px */
     body {
         font-size: 13px;
@@ -370,18 +369,19 @@ canvas {
     font-size: 30px;
 }
 }
-
-@media only screen and (min-width: 601px) and (max-width: 1024px) {
-    /* CSS rules for screens between 601px and 1024px */
+@media only screen and (max-width: 414px) and (orientation: portrait) {
+    /* CSS rules for screens smaller than 600px */
     body {
-        font-size: 15px;
+        font-size: 13px;
     }
-		h1 {
-    font-size: 30px;
-}
 	.navbar-logo {
     width: 50px; /* Adjusted for smaller navbar */
     height: 50px; /* Adjusted for smaller navbar */
 	}
-	
+	h1 {
+    font-size: 30px;
+}
+button#languageButton {
+display: none;
+}
 }

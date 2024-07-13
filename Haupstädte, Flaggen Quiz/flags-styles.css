@@ -18,7 +18,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-	padding-top: 200px;
+	padding: 0;
     background:  #CECECE; 
 }
 
@@ -212,7 +212,7 @@ body {
 
 /* Footer styling */
 footer {
-    position: relative;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -269,7 +269,7 @@ canvas {
     grid-template-columns: 1fr auto; /* Left column takes remaining space, right column adjusts to content */
     justify-content: center; /* Center content horizontally within the grid */
     max-width: 1200px; /* Maximum width of the grid container */
-    margin: 100px auto 50px 330px; /* Margin for top spacing */
+    margin: 300px auto 50px 330px; /* Margin for top spacing */
 	padding: 0 20px;
 }
 
@@ -370,38 +370,39 @@ canvas {
 #highScore.grow + #fire-background {
     display: block;
 }
-@media only screen and (max-width: 600px) {
-    /* CSS rules for screens smaller than 600px */
+
+
+/* Landscape orientation for screens smaller than 600px */
+@media only screen and (max-width: 600px) and (orientation: landscape) {
+    body {
+        font-size: 13px;
+        padding-top: 100px;
+    }
+    .navbar-logo {
+        width: 50px; /* Adjusted for smaller navbar */
+        height: 50px; /* Adjusted for smaller navbar */
+    }
+    h1, #title {
+        font-size: 30px;
+    }
+	    .main-grid {
+        margin: 200px 20px 50px 20px; /* Margin for top spacing */
+    }
+}
+
+/* Portrait orientation for screens smaller than 600px */
+@media only screen and (max-width: 600px) and (orientation: portrait) {
     body {
         font-size: 13px;
     }
-	.navbar-logo {
-    width: 50px; /* Adjusted for smaller navbar */
-    height: 50px; /* Adjusted for smaller navbar */
-	}
-	h1 {
-    font-size: 30px;
-}
-	.main-grid {
-    margin: 450px auto 50px auto; /* Margin for top spacing */
-}
-}
-
-@media only screen and (min-width: 601px) and (max-width: 1024px) {
-    /* CSS rules for screens between 601px and 1024px */
-    body {
-        font-size: 15px;
+    .navbar-logo {
+        width: 50px; /* Adjusted for smaller navbar */
+        height: 50px; /* Adjusted for smaller navbar */
     }
-		h1 {
-    font-size: 30px;
+    h1, #title {
+        font-size: 30px;
+    }
+    .main-grid {
+        margin: 100px 20px 50px 20px; /* Margin for top spacing */
+    }
 }
-	.navbar-logo {
-    width: 50px; /* Adjusted for smaller navbar */
-    height: 50px; /* Adjusted for smaller navbar */
-	}
-		.main-grid {
-    margin: 450px auto 50px auto; /* Margin for top spacing */
-}
-	
-}
-
