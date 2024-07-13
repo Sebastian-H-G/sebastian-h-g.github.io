@@ -78,6 +78,8 @@ function getRandomCapital() {
 }
 
 function updateMapAndFlag(country) {
+    let currentCapitals = languageButton.textContent === 'Switch to German' ? capitalsGerman : capitalsEnglish;
+
     fetch(`https://restcountries.com/v3.1/name/${country}`)
         .then(response => response.json())
         .then(data => {

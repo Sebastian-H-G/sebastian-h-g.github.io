@@ -98,7 +98,7 @@ h1 {
     grid-template-columns: 1fr auto; /* Left column takes remaining space, right column adjusts to content */
     justify-content: center; /* Center content horizontally within the grid */
     max-width: 1200px; /* Maximum width of the grid container */
-    margin: 80px 20px 0 auto; /* Margin for top spacing */
+    margin: 80px auto 0 200px; /* Margin for top spacing */
 }
 
 .container-flex {
@@ -356,3 +356,17 @@ canvas {
         opacity: 0;
       }
     }
+	/* Example of nested media queries */
+@media only screen and (max-width: 600px) {
+    /* CSS rules for screens smaller than 600px */
+    body {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+    /* CSS rules for screens between 601px and 1024px */
+    body {
+        font-size: 16px;
+    }
+}
