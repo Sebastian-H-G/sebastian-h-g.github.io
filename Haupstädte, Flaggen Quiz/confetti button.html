@@ -55,6 +55,13 @@
 <body>
   <button id="confettiButton">Click me for confetti!</button>
 
+  <!-- Audio element for high score sound -->
+  <audio id="highscoreSound">
+    <source src="highscore.m4a" type="audio/mp4">
+    <source src="highscore.ogg" type="audio/ogg">
+    Your browser does not support the audio element.
+  </audio>
+
   <canvas id="confettiCanvas"></canvas>
 
   <script>
@@ -87,9 +94,16 @@
       }
     }
 
+    // Function to play high score sound
+    function playHighscoreSound() {
+      var audio = document.getElementById("highscoreSound");
+      audio.play();
+    }
+
     // Event listener for button click
     document.getElementById('confettiButton').addEventListener('click', function() {
       createConfetti();
+      playHighscoreSound(); // Play sound when button is clicked
     });
   </script>
 </body>

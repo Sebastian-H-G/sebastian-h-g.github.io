@@ -78,9 +78,16 @@ function getRandomCapital() {
 }
 
 function updateMapAndFlag(country) {
-    let currentCapitals = languageButton.textContent === 'Switch to German' ? capitalsGerman : capitalsEnglish;
+    // Determine the current language and corresponding capitals object
+    const currentCapitals = languageButton.textContent === 'Switch to German' ? capitalsGerman : capitalsEnglish;
 
-    fetch(`https://restcountries.com/v3.1/name/${country}`)
+    // Retrieve the capital of the current country based on the selected language
+    const capital = currentCapitals[country];
+
+    // Construct the API URL based on the current language setting
+    const apiUrl = `https://restcountries.com/v3.1/name/${encodeURIComponent(country)}`;
+
+    fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
             if (data && data.length > 0) {
@@ -102,6 +109,7 @@ function updateMapAndFlag(country) {
             console.error('Error fetching country data:', error);
         });
 }
+
 
 function displayQuestion() {
     currentCountry = getRandomCountry();
@@ -141,6 +149,7 @@ function displayQuestion() {
     updateMapAndFlag(currentCountry);
 }
 
+
 function checkAnswer(selectedOption) {
     if (isAnswered) return; // Prevent multiple answer checks
     
@@ -169,6 +178,11 @@ function checkAnswer(selectedOption) {
     
     setTimeout(displayQuestion, 2000); // Transition to next question after 2 seconds
 }
+    // Function to play high score sound
+    function playHighscoreSound() {
+      var audio = document.getElementById("highscoreSound");
+      audio.play();
+    }
 // Function to update the score
 function updateScore(change) {
     let currentScore = parseInt(document.getElementById('currentScore').innerText);
@@ -183,6 +197,7 @@ function updateScore(change) {
         // Trigger confetti and update high score animation when high score is broken
         createConfetti();
         showHighScoreAnimation(highScore);
+				playHighscoreSound();
     }
 }
 
@@ -197,7 +212,8 @@ function toggleLanguage() {
         quizTitle.textContent = 'Capital Quiz';
         capitals = capitalsEnglish;
     }
-    displayQuestion(); // Refresh the current question after switching language
+    // Call displayQuestion after switching language to update the quiz with the new language
+    displayQuestion();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

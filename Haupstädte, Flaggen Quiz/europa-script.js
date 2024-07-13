@@ -120,7 +120,11 @@ function checkAnswer(selectedOption) {
         document.getElementById('currentScore').innerText = currentScore; // Update UI immediately
     }
 }
-
+    // Function to play high score sound
+    function playHighscoreSound() {
+      var audio = document.getElementById("highscoreSound");
+      audio.play();
+    }
 
 // Function to update the score
 function updateScore(change) {
@@ -136,6 +140,7 @@ function updateScore(change) {
         // Trigger confetti and update high score animation when high score is broken
         createConfetti();
         showHighScoreAnimation(highScore);
+				playHighscoreSound();
     }
 }
 

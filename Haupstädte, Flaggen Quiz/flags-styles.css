@@ -269,7 +269,7 @@ canvas {
     grid-template-columns: 1fr auto; /* Left column takes remaining space, right column adjusts to content */
     justify-content: center; /* Center content horizontally within the grid */
     max-width: 1200px; /* Maximum width of the grid container */
-    margin: 200px auto 50px auto; /* Margin for top spacing */
+    margin: 100px auto 50px 330px; /* Margin for top spacing */
 	padding: 0 20px;
 }
 
