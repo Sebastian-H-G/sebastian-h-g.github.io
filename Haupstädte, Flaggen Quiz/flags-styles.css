@@ -18,8 +18,8 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-	padding: 0;
-    background:  #CECECE; 
+    padding: 0;
+    background: #CECECE;
 }
 
 .navbar {
@@ -46,10 +46,10 @@ body {
 .navbar-logo {
     width: 60px;
     height: 60px;
-    background-image: url('Bilder/Erde-Logo.png'); 
+    background-image: url('Bilder/Erde-Logo.png');
     background-size: cover;
-    background-position: center; 
-    border-radius: 50%; 
+    background-position: center;
+    border-radius: 50%;
 }
 
 .navbar-menu {
@@ -102,6 +102,7 @@ body {
 .dropdown-menu a:hover {
     background-color: #9B9B9B;
 }
+
 .navbar-item.dropdown:hover .dropdown-menu {
     display: block;
 }
@@ -111,6 +112,7 @@ body {
     font-size: 45px;
     text-decoration: underline;
 }
+
 #flag-container {
     margin: 20px 0;
 }
@@ -129,6 +131,7 @@ body {
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
 #options-container button {
     font-size: 20px;
     padding: 15px 25px;
@@ -179,6 +182,7 @@ body {
     opacity: 1;
     display: block;
 }
+
 #toggleMapButton {
     background-color: #CB7EC0;
     margin-top: 20px;
@@ -191,7 +195,7 @@ body {
     transition: opacity 0.3s ease-in-out;
     transition-delay: 0s;
     text-align: center;
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 #map-container.show {
@@ -203,8 +207,9 @@ body {
 #world-map {
     max-width: 100%;
     height: auto;
-	margin-top: 10px;
+    margin-top: 10px;
 }
+
 .highlight {
     fill: red;
     transition: fill 0.3s ease-in-out;
@@ -266,21 +271,21 @@ canvas {
 
 .main-grid {
     display: grid;
-    grid-template-columns: 1fr auto; /* Left column takes remaining space, right column adjusts to content */
-    justify-content: center; /* Center content horizontally within the grid */
-    max-width: 1200px; /* Maximum width of the grid container */
-    margin: 300px auto 50px 330px; /* Margin for top spacing */
-	padding: 0 20px;
+    grid-template-columns: 1fr auto;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 300px auto 50px 330px;
+    padding: 0 20px;
 }
 
 #quiz-container {
-	margin: 0 auto 0 auto;
-    max-width: 1000px; /* Maximum width of the quiz content */
-    text-align: center; /* Center text and inline elements */
+    margin: 0 auto 0 auto;
+    max-width: 1000px;
+    text-align: center;
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 #current-score {
@@ -290,6 +295,7 @@ canvas {
     border-radius: 7px;
     background-color: #007BFF;
 }
+
 #high-score {
     margin-top: 10px;
     border: 2px solid;
@@ -299,6 +305,7 @@ canvas {
     border-radius: 7px;
     background-color: #FFD700;
 }
+
 .side-container {
     display: flex;
     justify-content: flex-start;
@@ -307,7 +314,7 @@ canvas {
     flex-direction: column;
     align-self: start;
     width: auto;
-	margin-left: 200px;
+    margin-left: 200px;
 }
 
 .score-container {
@@ -371,38 +378,70 @@ canvas {
     display: block;
 }
 
-
-/* Landscape orientation for screens smaller than 600px */
-@media only screen and (max-width: 600px) and (orientation: landscape) {
-    body {
-        font-size: 13px;
-        padding-top: 100px;
-    }
+/* Adjustments for iPhone 15 */
+@media only screen and (max-width: 430px) {
     .navbar-logo {
-        width: 50px; /* Adjusted for smaller navbar */
-        height: 50px; /* Adjusted for smaller navbar */
+        width: 50px;
+        height: 50px;
     }
-    h1, #title {
-        font-size: 30px;
-    }
-	    .main-grid {
-        margin: 200px 20px 50px 20px; /* Margin for top spacing */
-    }
-}
 
-/* Portrait orientation for screens smaller than 600px */
-@media only screen and (max-width: 600px) and (orientation: portrait) {
-    body {
-        font-size: 13px;
+    .navbar-menu {
+        font-size: 20px;
     }
-    .navbar-logo {
-        width: 50px; /* Adjusted for smaller navbar */
-        height: 50px; /* Adjusted for smaller navbar */
+
+    #title {
+        font-size: 35px;
+        margin-top: 10px;
     }
-    h1, #title {
-        font-size: 30px;
+
+    #quiz-container {
+        margin: 20px auto;
+        padding: 0 10px;
     }
+
+    #options-container button {
+        font-size: 18px;
+        padding: 10px 20px;
+    }
+
+    #toggleMapButton {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+
+    #message {
+        font-size: 18px;
+        padding: 8px;
+        margin: 5px auto;
+    }
+
     .main-grid {
-        margin: 100px 20px 50px 20px; /* Margin for top spacing */
+        margin: 150px auto 20px;
+        padding: 0 10px;
+    }
+
+    .side-container {
+        margin-left: 10px;
+        width: 100%;
+        align-items: center;
+    }
+
+    #current-score,
+    #high-score {
+        font-size: 18px;
+        padding: 15px;
+        margin-top: 5px;
+    }
+
+    footer {
+        padding: 5px 0;
+    }
+
+    .footer-text1 {
+        font-size: 11px;
+    }
+
+    .footer-text2 {
+        font-size: 9px;
     }
 }
