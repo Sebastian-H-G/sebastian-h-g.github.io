@@ -374,7 +374,10 @@ canvas {
 }
 
 /* Portrait mode for iPhone 15 */
-@media only screen and (max-width: 430px) and (orientation: portrait) {
+@media only screen 
+  and (device-width: 375px)  /* Standard portrait width for iPhones */
+  and (device-height: 812px) /* Standard portrait height for iPhones */
+  and (-webkit-device-pixel-ratio: 3.5) {
 	.navbar {height: 40px;}
     .navbar-container {
         justify-content: center;
@@ -406,8 +409,11 @@ canvas {
     }
 }
 
-/* Landscape mode for iPhone 15 */
-@media only screen and (max-width: 896px) and (orientation: landscape) {
+/* Landscape mode for iPhone 15 landscape */
+@media only screen 
+  and (device-width: 812px)  /* Standard landscape width for iPhones */
+  and (device-height: 375px) /* Standard landscape height for iPhones */
+  and (-webkit-device-pixel-ratio: 3.5) {
 	.navbar {height: 40px;}
     .navbar-container {
         justify-content: start;
