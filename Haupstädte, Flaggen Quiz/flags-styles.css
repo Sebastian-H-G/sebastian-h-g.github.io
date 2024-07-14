@@ -391,9 +391,6 @@ canvas {
     .navbar-menu {
         font-size: 16px;
     }
-	.main-gird {
-		margin: 0 auto 20px auto;
-	}
 	.side-container {
     margin-left: 0;
 }
@@ -426,7 +423,7 @@ canvas {
     .navbar-menu {
         font-size: 16px;
     }
-	.main-grid {margin: 150px auto 50px auto; }
+	.main-grid {margin: 350px auto 50px auto; }
 	.side-container {
     margin-left: 0;
 }
