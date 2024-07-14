@@ -379,7 +379,7 @@ canvas {
   and (device-width: 393px)  /* Standard portrait width for iPhones */
   and (device-height: 852px) /* Standard portrait height for iPhones */
   and (-webkit-device-pixel-ratio: 3) {
-	.navbar {height: 50px;}
+	.navbar {height: 45px;}
     .navbar-container {
         justify-content: center;
 		height: 40px;
@@ -392,7 +392,7 @@ canvas {
         font-size: 16px;
     }
 	.main-gird {
-		margin: 50px auto 20px auto;
+		margin: 0 auto 20px auto;
 	}
 	.side-container {
     margin-left: 0;
