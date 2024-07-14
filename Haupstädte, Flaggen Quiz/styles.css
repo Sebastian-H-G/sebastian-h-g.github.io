@@ -77,6 +77,26 @@ body {
     border-radius: 15px;
 }
 
+.dropdown-menu-language {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    border-radius: 15px;
+}
+.dropdown-menu-language a {
+    padding: 10px 15px;
+    color: white;
+    border-radius: 15px;
+}
+
+.navbar-item.dropdown:hover .dropdown-menu-language {
+    display: block;
+}
 .dropdown-menu a {
     padding: 10px 15px;
     color: white;
@@ -222,7 +242,7 @@ button#languageButton {
 }
 
 button#languageButton:hover {
-    background-color: #45a049;
+    background-color: #74C476;
 }
 
 button {
@@ -275,7 +295,7 @@ button:hover {
     font-weight: bold;
 }
 
-.language-pic {height: 35px; width: 35px; }
+.language-pic {height: 32px; width: 35px; }
 
 /* Smaller font sizes for mobile */
 @media (max-width: 480px) {
