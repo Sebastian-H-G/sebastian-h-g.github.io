@@ -241,31 +241,39 @@ line-height: 18px;
 	color: white;
 line-height: 10px;
 }
-@media only screen and (max-width: 600px) {
-    /* CSS rules for screens smaller than 600px */
-    body {
-        font-size: 13px;
+/* Landscape mode for iPhone 15 landscape */
+@media only screen 
+  and (device-width: 852px)  /* Standard landscape width for iPhones */
+  and (device-height: 393px) /* Standard landscape height for iPhones */
+  and (-webkit-device-pixel-ratio: 3) {
+	.navbar {height: 90px;
+	display: flex;
+	align-items: center;}
+    .navbar-container {
+        justify-content: center;
+		height: 90px;
+		align-items: center;
     }
-	.navbar-logo {
-    width: 50px; /* Adjusted for smaller navbar */
-    height: 50px; /* Adjusted for smaller navbar */
-	}
-	h1 {
-    font-size: 30px;
-}
-}
-
-@media only screen and (min-width: 601px) and (max-width: 1024px) {
-    /* CSS rules for screens between 601px and 1024px */
-    body {
-        font-size: 15px;
+    .navbar-logo {
+        width: 85px;
+        height: 85px;
     }
-		h1 {
-    font-size: 30px;
+    .navbar-menu {
+        font-size: 56px;
+    }
+	.main-grid {margin: 0 auto 20px auto;}
+	.side-container {
+    margin-left: 0;
 }
-	.navbar-logo {
-    width: 50px; /* Adjusted for smaller navbar */
-    height: 50px; /* Adjusted for smaller navbar */
-	}
-	
+    #title {
+        font-size: 30px;
+    }
+    #options-container button {
+        font-size: 14px;
+        padding: 15px 20px;
+    }
+    #toggleMapButton {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
 }

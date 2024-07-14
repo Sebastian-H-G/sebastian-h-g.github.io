@@ -1,5 +1,5 @@
 const flags = [
-    { country: 'Afghanistan', img: 'flags/af.webp', id: 'AF' },
+    { country: 'Afghanistan', img: 'flags/af.png', id: 'AF' },
     { country: 'Armenien', img: 'flags/am.webp', id: 'AM' },
     { country: 'Aserbaidschan', img: 'flags/az.webp', id: 'AZ' },
     { country: 'Bahrain', img: 'flags/bh.webp', id: 'BH' },
