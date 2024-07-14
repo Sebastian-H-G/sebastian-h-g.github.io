@@ -268,10 +268,10 @@ canvas {
 
 .main-grid {
     display: grid;
-    grid-template-columns: 1fr auto; /* Left column takes remaining space, right column adjusts to content */
+    grid-template-columns: auto auto; /* Left column takes remaining space, right column adjusts to content */
     justify-content: center; /* Center content horizontally within the grid */
-    max-width: 1200px; /* Maximum width of the grid container */
-    margin: 65px auto 50px auto; /* Margin for top spacing */
+    max-width: 1000px; /* Maximum width of the grid container */
+    margin: 115px auto 50px auto; /* Margin for top spacing */
     padding: 0 20px;
 }
 
@@ -375,9 +375,6 @@ canvas {
 
 /* Portrait mode for iPhone 15 */
 @media only screen and (max-width: 430px) and (orientation: portrait) {
-    body {
-        background-color: red; /* For testing purposes */
-    }
 	.navbar {height: 40px;}
     .navbar-container {
         justify-content: start;
@@ -391,7 +388,7 @@ canvas {
         font-size: 18px;
     }
 	.side-container {
-    margin-left: 30px;
+    margin-left: 0;
 }
     #title {
         font-size: 30px;
@@ -408,9 +405,6 @@ canvas {
 
 /* Landscape mode for iPhone 15 */
 @media only screen and (max-width: 896px) and (orientation: landscape) {
-    body {
-        background-color: blue; /* For testing purposes */
-    }
 	.navbar {height: 40px;}
     .navbar-container {
         justify-content: start;
@@ -424,7 +418,7 @@ canvas {
     }
 	.main-grid {margin: 150px auto 50px auto; }
 	.side-container {
-    margin-left: 30px;
+    margin-left: 0;
 }
     #title {
         font-size: 28px;
