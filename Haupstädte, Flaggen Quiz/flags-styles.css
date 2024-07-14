@@ -21,17 +21,16 @@ body {
     padding: 0;
     background:  #CECECE; 
 }
-
 .navbar {
     background-color: #333;
     width: 100%;
+    height: 60px; /* Reduced height for smaller screens */
     top: 0;
     right: 0;
     left: 0;
-	height: 55px;
     border: none;
     position: fixed;
-    
+    z-index: 1000;
 }
 
 .navbar-container {
@@ -44,8 +43,8 @@ body {
 }
 
 .navbar-logo {
-    width: 50px;
-    height: 50px;
+    width: 58px; /* Adjusted for smaller navbar */
+    height: 58px; /* Adjusted for smaller navbar */
     background-image: url('Bilder/Erde-Logo.png'); 
     background-size: cover;
     background-position: center; 
@@ -55,12 +54,11 @@ body {
 .navbar-menu {
     list-style: none;
     display: flex;
-    font-size: 20px;
+    font-size: 25px; /* Adjusted for smaller screens */
     font-weight: bold;
     margin: 0;
     padding: 0;
 }
-
 .navbar-item {
     position: relative;
 }
@@ -107,7 +105,7 @@ body {
 }
 
 #title {
-    font-size: 35px;
+    font-size: 45px;
     text-decoration: underline;
     text-align: center;
 }
@@ -132,13 +130,14 @@ body {
     margin-bottom: 5px;
 }
 #options-container button {
-    font-size: 16px;
-    padding: 10px 20px;
-    cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #3498db;
+    padding: 20px 30px;
+    font-size: 18px;
+    background-color: #3498db; /* Blue */
+    border: none;
     color: white;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
@@ -148,7 +147,7 @@ body {
 
 #toggleMapButton {
     font-size: 16px;
-    padding: 8px 16px;
+    padding: 20px 30px;
     cursor: pointer;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -168,6 +167,8 @@ body {
     color: white;
     font-size: 18px;
     font-weight: bold;
+	max-width: 350px;
+	width: auto;
     display: none;
     margin: 10px auto 0 auto;
     text-align: center;
@@ -268,10 +269,10 @@ canvas {
 
 .main-grid {
     display: grid;
-    grid-template-columns: auto auto; /* Left column takes remaining space, right column adjusts to content */
+    grid-template-columns: auto auto auto; /* Left column takes remaining space, right column adjusts to content */
     justify-content: center; /* Center content horizontally within the grid */
     max-width: 1000px; /* Maximum width of the grid container */
-    margin: 115px auto 50px auto; /* Margin for top spacing */
+    margin: 355px auto 50px auto; /* Margin for top spacing */
     padding: 0 20px;
 }
 
@@ -280,7 +281,7 @@ canvas {
     max-width: 1000px; /* Maximum width of the quiz content */
     text-align: center; /* Center text and inline elements */
     display: flex;
-    flex-direction: column; /* Stack items vertically */
+    flex-direction: row; /* Stack items vertically */
     align-items: center; /* Center items horizontally */
     justify-content: center; /* Center items vertically */
 }
@@ -303,13 +304,12 @@ canvas {
 }
 .side-container {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+	justify-self: end;
     height: auto;
     flex-direction: column;
     align-self: start;
     width: auto;
-    margin-left: 200px;
+    margin-left: 20px;
 }
 
 .score-container {
