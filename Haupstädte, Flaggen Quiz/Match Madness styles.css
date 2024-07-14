@@ -255,16 +255,7 @@ a {text-decoration: none;}
 	margin-top: 100px;
 }
 
-/* Smaller font sizes for mobile */
-@media (max-width: 480px) {
-    .navbar-menu {
-        font-size: 20px;
-    }
 
-    .navbar-item a {
-        padding: 5px 10px;
-    }
-}
 #map {
     height: 400px;
     width: 100%;
@@ -290,6 +281,45 @@ line-height: 18px;
 	font-size: 13px;
 	color: white;
 line-height: 10px;
+}
+
+/* Portrait mode for iPhone 15 */
+@media only screen 
+  and (device-width: 393px)  /* Standard portrait width for iPhones */
+  and (device-height: 852px) /* Standard portrait height for iPhones */
+  and (-webkit-device-pixel-ratio: 3) {
+	.navbar {height: 90px;
+	display: flex;
+	align-items: center;}
+    .navbar-container {
+        justify-content: center;
+        height: 90px;
+        display: flex; /* Added display flex for flexbox layout */
+        align-items: center;
+        padding: 0 20px;
+    }
+    .navbar-logo {
+        width: 85px;
+        height: 85px;
+    }
+    .navbar-menu {
+        font-size: 22px;
+    }
+	.main-grid {margin: 115px auto 20px auto;}
+	.side-container {
+    margin-left: 0;
+}
+    #title {
+        font-size: 30px;
+    }
+    #options-container button {
+        font-size: 20px;
+        padding: 15px 25px;
+    }
+    #toggleMapButton {
+        font-size: 14px;
+        padding: 15px 25px;
+    }
 }
 
 /* Landscape mode for iPhone 15 landscape */
