@@ -385,8 +385,11 @@ canvas {
         height: 40px;
     }
     .navbar-menu {
-        font-size: 18px;
+        font-size: 16px;
     }
+	.main-gird {
+		margin: 155px auto 20px auto;
+	}
 	.side-container {
     margin-left: 0;
 }
