@@ -295,7 +295,7 @@ button:hover {
     font-weight: bold;
 }
 
-.language-pic {height: 28px; width: 32px; }
+.language-pic {height: 28px; width: 32px; display: none; }
 
 /* Smaller font sizes for mobile */
 @media (max-width: 480px) {
