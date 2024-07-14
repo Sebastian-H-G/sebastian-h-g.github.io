@@ -85,6 +85,7 @@ body {
     display: none;
     list-style: none;
     padding: 0;
+	margin: 0;
     width: 200px;
     border-radius: 15px;
 }
@@ -400,8 +401,11 @@ canvas {
 	.side-container {
     margin-left: 0;
 }
+h1 {
+    font-size: 25px;
+}
     #title {
-        font-size: 30px;
+        font-size: 25px;
     }
     #options-container button {
         font-size: 20px;
