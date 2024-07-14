@@ -386,8 +386,10 @@ canvas {
 	align-items: center;}
     .navbar-container {
         justify-content: center;
-		height: 90px;
-		align-items: center;
+        height: 90px;
+        display: flex; /* Added display flex for flexbox layout */
+        align-items: center;
+        padding: 0 20px;
     }
     .navbar-logo {
         width: 85px;
@@ -418,30 +420,34 @@ canvas {
   and (device-width: 929px)  /* Standard landscape width for iPhones */
   and (device-height: 400px) /* Standard landscape height for iPhones */
   and (-webkit-device-pixel-ratio: 3) {
-	.navbar {height: 40px;}
+	.navbar {height: 90px;
+	display: flex;
+	align-items: center;}
     .navbar-container {
-        justify-content: start;
+        justify-content: center;
+		height: 90px;
+		align-items: center;
     }
     .navbar-logo {
-        width: 35px;
-        height: 35px;
+        width: 85px;
+        height: 85px;
     }
     .navbar-menu {
-        font-size: 16px;
+        font-size: 26px;
     }
-	.main-grid {margin: 350px auto 50px auto; }
+	.main-grid {margin: 0 auto 20px auto;}
 	.side-container {
     margin-left: 0;
 }
     #title {
-        font-size: 28px;
+        font-size: 30px;
     }
     #options-container button {
-        font-size: 12px;
-        padding: 8px 10px;
+        font-size: 14px;
+        padding: 15px 20px;
     }
     #toggleMapButton {
-        font-size: 12px;
-        padding: 6px 10px;
+        font-size: 14px;
+        padding: 8px 12px;
     }
 }
