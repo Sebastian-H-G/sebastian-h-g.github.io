@@ -382,11 +382,11 @@ canvas {
 	.navbar {height: 90px;}
     .navbar-container {
         justify-content: center;
-		height: 40px;
+		height: 90px;
     }
     .navbar-logo {
-        width: 65px;
-        height: 65px;
+        width: 85px;
+        height: 85px;
     }
     .navbar-menu {
         font-size: 26px;
