@@ -379,7 +379,7 @@ canvas {
   and (device-width: 375px)  /* Standard portrait width for iPhones */
   and (device-height: 812px) /* Standard portrait height for iPhones */
   and (-webkit-device-pixel-ratio: 3.5) {
-	.navbar {height: 40px;}
+	.navbar {height: 50px;}
     .navbar-container {
         justify-content: center;
 		height: 40px;
