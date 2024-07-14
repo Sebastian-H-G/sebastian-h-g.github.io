@@ -398,7 +398,7 @@ canvas {
     .navbar-menu {
         font-size: 22px;
     }
-	.main-grid {margin: 0 auto 20px auto;}
+	.main-grid {margin: 100px auto 20px auto;}
 	.side-container {
     margin-left: 0;
 }
@@ -411,7 +411,7 @@ canvas {
     }
     #toggleMapButton {
         font-size: 14px;
-        padding: 8px 12px;
+        padding: 15px 25px;
     }
 }
 
