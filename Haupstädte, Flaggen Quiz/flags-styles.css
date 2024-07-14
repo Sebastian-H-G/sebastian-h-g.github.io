@@ -445,3 +445,53 @@ canvas {
         font-size: 9px;
     }
 }
+/* Portrait mode for iPhone 15 */
+@media only screen and (max-width: 430px) and (orientation: portrait) {
+	body {background: red;}
+    .navbar-logo {
+        width: 40px;
+        height: 40px;
+    }
+    .navbar-menu {
+        font-size: 18px;
+    }
+	.main-grid {
+		margin: 100px 20px 50px 20px;
+	}
+    #title {
+        font-size: 30px;
+    }
+    #options-container button {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+    #toggleMapButton {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+/* Landscape mode for iPhone 15 */
+@media only screen and (max-width: 430px) and (orientation: landscape) {
+    .navbar-logo {
+        width: 35px;
+        height: 35px;
+    }
+    .navbar-menu {
+        font-size: 16px;
+    }
+	.main-grid {
+		margin: 100px 20px 50px 20px;
+	}
+    #title {
+        font-size: 28px;
+    }
+    #options-container button {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+    #toggleMapButton {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}
