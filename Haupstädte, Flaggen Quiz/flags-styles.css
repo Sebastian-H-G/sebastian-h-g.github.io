@@ -391,6 +391,7 @@ canvas {
     .navbar-menu {
         font-size: 20px;
     }
+	.main-grid {margin: 0 auto 20px auto;}
 	.side-container {
     margin-left: 0;
 }
