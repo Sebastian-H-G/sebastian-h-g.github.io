@@ -402,14 +402,14 @@ canvas {
     margin-left: 0;
 }
 h1 {
-    font-size: 25px;
+    font-size: 30px;
 }
     #title {
-        font-size: 25px;
+        font-size: 30px;
     }
     #options-container button {
         font-size: 20px;
-        padding: 15px 25px;
+        padding: 12px 22px;
     }
     #toggleMapButton {
         font-size: 14px;
