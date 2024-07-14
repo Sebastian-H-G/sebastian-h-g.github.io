@@ -135,6 +135,7 @@ h1 {
 	flex-direction: column; /* Stack items vertically */
     align-self: start; /* Align side container to the top of its grid cell */
 	width: auto;
+	    margin-left: 20px;
 }
 
 .score-container {
