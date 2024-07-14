@@ -429,6 +429,7 @@ h1 {
 	align-items: center;}
     .navbar-container {
         justify-content: center;
+	    display: flex;
 		height: 90px;
 		align-items: center;
     }
