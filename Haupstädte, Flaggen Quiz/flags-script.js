@@ -46,7 +46,7 @@ const flags = [
     { country: 'Weißrussland', img: 'flags/by.webp', id: 'BY' },
     { country: 'Zypern', img: 'flags/cy.webp', id: 'CY' },
 // Asien
-	{ country: 'Afghanistan', img: 'flags/af.webp', id: 'AF' },
+	{ country: 'Afghanistan', img: 'flags/af.png', id: 'AF' },
     { country: 'Armenien', img: 'flags/am.webp', id: 'AM' },
     { country: 'Aserbaidschan', img: 'flags/az.webp', id: 'AZ' },
     { country: 'Bahrain', img: 'flags/bh.webp', id: 'BH' },
