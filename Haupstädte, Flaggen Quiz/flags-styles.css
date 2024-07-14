@@ -19,7 +19,7 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
-    background: #CECECE;
+    background:  #CECECE; 
 }
 
 .navbar {
@@ -37,25 +37,25 @@ body {
 .navbar-container {
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: space-between;
     width: 100%;
     margin: 0;
     padding: 0 20px;
 }
 
 .navbar-logo {
-    width: 60px;
-    height: 60px;
-    background-image: url('Bilder/Erde-Logo.png');
+    width: 50px;
+    height: 50px;
+    background-image: url('Bilder/Erde-Logo.png'); 
     background-size: cover;
-    background-position: center;
-    border-radius: 50%;
+    background-position: center; 
+    border-radius: 50%; 
 }
 
 .navbar-menu {
     list-style: none;
     display: flex;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
     margin: 0;
     padding: 0;
@@ -102,23 +102,24 @@ body {
 .dropdown-menu a:hover {
     background-color: #9B9B9B;
 }
-
 .navbar-item.dropdown:hover .dropdown-menu {
     display: block;
 }
 
 #title {
-    margin-top: 0px;
-    font-size: 45px;
+    margin-top: 60px; /* Adjust to avoid overlap with navbar */
+    font-size: 35px;
     text-decoration: underline;
+    text-align: center;
 }
-
 #flag-container {
     margin: 20px 0;
+    text-align: center;
 }
 
 #flag-image {
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     height: auto;
     margin-bottom: 5px;
 }
@@ -131,10 +132,9 @@ body {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
 #options-container button {
-    font-size: 20px;
-    padding: 15px 25px;
+    font-size: 16px;
+    padding: 10px 20px;
     cursor: pointer;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -148,8 +148,8 @@ body {
 }
 
 #toggleMapButton {
-    font-size: 18px;
-    padding: 10px 20px;
+    font-size: 16px;
+    padding: 8px 16px;
     cursor: pointer;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -167,7 +167,7 @@ body {
     padding: 10px;
     background-color: rgba(0, 128, 0, 0.8);
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     display: none;
     margin: 10px auto 0 auto;
@@ -182,7 +182,6 @@ body {
     opacity: 1;
     display: block;
 }
-
 #toggleMapButton {
     background-color: #CB7EC0;
     margin-top: 20px;
@@ -209,7 +208,6 @@ body {
     height: auto;
     margin-top: 10px;
 }
-
 .highlight {
     fill: red;
     transition: fill 0.3s ease-in-out;
@@ -271,21 +269,21 @@ canvas {
 
 .main-grid {
     display: grid;
-    grid-template-columns: 1fr auto;
-    justify-content: center;
-    max-width: 1200px;
-    margin: 300px auto 50px 330px;
+    grid-template-columns: 1fr auto; /* Left column takes remaining space, right column adjusts to content */
+    justify-content: center; /* Center content horizontally within the grid */
+    max-width: 1200px; /* Maximum width of the grid container */
+    margin: 300px auto 50px 330px; /* Margin for top spacing */
     padding: 0 20px;
 }
 
 #quiz-container {
     margin: 0 auto 0 auto;
-    max-width: 1000px;
-    text-align: center;
+    max-width: 1000px; /* Maximum width of the quiz content */
+    text-align: center; /* Center text and inline elements */
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
 }
 
 #current-score {
@@ -295,7 +293,6 @@ canvas {
     border-radius: 7px;
     background-color: #007BFF;
 }
-
 #high-score {
     margin-top: 10px;
     border: 2px solid;
@@ -305,7 +302,6 @@ canvas {
     border-radius: 7px;
     background-color: #FFD700;
 }
-
 .side-container {
     display: flex;
     justify-content: flex-start;
@@ -378,76 +374,14 @@ canvas {
     display: block;
 }
 
-/* Adjustments for iPhone 15 */
-@media only screen and (max-width: 430px) {
-    .navbar-logo {
-        width: 50px;
-        height: 50px;
-    }
-
-    .navbar-menu {
-        font-size: 20px;
-    }
-
-    #title {
-        font-size: 35px;
-        margin-top: 10px;
-    }
-
-    #quiz-container {
-        margin: 20px auto;
-        padding: 0 10px;
-    }
-
-    #options-container button {
-        font-size: 18px;
-        padding: 10px 20px;
-    }
-
-    #toggleMapButton {
-        font-size: 16px;
-        padding: 8px 16px;
-    }
-
-    #message {
-        font-size: 18px;
-        padding: 8px;
-        margin: 5px auto;
-    }
-
-    .main-grid {
-        margin: 150px auto 20px;
-        padding: 0 10px;
-    }
-
-    .side-container {
-        margin-left: 10px;
-        width: 100%;
-        align-items: center;
-    }
-
-    #current-score,
-    #high-score {
-        font-size: 18px;
-        padding: 15px;
-        margin-top: 5px;
-    }
-
-    footer {
-        padding: 5px 0;
-    }
-
-    .footer-text1 {
-        font-size: 11px;
-    }
-
-    .footer-text2 {
-        font-size: 9px;
-    }
-}
 /* Portrait mode for iPhone 15 */
 @media only screen and (max-width: 430px) and (orientation: portrait) {
-	body {background: red;}
+    body {
+        background-color: red; /* For testing purposes */
+    }
+    .navbar-container {
+        justify-content: center;
+    }
     .navbar-logo {
         width: 40px;
         height: 40px;
@@ -455,9 +389,6 @@ canvas {
     .navbar-menu {
         font-size: 18px;
     }
-	.main-grid {
-		margin: 100px 20px 50px 20px;
-	}
     #title {
         font-size: 30px;
     }
@@ -472,7 +403,13 @@ canvas {
 }
 
 /* Landscape mode for iPhone 15 */
-@media only screen and (max-width: 430px) and (orientation: landscape) {
+@media only screen and (max-width: 896px) and (orientation: landscape) {
+    body {
+        background-color: blue; /* For testing purposes */
+    }
+    .navbar-container {
+        justify-content: center;
+    }
     .navbar-logo {
         width: 35px;
         height: 35px;
@@ -480,9 +417,6 @@ canvas {
     .navbar-menu {
         font-size: 16px;
     }
-	.main-grid {
-		margin: 100px 20px 50px 20px;
-	}
     #title {
         font-size: 28px;
     }
