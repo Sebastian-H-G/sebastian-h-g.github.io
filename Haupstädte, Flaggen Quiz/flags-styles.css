@@ -412,7 +412,7 @@ canvas {
 
 /* Landscape mode for iPhone 15 landscape */
 @media only screen 
-  and (device-width: 852px)  /* Standard landscape width for iPhones */
+  and (device-width: 862px)  /* Standard landscape width for iPhones */
   and (device-height: 393px) /* Standard landscape height for iPhones */
   and (-webkit-device-pixel-ratio: 3) {
 	  body {background: blue;}
