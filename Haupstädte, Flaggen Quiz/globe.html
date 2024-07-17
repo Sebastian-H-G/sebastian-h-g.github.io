@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Globe with Country Flags</title>
-    <style>
-        body {
+</head>
+	<body>    <style>
+body {
     padding: 0;
     margin: 0;
     overflow: hidden;
@@ -82,10 +83,8 @@ svg {
 
     --font-family: monospace;
 }
-    </style>
-</head>
-<body>
-    <div class="page">
+</style>
+		<div class="page">
     <div class="globe-wrapper">
         <canvas id="globe-3d"></canvas>
         <div class="info"><span></span></div>
@@ -516,10 +515,7 @@ svg {
 }
 </script>
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script>
-        import * as THREE from "three";
+<script>import * as THREE from "three";
 import {OrbitControls} from "three/addons/controls/OrbitControls.js";
 import {GUI} from "https://cdn.skypack.dev/lil-gui@0.17.0";
 
@@ -810,7 +806,6 @@ function createControls() {
             scene.fog = new THREE.Fog(params.fogColor, 0, params.fogDistance);
         })
         .name("fog distance");
-}
-    </script>
+}</script>
 </body>
 </html>
