@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaktive Liste</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+<style>body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #fff;
+}
+.container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+    margin-top: 20px;
+    max-height: 80vh; /* Limiting height */
+    overflow-y: auto; /* Adding vertical scroll */
+    transition: text-shadow 0.3s ease;
+    position: relative; /* Ensure position is relative for pseudo-element */
+}
+
+.container:hover {
+    text-shadow:
+        2px 2px 4px #000,
+        4px 4px 6px #404040,
+        6px 6px 8px #808080;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+.container:hover::before {
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    opacity: 0.5;
+}
+h1 {
+    margin-bottom: 30px;
+}
+.three-d-text {
+    font-family: 'Bangers', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #40a39d, #c458a9, #3131e0, #8e58c4, #5d9ab3);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: pulsate 2s infinite alternate;
+    position: relative;
+    text-shadow: 
+        1px 1px 0 #40a39d,
+        3px 3px 0 #c458a9,
+        4px 4px 0 #3131e0,
+        5px 5px 0 #8e58c4,
+        6px 6px 0 #5d9ab3;
+}
+@keyframes pulsate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.three-d-text {
+    /* Your existing styles */
+    animation: pulsate 3s infinite alternate;
+    /* Adjust animation duration and timing as needed */
+}
+.three-d-text::before,
+.three-d-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #000;
+    z-index: -1;
+    background: none;
+}
+
+.three-d-text::before {
+    transform: translate(2px, 2px);
+    filter: blur(3px);
+    opacity: 0.6;
+}
+
+.three-d-text::after {
+    transform: translate(4px, 4px);
+    filter: blur(3px);
+    opacity: 0.3;
+}
+
+input {
+    padding: 15px;
+    width: 60%;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-right: 15px;
+    transition: border-color 0.3s ease;
+    font-size: 1rem;
+}
+
+input:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+input:hover {
+  
+}
+
+button {
+    padding: 15px 25px;
+    margin-top: 20px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: translateY(2px); /* Verschiebung um 2px nach unten beim Klicken */
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+}
+
+li {
+    background-color: #007BFF;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideIn 0.5s forwards, fadeInScroll 0.5s forwards;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    font-size: 1.2rem;
+}
+
+li:hover {
+    transform: scale(1.02);
+    background-color: #0056b3;
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInScroll {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.removeButton {
+    background-color: #FF6347;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 8px 15px;
+    margin-left: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.removeButton:hover {
+    background-color: #d9534f;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}</style>
+  
+</head>
+<body>
+    <div class="container">
+        <h1 class="three-d-text">Interaktive Liste</h1>
+        <input type="text" id="inputField" placeholder="Füge einen Satz hinzu">
+        <button id="addButton">Hinzufügen</button>
+        <ul id="list"></ul>
+    </div>
+    <script>document.addEventListener('DOMContentLoaded', (event) => {
+    const inputField = document.getElementById('inputField');
+    const addButton = document.getElementById('addButton');
+    const list = document.getElementById('list');
+
+    // Load list from local storage
+    const savedList = JSON.parse(localStorage.getItem('listItems')) || [];
+    savedList.forEach(item => addListItem(item));
+
+    addButton.addEventListener('click', addItem);
+
+    inputField.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            addItem();
+        }
+    });
+
+    window.addEventListener('scroll', function() {
+        const listItems = document.querySelectorAll('li');
+        listItems.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                item.classList.add('fadeInScroll');
+            }
+        });
+    });
+
+    function addItem() {
+        const inputValue = inputField.value.trim();
+        if (inputValue !== "") {
+            addListItem(inputValue);
+            saveToLocalStorage(inputValue);
+            inputField.value = "";
+        }
+    }
+
+    function addListItem(text) {
+        const listItem = document.createElement('li');
+        listItem.textContent = text;
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Entfernen';
+        removeButton.className = 'removeButton';
+        removeButton.addEventListener('click', function() {
+            listItem.classList.add('fadeOut');
+            setTimeout(() => {
+                listItem.remove();
+                removeFromLocalStorage(text);
+            }, 300);
+        });
+
+        listItem.appendChild(removeButton);
+        list.appendChild(listItem);
+    }
+
+    function saveToLocalStorage(item) {
+        const listItems = JSON.parse(localStorage.getItem('listItems')) || [];
+        listItems.push(item);
+        localStorage.setItem('listItems', JSON.stringify(listItems));
+    }
+
+    function removeFromLocalStorage(item) {
+        let listItems = JSON.parse(localStorage.getItem('listItems')) || [];
+        listItems = listItems.filter(listItem => listItem !== item);
+        localStorage.setItem('listItems', JSON.stringify(listItems));
+    }
+});</script>
+</body>
+</html>
