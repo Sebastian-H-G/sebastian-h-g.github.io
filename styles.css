@@ -1,0 +1,265 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+h1 {
+    text-align: center;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #333;
+    padding: 10px 0;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.navbar ul li {
+    position: relative;
+}
+
+.navbar ul li a {
+    display: block;
+  border-radius: 7px;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #fff;
+    transition: background-color 0.3s, color 0.3s;
+    font-weight: bold;
+}
+
+.navbar ul li a:hover,
+.navbar ul li a:focus {
+    background-color: #555;
+    color: #fff;
+  border-radius: 7px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #444;
+    list-style: none;
+    padding: 0;
+  z-index: 1;
+  border-radius: 7px;
+    margin: 0;
+    min-width: 160px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(10px);
+}
+
+.dropdown-menu li {
+    border-bottom: 1px solid #555;
+}
+
+.dropdown-menu li:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu li a {
+    padding: 10px 15px;
+    color: #fff;
+  border-radius: 7px;
+    transition: background-color 0.3s;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #666;
+  border-radius: 7px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+  border-radius: 7px;
+    opacity: 1;
+    transform: translateY(0);
+}
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.photo {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+}
+
+.photo-large {
+    grid-column: span 2;
+}
+
+.photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.photo:hover img {
+    transform: scale(1.1);
+}
+
+.photo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.photo .caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 15px;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.photo:hover .caption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.photo .caption h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.photo .caption p {
+    margin: 5px 0 0;
+    font-size: 14px;
+}
+
+.photo {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.photo.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 60px 0;
+}
+
+.lightbox-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.lightbox-img {
+    max-width: 40%;
+    max-height: 80%;
+    margin: 20px;
+}
+
+.lightbox-text-content {
+    max-width: 40%;
+    margin: 20px;
+    color: #fff;
+}
+
+.lightbox-caption {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.lightbox-text {
+    font-size: 18px;
+    white-space: pre-wrap;
+}
+
+.close {
+position: absolute;
+top: 20px;
+right: 45px;
+color: #fff;
+font-size: 40px;
+font-weight: bold;
+transition: 0.3s;
+cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+color: #bbb;
+text-decoration: none;
+cursor: pointer;
+}
+
+footer {
+background-color: #333;
+color: #fff;
+text-align: center;
+padding: 20px;
+font-family: ‘Montserrat’, sans-serif;
+}
+
+.footer-icons a {
+color: #fff;
+margin: 0 10px;
+text-decoration: none;
+transition: color 0.3s;
+}
+
+.footer-icons a:hover {
+color: #bbb;
+}
+
+.footer-content {
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+}
