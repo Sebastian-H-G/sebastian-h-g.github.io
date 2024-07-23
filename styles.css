@@ -56,3 +56,218 @@ body, html {
 #clock {
   font-size: 5em;
   font-weight: 700;
+}
+#dayOfWeek {
+  font-size: 1.3em;
+  font-weight: 700;
+}
+
+.password-field {
+    margin-top: 20px;
+    animation: fadeIn 0.5s;
+}
+
+.password-field input {
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.password-field button#unlockButton {
+    padding: 15px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.password-field button#unlockButton:hover {
+    background-color: #0056b3;
+}
+
+.app-menu {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.app-menu.hidden {
+    display: none;
+}
+
+.navbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: #007bff;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+}
+.navbar a:hover {
+    color: #ffdd57;
+    transform: scale(1.2);
+}
+.navbar a.active {
+    color: #ffdd57; /* Example highlight color */
+    background-color: #0056b3; /* Example background color */
+    border-radius: 50%; /* Optional: make the icon look like a button */
+    padding: 10px; /* Optional: increase the padding for the active link */
+}
+.page {
+    display: none;
+}
+
+.page.visible {
+    display: block;
+}
+.settings-menu {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-left: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-30px); }
+    60% { transform: translateY(-15px); }
+}
+        .app-item a:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .app-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+            display: block;
+        }
+a {
+  text-decoration: none;
+}
+.text {
+  display: flex; /* Flex container */
+  margin-top: 50px;
+  flex-wrap: wrap; /* Allow wrapping of words */
+  justify-content: center; /* Center horizontally */
+  font-size: 80px; /* Adjust font size */
+  font-family: "Varela Round", sans-serif;
+  color: #8C98D7; /* Text color */
+  text-align: center; /* Center text */
+  font-weight: bold; /* Bold text */
+}
+.word {
+	display: flex;
+	margin-right: 20px;
+}
+.letter {
+  display: inline-block; /* Display as inline-block */
+  position: relative; /* For z-index */
+  text-shadow:
+    -1px -1px 0 #8C98D7, /* Top-left */
+    2px -2px 0 #737BA8, /* Top-right */
+    -1px 1px 0 #8C98D7, /* Bottom-left */
+    2px 2px 0 #737BA8, /* Bottom-right */
+    2px 2px 2px rgba(0, 0, 0, 0.5); /* Main shadow */
+  transition: all 0.3s ease; /* Smooth transition on hover */
+  animation: moveUpDown 2s infinite alternate ease-in-out; /* Animation properties */
+}
+
+@keyframes moveUpDown {
+  0% {
+    transform: translateY(0); /* Start position */
+  }
+  50% {
+    transform: translateY(-15px); /* Middle position */
+  }
+  100% {
+    transform: translateY(0); /* End position */
+  }
+}
+
+/* Apply animation delay based on the overall index of each letter */
+.text .letter:nth-of-type(1) { animation-delay: 0s; }
+.text .letter:nth-of-type(2) { animation-delay: 0.1s; }
+.text .letter:nth-of-type(3) { animation-delay: 0.2s; }
+.text .letter:nth-of-type(4) { animation-delay: 0.3s; }
+.text .letter:nth-of-type(5) { animation-delay: 0.4s; }
+.text .letter:nth-of-type(6) { animation-delay: 0.5s; }
+.text .letter:nth-of-type(7) { animation-delay: 0.6s; }
+
+
