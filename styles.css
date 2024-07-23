@@ -51,13 +51,14 @@ body, html {
     transform: scale(1.1);
 }
 .clock-container {
-  margin-bottom: 35px;
+  margin-bottom: 40px;
 }
 #clock {
   font-size: 5em;
   font-weight: 700;
 }
 #dayOfWeek {
+margin-top: 20px;
   font-size: 1.3em;
   font-weight: 700;
 }
