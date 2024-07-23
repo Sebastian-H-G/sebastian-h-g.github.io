@@ -112,7 +112,9 @@ body, html {
     padding: 10px 0;
     box-sizing: border-box;
 }
-
+.navbar-icons:{
+	width: 20px;
+	height: 20px;
 .navbar a {
     color: white;
     text-decoration: none;
