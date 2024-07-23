@@ -6,7 +6,7 @@ document.getElementById('showPasswordField').addEventListener('click', function(
 
 document.getElementById('unlockButton').addEventListener('click', function() {
     var password = document.getElementById('password').value;
-    if (password === 'esteban1492') { // Example password
+    if (password === '1234') { // Example password
         document.querySelector('.lockscreen').classList.add('hidden');
         document.querySelector('.app-menu').classList.remove('hidden');
         document.querySelector('.background').classList.add('hidden');
@@ -57,3 +57,13 @@ function updateClock() {
     
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    
+    clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+    dayOfWeekElement.textContent = now.toLocaleDateString('en-US', options);
+}
+
+setInterval(updateClock, 1000);
+updateClock();
