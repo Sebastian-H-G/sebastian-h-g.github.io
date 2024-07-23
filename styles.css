@@ -225,7 +225,7 @@ body.dark-mode .navbar a {
     display: grid;
     gap: 20px; /* Adjust gap between settings */
     margin: 10px; /* Adjust margins as needed */
-    width: 90vw; 
+    width: 95vw; 
     padding-bottom: 80px; 
 }
 .settings-item {
