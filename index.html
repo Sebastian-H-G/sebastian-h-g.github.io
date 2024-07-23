@@ -1,3 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Menu with Lockscreen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="lockscreen">
+        <div class="background"></div>
+        <div class="lockscreen-content">
+            <div class="clock-container">
+                <div id="clock"></div>
+                <div id="dayOfWeek"></div>
+            </div>
+            <button id="showPasswordField">Unlock</button>
+            <div class="password-field hidden">
+                <input type="password" id="password" placeholder="Password">
                 <button id="unlockButton">Enter</button>
             </div>
         </div>
@@ -34,33 +55,3 @@
             <img src="path/to/app2.png" alt="App 2">
             <span class="app-name">App 2</span>
         </a>
-        <a href="#" class="app-item">
-            <img src="path/to/app3.png" alt="App 3">
-            <span class="app-name">App 3</span>
-        </a>
-        <!-- Add more apps here -->
-    </div>
-  </section>
-        </div>
-        <div id="page2" class="page hidden">Page 2 Content</div>
-       
-        <div id="page3" class="page hidden">Page 3 Content</div>
-        <div id="page4" class="page hidden">Page 4 Content</div>
-       <div id="page5" class="page hidden">
-          <div class="settings-grid">
-            <h1>Settings</h1>
-            <div class="settings-item">
-              <p>Dark Mode</p>
-            <label class="switch">
-                <input type="checkbox" id="darkModeToggle">
-                <span class="slider round"></span>
-            </label>
-              </div>
-            <div class="settings-item">
-            <button id="logoutButton">Log out</button>
-        </div></div></div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
