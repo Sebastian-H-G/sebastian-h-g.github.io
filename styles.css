@@ -220,6 +220,9 @@ body.dark-mode {
 body.dark-mode .navbar {
     background-color: #333;
 }
+body.dark-mode .app-name {
+    background-color: white;
+}
 
 body.dark-mode .navbar a {
     color: #e0e0e0;
