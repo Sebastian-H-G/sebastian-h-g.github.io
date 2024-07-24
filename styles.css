@@ -68,7 +68,7 @@ margin-top: 5px;
 }
 
 .password-field input {
-    padding: 15px 20px;
+    padding: 10px 15px;
     margin-bottom: 20px;
     font-size: 16px;
     border: none;
@@ -77,7 +77,7 @@ margin-top: 5px;
 }
 
 .password-field button#unlockButton {
-    padding: 15px 20px;
+    padding: 10px 15px;
     font-size: 16px;
     border: none;
     border-radius: 5px;
