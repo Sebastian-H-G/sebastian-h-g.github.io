@@ -357,7 +357,8 @@ a {
 
 .heading-container {
 text-align: center;
-margin-top: 10px;
+margin-top: 10px auto 0 auto;
+	
 }
 
 .three-d-text {
