@@ -352,3 +352,18 @@ a {
 .text .letter:nth-of-type(5) { animation-delay: 0.4s; }
 .text .letter:nth-of-type(6) { animation-delay: 0.5s; }
 .text .letter:nth-of-type(7) { animation-delay: 0.6s; }
+
+
+.container {
+    text-align: center;
+}
+
+.three-d-text {
+    font-size: 5rem;
+    font-weight: 900;
+    color: blue;
+    text-shadow:
+        0.05em 0.05em 0 #ff3d3d,
+        0.1em 0.1em 0 #ff3d3d,
+        0.15em 0.15em 0 #ff3d3d;
+}
