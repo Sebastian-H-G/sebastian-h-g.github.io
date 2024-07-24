@@ -259,8 +259,8 @@ body.dark-mode .navbar a {
 }
 section {
   display: flex;
-  height: 85vh;
-  width: 85vw;
+  height: 100vh;
+  width: 100vw;
   justify-content: center;
   align-items: center;
             
