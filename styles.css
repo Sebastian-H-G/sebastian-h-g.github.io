@@ -280,6 +280,7 @@ section {
         }
         .app-item img {
             width: 80px;
+	background-color: rgba(128, 128, 128, 0.5);
             height: 80px;
             object-fit: cover;
             border-radius: 12px;
