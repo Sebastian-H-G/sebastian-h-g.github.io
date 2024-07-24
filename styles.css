@@ -19,7 +19,6 @@ body, html {
     z-index: -1;
     transition: filter 0.3s;
 }
-
 .lockscreen {
     position: absolute;
     width: 100%;
