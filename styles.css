@@ -182,7 +182,9 @@ height: 40px;
     background-color: #ccc;
     transition: 0.4s;
 }
-
+.slider:hover {
+  background-color: #a1a1a1;
+}
 .slider:before {
     position: absolute;
     content: "";
