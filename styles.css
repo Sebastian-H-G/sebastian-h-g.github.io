@@ -358,7 +358,7 @@ a {
 .heading-container {
 text-align: center;
 	position: fixed;
-	margin-top: 20px;
+	margin: 20px auto 0 auto;
 }
 
 .three-d-text {
