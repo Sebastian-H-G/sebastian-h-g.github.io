@@ -377,7 +377,7 @@ a {
     transform: translateY(0); /* Start position */
   }
   50% {
-    transform: translateY(-15px); /* Middle position */
+    transform: translateY(-25px); /* Middle position */
   }
   100% {
     transform: translateY(0); /* End position */
