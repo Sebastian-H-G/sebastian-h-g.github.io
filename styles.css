@@ -261,7 +261,7 @@ body.dark-mode .navbar a {
 #logoutButton {
 	border: 2px solid grey;
     padding: 10px 20px;
-    background-color: #D8CFEB;
+    background-color: #7fc9c2;
     color: black;
     text-decoration: none;
     border-radius: 5px;
@@ -272,6 +272,10 @@ body.dark-mode .navbar a {
     font-weight: bold;
     transition: background-color 0.3s;
     transition: transform 0.3s ease;
+}
+#logoutButton:hover {
+  background-color: #4a9685;
+  transform: scale(1.1);
 }
 section {
   display: flex;
@@ -402,4 +406,287 @@ text-align: center;
         0.03em 0.03em 0 #ff3d3d,
         0.06em 0.06em 0 #ff3d3d,
         0.09em 0.09em 0 #ff3d3d;
+}
+/* styles for the body background and for the navbar */
+#openModalButton {
+  	border: 2px solid grey;
+    padding: 10px 20px;
+    background-color: #D8CFEB;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    transition: transform 0.3s ease;
+}
+#openModalButton:hover {
+   background-color: #9189a3;
+  transform: scale(1.1);
+}
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%;
+  position: relative;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-navbar {
+  margin-bottom: 20px;
+}
+
+.modal-navbar ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-navbar li {
+  display: inline;
+}
+
+.modal-navbar a {
+  text-decoration: none;
+  color: #333;
+  padding: 10px 20px;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.modal-navbar a:hover {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+/* Active Navbar Item */
+.modal-navbar a.active {
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+}
+
+/* Theme Styles */
+body.theme-default {
+  background-color: white;
+  color: black;
+}
+
+body.theme-dark {
+  background-color: #121212;
+  color: white;
+}
+
+body.theme-light {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+body.theme-colorful {
+  background: linear-gradient(45deg, #ff6b6b, #f5f7fa, #4caf50, #8e44ad);
+  color: white;
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+body.theme-yellow {
+  background-color: #ffff00;
+  color: black;
+}
+
+body.theme-mint-green {
+  background-color: #98ff98;
+  color: black;
+}
+
+body.theme-pale-pink {
+  background-color: #fbb6ce;
+  color: black;
+}
+body.theme-steel-blue {
+  background-color: #4682b4;
+  color: white;
+}
+body.theme-cyan {
+  background-color: #00ffff;
+  color: #333;
+}
+body.theme-dark-red {
+  background-color: #8b0000;
+  color: white;
+}
+body.theme-teal {
+  background-color: #008080;
+  color: white;
+}
+body.theme-dusty-rose {
+  background-color: #dcb1b1;
+  color: #333;
+}
+body.theme-orange {
+  background-color: #ffa500;
+  color: #333;
+}
+body.theme-midnight-blue {
+  background-color: #191970;
+  color: white;
+}
+
+body.theme-olive-green {
+  background-color: #6b8e23;
+  color: white;
+}
+body.theme-warm-grey {
+  background-color: #a9a9a9;
+  color: #333;
+}
+body.theme-royal-blue {
+  background-color: #4169e1;
+  color: white;
+}
+body.theme-sage-green {
+  background-color: #9c9a6c;
+  color: #333;
+}
+body.theme-rust {
+  background-color: #b7410e;
+  color: white;
+}
+
+body.theme-light-blue {
+  background-color: #add8e6;
+  color: #333;
+}
+body.theme-moss-green {
+  background-color: #8a9a5b;
+  color: white;
+}
+body.theme-bright-red {
+  background-color: #ff0000;
+  color: white;
+}
+
+@keyframes gradient {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* Theme selector styles */
+.theme-selector button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: opacity 0.3s ease;
+}
+
+.theme-selector button:hover {
+  opacity: 0.8;
+}
+
+/* Navbar theme styles */
+.navbar-theme-default {
+  background-color: #333;
+  color: white;
+}
+
+.navbar-theme-dark {
+  background-color: #000;
+  color: white;
+}
+
+.navbar-theme-light {
+  background-color: #fff;
+  color: #333;
+}
+
+.navbar-theme-colorful {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.navbar-theme-navy-blue {
+  background-color: #001f3f;
+  color: white;
+}
+
+.navbar-theme-light-gray {
+  background-color: #d3d3d3;
+  color: #333;
+}
+
+.navbar-theme-dark-slate-gray {
+  background-color: #2f4f4f;
+  color: white;
+}
+
+.navbar-theme-lavender {
+  background-color: #e6e6fa;
+  color: #333;
+}
+
+.navbar-theme-forest-green {
+  background-color: #228b22;
+  color: white;
+}
+
+.navbar-theme-slate-blue {
+  background-color: #6a5acd;
+  color: white;
+}
+
+.navbar-theme-tomato-red {
+  background-color: #ff6347;
+  color: white;
+}
+
+.navbar-theme-dark-orchid {
+  background-color: #9932cc;
+  color: white;
+}
+
+.navbar-theme-sienna {
+  background-color: #a0522d;
+  color: white;
+}
+
+.navbar-theme-pale-goldenrod {
+  background-color: #eee8aa;
+  color: #333;
 }
