@@ -295,6 +295,25 @@ section {
             transform: translateY(-10px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+.app-item1 {
+            text-align: center;
+		padding: 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .app-item1 img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        .app-item1:hover img {
+            transform: scale(1.1);
+        }
+        .app-item1 a:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
         .app-name {
             margin-top: 10px;
             font-size: 14px;
