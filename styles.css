@@ -357,7 +357,7 @@ a {
 
 .heading-container {
 text-align: center;
-	position: absolute;
+	position: fixed;
 	margin-top: 20px;
 }
 
