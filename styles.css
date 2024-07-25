@@ -355,7 +355,7 @@ a {
 .text .letter:nth-of-type(7) { animation-delay: 0.6s; }
 
 
-.heading-container {
+.heading container {
 text-align: center;	
 }
 
