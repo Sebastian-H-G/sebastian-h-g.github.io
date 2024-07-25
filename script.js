@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
         showLockscreen();
     }
 });
-
 document.getElementById('showPasswordField').addEventListener('click', function() {
     document.querySelector('.password-field').classList.remove('hidden');
     document.querySelector('.background').style.filter = 'blur(5px)';
