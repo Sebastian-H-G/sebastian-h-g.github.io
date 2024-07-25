@@ -305,10 +305,11 @@ section {
             height: 80px;
             object-fit: cover;
             border-radius: 12px;
+		transform: scale(1.1);
             transition: transform 0.3s ease;
         }
         .app-item1:hover img {
-            transform: scale(1.1);
+            transform: scale(1.2);
         }
         .app-item1 a:hover {
             transform: translateY(-10px);
