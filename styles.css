@@ -361,13 +361,12 @@ text-align: center;
 	position: fixed;
 	margin: 40px auto 0 auto;
 }
-
 .three-d-text {
-    font-size: 5rem;
+    font-size: 3rem;
     font-weight: 900;
     color: blue;
     text-shadow:
-        0.05em 0.05em 0 #ff3d3d,
-        0.1em 0.1em 0 #ff3d3d,
-        0.15em 0.15em 0 #ff3d3d;
+        0.03em 0.03em 0 #ff3d3d,
+        0.06em 0.06em 0 #ff3d3d,
+        0.09em 0.09em 0 #ff3d3d;
 }
