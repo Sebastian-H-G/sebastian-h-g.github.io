@@ -121,9 +121,76 @@
                 <span class="slider round"></span>
             </label>
               </div>
+          <div class="settings-item">
+          <div class="content">
+    <button id="openModalButton">Customize </button>
+
+    <!-- Modal Structure -->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <nav class="modal-navbar">
+          <ul>
+            <li><a href="#home" onclick="navigate('home')">Home</a></li>
+            <li><a href="#themes" onclick="navigate('themes')">Themes</a></li>
+            <li><a href="#settings" onclick="navigate('settings')">Settings</a></li>
+          </ul>
+        </nav>
+        <div id="modalBody">
+          <!-- Sections will be dynamically loaded here -->
+          <h2>Customizable Themes</h2>
+          <div class="theme-selector">
+            <!-- Added inline styles to ensure button colors -->
+            <button class="theme-btn" data-color="#ffffff" style="background-color: #ffffff; color: #333;" onclick="changeTheme('theme-default')">Default</button>
+            <button class="theme-btn" data-color="#121212" style="background-color: #121212; color: white;" onclick="changeTheme('theme-dark')">Dark</button>
+            <button class="theme-btn" data-color="#f0f0f0" style="background-color: #f0f0f0; color: #333;" onclick="changeTheme('theme-light')">Light</button>
+            <button class="theme-btn" data-color="#ff6b6b" style="background-color: #ff6b6b; color: white;" onclick="changeTheme('theme-colorful')">Colorful</button>
+            <button class="theme-btn" data-color="#ffff00" style="background-color: #ffff00; color: #333;" onclick="changeTheme('theme-yellow')">Yellow</button>
+            <button class="theme-btn" data-color="#98ff98" style="background-color: #98ff98; color: #333;" onclick="changeTheme('theme-mint-green')">Mint Green</button>
+            <button class="theme-btn" data-color="#fbb6ce" style="background-color: #fbb6ce; color: #333;" onclick="changeTheme('theme-pale-pink')">Pale Pink</button>
+            <button class="theme-btn" data-color="#4682b4" style="background-color: #4682b4; color: white;" onclick="changeTheme('theme-steel-blue')">Steel Blue</button>
+            <button class="theme-btn" data-color="#00ffff" style="background-color: #00ffff; color: #333;" onclick="changeTheme('theme-cyan')">Cyan</button>
+            <button class="theme-btn" data-color="#8b0000" style="background-color: #8b0000; color: white;" onclick="changeTheme('theme-dark-red')">Dark Red</button>
+            <button class="theme-btn" data-color="#008080" style="background-color: #008080; color: white;" onclick="changeTheme('theme-teal')">Teal</button>
+            <button class="theme-btn" data-color="#dcb1b1" style="background-color: #dcb1b1; color: #333;" onclick="changeTheme('theme-dusty-rose')">Dusty Rose</button>
+            <button class="theme-btn" data-color="#ffa500" style="background-color: #ffa500; color: #333;" onclick="changeTheme('theme-orange')">Orange</button>
+            <button class="theme-btn" data-color="#191970" style="background-color: #191970; color: white;" onclick="changeTheme('theme-midnight-blue')">Midnight Blue</button>
+            <button class="theme-btn" data-color="#6b8e23" style="background-color: #6b8e23; color: white;" onclick="changeTheme('theme-olive-green')">Olive Green</button>
+            <button class="theme-btn" data-color="#a9a9a9" style="background-color: #a9a9a9; color: #333;" onclick="changeTheme('theme-warm-grey')">Warm Grey</button>
+            <button class="theme-btn" data-color="#4169e1" style="background-color: #4169e1; color: white;" onclick="changeTheme('theme-royal-blue')">Royal Blue</button>
+            <button class="theme-btn" data-color="#9c9a6c" style="background-color: #9c9a6c; color: #333;" onclick="changeTheme('theme-sage-green')">Sage Green</button>
+            <button class="theme-btn" data-color="#b7410e" style="background-color: #b7410e; color: white;" onclick="changeTheme('theme-rust')">Rust</button>
+            <button class="theme-btn" data-color="#add8e6" style="background-color: #add8e6; color: #333;" onclick="changeTheme('theme-light-blue')">Light Blue</button>
+            <button class="theme-btn" data-color="#8a9a5b" style="background-color: #8a9a5b; color: white;" onclick="changeTheme('theme-moss-green')">Moss Green</button>
+            <button class="theme-btn" data-color="#ff0000" style="background-color: #ff0000; color: white;" onclick="changeTheme('theme-bright-red')">Bright Red</button>
+          </div>
+
+          <h2>Navbar Themes</h2>
+          <div class="theme-selector">
+            <button class="theme-btn" data-color="#333333" style="background-color: #333333; color: white;" onclick="changeNavbarTheme('navbar-theme-default')">Default</button>
+            <button class="theme-btn" data-color="#000000" style="background-color: #000000; color: white;" onclick="changeNavbarTheme('navbar-theme-dark')">Dark</button>
+            <button class="theme-btn" data-color="#ffffff" style="background-color: #ffffff; color: #333;" onclick="changeNavbarTheme('navbar-theme-light')">Light</button>
+            <button class="theme-btn" data-color="#ff6b6b" style="background-color: #ff6b6b; color: white;" onclick="changeNavbarTheme('navbar-theme-colorful')">Colorful</button>
+            <button class="theme-btn" data-color="#001f3f" style="background-color: #001f3f; color: white;" onclick="changeNavbarTheme('navbar-theme-navy-blue')">Navy Blue</button>
+            <button class="theme-btn" data-color="#d3d3d3" style="background-color: #d3d3d3; color: #333;" onclick="changeNavbarTheme('navbar-theme-light-gray')">Light Gray</button>
+            <button class="theme-btn" data-color="#2f4f4f" style="background-color: #2f4f4f; color: white;" onclick="changeNavbarTheme('navbar-theme-dark-slate-gray')">Dark Slate Gray</button>
+            <button class="theme-btn" data-color="#e6e6fa" style="background-color: #e6e6fa; color: #333;" onclick="changeNavbarTheme('navbar-theme-lavender')">Lavender</button>
+            <button class="theme-btn" data-color="#228b22" style="background-color: #228b22; color: white;" onclick="changeNavbarTheme('navbar-theme-forest-green')">Forest Green</button>
+            <button class="theme-btn" data-color="#6a5acd" style="background-color: #6a5acd; color: white;" onclick="changeNavbarTheme('navbar-theme-slate-blue')">Slate Blue</button>
+            <button class="theme-btn" data-color="#ff6347" style="background-color: #ff6347; color: white;" onclick="changeNavbarTheme('navbar-theme-tomato-red')">Tomato Red</button>
+            <button class="theme-btn" data-color="#9932cc" style="background-color: #9932cc; color: white;" onclick="changeNavbarTheme('navbar-theme-dark-orchid')">Dark Orchid</button>
+            <button class="theme-btn" data-color="#a0522d" style="background-color: #a0522d; color: white;" onclick="changeNavbarTheme('navbar-theme-sienna')">Sienna</button>
+            <button class="theme-btn" data-color="#eee8aa" style="background-color: #eee8aa; color: #333;" onclick="changeNavbarTheme('navbar-theme-pale-goldenrod')">Pale Goldenrod</button>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+        </div>
             <div class="settings-item">
             <button id="logoutButton">Log out</button>
-        </div></div></div>
+        </div>
+        </div></div>
     </div>
 
     <script src="script.js"></script>
