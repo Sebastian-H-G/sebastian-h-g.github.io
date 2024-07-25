@@ -137,7 +137,20 @@ height: 40px;
 
 .page.visible {
     display: block;
+  animation: slideIn 0.5s ease-out;
 }
+/* Keyframes for slide-in */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 .settings-menu {
     margin: 20px;
     display: flex;
