@@ -92,7 +92,7 @@ function showLockscreen() {
 
 
 
-// scripts.js
+// Customizing themes
 
 // Modal functionality
 document.addEventListener('DOMContentLoaded', () => {
@@ -115,7 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
       modal.style.display = 'none';
     }, 500);
   };
-
   // Close modal when clicking outside of the modal content
   window.onclick = (event) => {
     if (event.target == modal) {
@@ -125,18 +124,36 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 500);
     }
   };
+  loadSettings();
 });
-
 // Theme switching functionality
 function changeTheme(themeName) {
-  console.log('Applying theme:', themeName); // Debug log
   document.body.className = themeName;
+  saveSettings('theme', themeName);
 }
 
 // Navbar theme switching functionality
 function changeNavbarTheme(themeName) {
   const navbar = document.querySelector('.navbar');
   navbar.className = `navbar ${themeName}`;
+  saveSettings('navbarTheme', themeName);
+}
+// Function to save settings to localStorage 
+function saveSettings(key, value){
+  localStorage.setItem(key, value);
+}
+// Function to load settings ferom localStorage
+function loadSettings() {
+  const theme = localStorage.getItem('theme');
+  if (theme) {
+    document.body.className = theme;
+  }
+
+  const navbarTheme = localStorage.getItem('navbarTheme');
+  if (navbarTheme) {
+    const navbar = document.querySelector('.navbar');
+    navbar.className = `navbar ${navbarTheme}`;
+  }
 }
 
 // Navbar navigation functionality
