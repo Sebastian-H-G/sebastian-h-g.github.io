@@ -452,7 +452,11 @@ text-align: center;
   width: 90%;
   position: relative;
 }
-
+/* CSS to add space below h2 headings in the modal */
+.modal-content h2 {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
 .close {
   color: #aaa;
   float: right;
@@ -498,7 +502,7 @@ text-align: center;
 
 /* Active Navbar Item */
 .modal-navbar a.active {
-  background-color: #007bff;
+  background-color: rgba(255, 0, 0, 0.5);
   color: white;
   border-radius: 5px;
 }
