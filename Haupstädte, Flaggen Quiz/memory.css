@@ -1,0 +1,129 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+  padding: 0;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+  justify-content: center;
+  align-items: center;
+    gap: 10px;
+    max-width: 90%;
+    margin: 20px auto;
+}
+
+.card {
+    position: relative;
+    width: 160px;
+    height: 120px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    cursor: pointer;
+}
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+}
+
+.card-face.front {
+    background-color: #4CAF50; /* Color for the front side */
+  z-index: 1;
+}
+
+.card-face.back {
+    background-color: #fff; /* Color for the back side */
+    color: black; /* Color for text on the back side */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotateY(180deg); /* Ensures back is hidden when not flipped */
+  padding: 0px;
+  z-index: 2;
+}
+
+.card-face img {
+    max-width: calc(100% - 20px); /* Account for padding */
+    max-height: calc(100% - 20px); /* Account for padding */
+    object-fit: contain; /* Ensure the image fits within the bounds */
+    display: block; /* Remove extra space around the image */
+}
+.animation-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex; /* Flexbox to center content */
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  margin: 2px;
+    background-color: rgba(76, 175, 80, 0.5); /* Semi-transparent green */
+    opacity: 0;
+    z-index: 3;
+  border: 3px solid green;
+    border-radius: 8px;
+    pointer-events: none; /* Ensure it doesn't block clicks */
+    animation: none; /* Ensure no animation initially */
+    box-sizing: border-box;
+}
+
+.card.correct .animation-overlay {
+    animation: flashGreen 2s;
+  animation-delay: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes flashGreen {
+    0% { opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0; }
+}
+.hidden {
+    display: none;
+}
+
+.win-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #4CAF50;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  z-index: 10;
+}
+
+#restart-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
