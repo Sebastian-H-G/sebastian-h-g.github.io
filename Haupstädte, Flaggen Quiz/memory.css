@@ -9,6 +9,7 @@ body {
     margin: 0;
   padding: 0;
 }
+
 .board {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -46,7 +47,10 @@ body {
 }
 
 .card-face.front {
-    background-color: #4CAF50; /* Color for the front side */
+    background-image: url('Bilder/memory.jpeg');
+    background-size: cover; /* Cover the entire screen */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent image from repeating */
   z-index: 1;
 }
 
