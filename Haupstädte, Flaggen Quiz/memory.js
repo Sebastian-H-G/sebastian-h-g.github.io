@@ -1,5 +1,6 @@
 // script.js
-document.addEventListener('DOMContentLoaded', () => {const allCards = [
+document.addEventListener('DOMContentLoaded', () => {
+    const allCards = [
     { name: 'Germany', img: 'flags/de.webp' },
     { name: 'France', img: 'flags/fr.webp' },
     { name: 'Italy', img: 'flags/it.webp' },
@@ -44,8 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {const allCards = [
     { name: 'San Marino', img: 'flags/sm.webp' },
     { name: 'Vatican City', img: 'flags/va.webp' },
 ];
+
     const maxPairs = 12;
     let cardsArray = [];
+    let currentPlayer = 1;
+    let player1Score = 0;
+    let player2Score = 0;
+    let isTwoPlayerMode = false;
 
     function selectRandomPairs() {
         const shuffled = [...allCards].sort(() => 0.5 - Math.random());
@@ -64,6 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {const allCards = [
     const board = document.getElementById('game-board');
     const winMessage = document.getElementById('win-message');
     const restartBtn = document.getElementById('restart-btn');
+    const currentPlayerElement = document.getElementById('current-player');
+    const switchTurnBtn = document.getElementById('switch-turn-btn');
+    const returnToModeBtn = document.getElementById('return-to-mode-btn');
+    const modeSelection = document.getElementById('mode-selection');
+    const status = document.getElementById('status');
+    const singlePlayerBtn = document.getElementById('single-player-btn');
+    const twoPlayerBtn = document.getElementById('two-player-btn');
     let firstCard, secondCard;
     let lockBoard = false;
     let matchedPairs = 0;
@@ -117,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {const allCards = [
 
         if (isMatch) {
             disableCards();
+            updateScore();
         } else {
             unflipCards();
         }
@@ -137,29 +151,80 @@ document.addEventListener('DOMContentLoaded', () => {const allCards = [
         }
     }
 
+    function updateScore() {
+        if (isTwoPlayerMode) {
+            if (currentPlayer === 1) {
+                player1Score++;
+            } else {
+                player2Score++;
+            }
+        }
+    }
+
     function unflipCards() {
         setTimeout(() => {
             firstCard.classList.remove('flipped');
             secondCard.classList.remove('flipped');
             resetBoard();
-        }, 1500);
+        }, 1000);
     }
 
     function resetBoard() {
         [firstCard, secondCard, lockBoard] = [null, null, false];
+        if (isTwoPlayerMode) {
+            switchTurn();
+        }
     }
 
+
     function showWinMessage() {
+        let winnerMessage = '';
+
+        if (isTwoPlayerMode) {
+            winnerMessage = player1Score > player2Score
+                ? 'Player 1 wins!'
+                : player2Score > player1Score
+                ? 'Player 2 wins!'
+                : 'It\'s a tie!';
+        } else {
+            winnerMessage = 'Congratulations, you won!';
+        }
+
+        document.getElementById('winner-message').textContent = winnerMessage;
         winMessage.classList.remove('hidden');
     }
 
     function restartGame() {
         matchedPairs = 0;
+        player1Score = 0;
+        player2Score = 0;
+        currentPlayer = 1;
+        isTwoPlayerMode = false;
+        currentPlayerElement.textContent = 'Player 1';
+        status.classList.add('hidden');
+        modeSelection.classList.remove('hidden');
         winMessage.classList.add('hidden');
+        board.classList.add('hidden');
+    }
+
+    function startGame(mode) {
+        isTwoPlayerMode = mode === 'two-player';
+        modeSelection.classList.add('hidden');
+        status.classList.remove('hidden');
+        board.classList.remove('hidden');
         createBoard();
     }
 
-    restartBtn.addEventListener('click', restartGame);
+    function returnToModeSelection() {
+        restartGame();
+    }
 
-    createBoard();
+    singlePlayerBtn.addEventListener('click', () => startGame('single-player'));
+    twoPlayerBtn.addEventListener('click', () => startGame('two-player'));
+    restartBtn.addEventListener('click', restartGame);
+    switchTurnBtn.addEventListener('click', switchTurn);
+    returnToModeBtn.addEventListener('click', returnToModeSelection);
+
+    // Initialize game
+    restartGame();
 });
