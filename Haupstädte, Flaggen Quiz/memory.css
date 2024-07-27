@@ -424,3 +424,102 @@ canvas {
         padding: 6px 12px;
     }
 }
+
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) {
+    .board {
+        grid-template-columns: repeat(4, 1fr); /* Default for landscape */
+    }
+
+    @media (max-width: 812px) {
+        .board {
+            grid-template-columns: repeat(3, 1fr); /* Reduce columns for smaller landscape screens */
+        }
+    }
+
+    @media (max-width: 568px) {
+        .board {
+            grid-template-columns: repeat(2, 1fr); /* Further reduce columns for very small landscape screens */
+        }
+    }
+
+    @media (max-width: 375px) {
+        .board {
+            grid-template-columns: 1fr; /* Single column for extremely small landscape screens */
+        }
+    }
+
+    /* Optional: Adjust button sizes for smaller landscape screens */
+    .sophisticated-button, #return-to-mode-btn, #switch-turn-btn, #restart-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    /* Adjust font sizes for smaller landscape screens */
+    #memory-heading1 {
+        font-size: 1.5em;
+    }
+
+    #memory-heading2 {
+        font-size: 1em;
+    }
+
+    #status {
+        font-size: 14px;
+    }
+
+    #win-message {
+        width: 80%;
+        padding: 8px;
+    }
+}
+
+/* Portrait orientation adjustments */
+@media (orientation: portrait) {
+    .board {
+        grid-template-columns: repeat(4, 1fr); /* Default for portrait */
+    }
+
+    @media (max-width: 430px) {
+        .board {
+            grid-template-columns: repeat(3, 1fr); /* Reduce columns for smaller portrait screens */
+        }
+    }
+
+    @media (max-width: 390px) {
+        .board {
+            grid-template-columns: repeat(2, 1fr); /* Further reduce columns for very small portrait screens */
+        }
+    }
+
+    @media (max-width: 320px) {
+        .board {
+            grid-template-columns: 1fr; /* Single column for extremely small portrait screens */
+        }
+    }
+
+    /* Optional: Adjust button sizes for smaller portrait screens */
+    .sophisticated-button, #return-to-mode-btn, #switch-turn-btn, #restart-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    /* Adjust font sizes for smaller portrait screens */
+    #memory-heading1 {
+        font-size: 2em;
+    }
+
+    #memory-heading2 {
+        font-size: 1.2em;
+    }
+
+    #status {
+        font-size: 16px;
+    }
+
+    #win-message {
+        width: 90%;
+        padding: 10px;
+    }
+}
