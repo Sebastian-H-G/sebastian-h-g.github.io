@@ -214,12 +214,12 @@ function createConfetti() {
         if (player1Score > player2Score) {
             winnerMessage = `
                 <h2>🎉 Player 1 wins! 🎉</h2>
-                <img src="win.png" alt="Player 1 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
+                <img src="Bilder/win.png" alt="Player 1 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
             `;
         } else if (player2Score > player1Score) {
             winnerMessage = `
                 <h2>🎉 Player 2 wins! 🎉</h2>
-                <img src="win.png" alt="Player 2 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
+                <img src="Bilder/win.png" alt="Player 2 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
             `;
         } else {
             winnerMessage = `
@@ -229,7 +229,7 @@ function createConfetti() {
     } else {
         winnerMessage = `
             <h2>🏆 Congratulations, you won! 🏆</h2>
-            <img src="win.png" alt="Winner" class="win-image"><br>
+            <img src="Bilder/win.png" alt="Winner" class="win-image"><br>
             <button id="restart-btn">Restart Game</button>
         `;
     }
