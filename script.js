@@ -1,286 +1,240 @@
-// script.js
-document.addEventListener('DOMContentLoaded', () => {
-    const allCards = [
-    { name: 'Germany', img: 'flags/de.webp' },
-    { name: 'France', img: 'flags/fr.webp' },
-    { name: 'Italy', img: 'flags/it.webp' },
-    { name: 'Spain', img: 'flags/es.webp' },
-    { name: 'United Kingdom', img: 'flags/gb.webp' },
-    { name: 'Netherlands', img: 'flags/nl.webp' },
-    { name: 'Belgium', img: 'flags/be.webp' },
-    { name: 'Switzerland', img: 'flags/ch.webp' },
-    { name: 'Austria', img: 'flags/at.webp' },
-    { name: 'Sweden', img: 'flags/se.webp' },
-    { name: 'Norway', img: 'flags/no.webp' },
-    { name: 'Denmark', img: 'flags/dk.webp' },
-    { name: 'Finland', img: 'flags/fi.webp' },
-    { name: 'Ireland', img: 'flags/ie.webp' },
-    { name: 'Portugal', img: 'flags/pt.webp' },
-    { name: 'Greece', img: 'flags/gr.webp' },
-    { name: 'Poland', img: 'flags/pl.webp' },
-    { name: 'Czech Republic', img: 'flags/cz.webp' },
-    { name: 'Hungary', img: 'flags/hu.webp' },
-    { name: 'Slovakia', img: 'flags/sk.webp' },
-    { name: 'Slovenia', img: 'flags/si.webp' },
-    { name: 'Croatia', img: 'flags/hr.webp' },
-    { name: 'Bulgaria', img: 'flags/bg.webp' },
-    { name: 'Romania', img: 'flags/ro.webp' },
-    { name: 'Serbia', img: 'flags/rs.webp' },
-    { name: 'Montenegro', img: 'flags/me.webp' },
-    { name: 'North Macedonia', img: 'flags/mk.webp' },
-    { name: 'Albania', img: 'flags/al.webp' },
-    { name: 'Bosnia and Herzegovina', img: 'flags/ba.webp' },
-    { name: 'Estonia', img: 'flags/ee.webp' },
-    { name: 'Latvia', img: 'flags/lv.webp' },
-    { name: 'Lithuania', img: 'flags/lt.webp' },
-    { name: 'Ukraine', img: 'flags/ua.webp' },
-    { name: 'Moldova', img: 'flags/md.webp' },
-    { name: 'Belarus', img: 'flags/by.webp' },
-    { name: 'Russia', img: 'flags/ru.webp' },
-    { name: 'Turkey', img: 'flags/tr.webp' },
-    { name: 'Cyprus', img: 'flags/cy.webp' },
-    { name: 'Iceland', img: 'flags/is.webp' },
-    { name: 'Liechtenstein', img: 'flags/li.webp' },
-    { name: 'Monaco', img: 'flags/mc.webp' },
-    { name: 'San Marino', img: 'flags/sm.webp' },
-    { name: 'Vatican City', img: 'flags/va.webp' },
-];
-
-    const maxPairs = 12;
-    let cardsArray = [];
-    let currentPlayer = 1;
-    let player1Score = 0;
-    let player2Score = 0;
-    let isTwoPlayerMode = false;
-
-    function selectRandomPairs() {
-        const shuffled = [...allCards].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, maxPairs);
-    }
-
-    function createCardsArray() {
-        const selectedPairs = selectRandomPairs();
-        cardsArray = [];
-        selectedPairs.forEach(pair => {
-            cardsArray.push({ ...pair, type: 'name' });
-            cardsArray.push({ ...pair, type: 'flag' });
-        });
-    }
-
-    const board = document.getElementById('game-board');
-    const winMessage = document.getElementById('win-message');
-    const restartBtn = document.getElementById('restart-btn');
-    const currentPlayerElement = document.getElementById('current-player');
-    const switchTurnBtn = document.getElementById('switch-turn-btn');
-    const returnToModeBtn = document.getElementById('return-to-mode-btn');
-    const modeSelection = document.getElementById('mode-selection');
-    const status = document.getElementById('status');
-    const singlePlayerBtn = document.getElementById('single-player-btn');
-    const twoPlayerBtn = document.getElementById('two-player-btn');
-    let firstCard, secondCard;
-    let lockBoard = false;
-    let matchedPairs = 0;
-
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
-    function createBoard() {
-        createCardsArray();
-        shuffle(cardsArray);
-        board.innerHTML = '';
-        cardsArray.forEach(card => {
-            const cardElement = document.createElement('div');
-            cardElement.classList.add('card');
-            cardElement.dataset.name = card.name;
-            cardElement.dataset.type = card.type;
-            cardElement.innerHTML = `
-                <div class="card-face front"></div>
-                <div class="card-face back">${card.type === 'name' ? card.name : `<img src="${card.img}" alt="${card.name}">`}</div>
-                <div class="animation-overlay"></div>
-            `;
-            cardElement.addEventListener('click', flipCard);
-            board.appendChild(cardElement);
-        });
-    }
-
-    function flipCard() {
-        if (lockBoard) return;
-        if (this === firstCard) return;
-
-        this.classList.add('flipped');
-
-        if (!firstCard) {
-            firstCard = this;
-            return;
-        }
-
-        secondCard = this;
-        lockBoard = true;
-
-        checkForMatch();
-    }
-
-    function checkForMatch() {
-        const isMatch = firstCard.dataset.name === secondCard.dataset.name &&
-                        firstCard.dataset.type !== secondCard.dataset.type;
-
-        if (isMatch) {
-            disableCards();
-            updateScore();
-        } else {
-            unflipCards();
-        }
-    }
-
-    function disableCards() {
-        firstCard.removeEventListener('click', flipCard);
-        secondCard.removeEventListener('click', flipCard);
-
-        firstCard.classList.add('correct');
-        secondCard.classList.add('correct');
-
-        matchedPairs++;
-        resetBoard();
-
-        if (matchedPairs === maxPairs) {
-            setTimeout(showWinMessage, 500);
-        }
-    }
-
-    function updateScore() {
-        if (isTwoPlayerMode) {
-            if (currentPlayer === 1) {
-                player1Score++;
-            } else {
-                player2Score++;
-            }
-        }
-    }
-
-    function unflipCards() {
-        setTimeout(() => {
-            firstCard.classList.remove('flipped');
-            secondCard.classList.remove('flipped');
-            resetBoard();
-        }, 1000);
-    }
-
-    function resetBoard() {
-        [firstCard, secondCard, lockBoard] = [null, null, false];
-        if (isTwoPlayerMode) {
-            switchTurn();
-        }
-    }
-function createConfetti() {
-    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
-
-    function createPiece() {
-        const piece = document.createElement('div');
-        piece.classList.add('confetti');
-        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.width = Math.random() * 20 + 'px';
-        piece.style.height = Math.random() * 20 + 'px';
-        piece.style.left = (Math.random() * window.innerWidth) + 'px';
-        piece.style.top = '-20px';
-        piece.style.animationDuration = '3s'; // Set animation duration to 3 seconds
-        document.body.appendChild(piece);
-        piece.addEventListener('animationend', function() {
-            piece.parentNode.removeChild(piece);
-        });
-    }
-
-    // Adjust the number of confetti pieces
-    const totalPieces = 700;
-    const interval = 5; // milliseconds
-
-    let i = 0;
-    let intervalId = setInterval(function() {
-        createPiece();
-        i++;
-        if (i >= totalPieces) {
-            clearInterval(intervalId);
-        }
-    }, interval);
-}
-
-    function showWinMessage() {
-    let winnerMessage = '';
-
-    if (isTwoPlayerMode) {
-        if (player1Score > player2Score) {
-            winnerMessage = `
-                <h2>🎉 Player 1 wins! 🎉</h2>
-                <img src="win.png" alt="Player 1 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
-            `;
-        } else if (player2Score > player1Score) {
-            winnerMessage = `
-                <h2>🎉 Player 2 wins! 🎉</h2>
-                <img src="win.png" alt="Player 2 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
-            `;
-        } else {
-            winnerMessage = `
-                <h2>🤝 It\'s a tie! 🤝</h2><br>
-            <br><button id="restart-btn">Restart Game</button>`;
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    // Check login state on page load
+    if (localStorage.getItem('loggedIn') === 'true') {
+        showAppMenu();
     } else {
-        winnerMessage = `
-            <h2>🏆 Congratulations, you won! 🏆</h2>
-            <img src="win.png" alt="Winner" class="win-image"><br>
-            <button id="restart-btn">Restart Game</button>
-        `;
+        showLockscreen();
     }
+});
+document.getElementById('showPasswordField').addEventListener('click', function() {
+    document.querySelector('.password-field').classList.remove('hidden');
+    document.querySelector('.background').style.filter = 'blur(5px)';
+    this.classList.add('hidden');
+});
 
-    document.getElementById('win-message').innerHTML = winnerMessage;
-    winMessage.classList.remove('hidden');
-      createConfetti();
-      document.getElementById('restart-btn').addEventListener('click', restartGame);
+document.getElementById('unlockButton').addEventListener('click', function() {
+    var password = document.getElementById('password').value;
+    if (password === '1234') { // Example password
+        localStorage.setItem('loggedIn', 'true'); // Save login state
+        showAppMenu();
+    } else {
+        alert('Incorrect password');
+    }
+});
+
+document.getElementById('logoutButton').addEventListener('click', function() {
+    localStorage.removeItem('loggedIn'); // Clear login state
+    showLockscreen();
+});
+
+document.getElementById('darkModeToggle').addEventListener('change', function() {
+    if (this.checked) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+});
+
+document.querySelectorAll('.navbar a').forEach(link => {
+    link.addEventListener('click', function(event) {
+        event.preventDefault();
+        const targetPageId = this.getAttribute('href').substring(1); // Get page ID without the #
+        
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('visible'));
+        
+        // Show the targeted page
+        document.getElementById(targetPageId).classList.add('visible');
+
+        // Highlight the active icon
+        document.querySelectorAll('.navbar a').forEach(navLink => navLink.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+
+function updateClock() {
+    const clockElement = document.getElementById('clock');
+    const dayOfWeekElement = document.getElementById('dayOfWeek');
+    
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    
+    clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+    dayOfWeekElement.textContent = now.toLocaleDateString('en-US', options);
 }
 
-    function restartGame() {
-        matchedPairs = 0;
-        player1Score = 0;
-        player2Score = 0;
-        currentPlayer = 1;
-        isTwoPlayerMode = false;
-        currentPlayerElement.textContent = 'Player 1';
-        status.classList.add('hidden');
-        modeSelection.classList.remove('hidden');
-        winMessage.classList.add('hidden');
-        board.classList.add('hidden');
-      createBoard();
-    }
+setInterval(updateClock, 1000);
+updateClock();
 
-    function startGame(mode) {
-        isTwoPlayerMode = mode === 'two-player';
-        modeSelection.classList.add('hidden');
-        status.classList.remove('hidden');
-        board.classList.remove('hidden');
-        createBoard();
-    }
-  function switchTurn() {
-  currentPlayer = (currentPlayer === 1) ? 2 : 1;
-  currentPlayerElement.textContent = `Player ${currentPlayer}`;
+function showAppMenu() {
+    document.querySelector('.lockscreen').classList.add('hidden');
+    document.querySelector('.app-menu').classList.remove('hidden');
+    document.querySelector('.background').classList.add('hidden');
+    document.querySelector('.background').style.filter = 'blur(0)';
 }
 
-// Attach event listener
-switchTurnBtn.addEventListener('click', switchTurn);
-function returnToModeSelection() {
-  restartGame();
+function showLockscreen() {
+    document.querySelector('.lockscreen').classList.remove('hidden');
+    document.querySelector('.app-menu').classList.add('hidden');
+    document.getElementById('showPasswordField').classList.remove('hidden');
+    document.querySelector('.password-field').classList.add('hidden');
+    document.getElementById('password').value = '';
+    document.querySelector('.background').classList.remove('hidden');
+    document.querySelector('.background').style.filter = 'blur(0)';
 }
 
-// Attach event listener
-returnToModeBtn.addEventListener('click', returnToModeSelection);
 
-    singlePlayerBtn.addEventListener('click', () => startGame('single-player'));
-    twoPlayerBtn.addEventListener('click', () => startGame('two-player'));
-    restartBtn.addEventListener('click', restartGame);
-    switchTurnBtn.addEventListener('click', switchTurn);
-    returnToModeBtn.addEventListener('click', returnToModeSelection);
 
-    // Initialize game
-    restartGame();
+
+
+
+// Customizing themes
+
+// Modal functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('myModal');
+  const btn = document.getElementById('openModalButton');
+  const span = document.getElementsByClassName('close')[0];
+
+  // Open the modal
+  btn.onclick = () => {
+    modal.style.display = 'block';
+    setTimeout(() => {
+      modal.style.opacity = 1;
+    }, 10); // Delay to trigger transition
+  };
+
+  // Close the modal
+  span.onclick = () => {
+    modal.style.opacity = 0;
+    setTimeout(() => {
+      modal.style.display = 'none';
+    }, 500);
+  };
+  // Close modal when clicking outside of the modal content
+  window.onclick = (event) => {
+    if (event.target == modal) {
+      modal.style.opacity = 0;
+      setTimeout(() => {
+        modal.style.display = 'none';
+      }, 500);
+    }
+  };
+  loadSettings();
+});
+// Theme switching functionality
+function changeTheme(themeName) {
+  document.body.className = themeName;
+  saveSettings('theme', themeName);
+}
+
+// Navbar theme switching functionality
+function changeNavbarTheme(themeName) {
+  const navbar = document.querySelector('.navbar');
+  navbar.className = `navbar ${themeName}`;
+  saveSettings('navbarTheme', themeName);
+}
+// Function to save settings to localStorage 
+function saveSettings(key, value){
+  localStorage.setItem(key, value);
+}
+// Function to load settings ferom localStorage
+function loadSettings() {
+  const theme = localStorage.getItem('theme');
+  if (theme) {
+    document.body.className = theme;
+  }
+
+  const navbarTheme = localStorage.getItem('navbarTheme');
+  if (navbarTheme) {
+    const navbar = document.querySelector('.navbar');
+    navbar.className = `navbar ${navbarTheme}`;
+  }
+}
+
+// Navbar navigation functionality
+function navigate(section) {
+  const modalBody = document.getElementById('modalBody');
+  let content = '';
+
+  switch (section) {
+    case 'home':
+      content = '<h2>Welcome to the Modal Home</h2><p>This is the home section of the modal.</p>';
+      break;
+    case 'themes':
+      content = `
+        <h2>Customizable Themes</h2>
+        <div class="theme-selector">
+          <button class="theme-btn" style="background-color: #ffffff; color: #333;" onclick="changeTheme('theme-default')">Default</button>
+          <button class="theme-btn" style="background-color: #121212; color: white;" onclick="changeTheme('theme-dark')">Dark</button>
+          <button class="theme-btn" style="background-color: #f0f0f0; color: #333;" onclick="changeTheme('theme-light')">Light</button>
+          <button class="theme-btn" style="background-color: #ff6b6b; color: white;" onclick="changeTheme('theme-colorful')">Colorful</button>
+          <button class="theme-btn" style="background-color: #ffff00; color: #333;" onclick="changeTheme('theme-yellow')">Yellow</button>
+          <button class="theme-btn" style="background-color: #98ff98; color: #333;" onclick="changeTheme('theme-mint-green')">Mint Green</button>
+          <button class="theme-btn" style="background-color: #fbb6ce; color: #333;" onclick="changeTheme('theme-pale-pink')">Pale Pink</button>
+          <button class="theme-btn" style="background-color: #4682b4; color: white;" onclick="changeTheme('theme-steel-blue')">Steel Blue</button>
+          <button class="theme-btn" style="background-color: #00ffff; color: #333;" onclick="changeTheme('theme-cyan')">Cyan</button>
+          <button class="theme-btn" style="background-color: #8b0000; color: white;" onclick="changeTheme('theme-dark-red')">Dark Red</button>
+          <button class="theme-btn" style="background-color: #008080; color: white;" onclick="changeTheme('theme-teal')">Teal</button>
+          <button class="theme-btn" style="background-color: #dcb1b1; color: #333;" onclick="changeTheme('theme-dusty-rose')">Dusty Rose</button>
+          <button class="theme-btn" style="background-color: #ffa500; color: #333;" onclick="changeTheme('theme-orange')">Orange</button>
+          <button class="theme-btn" style="background-color: #191970; color: white;" onclick="changeTheme('theme-midnight-blue')">Midnight Blue</button>
+          <button class="theme-btn" style="background-color: #6b8e23; color: white;" onclick="changeTheme('theme-olive-green')">Olive Green</button>
+          <button class="theme-btn" style="background-color: #a9a9a9; color: #333;" onclick="changeTheme('theme-warm-grey')">Warm Grey</button>
+          <button class="theme-btn" style="background-color: #4169e1; color: white;" onclick="changeTheme('theme-royal-blue')">Royal Blue</button>
+          <button class="theme-btn" style="background-color: #9c9a6c; color: #333;" onclick="changeTheme('theme-sage-green')">Sage Green</button>
+          <button class="theme-btn" style="background-color: #b7410e; color: white;" onclick="changeTheme('theme-rust')">Rust</button>
+          <button class="theme-btn" style="background-color: #add8e6; color: #333;" onclick="changeTheme('theme-light-blue')">Light Blue</button>
+          <button class="theme-btn" style="background-color: #8a9a5b; color: white;" onclick="changeTheme('theme-moss-green')">Moss Green</button>
+          <button class="theme-btn" style="background-color: #ff0000; color: white;" onclick="changeTheme('theme-bright-red')">Bright Red</button>
+        </div>
+         <h2>Navbar Themes</h2>
+          <div class="theme-selector">
+            <button class="theme-btn" data-color="#333333" style="background-color: #333333; color: white;" onclick="changeNavbarTheme('navbar-theme-default')">Default</button>
+            <button class="theme-btn" data-color="#000000" style="background-color: #000000; color: white;" onclick="changeNavbarTheme('navbar-theme-dark')">Dark</button>
+            <button class="theme-btn" data-color="#ffffff" style="background-color: #ffffff; color: #333;" onclick="changeNavbarTheme('navbar-theme-light')">Light</button>
+            <button class="theme-btn" data-color="#ff6b6b" style="background-color: #ff6b6b; color: white;" onclick="changeNavbarTheme('navbar-theme-colorful')">Colorful</button>
+            <button class="theme-btn" data-color="#001f3f" style="background-color: #001f3f; color: white;" onclick="changeNavbarTheme('navbar-theme-navy-blue')">Navy Blue</button>
+            <button class="theme-btn" data-color="#d3d3d3" style="background-color: #d3d3d3; color: #333;" onclick="changeNavbarTheme('navbar-theme-light-gray')">Light Gray</button>
+            <button class="theme-btn" data-color="#2f4f4f" style="background-color: #2f4f4f; color: white;" onclick="changeNavbarTheme('navbar-theme-dark-slate-gray')">Dark Slate Gray</button>
+            <button class="theme-btn" data-color="#e6e6fa" style="background-color: #e6e6fa; color: #333;" onclick="changeNavbarTheme('navbar-theme-lavender')">Lavender</button>
+            <button class="theme-btn" data-color="#228b22" style="background-color: #228b22; color: white;" onclick="changeNavbarTheme('navbar-theme-forest-green')">Forest Green</button>
+            <button class="theme-btn" data-color="#6a5acd" style="background-color: #6a5acd; color: white;" onclick="changeNavbarTheme('navbar-theme-slate-blue')">Slate Blue</button>
+            <button class="theme-btn" data-color="#ff6347" style="background-color: #ff6347; color: white;" onclick="changeNavbarTheme('navbar-theme-tomato-red')">Tomato Red</button>
+            <button class="theme-btn" data-color="#9932cc" style="background-color: #9932cc; color: white;" onclick="changeNavbarTheme('navbar-theme-dark-orchid')">Dark Orchid</button>
+            <button class="theme-btn" data-color="#a0522d" style="background-color: #a0522d; color: white;" onclick="changeNavbarTheme('navbar-theme-sienna')">Sienna</button>
+            <button class="theme-btn" data-color="#eee8aa" style="background-color: #eee8aa; color: #333;" onclick="changeNavbarTheme('navbar-theme-pale-goldenrod')">Pale Goldenrod</button>
+      `;
+      break;
+    case 'settings':
+      content = '<h2>Settings</h2><p>This is the settings section.</p>';
+      break;
+    default:
+      content = '<h2>Welcome</h2><p>Select a section from the navbar.</p>';
+      break;
+  }
+
+
+  modalBody.innerHTML = content;
+
+  // Highlight the active navbar item
+  highlightActiveNavItem(section);
+}
+
+// Function to highlight the active navbar item
+function highlightActiveNavItem(activeSection) {
+  const navItems = document.querySelectorAll('.modal-navbar a');
+  navItems.forEach(item => item.classList.remove('active'));
+  const activeItem = document.querySelector(`.modal-navbar a[href="#${activeSection}"]`);
+  if (activeItem) {
+    activeItem.classList.add('active');
+  }
+}
+
+// Load default section
+document.addEventListener('DOMContentLoaded', () => {
+  navigate('home');
 });
