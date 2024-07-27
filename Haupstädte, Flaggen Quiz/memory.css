@@ -317,7 +317,7 @@ canvas {
   }
 
   .board {
-    grid-template-columns: repeat(4, 1fr); /* Adjust grid layout for smaller screens */
+    grid-template-columns: repeat(3, 1fr); /* Adjust grid layout for smaller screens */
     gap: 5px; /* Adjust gap between cards */
   }
 
