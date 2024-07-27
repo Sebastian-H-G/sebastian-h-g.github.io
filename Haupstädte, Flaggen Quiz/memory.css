@@ -22,7 +22,7 @@ body {
        4px 4px 0 #444,
        5px 5px 0 #444;
  transition: transform 0.3s ease-in-out;
- }
+ } 
 #memory-heading2:hover {
   transform: rotateX(20deg) rotateY(20deg);
 }
