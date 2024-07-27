@@ -299,13 +299,17 @@ canvas {
     }
 
 /* iPhone 15 series media queries */
+@media (orientation: portrait) {
 @media (max-width: 932px) {
     #memory-heading1 {
-        font-size: 3em;
+        font-size: 3.5em;
     }
     #memory-heading2 {
         font-size: 2.5em;
     }
+#smaller-heading {
+font-size: 3em;
+}
     .sophisticated-button {
         padding: 10px 20px;
         font-size: 16px;
@@ -338,4 +342,50 @@ canvas {
     #restart-btn {
         padding: 8px 16px;
     }
+}
+}
+@media (orientation: landscape) {
+@media (max-width: 430px) {
+    #memory-heading1 {
+        font-size: 3em;
+    }
+    #memory-heading2 {
+        font-size: 2em;
+    }
+	#smaller-heading {
+	font-size: 2em;
+	}
+    .sophisticated-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 10px 15px;
+    }
+    .board {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 7px;
+    }
+    .card {
+        width: 120px;
+        height: 100px;
+    }
+    .card-face img {
+        max-width: calc(100% - 10px);
+        max-height: calc(100% - 10px);
+    }
+    #return-to-mode-btn,
+    #switch-turn-btn {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+    #status {
+        font-size: 18px;
+    }
+    #win-message {
+        width: 80%;
+        padding: 15px;
+    }
+    #restart-btn {
+        padding: 8px 16px;
+    }
+
 }
