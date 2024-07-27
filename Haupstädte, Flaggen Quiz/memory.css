@@ -432,6 +432,10 @@ canvas {
         grid-template-columns: repeat(4, 1fr); /* Default for landscape */
     }
 
+    .card-face img {
+        max-width: calc(100% - 8px);
+        max-height: calc(100% - 8px);
+    }
     @media (max-width: 812px) {
         .board {
             grid-template-columns: repeat(3, 1fr); /* Reduce columns for smaller landscape screens */
@@ -499,6 +503,10 @@ canvas {
         }
     }
 
+    .card-face img {
+        max-width: calc(100% - 8px);
+        max-height: calc(100% - 8px);
+    }
     /* Optional: Adjust button sizes for smaller portrait screens */
     .sophisticated-button, #return-to-mode-btn, #switch-turn-btn, #restart-btn {
         font-size: 14px;
