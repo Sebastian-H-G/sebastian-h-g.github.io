@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: 'Vatican City', img: 'flags/va.webp' },
 ];
 
-    const maxPairs = 12;
+    const maxPairs = 1;
     let cardsArray = [];
     let currentPlayer = 1;
     let player1Score = 0;
@@ -175,24 +175,69 @@ document.addEventListener('DOMContentLoaded', () => {
             switchTurn();
         }
     }
+function createConfetti() {
+    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
 
+    function createPiece() {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti');
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = Math.random() * 20 + 'px';
+        piece.style.height = Math.random() * 20 + 'px';
+        piece.style.left = (Math.random() * window.innerWidth) + 'px';
+        piece.style.top = '-20px';
+        piece.style.animationDuration = '3s'; // Set animation duration to 3 seconds
+        document.body.appendChild(piece);
+        piece.addEventListener('animationend', function() {
+            piece.parentNode.removeChild(piece);
+        });
+    }
+
+    // Adjust the number of confetti pieces
+    const totalPieces = 700;
+    const interval = 5; // milliseconds
+
+    let i = 0;
+    let intervalId = setInterval(function() {
+        createPiece();
+        i++;
+        if (i >= totalPieces) {
+            clearInterval(intervalId);
+        }
+    }, interval);
+}
 
     function showWinMessage() {
-        let winnerMessage = '';
+    let winnerMessage = '';
 
-        if (isTwoPlayerMode) {
-            winnerMessage = player1Score > player2Score
-                ? 'Player 1 wins!'
-                : player2Score > player1Score
-                ? 'Player 2 wins!'
-                : 'It\'s a tie!';
+    if (isTwoPlayerMode) {
+        if (player1Score > player2Score) {
+            winnerMessage = `
+                <h2>🎉 Player 1 wins! 🎉</h2>
+                <img src="win.png" alt="Player 1 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
+            `;
+        } else if (player2Score > player1Score) {
+            winnerMessage = `
+                <h2>🎉 Player 2 wins! 🎉</h2>
+                <img src="win.png" alt="Player 2 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
+            `;
         } else {
-            winnerMessage = 'Congratulations, you won!';
+            winnerMessage = `
+                <h2>🤝 It\'s a tie! 🤝</h2><br>
+            <br><button id="restart-btn">Restart Game</button>`;
         }
-
-        document.getElementById('winner-message').textContent = winnerMessage;
-        winMessage.classList.remove('hidden');
+    } else {
+        winnerMessage = `
+            <h2>🏆 Congratulations, you won! 🏆</h2>
+            <img src="win.png" alt="Winner" class="win-image"><br>
+            <button id="restart-btn">Restart Game</button>
+        `;
     }
+
+    document.getElementById('win-message').innerHTML = winnerMessage;
+    winMessage.classList.remove('hidden');
+      createConfetti();
+}
 
     function restartGame() {
         matchedPairs = 0;
@@ -214,10 +259,19 @@ document.addEventListener('DOMContentLoaded', () => {
         board.classList.remove('hidden');
         createBoard();
     }
+  function switchTurn() {
+  currentPlayer = (currentPlayer === 1) ? 2 : 1;
+  currentPlayerElement.textContent = `Player ${currentPlayer}`;
+}
 
-    function returnToModeSelection() {
-        restartGame();
-    }
+// Attach event listener
+switchTurnBtn.addEventListener('click', switchTurn);
+function returnToModeSelection() {
+  restartGame();
+}
+
+// Attach event listener
+returnToModeBtn.addEventListener('click', returnToModeSelection);
 
     singlePlayerBtn.addEventListener('click', () => startGame('single-player'));
     twoPlayerBtn.addEventListener('click', () => startGame('two-player'));
