@@ -385,6 +385,9 @@ canvas {
     }
 }
 @media (max-width: 932px) {
+	body {
+		background-color: red;
+	}
     #memory-heading1 {
         font-size: 2em;
     }
