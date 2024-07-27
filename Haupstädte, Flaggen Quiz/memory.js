@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cardsArray.push({ ...pair, type: 'flag' });
         });
     }
+
     const board = document.getElementById('game-board');
     const winMessage = document.getElementById('win-message');
     const restartBtn = document.getElementById('restart-btn');
@@ -122,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         checkForMatch();
     }
+
     function checkForMatch() {
         const isMatch = firstCard.dataset.name === secondCard.dataset.name &&
                         firstCard.dataset.type !== secondCard.dataset.type;
@@ -212,12 +214,12 @@ function createConfetti() {
         if (player1Score > player2Score) {
             winnerMessage = `
                 <h2>🎉 Player 1 wins! 🎉</h2>
-                <img src="Bilder/win.png" alt="Player 1 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
+                <img src="win.png" alt="Player 1 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
             `;
         } else if (player2Score > player1Score) {
             winnerMessage = `
                 <h2>🎉 Player 2 wins! 🎉</h2>
-                <img src="Bilder/win.png" alt="Player 2 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
+                <img src="win.png" alt="Player 2 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
             `;
         } else {
             winnerMessage = `
@@ -227,7 +229,7 @@ function createConfetti() {
     } else {
         winnerMessage = `
             <h2>🏆 Congratulations, you won! 🏆</h2>
-            <img src="Bilder/win.png" alt="Winner" class="win-image"><br>
+            <img src="win.png" alt="Winner" class="win-image"><br>
             <button id="restart-btn">Restart Game</button>
         `;
     }
@@ -235,6 +237,7 @@ function createConfetti() {
     document.getElementById('win-message').innerHTML = winnerMessage;
     winMessage.classList.remove('hidden');
       createConfetti();
+      document.getElementById('restart-btn').addEventListener('click', restartGame);
 }
 
     function restartGame() {
@@ -248,6 +251,7 @@ function createConfetti() {
         modeSelection.classList.remove('hidden');
         winMessage.classList.add('hidden');
         board.classList.add('hidden');
+      createBoard();
     }
 
     function startGame(mode) {
