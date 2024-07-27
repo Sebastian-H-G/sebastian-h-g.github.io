@@ -316,8 +316,8 @@ canvas {
         gap: 5px;
     }
     .card {
-        width: 100px;
-        height: 80px;
+        width: 80px;
+        height: 60px;
     }
     .card-face img {
         max-width: calc(100% - 10px);
@@ -346,8 +346,8 @@ canvas {
         gap: 5px;
     }
     .card {
-        width: 90px;
-        height: 70px;
+        width: 80px;
+        height: 60px;
     }
     .card-face img {
         max-width: calc(100% - 10px);
@@ -361,8 +361,8 @@ canvas {
         gap: 5px;
     }
     .card {
-        width: 95px;
-        height: 75px;
+        width: 80px;
+        height: 60px;
     }
     .card-face img {
         max-width: calc(100% - 10px);
@@ -376,8 +376,8 @@ canvas {
         gap: 5px;
     }
     .card {
-        width: 100px;
-        height: 80px;
+        width: 80px;
+        height: 60px;
     }
     .card-face img {
         max-width: calc(100% - 10px);
