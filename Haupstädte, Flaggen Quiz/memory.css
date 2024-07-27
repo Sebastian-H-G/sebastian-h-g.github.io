@@ -299,12 +299,12 @@ canvas {
     }
 
 /* iPhone 15 series media queries */
-@media (max-width: 495px) {
+@media (max-width: 932px) {
     #memory-heading1 {
-        font-size: 2.5em;
+        font-size: 3em;
     }
     #memory-heading2 {
-        font-size: 1.5em;
+        font-size: 2.5em;
     }
     .sophisticated-button {
         padding: 10px 20px;
@@ -312,8 +312,8 @@ canvas {
         margin: 10px 15px;
     }
     .board {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
     }
     .card {
         width: 100px;
@@ -337,200 +337,5 @@ canvas {
     }
     #restart-btn {
         padding: 8px 16px;
-    }
-	.card-face img {
-        max-width: calc(100% - 10px);
-        max-height: calc(100% - 10px);
-    }
-}
-/* Additional styles for smaller devices */
-@media (max-width: 400px) {
-    #memory-heading1 {
-        font-size: 2em;
-    }
-    #memory-heading2 {
-        font-size: 1.2em;
-    }
-    .sophisticated-button {
-        padding: 8px 15px;
-        font-size: 14px;
-        margin: 5px 10px;
-    }
-    .board {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 5px;
-    }
-    .card {
-        width: 80px;
-        height: 60px;
-    }
-    .card-face img {
-        max-width: calc(100% - 8px);
-        max-height: calc(100% - 8px);
-    }
-    #return-to-mode-btn,
-    #switch-turn-btn {
-        padding: 5px 8px;
-        font-size: 12px;
-    }
-    #status {
-        font-size: 16px;
-    }
-    #win-message {
-        width: 75%;
-        padding: 10px;
-    }
-    #restart-btn {
-        padding: 6px 12px;
-    }
-}
-@media (max-width: 932px) {
-	body {
-    background-color: #1e1e1e;}
-    #memory-heading1 {
-        font-size: 2em;
-    }
-    #memory-heading2 {
-        font-size: 1.2em;
-    }
-    .sophisticated-button {
-        padding: 8px 15px;
-        font-size: 14px;
-        margin: 5px 10px;
-    }
-    .board {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 5px;
-    }
-    .card {
-        width: 120px;
-        height: 100px;
-    }
-    .card-face img {
-        max-width: calc(100% - 8px);
-        max-height: calc(100% - 8px);
-    }
-    #return-to-mode-btn,
-    #switch-turn-btn {
-        padding: 5px 8px;
-        font-size: 12px;
-    }
-    #status {
-        font-size: 16px;
-    }
-    #win-message {
-        width: 75%;
-        padding: 10px;
-    }
-    #restart-btn {
-        padding: 6px 12px;
-    }
-}
-
-
-/* Landscape orientation adjustments */
-@media (orientation: landscape) {
-    .board {
-        grid-template-columns: repeat(5, 1fr); /* Default for landscape */
-    }
-
-    .card-face img {
-        max-width: calc(100% - 8px);
-        max-height: calc(100% - 8px);
-    }
-    @media (max-width: 812px) {
-        .board {
-            grid-template-columns: repeat(3, 1fr); /* Reduce columns for smaller landscape screens */
-        }
-    }
-
-    @media (max-width: 568px) {
-        .board {
-            grid-template-columns: repeat(2, 1fr); /* Further reduce columns for very small landscape screens */
-        }
-    }
-
-    @media (max-width: 375px) {
-        .board {
-            grid-template-columns: 1fr; /* Single column for extremely small landscape screens */
-        }
-    }
-
-    /* Optional: Adjust button sizes for smaller landscape screens */
-    .sophisticated-button, #return-to-mode-btn, #switch-turn-btn, #restart-btn {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
-
-    /* Adjust font sizes for smaller landscape screens */
-    #memory-heading1 {
-        font-size: 1.5em;
-    }
-
-    #memory-heading2 {
-        font-size: 1em;
-    }
-
-    #status {
-        font-size: 14px;
-    }
-
-    #win-message {
-        width: 80%;
-        padding: 8px;
-    }
-}
-
-/* Portrait orientation adjustments */
-@media (orientation: portrait) {
-    .board {
-        grid-template-columns: repeat(4, 1fr); /* Default for portrait */
-	    margin-top: 30px;
-    }
-
-    @media (max-width: 430px) {
-        .board {
-            grid-template-columns: repeat(3, 1fr); /* Reduce columns for smaller portrait screens */
-        }
-    }
-
-    @media (max-width: 390px) {
-        .board {
-            grid-template-columns: repeat(2, 1fr); /* Further reduce columns for very small portrait screens */
-        }
-    }
-
-    @media (max-width: 320px) {
-        .board {
-            grid-template-columns: 1fr; /* Single column for extremely small portrait screens */
-        }
-    }
-
-    .card-face img {
-        max-width: calc(100% - 8px);
-        max-height: calc(100% - 8px);
-    }
-    /* Optional: Adjust button sizes for smaller portrait screens */
-    .sophisticated-button, #return-to-mode-btn, #switch-turn-btn, #restart-btn {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
-
-    /* Adjust font sizes for smaller portrait screens */
-    #memory-heading1 {
-        font-size: 2em;
-    }
-#smaller-heading {font-size: 1.5em;}
-    #memory-heading2 {
-        font-size: 1.2em;
-    }
-
-    #status {
-        font-size: 16px;
-    }
-
-    #win-message {
-        width: 90%;
-        padding: 10px;
     }
 }
