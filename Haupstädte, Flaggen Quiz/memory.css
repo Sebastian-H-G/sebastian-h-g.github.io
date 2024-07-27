@@ -485,6 +485,7 @@ canvas {
 @media (orientation: portrait) {
     .board {
         grid-template-columns: repeat(4, 1fr); /* Default for portrait */
+	    margin-top: 30px;
     }
 
     @media (max-width: 430px) {
