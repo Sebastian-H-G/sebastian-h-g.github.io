@@ -320,8 +320,8 @@ font-size: 3em;
         gap: 7px;
     }
     .card {
-        width: 100px;
-        height: 80px;
+        width: 120px;
+        height: 100px;
     }
     .card-face img {
         max-width: calc(100% - 10px);
