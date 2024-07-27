@@ -431,7 +431,7 @@ canvas {
 /* Landscape orientation adjustments */
 @media (orientation: landscape) {
     .board {
-        grid-template-columns: repeat(4, 1fr); /* Default for landscape */
+        grid-template-columns: repeat(5, 1fr); /* Default for landscape */
     }
 
     .card-face img {
