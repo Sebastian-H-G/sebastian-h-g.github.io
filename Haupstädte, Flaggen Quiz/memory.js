@@ -66,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
             cardsArray.push({ ...pair, type: 'flag' });
         });
     }
-
     const board = document.getElementById('game-board');
     const winMessage = document.getElementById('win-message');
     const restartBtn = document.getElementById('restart-btn');
