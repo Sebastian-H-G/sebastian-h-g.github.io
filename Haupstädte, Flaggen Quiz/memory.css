@@ -372,7 +372,7 @@ canvas {
 
 @media (max-width: 393px) and (min-height: 932px) {
     .board {
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 5px;
     }
     .card {
@@ -399,7 +399,7 @@ canvas {
         margin: 5px 10px;
     }
     .board {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 5px;
     }
     .card {
