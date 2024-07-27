@@ -519,7 +519,7 @@ canvas {
     #memory-heading1 {
         font-size: 2em;
     }
-
+#smaller-heading {font-size: 1.5em;}
     #memory-heading2 {
         font-size: 1.2em;
     }
