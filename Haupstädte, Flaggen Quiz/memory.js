@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: 'Vatican City', img: 'flags/va.webp' },
 ];
 
-    const maxPairs = 1;
+    const maxPairs = 12;
     let cardsArray = [];
     let currentPlayer = 1;
     let player1Score = 0;
