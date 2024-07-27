@@ -123,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         checkForMatch();
     }
-
     function checkForMatch() {
         const isMatch = firstCard.dataset.name === secondCard.dataset.name &&
                         firstCard.dataset.type !== secondCard.dataset.type;
