@@ -49,19 +49,18 @@ body {
 }
 .board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   justify-content: center;
   align-items: center;
     gap: 10px;
     max-width: 90%;
-    margin: 50px 10px 20px 10px;
-	padding: 5px;
+    margin: 20px auto;
 }
 
 .card {
     position: relative;
-    width: 140px;
-    height: 100px;
+    width: 160px;
+    height: 120px;
     transform-style: preserve-3d;
     transition: transform 0.5s;
     cursor: pointer;
@@ -300,7 +299,7 @@ canvas {
     }
 
 /* iPhone 15 series media queries */
-@media (max-width: 393px) {
+@media (max-width: 495px) {
     #memory-heading1 {
         font-size: 2.5em;
     }
@@ -317,8 +316,8 @@ canvas {
         gap: 5px;
     }
     .card {
-        width: 80px;
-        height: 60px;
+        width: 100px;
+        height: 80px;
     }
     .card-face img {
         max-width: calc(100% - 10px);
@@ -339,55 +338,13 @@ canvas {
     #restart-btn {
         padding: 8px 16px;
     }
-}
-
-@media (max-width: 393px) {
-    .board {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
-    }
-    .card {
-        width: 80px;
-        height: 60px;
-    }
-    .card-face img {
+	.card-face img {
         max-width: calc(100% - 10px);
         max-height: calc(100% - 10px);
     }
 }
-
-@media (max-width: 393px) {
-    .board {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
-    }
-    .card {
-        width: 80px;
-        height: 60px;
-    }
-    .card-face img {
-        max-width: calc(100% - 10px);
-        max-height: calc(100% - 10px);
-    }
-}
-
-@media (max-width: 393px) and (min-height: 932px) {
-    .board {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
-    }
-    .card {
-        width: 80px;
-        height: 60px;
-    }
-    .card-face img {
-        max-width: calc(100% - 10px);
-        max-height: calc(100% - 10px);
-    }
-}
-
 /* Additional styles for smaller devices */
-@media (max-width: 393px) {
+@media (max-width: 400px) {
     #memory-heading1 {
         font-size: 2em;
     }
@@ -400,12 +357,52 @@ canvas {
         margin: 5px 10px;
     }
     .board {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 5px;
     }
     .card {
         width: 80px;
         height: 60px;
+    }
+    .card-face img {
+        max-width: calc(100% - 8px);
+        max-height: calc(100% - 8px);
+    }
+    #return-to-mode-btn,
+    #switch-turn-btn {
+        padding: 5px 8px;
+        font-size: 12px;
+    }
+    #status {
+        font-size: 16px;
+    }
+    #win-message {
+        width: 75%;
+        padding: 10px;
+    }
+    #restart-btn {
+        padding: 6px 12px;
+    }
+}
+@media (max-width: 932px) {
+    #memory-heading1 {
+        font-size: 2em;
+    }
+    #memory-heading2 {
+        font-size: 1.2em;
+    }
+    .sophisticated-button {
+        padding: 8px 15px;
+        font-size: 14px;
+        margin: 5px 10px;
+    }
+    .board {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 5px;
+    }
+    .card {
+        width: 120px;
+        height: 100px;
     }
     .card-face img {
         max-width: calc(100% - 8px);
