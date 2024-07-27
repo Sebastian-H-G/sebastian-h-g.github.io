@@ -54,13 +54,14 @@ body {
   align-items: center;
     gap: 10px;
     max-width: 90%;
-    margin: 30px 10px;
+    margin: 50px 10px 20px 10px;
+	padding: 5px;
 }
 
 .card {
     position: relative;
-    width: 160px;
-    height: 120px;
+    width: 140px;
+    height: 100px;
     transform-style: preserve-3d;
     transition: transform 0.5s;
     cursor: pointer;
