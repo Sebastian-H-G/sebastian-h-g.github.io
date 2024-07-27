@@ -212,7 +212,7 @@ body {
     padding: 10px 20px;
     font-size: 18px; 
   font-weight: 900;
-    margin: 20px auto 30px auto;
+    margin: 20px auto 10px auto;
     cursor: pointer;
     border: none;
     border-radius: 4px;
@@ -385,9 +385,6 @@ canvas {
     }
 }
 @media (max-width: 932px) {
-	body {
-		background-color: red;
-	}
     #memory-heading1 {
         font-size: 2em;
     }
