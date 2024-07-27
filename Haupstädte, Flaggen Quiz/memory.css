@@ -324,8 +324,8 @@ font-size: 3em;
         height: 100px;
     }
     .card-face img {
-        max-width: calc(100% - 10px);
-        max-height: calc(100% - 10px);
+        max-width: calc(100% - 20px);
+        max-height: calc(100% - 20px);
     }
     #return-to-mode-btn,
     #switch-turn-btn {
@@ -369,8 +369,8 @@ font-size: 3em;
         height: 100px;
     }
     .card-face img {
-        max-width: calc(100% - 10px);
-        max-height: calc(100% - 10px);
+        max-width: calc(100% - 20px);
+        max-height: calc(100% - 20px);
     }
     #return-to-mode-btn,
     #switch-turn-btn {
