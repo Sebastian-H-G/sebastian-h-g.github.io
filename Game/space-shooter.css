@@ -1,0 +1,337 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: #fff;
+  touch-action: manipulation; /* Prevents default touch actions like selection */
+    user-select: none; /* Prevents text selection */
+    -webkit-user-select: none; /* Webkit browsers */
+    -webkit-touch-callout: none; /* Prevents callout on long touch */
+    text-align: center;
+}
+.game-heading {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 4em;
+  color: #fff; /* Light color to stand out on the black background */
+  text-shadow: 
+    1px 1px 0 #333,  /* Shadow to the right and down */
+    2px 2px 0 #666,  /* Slightly larger shadow for depth */
+    3px 3px 0 #999;  /* Even larger shadow for more depth */
+}#start-screen, #end-screen, #achievements {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    transition: opacity 0.5s;
+}
+        #start-button {
+            padding: 25px 40px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #9c27b0, #673ab7);
+            color: #fff;
+            font-size: 30px;
+          margin-top: 80px;
+          font-weight: bold;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+
+        #start-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+            z-index: 0;
+            border-radius: 25px;
+        }
+
+        #start-button:hover::before {
+            transform: scaleX(1);
+        }
+
+        #start-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(45deg, #7b1fa2, #5e35b1);
+        }
+
+        #start-button:active {
+            transform: translateY(1px) scale(1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        #start-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 20%, transparent 60%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s ease-out;
+            z-index: 0;
+            border-radius: 50%;
+        }
+
+        #start-button:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+#game {
+    display: none;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: url('space-bg.jpg') no-repeat center center/cover;
+  touch-action: manipulation; /* Prevents default touch actions like selection */
+    user-select: none; /* Prevents text selection */
+    -webkit-user-select: none; /* Webkit browsers */
+    -webkit-touch-callout: none; /* Prevents callout on long touch */
+}
+
+#spaceship {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background: blue;
+  margin-bottom: 20px;
+}
+
+.bullet, .rock, .booster, .ultra-booster, .indestructible-booster, .permanent-upgrade, .rapid-fire-booster {
+    position: absolute;
+}
+
+.bullet {
+    width: 10px;
+    height: 20px;
+    background-color: red;
+}
+
+.rock {
+    width: 50px;
+    height: 50px;
+    background: gray;
+}
+
+.booster {
+    width: 30px;
+    height: 30px;
+    background-color: yellow;
+}
+
+.ultra-booster {
+    width: 30px;
+    height: 30px;
+    background-color: green;
+}
+
+.indestructible-booster {
+    width: 30px;
+    height: 30px;
+    background-color: orange;
+}
+
+.permanent-upgrade {
+    width: 30px;
+    height: 30px;
+    background-color: purple;
+}
+
+.rapid-fire-booster {
+    width: 30px;
+    height: 30px;
+    background-color: cyan;
+}
+
+.explosion {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url('explosion.png') no-repeat center center/contain;
+    animation: explode 0.5s steps(10) forwards;
+}
+
+@keyframes explode {
+    from { background-position: 0; }
+    to { background-position: -500px; }
+}
+
+#score, #highscore {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+}
+
+#highscore {
+    left: auto;
+    right: 10px;
+    top: 40px;
+}
+
+#notification {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 28px;
+  z-index: 100;
+  font-weight: 900;
+  font-family: "Montserrat", sans-serif;
+}
+
+#lives {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+}
+
+#achievements {
+    display: none;
+}
+#achievements-button {
+  display: none;
+}
+#controls {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+#left-button, #right-button, #shoot-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 20px; /* Increased padding for larger size */
+    font-size: 120px; /* Increased font size */
+    border-radius: 20px; /* Adjust border-radius to keep the button shape proportional */
+    cursor: pointer;
+    margin: 0 10px; /* Adds space between buttons */
+  touch-action: manipulation; /* Prevents default touch actions like selection */
+    user-select: none; /* Prevents text selection */
+    -webkit-user-select: none; /* Webkit browsers */
+    -webkit-touch-callout: none; /* Prevents callout on long touch */
+}
+
+#left-button {
+    flex: none;
+    width: 170px; /* Increased width */
+    margin-right: auto;
+}
+
+#right-button {
+    flex: none;
+    width: 170px; /* Increased width */
+  margin-right: 30px;
+}
+
+#shoot-button {
+    flex: none;
+    width: 170px; /* Increased width */
+    margin-left: 10px; /* Adds a small space between right and shoot buttons */
+}
+
+#left-button:active, #right-button:active, #shoot-button:active {
+    background: rgba(255, 255, 255, 0.2);
+}
+/* Base styles for iPhone 15 */
+@media only screen and (max-width: 430px) {
+    body {
+        font-size: 14px; /* Adjust font size for smaller screens */
+        padding: 10px; /* Add some padding to prevent content from touching the edges */
+    }
+  
+    .game-heading {
+        font-size: 2.5em; /* Scale down font size for better fit */
+    }
+
+    #start-button {
+        padding: 15px 30px; /* Adjust padding for smaller screens */
+        font-size: 24px; /* Reduce font size for smaller screens */
+        margin-top: 40px; /* Adjust margin for better spacing */
+    }
+  
+    #spaceship {
+        width: 50px; /* Scale down spaceship size */
+        height: 50px; /* Scale down spaceship size */
+    }
+  
+    .bullet {
+        width: 8px; /* Scale down bullet size */
+        height: 16px; /* Scale down bullet size */
+    }
+  
+    .rock {
+        width: 40px; /* Scale down rock size */
+        height: 40px; /* Scale down rock size */
+    }
+  
+    .booster, .ultra-booster, .indestructible-booster, .permanent-upgrade, .rapid-fire-booster {
+        width: 25px; /* Scale down booster size */
+        height: 25px; /* Scale down booster size */
+    }
+  
+    #score, #highscore {
+        font-size: 16px; /* Adjust font size for smaller screens */
+    }
+  
+    #notification {
+        font-size: 22px; /* Adjust font size for better fit */
+        padding: 8px; /* Adjust padding for better fit */
+    }
+
+    #controls {
+        padding: 0 10px; /* Reduce padding for smaller screens */
+    }
+
+    #left-button, #right-button, #shoot-button {
+        font-size: 80px; /* Reduce button size */
+        padding: 15px; /* Adjust padding for smaller buttons */
+    }
+
+    #left-button, #right-button, #shoot-button {
+        width: 120px; /* Scale down button width */
+    }
+}
