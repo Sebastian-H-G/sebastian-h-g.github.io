@@ -277,7 +277,7 @@ body {
     background: rgba(255, 255, 255, 0.2);
 }
 /* Base styles for iPhone 15 */
-@media only screen and (max-width: 430px) {
+@media only screen and (max-width: 932px) {
     body {
         font-size: 14px; /* Adjust font size for smaller screens */
         padding: 10px; /* Add some padding to prevent content from touching the edges */
