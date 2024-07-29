@@ -6,15 +6,16 @@
     <title>Core and Abs Workout</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="fitness.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <header>
+        <header data-aos="fade-down">
             <h1><i class="fas fa-dumbbell"></i> Core and Abs Workout</h1>
             <p>Your ultimate guide to a stronger core and defined abs</p>
         </header>
-        <section id="warm-up">
+        <section id="warm-up" data-aos="fade-up">
             <h2><i class="fas fa-fire-alt"></i> Warm-Up (5-7 minutes)</h2>
             <ul>
                 <li><i class="fas fa-running"></i> Jumping Jacks: <span>1 minute</span></li>
@@ -22,9 +23,9 @@
                 <li><i class="fas fa-stretch"></i> Dynamic Stretching: <span>3-5 minutes</span></li>
             </ul>
         </section>
-        <section id="workout">
+        <section id="workout" data-aos="fade-up">
             <h2><i class="fas fa-dumbbell"></i> Workout (15.5 minutes)</h2>
-            <div class="workout-group">
+            <div class="workout-group" data-aos="fade-up">
                 <h3><i class="fas fa-chalkboard"></i> Plank Variations</h3>
                 <ul>
                     <li><i class="fas fa-plank"></i> Standard Plank: <span>1 minute</span></li>
@@ -33,7 +34,7 @@
                     <li><i class="fas fa-dumbbell"></i> Plank to Push-Up: <span>1 minute</span></li>
                 </ul>
             </div>
-            <div class="workout-group">
+            <div class="workout-group" data-aos="fade-up">
                 <h3><i class="fas fa-bicycle"></i> Leg Raises</h3>
                 <ul>
                     <li><i class="fas fa-arrow-up"></i> Standard Leg Raises: <span>1 minute</span></li>
@@ -42,33 +43,33 @@
                     <li><i class="fas fa-arrow-up"></i> Scissor Kicks: <span>1 minute</span></li>
                 </ul>
             </div>
-            <div class="workout-group">
+            <div class="workout-group" data-aos="fade-up">
                 <h3><i class="fas fa-bicycle"></i> Bicycle Crunches</h3>
                 <ul>
                     <li><i class="fas fa-bicycle"></i> Slow Bicycle Crunches: <span>1 minute</span></li>
                     <li><i class="fas fa-bicycle"></i> Fast Bicycle Crunches: <span>30 seconds</span></li>
                 </ul>
             </div>
-            <div class="workout-group">
+            <div class="workout-group" data-aos="fade-up">
                 <h3><i class="fas fa-sync-alt"></i> Russian Twists</h3>
                 <ul>
                     <li><i class="fas fa-sync-alt"></i> Russian Twists: <span>1 minute</span></li>
                 </ul>
             </div>
-            <div class="workout-group">
+            <div class="workout-group" data-aos="fade-up">
                 <h3><i class="fas fa-running"></i> Mountain Climbers</h3>
                 <ul>
                     <li><i class="fas fa-mountain"></i> Standard Mountain Climbers: <span>1 minute</span></li>
                     <li><i class="fas fa-mountain"></i> Cross-Body Mountain Climbers: <span>1 minute</span></li>
                 </ul>
             </div>
-            <div class="workout-group">
+            <div class="workout-group" data-aos="fade-up">
                 <h3><i class="fas fa-couch"></i> Hollow Body Hold</h3>
                 <ul>
                     <li><i class="fas fa-body"></i> Hollow Body Hold: <span>1 minute</span></li>
                 </ul>
             </div>
-            <div class="workout-group">
+            <div class="workout-group" data-aos="fade-up">
                 <h3><i class="fas fa-arrow-up"></i> V-Ups</h3>
                 <ul>
                     <li><i class="fas fa-arrow-up"></i> V-Ups: <span>1 minute</span></li>
@@ -76,7 +77,7 @@
                 </ul>
             </div>
         </section>
-        <section id="cool-down">
+        <section id="cool-down" data-aos="fade-up">
             <h2><i class="fas fa-umbrella-beach"></i> Cool-Down (6-7 minutes)</h2>
             <ul>
                 <li><i class="fas fa-child"></i> Child’s Pose: <span>1 minute</span></li>
@@ -86,9 +87,13 @@
                 <li><i class="fas fa-wind"></i> Deep Breathing: <span>2-3 minutes</span></li>
             </ul>
         </section>
-        <footer>
+        <footer data-aos="fade-up">
             <p>&copy; 2024 Fitness Guru. All rights reserved.</p>
         </footer>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
 </body>
 </html>
