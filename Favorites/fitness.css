@@ -7,6 +7,13 @@ body {
     overflow-x: hidden;
 }
 
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
 .fullscreen-button {
     position: fixed;
     top: 20px;
@@ -26,13 +33,6 @@ body {
 .fullscreen-button i {
     color: #f1f1f1;
     font-size: 1.5rem;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
 }
 
 header {
@@ -63,32 +63,49 @@ h2 {
 h3 {
     font-size: 1.5rem;
     margin-top: 20px;
-color: #f1f1f1;
-animation: fadeInUp 1s;
+    animation: fadeInLeft 1s;
 }
 
 ul {
-list-style: none;
-padding: 0;
-animation: fadeIn 1s;
+    list-style-type: none;
+    padding: 0;
+    animation: fadeIn 1s;
 }
 
-ul li {
-font-size: 1.1rem;
-margin: 10px 0;
-display: flex;
-justify-content: space-between;
-align-items: center;
-opacity: 0.8;
+li {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    position: relative;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s, transform 0.3s;
 }
 
-ul li i {
-margin-right: 10px;
-color: #bb86fc;
+li:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
 }
 
-span {
-font-size: 0.8rem;
+li span {
+    font-weight: 700;
+    color: #bb86fc;
+    margin-left: 10px;
+}
+
+li i {
+    margin-right: 10px;
+    color: #bb86fc;
+}
+
+.workout-group {
+    margin-top: 20px;
+}
+
+footer {
+    margin-top: 30px;
+    font-size: 0.8rem;
 opacity: 0.6;
 animation: fadeInUp 1s;
 }
