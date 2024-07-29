@@ -7,14 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-    <link rel="stylesheet" href="fitness.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="fullscreen-button">
+        <i class="fas fa-expand" id="fullscreen-icon"></i>
+    </div>
     <div class="container">
         <header data-aos="fade-down">
             <h1><i class="fas fa-dumbbell"></i> Core and Abs Workout</h1>
             <p>Your ultimate guide to a stronger core and defined abs</p>
-            <button id="fullscreen-button" onclick="toggleFullscreen()"><i class="fas fa-expand"></i></button>
         </header>
         <section id="warm-up" data-aos="fade-up">
             <h2><i class="fas fa-fire-alt"></i> Warm-Up (5-7 minutes)</h2>
@@ -96,15 +98,17 @@
     <script>
         AOS.init();
 
-        function toggleFullscreen() {
+        document.getElementById('fullscreen-icon').addEventListener('click', function() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
+                this.classList.replace('fa-expand', 'fa-compress');
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
+                    this.classList.replace('fa-compress', 'fa-expand');
                 }
             }
-        }
+        });
     </script>
 </body>
 </html>
