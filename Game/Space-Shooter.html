@@ -9,14 +9,27 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Press+Start+2P&family=Roboto+Condensed:wght@700&family=Anton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="start-screen">
+      <button class="fullscreen-button" onclick="toggleFullScreen()">
+        <i class="fas fa-expand"></i>
+    </button>
         <h1 class="game-heading">Space Shooter Game</h1>
         <button id="start-button">Start Game</button>
     </div>
-    <div id="game">
-        <div id="spaceship"></div>
+    <div id="game"> 
+    <div class="background" id="background"></div>
+        <div id="spaceship" class="spaceship">
+    <div class="body"></div>
+    <div class="window"></div>
+    <div class="fin left-fin"></div>
+    <div class="fin right-fin"></div>
+    <div class="thruster left-thruster"></div>
+    <div class="thruster right-thruster"></div>
+</div>
         <div id="score">Score: 0</div>
         <div id="highscore">Highscore: 0</div>
         <div id="notification" style="display: none;">Booster Acquired!</div>
@@ -27,13 +40,23 @@
         </div>
     </div>
     <div id="end-screen" style="display:none;">
-        <h1>Game Over</h1>
-        <p id="final-score">Your Score: 0</p>
-        <p id="best-score">Highscore: 0</p>
-        <button id="restart-button">Restart Game</button>
+        <div class="modal">
+            <h1 class="game-over">Game Over</h1>
+            <div class="score-container">
+                <div class="score-card">
+                    <h2 class="scores">New Record?</h1>
+                    <p id="final-score">Score: 0</p>
+                </div>
+                <div class="score-card">
+                    <h2 class="scores">All-Time Best</h2>
+                    <p id="best-score">Highscore: 0</p>
+                </div>
+            </div>
+          <button id="restart-button">Restart Game</button>
+        </div>
     </div>
-    <div id="achievements">
-        <h1>Achievements</h1>
+   <div id="achievements">
+   <h1>Achievements</h1>
         <ul>
             <li>Destroy 10 rocks</li>
             <li>Score 100 points</li>
@@ -43,6 +66,6 @@
     </div>
     <button id="achievements-button" style="position: fixed; bottom: 10px; right: 10px;">Achievements</button>
 
-    <script src="space-shooter.js"></script>
+    <script src="scripts.js"></script>
 </body>
 </html>
