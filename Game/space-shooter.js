@@ -47,7 +47,7 @@ function startGame() {
     score = 0;
     lives = 3;
     scoreDisplay.textContent = `Score: ${score}`;
-    livesDisplay.textContent = `Lives: ${lives}`;
+    livesDisplay.textContent = '❤️'.repeat(lives);
     spaceship.style.left = '50%';
     spaceship.style.display = 'block';
     game.style.display = 'block';
@@ -56,12 +56,13 @@ function startGame() {
     achievementsScreen.style.display = 'none';
     gameInterval = setInterval(gameLoop, 20);
     rockInterval = setInterval(createRock, rockCreationInterval);
-    boosterInterval = setInterval(createBooster, 10000); // Create boosters every 10 seconds
-    ultraBoosterInterval = setInterval(createUltraBooster, 20000); // Create ultra boosters every 20 seconds
-    indestructibleBoosterInterval = setInterval(createIndestructibleBooster, 30000); // Create indestructible boosters every 30 seconds
-    permanentUpgradeInterval = setInterval(createPermanentUpgrade, 60000); // Create permanent upgrades every 60 seconds
-    rapidFireBoosterInterval = setInterval(createRapidFireBooster, 25000); // Create rapid fire boosters every 25 seconds
+    boosterInterval = setInterval(createBooster, 16000); // Create boosters every 10 seconds
+    ultraBoosterInterval = setInterval(createUltraBooster, 24000); // Create ultra boosters every 22 seconds
+    indestructibleBoosterInterval = setInterval(createIndestructibleBooster, 31000); // Create indestructible boosters every 33 seconds
+    permanentUpgradeInterval = setInterval(createPermanentUpgrade, 63000); // Create permanent upgrades every 62 seconds
+    rapidFireBoosterInterval = setInterval(createRapidFireBooster, 28000); // Create rapid fire boosters every 25 seconds
     rockAdjustInterval = setInterval(adjustRockCreationInterval, 5000); // Adjust rock creation interval every 5 seconds
+createStars();
 }
 function endGame() {
     clearInterval(gameInterval);
@@ -83,11 +84,23 @@ function endGame() {
     game.style.display = 'none';
     endScreen.style.display = 'flex';
     finalScoreDisplay.textContent = `Your Score: ${score}`;
+    
     if (score > highscore) {
         highscore = score;
         localStorage.setItem('highscore', highscore);
+        
+        // Ensure the class is added
+        bestScoreDisplay.classList.add('highscore-broken');
+        
+        // Remove the class after the animation ends
+        bestScoreDisplay.addEventListener('animationend', () => {
+            bestScoreDisplay.classList.remove('highscore-broken');
+        }, { once: true });
+        
+        bestScoreDisplay.textContent = `New Highscore: ${highscore}`;
+    } else {
+        bestScoreDisplay.textContent = `Highscore: ${highscore}`;
     }
-    bestScoreDisplay.textContent = `Highscore: ${highscore}`;
 }
 
 function gameLoop() {
@@ -187,14 +200,22 @@ function gameLoop() {
         }
     });
 }
-
 function createRock() {
     const rock = document.createElement('div');
     rock.className = 'rock';
+
+    // Create and append multiple layers to the rock
+    for (let i = 0; i < 20; i++) {
+        const layer = document.createElement('div');
+        layer.className = 'layer';
+        rock.appendChild(layer);
+    }
+
     rock.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
     rock.style.top = '0px';
-    game.appendChild(rock);
+    document.body.appendChild(rock); // Assuming you append to the body or another container
 }
+
 
 function createBooster() {
     const booster = document.createElement('div');
@@ -314,8 +335,8 @@ function shoot() {
 function createBullet(offset) {
     const bullet = document.createElement('div');
     bullet.className = 'bullet';
-    bullet.style.left = `${spaceship.getBoundingClientRect().left + 25 + offset}px`;
-    bullet.style.bottom = '80px';
+    bullet.style.left = `${spaceship.getBoundingClientRect().left + 22 + offset}px`;
+    bullet.style.bottom = '138px';
     game.appendChild(bullet);
     moveBullet(bullet);
 }
@@ -347,10 +368,9 @@ function adjustRockCreationInterval() {
         rockInterval = setInterval(createRock, rockCreationInterval);
     }
 }
-
 function loseLife() {
     lives--;
-    livesDisplay.textContent = `Lives: ${lives}`;
+    livesDisplay.textContent = '❤️'.repeat(lives);
     if (lives === 0) {
         endGame();
     }
@@ -361,7 +381,19 @@ function showNotification(message) {
     notification.style.display = 'block';
     setTimeout(() => notification.style.display = 'none', 2000);
 }
-
+function createStars() {
+            const background = document.getElementById('background');
+            const numStars = 100;
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.left = Math.random() * 100 + 'vw';
+                // Add different animation delays to create a more natural effect
+                star.style.animationDelay = Math.random() * 10 + 's';
+                background.appendChild(star);
+            }
+        }
 startButton.addEventListener('click', startGame);
 restartButton.addEventListener('click', startGame);
 achievementsButton.addEventListener('click', () => {
@@ -388,3 +420,14 @@ leftButton.addEventListener('touchend', () => keys['ArrowLeft'] = false);
 rightButton.addEventListener('touchstart', () => keys['ArrowRight'] = true);
 rightButton.addEventListener('touchend', () => keys['ArrowRight'] = false);
 shootButton.addEventListener('touchstart', shoot);
+
+
+function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
