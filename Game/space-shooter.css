@@ -1,3 +1,4 @@
+@supports (-webkit-touch-callout: none) {
 body {
     margin: 0;
     padding: 0;
@@ -6,7 +7,7 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #000;
     color: #fff;
-  touch-action: manipulation; /* Prevents default touch actions like selection */
+  touch-action: none; /* Prevents default touch actions like selection */
     user-select: none; /* Prevents text selection */
     -webkit-user-select: none; /* Webkit browsers */
     -webkit-touch-callout: none; /* Prevents callout on long touch */
@@ -705,7 +706,7 @@ body {
 
 #best-score.highscore-broken {
   animation: rotateScale 2s;
- font-weight: 700; 
+ font-weight: bold; 
 }
 
 .fullscreen-button {
@@ -727,3 +728,121 @@ body {
         .fullscreen-button:hover {
             background-color: #21a1f1;
         }
+
+
+@media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
+  
+  body {
+    font-size: 14px; /* Adjust base font size for smaller screens */
+  }
+
+  .game-heading {
+    font-size: 3em; /* Slightly smaller heading for better fit */
+  }
+
+  #start-button {
+    padding: 15px 30px; /* Reduced padding for smaller screens */
+    font-size: 24px; /* Smaller font size for the button text */
+    margin-top: 50px; /* Adjusted margin-top */
+  }
+
+  #score, #highscore {
+    font-size: 16px; /* Smaller font size for score and highscore */
+    padding: 5px; /* Reduced padding */
+  }
+
+  #lives {
+    font-size: 20px; /* Smaller font size for lives counter */
+  }
+
+  #controls {
+    padding: 0 10px; /* Reduced padding for controls */
+  }
+
+  #left-button, #right-button, #shoot-button {
+    padding: 15px; /* Reduced padding for controls */
+    font-size: 80px; /* Smaller font size for controls */
+  }
+}
+@media only screen and (max-height: 810px) and (max-width: 1080px) and (orientation: landscape) {
+  
+  body {
+    backgorund-color: red;
+    font-size: 14px; /* Adjust base font size for smaller screens */
+  }
+
+  .game-heading {
+    font-size: 3em; /* Slightly smaller heading for better fit */
+  }
+  #notification {
+    font-size: 20px;
+  }
+  #start-button {
+    padding: 15px 30px; /* Reduced padding for smaller screens */
+    font-size: 24px; /* Smaller font size for the button text */
+    margin-top: 50px; /* Adjusted margin-top */
+  }
+
+  #score, #highscore {
+    font-size: 16px; /* Smaller font size for score and highscore */
+    padding: 5px; /* Reduced padding */
+  }
+
+  #lives {
+    font-size: 20px; /* Smaller font size for lives counter */
+  }
+
+  #controls {
+    padding: 0 5px;
+  }
+
+  #left-button, #right-button, #shoot-button {
+    padding: 5px; /* Reduced padding for controls */
+    width: 100px;
+    font-size: 60px; /* Smaller font size for controls */
+  }
+}
+
+
+
+
+
+@media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
+  
+  body {
+    backgorund-color: red;
+    font-size: 14px; /* Adjust base font size for smaller screens */
+  }
+
+  .game-heading {
+    font-size: 4em; /* Slightly smaller heading for better fit */
+  }
+  #notification {
+    font-size: 20px;
+  }
+  #start-button {
+    padding: 15px 30px; /* Reduced padding for smaller screens */
+    font-size: 24px; /* Smaller font size for the button text */
+    margin-top: 50px; /* Adjusted margin-top */
+  }
+
+  #score, #highscore {
+    font-size: 16px; /* Smaller font size for score and highscore */
+    padding: 10px; /* Reduced padding */
+  }
+
+  #lives {
+    font-size: 30px; /* Smaller font size for lives counter */
+  }
+
+  #controls {
+    padding: 0 5px;
+  }
+
+  #left-button, #right-button, #shoot-button {
+    padding: 5px; /* Reduced padding for controls */
+    width: 100px;
+    font-size: 80px; /* Smaller font size for controls */
+  }
+}
+}
