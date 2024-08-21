@@ -43,7 +43,22 @@ let keys = {};
 highscoreDisplay.textContent = `Highscore: ${highscore}`;
 livesDisplay.textContent = `Lives: ${lives}`;
 
+
+function enterFullScreen() {
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen();
+  } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
+    document.documentElement.mozRequestFullScreen();
+  } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari, and Opera */
+    document.documentElement.webkitRequestFullscreen();
+  } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
+    document.documentElement.msRequestFullscreen();
+  }
+}
+
+
 function startGame() {
+  enterFullScreen();
     score = 0;
     lives = 3;
     scoreDisplay.textContent = `Score: ${score}`;
@@ -57,10 +72,10 @@ function startGame() {
     gameInterval = setInterval(gameLoop, 20);
     rockInterval = setInterval(createRock, rockCreationInterval);
     boosterInterval = setInterval(createBooster, 16000); // Create boosters every 10 seconds
-    ultraBoosterInterval = setInterval(createUltraBooster, 24000); // Create ultra boosters every 22 seconds
-    indestructibleBoosterInterval = setInterval(createIndestructibleBooster, 31000); // Create indestructible boosters every 33 seconds
-    permanentUpgradeInterval = setInterval(createPermanentUpgrade, 63000); // Create permanent upgrades every 62 seconds
-    rapidFireBoosterInterval = setInterval(createRapidFireBooster, 28000); // Create rapid fire boosters every 25 seconds
+    ultraBoosterInterval = setInterval(createUltraBooster, 26000); // Create ultra boosters every 22 seconds
+    indestructibleBoosterInterval = setInterval(createIndestructibleBooster, 39000); // Create indestructible boosters every 33 seconds
+    permanentUpgradeInterval = setInterval(createPermanentUpgrade, 68000); // Create permanent upgrades every 62 seconds
+    rapidFireBoosterInterval = setInterval(createRapidFireBooster, 36000); // Create rapid fire boosters every 25 seconds
     rockAdjustInterval = setInterval(adjustRockCreationInterval, 5000); // Adjust rock creation interval every 5 seconds
 createStars();
 }
