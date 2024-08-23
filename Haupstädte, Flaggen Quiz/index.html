@@ -3,96 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capital Quiz</title>
+    <title>Geography Quiz Website</title>
+    <!-- Include Swiper's CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-	<link rel="stylesheet">
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-	<link rel="icon" href="Bilder/Erde-Logo-16x16.png" sizes="16x16" type="image/png">
-    <link rel="icon" href="Bilder/Erde-Logo-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="Bilder/Erde-Logo-48x48.png" sizes="48x48" type="image/png">
-    
-    <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="Bilder/Erde-Logo.png">
-    <link rel="apple-touch-icon" sizes="57x57" href="Bilder/Erde-Logo-57x57.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="Bilder/Erde-Logo-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="Bilder/Erde-Logo-114x114.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="Bilder/Erde-Logo-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="Bilder/Erde-Logo-180x180.png">
 </head>
 <body>
-  <nav class="navbar">
-    <div class="navbar-container">
-        <a href="index.html" class="navbar-logo"></a>
-        <ul class="navbar-menu">
-            <li class="navbar-item dropdown">
-                <a href="#" class="dropdown-toggle">Capital Quiz</a>
-                <ul class="dropdown-menu">
-                    <li><a href="Europa Capital-Quiz.html">Europe</a></li>
-                    <li><a href="Asia Capital-Quiz.html">Asia</a></li>
-                    <li><a href="Africa Capital-Quiz.html">Africa</a></li>
-                    <li><a href="North America Capital-Quiz.html">North America</a></li>
-                    <li><a href="South America Capital-Quiz.html">South America</a></li>
-                </ul>
-            </li>
-			<li class="navbar-item dropdown">
-                <a href="world-flags.html" class="dropdown-toggle">Flags</a>
-                <ul class="dropdown-menu">
-                    <li><a href="Europa-Flaggen.html">Europe</a></li>
-                    <li><a href="Asien-Flaggen.html">Asia</a></li>
-                    <li><a href="Afrika-Flaggen.html">Africa</a></li>
-                    <li><a href="Nordamerika-Flaggen.html">North America</a></li>
-                    <li><a href="Südamerika-Flaggen.html">South America</a></li>
-                </ul>
-            </li>
-            <li class="navbar-item dropdown">
-                <a href="#" class="dropdown-toggle">Game</a>
-                <ul class="dropdown-menu">
-                    <li><a href="Capital Map Game.html">Countries Map</a></li>
-		    <li><a href="weltkarte.html">Map</a></li>
-			<li><a href="apptest.html">app</a></li>
-<li><a href="Memory.html">Memory</a></li>
-			<li><a href="weltkugel.html">Globe</a></li>
-                    <li><a href="Match Madness.html">Match Madness</a></li>
-                </ul>
-            </li>
-						<li class="navbar-item dropdown">
-<a href="#" class="dropdown-toggle"><img src="Bilder/language.png" class="language-pic"></img></a>
-                <ul class="dropdown-menu-language">
-                    <li><button id="languageButton" onclick="toggleLanguage()">Switch to German</button></li>
-                </ul>
-            </li>
+
+<header>
+    <div class="logo">
+        <img src="Logos/Geography.webp" alt="Geography Quiz Logo">
+    </div>
+    <h1>Welcome to the Geography Quiz!</h1>
+    <nav>
+        <ul>
+            <li><a href="#capital-quiz"><i class="fas fa-city"></i> Capital Quiz</a></li>
+            <li><a href="#flag-quiz"><i class="fas fa-flag"></i> Flag Quiz</a></li>
+            <li><a href="#map-quiz"><i class="fas fa-map"></i> Map Quiz</a></li>
+            <li><a href="#river-quiz"><i class="fas fa-water"></i> River Quiz</a></li>
+            <li><a href="#memory-quiz"><i class="fas fa-brain"></i> Memory Quiz</a></li>
         </ul>
-    </div>
-</nav>
-<div class="main-grid">
-    <div class="container-flex">
-        <div class="container">
-            <u><h1 id="quizTitle">Capital Quiz</h1></u>
-            <div id="question"></div>
-            <div id="options" class="options-container"></div>
-            <div id="result"></div>
-            <div id="flag-container"></div>
-            <div id="map" style="height: 400px; margin-top: 20px;"></div>
+    </nav>
+</header>
+
+<!-- Swiper Container -->
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <img src="/path/to/slide1.jpg" alt="Slide 1">
+            <div class="slide-text">
+                <h2>Discover the World</h2>
+                <p>Explore our geography quizzes and test your knowledge.</p>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <img src="/path/to/slide2.jpg" alt="Slide 2">
+            <div class="slide-text">
+                <h2>Learn About Capitals</h2>
+                <p>Challenge yourself with our capital city quiz.</p>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <img src="/path/to/slide3.jpg" alt="Slide 3">
+            <div class="slide-text">
+                <h2>Flags of the World</h2>
+                <p>See how many flags you can identify.</p>
+            </div>
         </div>
     </div>
-    <div class="side-container">
-        <div class="score-container">
-            <div id="current-score">Current Score: <span id="currentScore">0</span></div>
-            <div id="high-score">High Score: <div id="fire-background"></div><span id="highScore">0</span></div>
-        </div>
-    </div>
+    <!-- Add Pagination and Navigation -->
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
 </div>
-  <audio id="highscoreSound">
-    <source src="highscore.m4a" type="audio/mp4">
-    <source src="highscore.ogg" type="audio/ogg">
-    Your browser does not support the audio element.
-  </audio>
-<canvas id="confettiCanvas"></canvas>
-<footer>
-<div class="footer-text1"><a href="../index.html">GO BACKT TO MAIN PAGE</a></div>
-<div class="footer-text2">© 2024 Guitar Notes GmbH™ ® Alle Rechte vorbehalten. Designed and Created by Sebastian Hermes Garcia</div>
-</footer>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="script.js"></script>
+
+<main>
+    <!-- Quiz Sections -->
+    <section id="capital-quiz" class="quiz-section" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/Capital.webp" alt="Capital Quiz Logo" class="quiz-logo">
+            <div>
+                <h2>Capital Quiz</h2>
+                <p>Test your knowledge of world capitals.</p>
+            </div>
+        </div>
+        <a href="#" class="quiz-link">Start Quiz</a>
+    </section>
+
+    <section id="flag-quiz" class="quiz-section" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/Flag.webp" alt="Flag Quiz Logo" class="quiz-logo">
+            <div>
+                <h2>Flag Quiz</h2>
+                <p>Identify the flags of different countries.</p>
+            </div>
+        </div>
+        <a href="#" class="quiz-link">Start Quiz</a>
+    </section>
+
+    <section id="map-quiz" class="quiz-section" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/Map.webp" alt="Map Quiz Logo" class="quiz-logo">
+            <div>
+                <h2>Map Quiz</h2>
+                <p>Locate countries and cities on a map.</p>
+            </div>
+        </div>
+        <a href="#" class="quiz-link">Start Quiz</a>
+    </section>
+
+    <section id="river-quiz" class="quiz-section" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/River.webp" alt="River Quiz Logo" class="quiz-logo">
+            <div>
+                <h2>River Quiz</h2>
+                <p>Match rivers with their respective countries.</p>
+            </div>
+        </div>
+        <a href="#" class="quiz-link">Start Quiz</a>
+    </section>
+
+    <section id="memory-quiz" class="quiz-section" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="/path/to/memory-logo.png" alt="Memory Quiz Logo" class="quiz-logo">
+            <div>
+                <h2>Memory Quiz</h2>
+                <p>Test your memory with geography-based challenges.</p>
+            </div>
+        </div>
+        <a href="#" class="quiz-link">Start Quiz</a>
+    </section>
+</main>
+
+<!-- Initialize Swiper -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    // Initialize Swiper
+    const swiper = new Swiper('.swiper-container', {
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
+        effect: 'fade',
+        fadeEffect: {
+            crossFade: true,
+        },
+    });
+
+    // Initialize AOS
+    AOS.init({
+        duration: 800, // Duration of the animation in milliseconds
+        once: false,   // Whether animation should happen only once - while scrolling down
+    });
+</script>
+
 </body>
 </html>

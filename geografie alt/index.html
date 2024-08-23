@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+	<link rel="icon" href="Bilder/Erde-Logo-16x16.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="Bilder/Erde-Logo-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="Bilder/Erde-Logo-48x48.png" sizes="48x48" type="image/png">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="Bilder/Erde-Logo.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="Bilder/Erde-Logo-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="Bilder/Erde-Logo-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="Bilder/Erde-Logo-114x114.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="Bilder/Erde-Logo-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="Bilder/Erde-Logo-180x180.png">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="navbar-logo"></a>
+        <ul class="navbar-menu">
+            <li class="navbar-item dropdown">
+                <a href="#" class="dropdown-toggle">Capital Quiz</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Europa Capital-Quiz.html">Europe</a></li>
+                    <li><a href="Asia Capital-Quiz.html">Asia</a></li>
+                    <li><a href="Africa Capital-Quiz.html">Africa</a></li>
+                    <li><a href="North America Capital-Quiz.html">North America</a></li>
+                    <li><a href="South America Capital-Quiz.html">South America</a></li>
+                </ul>
+            </li>
+			<li class="navbar-item dropdown">
+                <a href="world-flags.html" class="dropdown-toggle">Flags</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Europa-Flaggen.html">Europe</a></li>
+                    <li><a href="Asien-Flaggen.html">Asia</a></li>
+                    <li><a href="Afrika-Flaggen.html">Africa</a></li>
+                    <li><a href="Nordamerika-Flaggen.html">North America</a></li>
+                    <li><a href="Südamerika-Flaggen.html">South America</a></li>
+                </ul>
+            </li>
+            <li class="navbar-item dropdown">
+                <a href="#" class="dropdown-toggle">Game</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Capital Map Game.html">Countries Map</a></li>
+		    <li><a href="weltkarte.html">Map</a></li>
+			<li><a href="apptest.html">app</a></li>
+<li><a href="Memory.html">Memory</a></li>
+			<li><a href="weltkugel.html">Globe</a></li>
+                    <li><a href="Match Madness.html">Match Madness</a></li>
+                </ul>
+            </li>
+						<li class="navbar-item dropdown">
+<a href="#" class="dropdown-toggle"><img src="Bilder/language.png" class="language-pic"></img></a>
+                <ul class="dropdown-menu-language">
+                    <li><button id="languageButton" onclick="toggleLanguage()">Switch to German</button></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="main-grid">
+    <div class="container-flex">
+        <div class="container">
+            <u><h1 id="quizTitle">Capital Quiz</h1></u>
+            <div id="question"></div>
+            <div id="options" class="options-container"></div>
+            <div id="result"></div>
+            <div id="flag-container"></div>
+            <div id="map" style="height: 400px; margin-top: 20px;"></div>
+        </div>
+    </div>
+    <div class="side-container">
+        <div class="score-container">
+            <div id="current-score">Current Score: <span id="currentScore">0</span></div>
+            <div id="high-score">High Score: <div id="fire-background"></div><span id="highScore">0</span></div>
+        </div>
+    </div>
+</div>
+  <audio id="highscoreSound">
+    <source src="highscore.m4a" type="audio/mp4">
+    <source src="highscore.ogg" type="audio/ogg">
+    Your browser does not support the audio element.
+  </audio>
+<canvas id="confettiCanvas"></canvas>
+<footer>
+<div class="footer-text1"><a href="../index.html">GO BACKT TO MAIN PAGE</a></div>
+<div class="footer-text2">© 2024 Guitar Notes GmbH™ ® Alle Rechte vorbehalten. Designed and Created by Sebastian Hermes Garcia</div>
+</footer>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
