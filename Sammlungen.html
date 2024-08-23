@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Notes</title>
+    <link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap">
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="logo"><img src="Bilder/logo3.png" alt="Logo" class="logo-img"></a>
+        <div style="display: none;"><input type="text" id="searchInput" placeholder="Search..."></div>
+        <div class="dropdown">
+            <a href="Sammlungen.html" class="dropbtn">Sammlungen</a>
+            <div class="dropdown-content">
+                <a href="Klassik.html">Klassik</a>
+                <a href="Soundtracks.html">Soundtracks</a>
+                <a href="Songs.html">Songs</a>
+				<a href="Notes.html">Notes</a>
+				<a href="Disney.html">Disney</a>
+				<a href="Favorites.html">Favorites</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#" class="dropbtn">Inspiration</a>
+            <div class="dropdown-content">
+                <a href="Gitarren-Blog.html">Blog</a>
+                <a href="Akkorde-Sammlung.html">Akkorde-Sammlung</a>
+                <a href="Notizen.html">Song Ideas</a>
+            </div>
+        </div>
+		<div style="display: none;">
+        <div class="filter-container">
+            <a class="dropbtn">Filter<img src="Bilder/Filter Icon.png" alt="Filter Icon" class="filter-icon"></a>
+            <div class="dropdown-content" id="filterDropdown">
+                <a href="#" data-category="all">All</a>
+                <a href="#" data-category="Notes">Notes</a>
+                <a href="#" data-category="Songs">Songs</a>
+                <a href="#" data-category="Videos">Videos</a>
+				<a href="#" data-category="Klassik">Klassik</a>
+				<a href="#" data-category="Soundtracks">Soundtracks</a>
+				<a href="#" data-category="#">#</a>
+                <!-- Add more categories as needed -->
+            </div>
+        </div>
+		</div>
+        <div class="dropdown">
+            <button class="dropbtn" id="settingsBtn">Settings<img src="Bilder/Settings Icon.png" alt="Settings Icon" class="settings-icon"></button>
+            <div class="dropdown-content-setting settings-dropdown" id="settingsDropdown">
+                <form id="settingsForm">
+                    <div class="form-group">
+                        <label for="logoSelect">Choose Logo:</label>
+                        <select id="logoSelect" name="logoSelect">
+                            <option value="logo1">Logo 1</option>
+                            <option value="logo2">Logo 2</option>
+                            <option value="logo3">Logo 3</option>
+							<option value="logo5">Logo 4</option>
+                            <!-- Add more logo options as needed -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="colorSelect">Choose Navbar Color:</label>
+                        <div class="custom-select" id="colorSelectCustom">
+                            <div class="selected-option">Select Color ⬇️</div>
+                            <div class="options">
+                                <div class="option" data-value="#333">
+                                    <div class="color-box" style="background-color: #333;"></div> Dark
+                                </div>
+                                <div class="option" data-value="#C0E4CB">
+                                    <div class="color-box" style="background-color: #C0E4CB;"></div> Light
+                                </div>
+                                <div class="option" data-value="#007bff">
+                                    <div class="color-box" style="background-color: #007bff;"></div> Sky Blue
+                                </div>
+                                <div class="option" data-value="#E44CA6">
+                                    <div class="color-box" style="background-color: #E44CA6;"></div> Pink
+                                </div>
+								<div class="option" data-value="#AD4CE4">
+                                    <div class="color-box" style="background-color: #AD4CE4;"></div> Purple
+                                </div>
+								<div class="option" data-value="#A0698A">
+                                    <div class="color-box" style="background-color: #A0698A;"></div> Lavender
+                                </div>
+								<div class="option" data-value="#B41C76 ">
+                                    <div class="color-box" style="background-color: #B41C76 ;"></div> Magenta
+                                </div>
+								<div class="option" data-value="#321EE2 ">
+                                    <div class="color-box" style="background-color: #321EE2 ;"></div> Indigo
+                                </div>
+								<div class="option" data-value="#1E9BE2">
+                                    <div class="color-box" style="background-color: #1E9BE2;"></div> Cyan
+                                </div>
+								<div class="option" data-value="#1EE2DF">
+                                    <div class="color-box" style="background-color: #1EE2DF;"></div> Turquoise
+                                </div>
+								<div class="option" data-value="#E3F302">
+                                    <div class="color-box" style="background-color: #E3F302;"></div> Yellow
+                                </div>
+								<div class="option" data-value="#F30202">
+                                    <div class="color-box" style="background-color: #F30202;"></div> Red
+                                </div>
+                            </div>
+                        </div>
+                        <select id="colorSelect" name="colorSelect" style="display: none;">
+                            <option value="#333">Dark</option>
+                            <option value="#C0E4CB">Light</option>
+                            <option value="#007bff">Sky Blue</option>
+                            <option value="#E44CA6">Pink</option>
+                            <option value="#AD4CE4">Purple</option>
+							<option value="#A0698A">Lavender</option>
+                            <option value="#B41C76">Magenta</option>
+                            <option value="#321EE2">Indigo</option>
+                            <option value="#1E9BE2">Cyan</option>
+							<option value="#1EE2DF">Turquoise</option>
+                            <option value="#E3F302">Yellow</option>
+                            <option value="#F30202">Red</option>
+                        </select>
+                    </div>
+                    <button type="submit">Apply</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+ <div class="grid-container">
+        <a href="Klassik.html" class="grid-item-classic"></a>
+        <a href="Soundtracks.html" class="grid-item-soundtracks"></a>
+        <a href="Songs.html" class="grid-item-songs"></a>
+        <a href="Notes.html" class="grid-item-notes"></a>
+        <a href="Disney.html" class="grid-item-disney"></a>
+        <a href="Favorites.html" class="grid-item-favorites"></a>
+    </div>
+<footer>
+<div class="footer-text1"><a href="../index.html">GO BACK TO MAIN PAGE</a></div>
+<div class="footer-text2">© 2024 Guitar Notes GmbH™ ® Alle Rechte vorbehalten. Designed and Created by Sebastian Hermes Garcia</div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
