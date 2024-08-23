@@ -1,0 +1,391 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #1e1e1e;
+    margin: 0;
+  padding: 0;
+}
+#memory-heading2 {
+  font-family: 'Abril Fatface', cursive;
+  font-size: 2em;
+  margin-bottom: 0.5em;
+  position: relative;
+  color: #dcdcdc;
+  text-shadow: 
+       1px 1px 0 #444,
+       2px 2px 0 #444,
+       3px 3px 0 #444,
+       4px 4px 0 #444,
+       5px 5px 0 #444;
+ transition: transform 0.3s ease-in-out;
+ } 
+#memory-heading2:hover {
+  transform: rotateX(20deg) rotateY(20deg);
+}
+#memory-heading1 {
+  font-family: 'Abril Fatface', cursive;
+  font-size: 4.5em;
+  position: relative;
+  color: #dcdcdc;
+  margin: 0;
+  text-shadow: 
+       1px 1px 0 #444,
+       2px 2px 0 #444,
+       3px 3px 0 #444,
+       4px 4px 0 #444,
+       5px 5px 0 #444;
+ transition: transform 0.3s ease-in-out;
+ }
+#memory-heading1:hover {
+  transform: rotateX(20deg) rotateY(20deg);
+}
+#smaller-heading {
+  font-size: 46px;
+  margin: 0;
+}
+.board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+  justify-content: center;
+  align-items: center;
+    gap: 10px;
+    max-width: 90%;
+    margin: 20px auto;
+}
+
+.card {
+    position: relative;
+    width: 160px;
+    height: 120px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    cursor: pointer;
+}
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+}
+
+.card-face.front {
+    background-image: url('Bilder/memory.jpeg');
+    background-size: cover; /* Cover the entire screen */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent image from repeating */
+  z-index: 1;
+}
+
+.card-face.back {
+    background-color: #fff; /* Color for the back side */
+    color: black; /* Color for text on the back side */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+    transform: rotateY(180deg); /* Ensures back is hidden when not flipped */
+  padding: 0px;
+  z-index: 2;
+}
+
+.card-face img {
+    max-width: calc(100% - 20px); /* Account for padding */
+    max-height: calc(100% - 20px); /* Account for padding */
+    object-fit: contain; /* Ensure the image fits within the bounds */
+    display: block; /* Remove extra space around the image */
+}
+.animation-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex; /* Flexbox to center content */
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  margin: 2px;
+    background-color: rgba(76, 175, 80, 0.5); /* Semi-transparent green */
+    opacity: 0;
+    z-index: 3;
+  border: 3px solid green;
+    border-radius: 8px;
+    pointer-events: none; /* Ensure it doesn't block clicks */
+    animation: none; /* Ensure no animation initially */
+    box-sizing: border-box;
+}
+
+.card.correct .animation-overlay {
+    animation: flashGreen 2s;
+  animation-delay: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes flashGreen {
+    0% { opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0; }
+}
+.hidden {
+    display: none;
+}
+
+.win-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+  width: 30%;
+    transform: translate(-50%, -50%);
+    background-color: #007bff;
+    padding: 20px;
+    border: 5px solid #71787a;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  z-index: 10;
+}
+
+#restart-btn {
+    padding: 10px 20px;
+    background-color: #a15f9a;
+  margin: 10px auto;
+    color: white;
+    font-weight: 900;
+    border: 2px solid #545e61;
+    border-radius: 4px;
+    cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#restart-btn:hover {
+  background-color: #875082;
+  transform: scale(1.2);
+}
+#status {
+    margin: 20px;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+#current-player {
+  font-weight: bold;
+}
+#switch-turn-btn {
+    padding: 10px 20px;
+    background-color: #20c997;
+    color: white;
+  font-weight: 900;
+  font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#switch-turn-btn:hover {
+    background-color: #17a589;
+}
+.mode-selection {
+    text-align: center;
+    margin-top: 20px;
+}
+.hidden {
+    display: none;
+}
+#return-to-mode-btn {
+    padding: 10px 20px;
+    font-size: 18px; 
+  font-weight: 900;
+    margin: 20px auto 10px auto;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #6f42c1;
+    color: white;
+}
+
+#return-to-mode-btn:hover {
+    background-color: #5a2c8d;
+}
+.sophisticated-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    color: #fff;
+  font-weight: bold;
+    background: linear-gradient(145deg, #6a11cb 0%, #2575fc 100%);
+    border: none;
+    margin: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    font-family: 'Poppins', sans-serif; /* Google Font */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5), 0 0 25px rgba(255, 255, 255, 0.5), 0 0 5px rgba(255, 255, 255, 0.5); /* 3D text effect */
+}
+
+.sophisticated-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s, opacity 0.3s;
+    border-radius: 50%;
+    z-index: 0;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+}
+
+.sophisticated-button:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.sophisticated-button:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.sophisticated-button:active {
+    transform: scale(0.95);
+}
+
+canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+	  z-index: 50000000000;
+      background-color: #f00; /* initial color */
+      pointer-events: none;
+      animation: confetti-fall 2s linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-20vh) rotateZ(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotateZ(720deg);
+        opacity: 0;
+      }
+    }
+
+/* iPhone 15 series media queries */
+@media (orientation: portrait) {
+@media (max-width: 932px) {
+    #memory-heading1 {
+        font-size: 3.5em;
+    }
+    #memory-heading2 {
+        font-size: 2.5em;
+    }
+#smaller-heading {
+font-size: 3em;
+}
+    .sophisticated-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 10px 15px;
+    }
+    .board {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
+    }
+    .card {
+        width: 120px;
+        height: 100px;
+    }
+    .card-face img {
+        max-width: calc(100% - 20px);
+        max-height: calc(100% - 20px);
+    }
+    #return-to-mode-btn,
+    #switch-turn-btn {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+    #status {
+        font-size: 18px;
+    }
+    #win-message {
+        width: 80%;
+        padding: 15px;
+    }
+    #restart-btn {
+        padding: 8px 16px;
+    }
+}
+}
+@media (orientation: landscape) {
+@media (max-width: 430px) {
+    #memory-heading1 {
+        font-size: 3em;
+    }
+    #memory-heading2 {
+        font-size: 2em;
+    }
+	#smaller-heading {
+	font-size: 2em;
+	}
+    .sophisticated-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 10px 15px;
+    }
+    .board {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 7px;
+    }
+    .card {
+        width: 120px;
+        height: 100px;
+    }
+    .card-face img {
+        max-width: calc(100% - 20px);
+        max-height: calc(100% - 20px);
+    }
+    #return-to-mode-btn,
+    #switch-turn-btn {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+    #status {
+        font-size: 18px;
+    }
+    #win-message {
+        width: 80%;
+        padding: 15px;
+    }
+    #restart-btn {
+        padding: 8px 16px;
+    }
+
+}
