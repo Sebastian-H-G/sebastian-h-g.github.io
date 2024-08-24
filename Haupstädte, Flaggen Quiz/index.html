@@ -16,7 +16,9 @@
     <div class="logo">
         <img src="Logos/Geography.webp" alt="Geography Quiz Logo">
     </div>
-    <h1>Welcome to the Geography Quiz!</h1>
+	
+	 <h1 class="wave-text">Welcome to the Geography Quiz!</h1>
+
     <nav>
         <ul>
             <li><a href="#capital-quiz"><i class="fas fa-city"></i> Capital Quiz</a></li>
@@ -52,6 +54,27 @@
                 <p>See how many flags you can identify.</p>
             </div>
         </div>
+				<div class="swiper-slide">
+            <img src="/path/to/slide3.jpg" alt="Slide 3">
+            <div class="slide-text">
+                <h2>Navigate with Precision</h2>
+                <p>Test your ability to locate countries, cities, and landmarks on a map.</p>
+            </div>
+        </div>
+		<div class="swiper-slide">
+            <img src="/path/to/slide3.jpg" alt="Slide 3">
+            <div class="slide-text">
+                <h2>Flow Through Knowledge</h2>
+                <p>Can you identify the countries through which famous rivers flow?</p>
+            </div>
+        </div>
+		<div class="swiper-slide">
+            <img src="/path/to/slide3.jpg" alt="Slide 3">
+            <div class="slide-text">
+                <h2>Geography Meets Memory</h2>
+                <p>Engage your brain with geography-based memory games and quizzes.</p>
+            </div>
+        </div>
     </div>
     <!-- Add Pagination and Navigation -->
     <div class="swiper-pagination"></div>
@@ -69,7 +92,7 @@
                 <p>Test your knowledge of world capitals.</p>
             </div>
         </div>
-        <a href="#" class="quiz-link">Start Quiz</a>
+        <a href="All_Capitals.html" class="quiz-link">Start Quiz</a>
     </section>
 
     <section id="flag-quiz" class="quiz-section" data-aos="fade-up">
@@ -80,7 +103,7 @@
                 <p>Identify the flags of different countries.</p>
             </div>
         </div>
-        <a href="#" class="quiz-link">Start Quiz</a>
+        <a href="All_Flags.html" class="quiz-link">Start Quiz</a>
     </section>
 
     <section id="map-quiz" class="quiz-section" data-aos="fade-up">
@@ -91,7 +114,7 @@
                 <p>Locate countries and cities on a map.</p>
             </div>
         </div>
-        <a href="#" class="quiz-link">Start Quiz</a>
+        <a href="Map_Quiz.html" class="quiz-link">Start Quiz</a>
     </section>
 
     <section id="river-quiz" class="quiz-section" data-aos="fade-up">
@@ -102,25 +125,70 @@
                 <p>Match rivers with their respective countries.</p>
             </div>
         </div>
-        <a href="#" class="quiz-link">Start Quiz</a>
+        <a href="All_Maps.html" class="quiz-link">Start Quiz</a>
     </section>
 
     <section id="memory-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="/path/to/memory-logo.png" alt="Memory Quiz Logo" class="quiz-logo">
+            <img src="Logos/Memory.webp" alt="Memory Quiz Logo" class="quiz-logo">
             <div>
                 <h2>Memory Quiz</h2>
                 <p>Test your memory with geography-based challenges.</p>
             </div>
         </div>
-        <a href="#" class="quiz-link">Start Quiz</a>
+        <a href="Memory_Quiz.html" class="quiz-link">Start Quiz</a>
     </section>
 </main>
+
+<footer class="footer" data-aos="fade-up">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <a href="/index.html"><img src="Logos/Geography.webp" alt="Company Logo"></a>
+    </div>
+    <div class="footer-info">
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <!-- Initialize Swiper -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+    // Wave Animation
+    const waveText = document.querySelector('.wave-text');
+    if (waveText) {
+        // Split text into characters, preserving spaces
+        const text = waveText.textContent;
+        waveText.innerHTML = text.split('').map((letter, index) => 
+            letter === ' ' ? '&nbsp;' : `<span style="animation-delay: ${index * 0.1}s">${letter}</span>`
+        ).join('');
+    }
+
+    // Smooth Scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const target = document.querySelector(this.getAttribute('href'));
+            const offset = 40; // Adjust this value as per your header height
+
+            window.scrollTo({
+                top: target.offsetTop - offset,
+                behavior: 'smooth'
+            });
+        });
+    });
+
     // Initialize Swiper
     const swiper = new Swiper('.swiper-container', {
         loop: true,
@@ -147,6 +215,8 @@
         duration: 800, // Duration of the animation in milliseconds
         once: false,   // Whether animation should happen only once - while scrolling down
     });
+});
+
 </script>
 
 </body>
