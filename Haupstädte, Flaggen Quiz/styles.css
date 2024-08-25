@@ -144,7 +144,7 @@ nav ul li a:hover {
     align-items: center;
     justify-content: center;
     position: relative;
-    color: white;
+    color: black;
     background-size: cover;
     background-position: center;
 }
@@ -168,12 +168,18 @@ nav ul li a:hover {
 .slide-text h2 {
     font-size: 2.5rem;
     margin: 0;
+	border-radius: 20px;
+	background-color: rgba(255, 255, 255, 0.5);
     text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .slide-text p {
     font-size: 1.2rem;
     margin-top: 10px;
+	padding: 5px;
+	border-radius: 20px;
+	 background-color: rgba(255, 255, 255, 0.5); 
+	font-weight: bold;
     text-shadow: 0 4px 6px rgba(0, 0,0, 0.3);
 }
 
@@ -318,4 +324,16 @@ background-color: #0056b3;
   to {
     transform: translate(50px, -50px);
   }
+}
+
+@media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
+	.wave-text {
+		font-size: 1.8rem;
+	}
+	nav ul {
+		gap: 20px;	
+	}
+	nav ul li a {
+		font-size: 1rem;
+	}
 }
