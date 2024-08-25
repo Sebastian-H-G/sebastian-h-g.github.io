@@ -1,179 +1,88 @@
 const questions = [
     { 
-        question: 'What is the capital of Albania? 🇦🇱', 
-        correctAnswer: 'Tirana', 
-        easyOptions: ['Tirana', 'Athens', 'Skopje', 'Podgorica'], 
-        hardOptions: ['Tirana', 'Durrës', 'Vlorë', 'Shkodër'], 
-        country: 'Albania'
+        question: 'What is the capital of Canada? 🇨🇦', 
+        correctAnswer: 'Ottawa', 
+        easyOptions: ['Ottawa', 'Washington, D.C.', 'Mexico City', 'London'], 
+        hardOptions: ['Ottawa', 'Toronto', 'Vancouver', 'Montreal'], 
+        country: 'Canada'
     },
     { 
-        question: 'What is the capital of Andorra? 🇦🇩', 
-        correctAnswer: 'Andorra la Vella', 
-        easyOptions: ['Andorra la Vella', 'Madrid', 'Paris', 'Rome'], 
-        hardOptions: ['Andorra la Vella', 'Escaldes-Engordany', 'Encamp', 'La Massana'], 
-        country: 'Andorra'
+        question: 'What is the capital of Mexico? 🇲🇽', 
+        correctAnswer: 'Mexico City', 
+        easyOptions: ['Mexico City', 'Washington, D.C.', 'Buenos Aires', 'Madrid'], 
+        hardOptions: ['Mexico City', 'Guadalajara', 'Monterrey', 'Puebla'], 
+        country: 'Mexico'
     },
     { 
-        question: 'What is the capital of Austria? 🇦🇹', 
-        correctAnswer: 'Vienna', 
-        easyOptions: ['Vienna', 'Bratislava', 'Berlin', 'Prague'], 
-        hardOptions: ['Vienna', 'Salzburg', 'Graz', 'Innsbruck'], 
-        country: 'Austria'
+        question: 'What is the capital of the United States? 🇺🇸', 
+        correctAnswer: 'Washington, D.C.', 
+        easyOptions: ['Washington, D.C.', 'London', 'Paris', 'Ottawa'], 
+        hardOptions: ['Washington, D.C.', 'New York City', 'Los Angeles', 'Chicago'], 
+        country: 'United States'
     },
     { 
-        question: 'What is the capital of Belgium? 🇧🇪', 
-        correctAnswer: 'Brussels', 
-        easyOptions: ['Brussels', 'Amsterdam', 'Paris', 'Berlin'], 
-        hardOptions: ['Brussels', 'Antwerp', 'Ghent', 'Bruges'], 
-        country: 'Belgium'
+        question: 'What is the capital of Guatemala? 🇵🇪', 
+        correctAnswer: 'Guatemala City', 
+        easyOptions: ['Guatemala City', 'San Salvador', 'Tegucigalpa', 'Belmopan'], 
+        hardOptions: ['Guatemala City', 'Antigua', 'Quetzaltenango', 'Escuintla'], 
+        country: 'Guatemala'
     },
     { 
-        question: 'What is the capital of Bosnia and Herzegovina? 🇧🇦', 
-        correctAnswer: 'Sarajevo', 
-        easyOptions: ['Sarajevo', 'Belgrade', 'Zagreb', 'Podgorica'], 
-        hardOptions: ['Sarajevo', 'Banja Luka', 'Mostar', 'Tuzla'], 
-        country: 'Bosnia and Herzegovina'
+        question: 'What is the capital of Belize? 🇧🇪', 
+        correctAnswer: 'Belmopan', 
+        easyOptions: ['Belmopan', 'Honduras', 'San Salvador', 'Tegucigalpa'], 
+        hardOptions: ['Belmopan', 'Belize City', 'San Ignacio', 'Corozal'], 
+        country: 'Belize'
     },
     { 
-        question: 'What is the capital of Bulgaria? 🇧🇬', 
-        correctAnswer: 'Sofia', 
-        easyOptions: ['Sofia', 'Bucharest', 'Athens', 'Belgrade'], 
-        hardOptions: ['Sofia', 'Plovdiv', 'Varna', 'Burgas'], 
-        country: 'Bulgaria'
+        question: 'What is the capital of Honduras? 🇭🇳', 
+        correctAnswer: 'Tegucigalpa', 
+        easyOptions: ['Tegucigalpa', 'Managua', 'San Salvador', 'Guatemala City'], 
+        hardOptions: ['Tegucigalpa', 'San Pedro Sula', 'La Ceiba', 'Choluteca'], 
+        country: 'Honduras'
     },
     { 
-        question: 'What is the capital of Croatia? 🇭🇷', 
-        correctAnswer: 'Zagreb', 
-        easyOptions: ['Zagreb', 'Ljubljana', 'Sarajevo', 'Belgrade'], 
-        hardOptions: ['Zagreb', 'Split', 'Dubrovnik', 'Rijeka'], 
-        country: 'Croatia'
+        question: 'What is the capital of El Salvador? 🇸🇻', 
+        correctAnswer: 'San Salvador', 
+        easyOptions: ['San Salvador', 'Managua', 'Tegucigalpa', 'Guatemala City'], 
+        hardOptions: ['San Salvador', 'Santa Ana', 'San Miguel', 'Usulután'], 
+        country: 'El Salvador'
     },
     { 
-        question: 'What is the capital of Cyprus? 🇨🇾', 
-        correctAnswer: 'Nicosia', 
-        easyOptions: ['Nicosia', 'Athens', 'Cairo', 'Ankara'], 
-        hardOptions: ['Nicosia', 'Limassol', 'Larnaca', 'Paphos'], 
-        country: 'Cyprus'
+        question: 'What is the capital of Nicaragua? 🇳🇮', 
+        correctAnswer: 'Managua', 
+        easyOptions: ['Managua', 'San Salvador', 'Tegucigalpa', 'Guatemala City'], 
+        hardOptions: ['Managua', 'León', 'Granada', 'Matagalpa'], 
+        country: 'Nicaragua'
     },
     { 
-        question: 'What is the capital of Czech Republic? 🇨🇿', 
-        correctAnswer: 'Prague', 
-        easyOptions: ['Prague', 'Vienna', 'Berlin', 'Budapest'], 
-        hardOptions: ['Prague', 'Brno', 'Ostrava', 'Plzeň'], 
-        country: 'Czech Republic'
+        question: 'What is the capital of Costa Rica? 🇨🇷', 
+        correctAnswer: 'San José', 
+        easyOptions: ['San José', 'Panama City', 'Havana', 'Bogotá'], 
+        hardOptions: ['San José', 'Alajuela', 'Cartago', 'Heredia'], 
+        country: 'Costa Rica'
     },
     { 
-        question: 'What is the capital of Denmark? 🇩🇰', 
-        correctAnswer: 'Copenhagen', 
-        easyOptions: ['Copenhagen', 'Oslo', 'Stockholm', 'Helsinki'], 
-        hardOptions: ['Copenhagen', 'Aarhus', 'Odense', 'Aalborg'], 
-        country: 'Denmark'
+        question: 'What is the capital of Panama? 🇵🇦', 
+        correctAnswer: 'Panama City', 
+        easyOptions: ['Panama City', 'San José', 'Bogotá', 'Lima'], 
+        hardOptions: ['Panama City', 'Colón', 'David', 'La Chorrera'], 
+        country: 'Panama'
     },
     { 
-        question: 'What is the capital of Estonia? 🇪🇪', 
-        correctAnswer: 'Tallinn', 
-        easyOptions: ['Tallinn', 'Riga', 'Vilnius', 'Helsinki'], 
-        hardOptions: ['Tallinn', 'Tartu', 'Narva', 'Pärnu'], 
-        country: 'Estonia'
+        question: 'What is the capital of the Bahamas? 🇧🇸', 
+        correctAnswer: 'Nassau', 
+        easyOptions: ['Nassau', 'Kingston', 'Havana', 'San Juan'], 
+        hardOptions: ['Nassau', 'Freeport', 'West End', 'High Rock'], 
+        country: 'The Bahamas'
     },
     { 
-        question: 'What is the capital of Finland? 🇫🇮', 
-        correctAnswer: 'Helsinki', 
-        easyOptions: ['Helsinki', 'Stockholm', 'Copenhagen', 'Oslo'], 
-        hardOptions: ['Helsinki', 'Tampere', 'Turku', 'Oulu'], 
-        country: 'Finland'
-    },
-    { 
-        question: 'What is the capital of France? 🇫🇷', 
-        correctAnswer: 'Paris', 
-        easyOptions: ['Paris', 'Berlin', 'Rome', 'Madrid'], 
-        hardOptions: ['Paris', 'Lyon', 'Marseille', 'Toulouse'], 
-        country: 'France'
-    },
-    { 
-        question: 'What is the capital of Germany? 🇩🇪', 
-        correctAnswer: 'Berlin', 
-        easyOptions: ['Berlin', 'Vienna', 'Amsterdam', 'Brussels'], 
-        hardOptions: ['Berlin', 'Munich', 'Frankfurt', 'Hamburg'], 
-        country: 'Germany'
-    },
-    { 
-        question: 'What is the capital of Greece? 🇬🇷', 
-        correctAnswer: 'Athens', 
-        easyOptions: ['Athens', 'Rome', 'Sofia', 'Ankara'], 
-        hardOptions: ['Athens', 'Thessaloniki', 'Patras', 'Heraklion'], 
-        country: 'Greece'
-    },
-    { 
-        question: 'What is the capital of Hungary? 🇭🇺', 
-        correctAnswer: 'Budapest', 
-        easyOptions: ['Budapest', 'Vienna', 'Prague', 'Warsaw'], 
-        hardOptions: ['Budapest', 'Debrecen', 'Szeged', 'Miskolc'], 
-        country: 'Hungary'
-    },
-    { 
-        question: 'What is the capital of Iceland? 🇮🇸', 
-        correctAnswer: 'Reykjavik', 
-        easyOptions: ['Reykjavik', 'Oslo', 'Copenhagen', 'Helsinki'], 
-        hardOptions: ['Reykjavik', 'Akureyri', 'Keflavik', 'Hafnarfjordur'], 
-        country: 'Iceland'
-    },
-    { 
-        question: 'What is the capital of Ireland? 🇮🇪', 
-        correctAnswer: 'Dublin', 
-        easyOptions: ['Dublin', 'Belfast', 'London', 'Edinburgh'], 
-        hardOptions: ['Dublin', 'Cork', 'Limerick', 'Galway'], 
-        country: 'Ireland'
-    },
-    { 
-        question: 'What is the capital of Italy? 🇮🇹', 
-        correctAnswer: 'Rome', 
-        easyOptions: ['Rome', 'Paris', 'Berlin', 'Madrid'], 
-        hardOptions: ['Rome', 'Milan', 'Naples', 'Turin'], 
-        country: 'Italy'
-    },
-    { 
-        question: 'What is the capital of Kosovo? 🇽🇰', 
-        correctAnswer: 'Pristina', 
-        easyOptions: ['Pristina', 'Belgrade', 'Skopje', 'Tirana'], 
-        hardOptions: ['Pristina', 'Peja', 'Mitrovica', 'Gjilan'], 
-        country: 'Kosovo'
-    },
-    { 
-        question: 'What is the capital of Latvia? 🇱🇻', 
-        correctAnswer: 'Riga', 
-        easyOptions: ['Riga', 'Tallinn', 'Vilnius', 'Warsaw'], 
-        hardOptions: ['Riga', 'Daugavpils', 'Liepaja', 'Jelgava'], 
-        country: 'Latvia'
-    },
-    { 
-        question: 'What is the capital of Liechtenstein? 🇱🇮', 
-        correctAnswer: 'Vaduz', 
-        easyOptions: ['Vaduz', 'Zurich', 'Vienna', 'Munich'], 
-        hardOptions: ['Vaduz', 'Schaan', 'Balzers', 'Triesen'], 
-        country: 'Liechtenstein'
-    },
-    { 
-        question: 'What is the capital of Lithuania? 🇱🇹', 
-        correctAnswer: 'Vilnius', 
-        easyOptions: ['Vilnius', 'Riga', 'Tallinn', 'Warsaw'], 
-        hardOptions: ['Vilnius', 'Kaunas', 'Klaipeda', 'Šiauliai'], 
-        country: 'Lithuania'
-    },
-    { 
-        question: 'What is the capital of Luxembourg? 🇱🇺', 
-        correctAnswer: 'Luxembourg', 
-        easyOptions: ['Luxembourg', 'Brussels', 'Paris', 'Berlin'], 
-        hardOptions: ['Luxembourg', 'Esch-sur-Alzette', 'Differdange', 'Dudelange'], 
-        country: 'Luxembourg'
-    },
-    { 
-        question: 'What is the capital of Malta? 🇲🇹',
-correctAnswer: 'Valletta',
-easyOptions: ['Valletta', 'Rome', 'Athens', 'Cairo'],
-hardOptions: ['Valletta', 'Sliema', 'St. Julian‘s', 'Birkirkara'],
-country: 'Malta'
-}
+        question: 'What is the capital of Cuba? 🇨🇺', 
+        correctAnswer: 'Havana', 
+        easyOptions: ['Havana', 'Kingston', 'Port au Prince', 'San Juan'], 
+        hardOptions: ['Havana', 'Santiago de Cuba', 'Camagüey', 'Holguín'], 
+        country: 'Cuba'
+    }
 ];
 // Add more questions here if needed
       let score = 0;
@@ -235,6 +144,16 @@ let map = L.map('map').setView([20, 0], 2); // Set initial view
 }
 
 // Initialize Chart.js
+// Event listener for dashboard button
+document.querySelector('.dashboard-btn').addEventListener('click', () => {
+    document.getElementById('dashboard-modal').style.display = 'block';
+    updateDashboard(); // Function to update dashboard content
+});
+
+// Event listener for closing the modal
+document.querySelector('.modal .close-btn').addEventListener('click', () => {
+    document.getElementById('dashboard-modal').style.display = 'none';
+});
 
 // Function to update dashboard content
 function updateDashboard() {
@@ -315,23 +234,21 @@ function shuffle(array) {
 }
 function loadQuestion() {
     const difficulty = document.getElementById('difficulty').value;
-    
-    // Filter questions based on difficulty
     const filteredQuestions = generateQuestions(difficulty);
     shuffle(filteredQuestions);
 
-    // Check if there are questions left to load
-    if (currentQuestionIndex >= filteredQuestions.length) {
-        currentQuestionIndex = 0; // Reset index if out of questions
-    }
-
     const currentQuestion = filteredQuestions[currentQuestionIndex];
-
+    
     // Display the question
     document.getElementById('question').textContent = currentQuestion.question;
     
     // Set the answer options based on the difficulty level
-    let options = difficulty === 'easy' ? currentQuestion.easyOptions : currentQuestion.hardOptions;
+    let options = [];
+    if (difficulty === 'easy') {
+        options = currentQuestion.easyOptions;
+    } else if (difficulty === 'hard') {
+        options = currentQuestion.hardOptions;
+    }
     
     shuffle(options);
     
@@ -459,29 +376,20 @@ createConfetti();   triggerWiggleAndGlowAnimation();
 
 // Generate or fetch questions based on difficulty
 function generateQuestions(difficulty) {
-    // Assuming `questions` is an array containing all questions
-    return questions.filter(question => question.difficulty === difficulty);
+    // Return a list of questions based on difficulty
+    return questions;
 }
 
-
-// Show modal
+// Event listener for dashboard button
 document.getElementById('dashboard-btn').addEventListener('click', () => {
     document.getElementById('dashboard-modal').style.display = 'block';
-    updateDashboard(); // Ensure dashboard is updated
+    updateDashboard(); // Function to update dashboard content
 });
 
-// Hide modal when close button is clicked
-document.querySelector('.close-btn').addEventListener('click', () => {
+// Event listener for closing the modal
+document.querySelector('.modal .close-btn').addEventListener('click', () => {
     document.getElementById('dashboard-modal').style.display = 'none';
 });
-
-// Also hide modal if clicked outside of the modal content
-window.addEventListener('click', (event) => {
-    if (event.target == document.getElementById('dashboard-modal')) {
-        document.getElementById('dashboard-modal').style.display = 'none';
-    }
-});
-
 
 // Function to update dashboard content
 function updateDashboard() {
@@ -492,23 +400,22 @@ function updateDashboard() {
     document.getElementById('correct-answers').textContent = score; // Update with real data
     document.getElementById('other-metrics').textContent = '0'; // Update with real data
 }
-
-
 document.getElementById('difficulty').addEventListener('change', function() {
     const selectedDifficulty = this.value;
+    console.log('Selected difficulty:', selectedDifficulty);
+
+    // Update your application based on the selected difficulty
     updateDifficulty(selectedDifficulty);
 });
 
 function updateDifficulty(difficulty) {
-    currentQuestionIndex = 0; // Reset the question index
-    loadQuestion(); // Load a question based on the new difficulty
+    // Add your logic here to update the application based on the difficulty
+    // For example:
+    if (difficulty === 'easy') {
+        // Set up for easy difficulty
+    } else if (difficulty === 'hard') {
+        // Set up for hard difficulty
+    }
 }
-
-
-// Load the first question on page load
-window.onload = function() {
-    loadQuestion();
-};
 // Initial load
 loadQuestion();
-
