@@ -339,4 +339,15 @@ background-color: #0056b3;
 	nav ul li a i {
 		margin-right: 3px;
 	}
+	.swiper-container {
+		height: 350px;
+	}
+	
+.slide-text h2 {
+    font-size: 2rem;
+}
+
+.slide-text p {
+    font-size: 1rem;
+}
 }
