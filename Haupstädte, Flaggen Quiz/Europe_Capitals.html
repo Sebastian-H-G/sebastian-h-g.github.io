@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Quiz</title>
+    <link rel="stylesheet" href="capital.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+    <header>
+      <h1>Europe<span class="break">Capital Quiz</span></h1>
+        <div class="score-board">
+            <div class="score" id="score">Score: <span>0</span></div>
+            <div class="highscore" id="highscore">Highscore: <span>0</span></div>
+        </div>
+        <div class="difficulty-selector">
+            <label class="select-dif" for="difficulty">Select Difficulty:</label>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+      <div class="navbar">
+        <ul class="nav-list">
+            <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">Continents</a>
+                <ul class="dropdown-menu">
+                    <li><a href="europe.html">Europe</a></li>
+                    <li><a href="africa.html">Afrika</a></li>
+                    <li><a href="southamerica">South America</a></li>
+                     <li><a href="northamerica">North America</a></li>
+                     <li><a href="asia.html">Asia</a></li>
+                     <li><a href="ozeania.html">Ozeania</a></li>
+                </ul>
+            </li>
+</ul>
+    </div>
+      <button id="dashboard-btn" class="dashboard-btn">Open Dashboard</button>
+    </header>
+
+    <main>
+        <div id="question-container">
+            <p id="question">Question will appear here</p>
+            <div class="options">
+                <button class="option-btn">Option 1</button>
+                <button class="option-btn">Option 2</button>
+                <button class="option-btn">Option 3</button>
+                <button class="option-btn">Option 4</button>
+            </div>
+            <div id="message" class="message"></div>
+        </div>
+      <div id="map" style="height: 400px; margin-top: 20px;"></div>
+    </main>
+
+    <!-- Modal for Dashboard -->
+    <div id="dashboard-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Dashboard</h2>
+            <div id="dashboard-content">
+                <div class="metrics">
+                    <p>Achievements: <span id="achievements">0</span></p>
+                    <p>Activity: <span id="activity">0</span></p>
+                    <p>Usage: <span id="usage">0</span></p>
+                    <p>Correct Answers: <span id="correct-answers">0</span></p>
+                    <p>Other Metrics: <span id="other-metrics">0</span></p>
+                </div>
+                <div class="charts">
+                    <canvas id="scoreChart"></canvas>
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+<canvas id="confettiCanvas"></canvas>
+
+    <footer>
+        <p>&copy; 2024 Capital Quiz. All rights reserved.</p>
+    </footer>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-geojson@latest"></script>
+   
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="europe_capitals.js"></script>
+</body>
+</html>

@@ -336,4 +336,7 @@ background-color: #0056b3;
 	nav ul li a {
 		font-size: 1rem;
 	}
+	nav ul li a i {
+		margin-right: 5px;
+	}
 }
