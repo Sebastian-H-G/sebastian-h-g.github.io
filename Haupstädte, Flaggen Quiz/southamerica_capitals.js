@@ -1,89 +1,90 @@
 const questions = [
-    { 
-        question: 'What is the capital of Canada? 🇨🇦', 
-        correctAnswer: 'Ottawa', 
-        easyOptions: ['Ottawa', 'Washington, D.C.', 'Mexico City', 'London'], 
-        hardOptions: ['Ottawa', 'Toronto', 'Vancouver', 'Montreal'], 
-        country: 'Canada'
+    {
+        question: 'What is the capital of Argentina? 🇦🇷', 
+        correctAnswer: 'Buenos Aires', 
+        easyOptions: ['Buenos Aires', 'Montevideo', 'Santiago', 'Asunción'], 
+        hardOptions: ['Buenos Aires', 'La Plata', 'Rosario', 'Córdoba'], 
+        country: 'Argentina'
     },
-    { 
-        question: 'What is the capital of Mexico? 🇲🇽', 
-        correctAnswer: 'Mexico City', 
-        easyOptions: ['Mexico City', 'Washington, D.C.', 'Buenos Aires', 'Madrid'], 
-        hardOptions: ['Mexico City', 'Guadalajara', 'Monterrey', 'Puebla'], 
-        country: 'Mexico'
+    {
+        question: 'What is the capital of Bolivia? 🇧🇴', 
+        correctAnswer: 'Sucre', 
+        easyOptions: ['Sucre', 'La Paz', 'Santa Cruz', 'Cochabamba'], 
+        hardOptions: ['Sucre', 'Potosí', 'Oruro', 'Tarija'], 
+        country: 'Bolivia'
     },
-    { 
-        question: 'What is the capital of the United States? 🇺🇸', 
-        correctAnswer: 'Washington, D.C.', 
-        easyOptions: ['Washington, D.C.', 'London', 'Paris', 'Ottawa'], 
-        hardOptions: ['Washington, D.C.', 'New York City', 'Los Angeles', 'Chicago'], 
-        country: 'United States'
+    {
+        question: 'What is the capital of Brazil? 🇧🇷', 
+        correctAnswer: 'Brasília', 
+        easyOptions: ['Brasília', 'Rio de Janeiro', 'São Paulo', 'Salvador'], 
+        hardOptions: ['Brasília', 'Rio de Janeiro', 'São Paulo', 'Belo Horizonte'], 
+        country: 'Brazil'
     },
-    { 
-        question: 'What is the capital of Guatemala? 🇵🇪', 
-        correctAnswer: 'Guatemala City', 
-        easyOptions: ['Guatemala City', 'San Salvador', 'Tegucigalpa', 'Belmopan'], 
-        hardOptions: ['Guatemala City', 'Antigua', 'Quetzaltenango', 'Escuintla'], 
-        country: 'Guatemala'
+    {
+        question: 'What is the capital of Chile? 🇨🇱', 
+        correctAnswer: 'Santiago', 
+        easyOptions: ['Santiago', 'Valparaíso', 'Concepción', 'La Serena'], 
+        hardOptions: ['Santiago', 'Valparaíso', 'Antofagasta', 'Temuco'], 
+        country: 'Chile'
     },
-    { 
-        question: 'What is the capital of Belize? 🇧🇪', 
-        correctAnswer: 'Belmopan', 
-        easyOptions: ['Belmopan', 'Honduras', 'San Salvador', 'Tegucigalpa'], 
-        hardOptions: ['Belmopan', 'Belize City', 'San Ignacio', 'Corozal'], 
-        country: 'Belize'
+    {
+        question: 'What is the capital of Colombia? 🇨🇴', 
+        correctAnswer: 'Bogotá', 
+        easyOptions: ['Bogotá', 'Medellín', 'Cali', 'Cartagena'], 
+        hardOptions: ['Bogotá', 'Medellín', 'Cali', 'Bucaramanga'], 
+        country: 'Colombia'
     },
-    { 
-        question: 'What is the capital of Honduras? 🇭🇳', 
-        correctAnswer: 'Tegucigalpa', 
-        easyOptions: ['Tegucigalpa', 'Managua', 'San Salvador', 'Guatemala City'], 
-        hardOptions: ['Tegucigalpa', 'San Pedro Sula', 'La Ceiba', 'Choluteca'], 
-        country: 'Honduras'
+    {
+        question: 'What is the capital of Ecuador? 🇪🇨', 
+        correctAnswer: 'Quito', 
+        easyOptions: ['Quito', 'Guayaquil', 'Cuenca', 'Ambato'], 
+        hardOptions: ['Quito', 'Guayaquil', 'Cuenca', 'Loja'], 
+        country: 'Ecuador'
     },
-    { 
-        question: 'What is the capital of El Salvador? 🇸🇻', 
-        correctAnswer: 'San Salvador', 
-        easyOptions: ['San Salvador', 'Managua', 'Tegucigalpa', 'Guatemala City'], 
-        hardOptions: ['San Salvador', 'Santa Ana', 'San Miguel', 'Usulután'], 
-        country: 'El Salvador'
+    {
+        question: 'What is the capital of Guyana? 🇬🇾', 
+        correctAnswer: 'Georgetown', 
+        easyOptions: ['Georgetown', 'New Amsterdam', 'Linden', 'Mabaruma'], 
+        hardOptions: ['Georgetown', 'Linden', 'New Amsterdam', 'Bartica'], 
+        country: 'Guyana'
     },
-    { 
-        question: 'What is the capital of Nicaragua? 🇳🇮', 
-        correctAnswer: 'Managua', 
-        easyOptions: ['Managua', 'San Salvador', 'Tegucigalpa', 'Guatemala City'], 
-        hardOptions: ['Managua', 'León', 'Granada', 'Matagalpa'], 
-        country: 'Nicaragua'
+    {
+        question: 'What is the capital of Paraguay? 🇵🇾', 
+        correctAnswer: 'Asunción', 
+        easyOptions: ['Asunción', 'Ciudad del Este', 'Encarnación', 'Pedro Juan Caballero'], 
+        hardOptions: ['Asunción', 'Ciudad del Este', 'Encarnación', 'Alto Paraná'], 
+        country: 'Paraguay'
     },
-    { 
-        question: 'What is the capital of Costa Rica? 🇨🇷', 
-        correctAnswer: 'San José', 
-        easyOptions: ['San José', 'Panama City', 'Havana', 'Bogotá'], 
-        hardOptions: ['San José', 'Alajuela', 'Cartago', 'Heredia'], 
-        country: 'Costa Rica'
+    {
+        question: 'What is the capital of Peru? 🇵🇪', 
+        correctAnswer: 'Lima', 
+        easyOptions: ['Lima', 'Arequipa', 'Cusco', 'Trujillo'], 
+        hardOptions: ['Lima', 'Arequipa', 'Cusco', 'Piura'], 
+        country: 'Peru'
     },
-    { 
-        question: 'What is the capital of Panama? 🇵🇦', 
-        correctAnswer: 'Panama City', 
-        easyOptions: ['Panama City', 'San José', 'Bogotá', 'Lima'], 
-        hardOptions: ['Panama City', 'Colón', 'David', 'La Chorrera'], 
-        country: 'Panama'
+    {
+        question: 'What is the capital of Suriname? 🇸🇷', 
+        correctAnswer: 'Paramaribo', 
+        easyOptions: ['Paramaribo', 'Nieuw Nickerie', 'Moengo', 'Lelydorp'], 
+        hardOptions: ['Paramaribo', 'Nieuw Nickerie', 'Moengo', 'Lelydorp'], 
+        country: 'Suriname'
     },
-    { 
-        question: 'What is the capital of the Bahamas? 🇧🇸', 
-        correctAnswer: 'Nassau', 
-        easyOptions: ['Nassau', 'Kingston', 'Havana', 'San Juan'], 
-        hardOptions: ['Nassau', 'Freeport', 'West End', 'High Rock'], 
-        country: 'The Bahamas'
+    {
+        question: 'What is the capital of Uruguay? 🇺🇾', 
+        correctAnswer: 'Montevideo', 
+        easyOptions: ['Montevideo', 'Salto', 'Paysandú', 'Maldonado'], 
+        hardOptions: ['Montevideo', 'Salto', 'Paysandú', 'Colonia del Sacramento'], 
+        country: 'Uruguay'
     },
-    { 
-        question: 'What is the capital of Cuba? 🇨🇺', 
-        correctAnswer: 'Havana', 
-        easyOptions: ['Havana', 'Kingston', 'Port au Prince', 'San Juan'], 
-        hardOptions: ['Havana', 'Santiago de Cuba', 'Camagüey', 'Holguín'], 
-        country: 'Cuba'
+    {
+        question: 'What is the capital of Venezuela? 🇻🇪', 
+        correctAnswer: 'Caracas', 
+        easyOptions: ['Caracas', 'Maracaibo', 'Valencia', 'Barquisimeto'], 
+        hardOptions: ['Caracas', 'Maracaibo', 'Valencia', 'Maturín'], 
+        country: 'Venezuela'
     }
 ];
+
 // Add more questions here if needed
       let score = 0;
 let highscore = parseInt(localStorage.getItem('highscore')) || 0;
