@@ -459,8 +459,7 @@ createConfetti();   triggerWiggleAndGlowAnimation();
 
 // Generate or fetch questions based on difficulty
 function generateQuestions(difficulty) {
-    // Assuming `questions` is an array containing all questions
-    return questions.filter(question => question.difficulty === difficulty);
+    return questions; // No filtering, but could add filtering logic later
 }
 
 

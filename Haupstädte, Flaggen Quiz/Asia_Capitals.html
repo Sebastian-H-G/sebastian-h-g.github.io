@@ -24,18 +24,11 @@
   
 </head>
 <body>
-    <header style="background-color: #FFDD44; color: black;">
-      <h1>Asia <span class="break">Capital Quiz</span></h1>
+    <header>
+      <h1>Asia<span class="break"> Capital Quiz</span></h1>
         <div class="score-board">
             <div class="score" id="score">Score: <span>0</span></div>
             <div class="highscore" id="highscore">Highscore: <span>0</span></div>
-        </div>
-        <div class="difficulty-selector">
-            <label class="select-dif" for="difficulty">Select Difficulty:</label>
-            <select id="difficulty">
-                <option value="easy">Easy</option>
-                <option value="hard">Hard</option>
-            </select>
         </div>
       <div class="navbar">
         <ul class="nav-list">
@@ -51,10 +44,16 @@
             </li>
 </ul>
     </div>
-      <button id="dashboard-btn" class="dashboard-btn">Open Dashboard</button>
     </header>
-
-    <main>
+	<button id="dashboard-btn" class="dashboard-btn">Open Dashboard</button>
+	<div class="div-difficlut">	 <div class="difficulty-selector">
+        <label class="select-dif" for="difficulty">Select Difficulty:</label>
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div></div>
+	<main>
         <div id="question-container">
             <p id="question">Question will appear here</p>
             <div class="options">
@@ -97,6 +96,6 @@
     <script src="https://unpkg.com/leaflet-geojson@latest"></script>
    
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="asia_capitals.js"></script>
+    <script src="europe_capitals.js"></script>
 </body>
 </html>
