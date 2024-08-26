@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vibration Example</title>
+</head>
+<body>
+    <button onclick="vibratePhone()">Vibrate Phone</button>
+
+    <script>
+        function vibratePhone() {
+            if ("vibrate" in navigator) {
+                navigator.vibrate(200); // Vibrates for 200 milliseconds
+            } else {
+                alert("Vibration not supported on this device.");
+            }
+        }
+    </script>
+</body>
+</html>
