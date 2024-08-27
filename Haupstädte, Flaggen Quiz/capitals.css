@@ -562,7 +562,7 @@ footer {
     .difficulty-selector {
         padding: 15px;
         left: 15px; /* Adjust position */
-        top: 15px;
+        top: 10px;
 		margin-top: 10px;
     }
 
@@ -628,6 +628,11 @@ footer {
         font-size: 12px; /* Adjust font size */
         padding: 9px;
     }
+	  .select-dif {
+      font-size: 12px;
+	  
+		margin-top: 10px;
+  }
 
     .difficulty-selector {
         padding: 7px;
@@ -640,6 +645,8 @@ footer {
     }
   .select-dif {
       font-size: 12px;
+	  
+		margin-top: 10px;
   }
     .dashboard-btn {
         font-size: 12px; /* Adjust font size */
