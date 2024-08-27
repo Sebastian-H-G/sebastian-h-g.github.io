@@ -563,6 +563,7 @@ footer {
         padding: 15px;
         left: 15px; /* Adjust position */
         top: 15px;
+		margin-top: 15px;
     }
 
     .dashboard-btn {
