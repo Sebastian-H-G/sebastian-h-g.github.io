@@ -24,10 +24,10 @@ body {
 }
 
 header {
-    background-color: #3366FF;
+  background: linear-gradient(to right, #003c4e, #00bcd4);
     color: #fff;
     padding: 20px;
-  position: fixed;
+  position: absolute;
     text-align: center;
     width: 100%;
   height: 125px;
@@ -106,9 +106,10 @@ header h1 {
     gap: 30px;
      background: linear-gradient(to right, #E8E8E8, #CECECE);
   padding: 30px 40px;
-    position: fixed;
+    position: absolute;
     right: 20px;
   top: 20px;
+  margin-right: 10px;
   color: black;
   border-radius: 7px;
 }
@@ -202,8 +203,8 @@ option {
 
 /* Dashboard Button Styling */
 .dashboard-btn {
-    background-color: #ff5722;
-    border: none;
+    background-color: #ff5711;
+    border: 2px solid #BF360C; 
     border-radius: 5px;
     color: #fff;
     cursor: pointer;
@@ -447,6 +448,88 @@ footer {
         padding: 15px 25px; /* Adjust padding */
     }
 }
+
+/* Footer Styling */
+.footer {
+  background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  margin-top: 70px;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
+
 
 /* iPhone 15 Landscape Mode */
 @media only screen and (max-width: 852px) and (max-height: 393px) and (orientation: landscape) {
