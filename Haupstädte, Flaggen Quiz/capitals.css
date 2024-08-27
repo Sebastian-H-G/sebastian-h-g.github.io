@@ -563,7 +563,7 @@ footer {
         padding: 15px;
         left: 15px; /* Adjust position */
         top: 15px;
-		margin-top: 15px;
+		margin-top: 10px;
     }
 
     .dashboard-btn {
@@ -631,8 +631,9 @@ footer {
 
     .difficulty-selector {
         padding: 7px;
+	    
+		margin-top: 10px;
         left: 10px;
-      margin: 0;/* Adjust position */
       font-size: 7px;
         top: 10px;
       width: 110px;
