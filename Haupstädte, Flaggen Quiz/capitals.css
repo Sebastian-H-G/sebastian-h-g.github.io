@@ -607,16 +607,17 @@ footer {
   }
     .score-board {
         flex-direction: column; /* Stack items vertically */
-        padding: 7px 10px;
+        padding: 9px 10px;
         right: 15px; /* Adjust position */
       top: 10px;
+      margin-right: 15px;
         gap: 15px; /* Space between items */
     }
 
     .score, .highscore {
-        width: 75px; /* Full width for stacked items */
-        font-size: 12px; /* Adjust font size */
-        padding: 7px 10px; /* Adjust padding */
+        width: 90px; /* Full width for stacked items */
+        font-size: 14px; /* Adjust font size */
+        padding: 15px 18px;
         border-radius: 7px; /* Adjust border-radius */
     }
   .navbar {
@@ -630,34 +631,39 @@ footer {
   .nav-item a:hover {
     transform: scale(1.0);
   }
-    #difficulty {
-        font-size: 12px; /* Adjust font size */
-        padding: 9px;
-    }
-	  .select-dif {
-      font-size: 12px;
-	  
-		margin-top: 10px;
+  #difficulty {
+    padding: 1px;
+    font-size: 17px;
+    margin-right: 0;
+    margin-left: 0;
+    margin-top: 5px;
   }
-
+  
+  #difficulty  select {
+        font-size: 1px; 
+      padding: 1px;
+    margin-top: 10px;
+    }
+	 
+  .difficulty-selector select {
+  font-size: 22px;
+        padding: 77px;
+  }
     .difficulty-selector {
-        padding: 7px;
-	    
-		margin-top: 10px;
-        left: 10px;
-      font-size: 7px;
+        padding: 10px;
+	    text-align: left;
+      font-size: 12px;
         top: 10px;
-      width: 110px;
+      width: 130px;
     }
   .select-dif {
-      font-size: 12px;
-	  
-		margin-top: 10px;
+      font-size: 15px;
   }
     .dashboard-btn {
-        font-size: 12px; /* Adjust font size */
+        font-size: 14px; /* Adjust font size */
         padding: 7px 14px; /* Adjust padding */
-      left: 10px;
+      
+      margin-top: 10px;
         top: 50px; /* Adjust position */
     }
 
