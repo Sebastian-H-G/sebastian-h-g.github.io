@@ -42,7 +42,7 @@ const questions = [
         country: 'El Salvador'
     },
     { 
-        question: 'What is the capital of Guatemala? 🇲🇽', 
+        question: 'What is the capital of Guatemala? 🇬🇹', 
         correctAnswer: 'Guatemala City', 
         easyOptions: ['Guatemala City', 'Antigua', 'Quetzaltenango', 'Escuintla'], 
         hardOptions: ['Guatemala City', 'Antigua', 'Quetzaltenango', 'Escuintla'], 
