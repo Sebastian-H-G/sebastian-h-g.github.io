@@ -590,49 +590,75 @@ footer {
 
 /* iPad Portrait Mode */
 @media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
-      header h1 {
-        font-size: 32px; /* Adjust font size */
+  header {
+    height: 120px;
+  }
+    header h1 {
+        font-size: 30px; /* Adjust font size */ margin-top: 0px;
     }
+  .break {display: block;}
 
-    .navbar {
-        font-size: 18px; /* Adjust font size */
-    }
-
-    .nav-item a {
-        padding: 12px 25px; /* Adjust padding */
-    }
-
+  #map {
+    width: 90%;
+    z-index: -1;
+    margin-bottom: 50px;
+  }
+  #message {
+  }
     .score-board {
-        padding: 25px 35px;
+        flex-direction: column; /* Stack items vertically */
+        padding: 7px 10px;
         right: 15px; /* Adjust position */
+      top: 10px;
+        gap: 15px; /* Space between items */
     }
 
     .score, .highscore {
-        font-size: 18px; /* Adjust font size */
+        width: 75px; /* Full width for stacked items */
+        font-size: 12px; /* Adjust font size */
+        padding: 7px 10px; /* Adjust padding */
+        border-radius: 7px; /* Adjust border-radius */
+    }
+  .navbar {
+        font-size: 16px; /* Adjust font size */
     }
 
+    .nav-item a {
+        padding: 7px 18px;
+      border-radius: 7px;
+    }
+  .nav-item a:hover {
+    transform: scale(1.0);
+  }
     #difficulty {
-        font-size: 18px; /* Adjust font size */
+        font-size: 12px; /* Adjust font size */
         padding: 9px;
     }
+	  .select-dif {
+      font-size: 12px;
+	  
+		margin-top: 10px;
+  }
 
     .difficulty-selector {
-        padding: 15px;
-        left: 15px; /* Adjust position */
-		margin-top: 15px;
+        padding: 7px;
+	    
+		margin-top: 10px;
+        left: 10px;
+      font-size: 7px;
+        top: 10px;
+      width: 110px;
     }
-
-
-.difficulty-selector select {
-    padding: 10px;
-    font-size: 16px;
-}
-
-
+  .select-dif {
+      font-size: 12px;
+	  
+		margin-top: 10px;
+  }
     .dashboard-btn {
-        font-size: 18px; /* Adjust font size */
-        padding: 12px 22px; /* Adjust padding */
-        top: 70px; /* Adjust position */
+        font-size: 12px; /* Adjust font size */
+        padding: 7px 14px; /* Adjust padding */
+      left: 10px;
+        top: 50px; /* Adjust position */
     }
 
     #question {
@@ -642,5 +668,5 @@ footer {
     .option-btn {
         font-size: 18px; /* Adjust font size */
         padding: 16px 28px; /* Adjust padding */
-    }
+  }
 }
