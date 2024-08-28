@@ -156,7 +156,7 @@ header h1 {
 
 .div-difficlut {
 	width: auto;
-	margin: 0px auto 15px 10px;
+	margin: 0px auto 5px 10px;
 	z-index: 5000;
 }
 
@@ -184,7 +184,7 @@ header h1 {
 }
 
 .difficulty-selector {
-   margin-top: 20px;
+   margin-top: 15px;
   background: linear-gradient(to right, #E8E8E8, #CECECE);
   padding: 20px;
   border-radius: 7px;
@@ -211,7 +211,7 @@ option {
     font-size: 20px;
   font-weight: bold;
     padding: 13px 25px;
-    margin: 10px auto 0 10px;
+    margin: 10px auto 0px 10px;
 	z-index: 500;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
@@ -563,8 +563,11 @@ footer {
         padding: 15px;
         left: 15px; /* Adjust position */
         top: 15px;
-		margin-top: 15px;
+		margin-top: 10px;
     }
+.difficulty-selector {
+   margin-top: 10px;
+}
 
     .dashboard-btn {
         font-size: 18px; /* Adjust font size */
