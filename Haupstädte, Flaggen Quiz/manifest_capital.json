@@ -1,0 +1,21 @@
+{
+  "name": "Capital Quiz",
+  "short_name": "Capital Quiz",
+  "description": "A quiz game to test your knowledge of world capitals.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#003c4e",
+  "icons": [
+    {
+      "src": "Logos/Capital-192x192.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "Logos/Capital-512x512.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    }
+  ]
+}

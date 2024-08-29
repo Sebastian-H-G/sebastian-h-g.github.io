@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+<link rel="manifest" href="/manifest_capital.json">
   <link rel="icon" href="Logos/Capital.ico" type="image/x-icon">
 <link rel="icon" href="Logos/Capital-16x16.webp" sizes="16x16" type="image/webp">
 <link rel="icon" href="Logos/Capital-32x32.webp" sizes="32x32" type="image/webp">
@@ -106,7 +106,19 @@
       </div>
     </div>
   </div>
-</footer>
+</footer><script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed:', error);
+      });
+  });
+}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-geojson@latest"></script>
    
