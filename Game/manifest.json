@@ -4,8 +4,8 @@
   "description": "A thrilling space shooter game.",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#03060a",
+  "theme_color": "#03060a",
   "icons": [
     {
       "src": "Bilder/space_shooter-192x192.png",
