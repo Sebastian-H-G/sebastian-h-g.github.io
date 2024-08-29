@@ -454,13 +454,14 @@ footer {
   background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
   color: #fff;
   padding: 20px 0;
-  position: sticky;
+  position: relative;
   right: 0;
    left: 0;
   overflow: hidden;
 bottom: 0;
   display: flex;
-  margin-top: 70px;
+  margin-top: 200px;
+  margin-bottom: 0;
   justify-content: center;
 }
 
