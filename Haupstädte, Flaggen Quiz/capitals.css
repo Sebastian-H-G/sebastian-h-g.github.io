@@ -455,6 +455,7 @@ footer {
   color: #fff;
   padding: 20px 0;
   position: relative;
+  width: 100vw;
   right: 0;
    left: 0;
   overflow: hidden;
