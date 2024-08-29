@@ -454,7 +454,7 @@ footer {
   background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
   color: #fff;
   padding: 20px 0;
-  position: absolute;
+  position: sticky;
   overflow: hidden;
 bottom: 0;
   display: flex;
