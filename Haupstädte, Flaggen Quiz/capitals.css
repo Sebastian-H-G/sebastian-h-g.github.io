@@ -457,6 +457,7 @@ footer {
   position: relative;
   width: 100vw;
   right: 0;
+  margin-right: 0;
    left: 0;
   overflow: hidden;
 bottom: 0;
