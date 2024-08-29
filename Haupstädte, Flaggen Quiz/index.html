@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+	<link rel="stylesheet" href="styles.css">
 	
 	<link rel="icon" href="Logos/Geography.ico" type="image/x-icon">
 <link rel="icon" href="Logos/Geography-16x16.webp" sizes="16x16" type="image/webp">
@@ -177,6 +178,20 @@
 <!-- Initialize Swiper -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+	<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((registration) => {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      })
+      .catch((error) => {
+        console.log('ServiceWorker registration failed: ', error);
+      });
+  });
+}
+</script>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     // Wave Animation
@@ -233,6 +248,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
-
 </body>
 </html>
