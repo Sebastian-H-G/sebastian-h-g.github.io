@@ -155,13 +155,13 @@ nav ul li a:hover {
 }
 
 .slide-text {
-    height: 100%; /* Adjust this to control the height of the text area */
+    height: 100vh; /* Adjust this to control the height of the text area */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 	margin-bottom: 15px;
-    padding: 25x;
+    padding: 25px;
     background-color: rgba(255, 255, 255, 0.7); /* Slight background for visibility */
     z-index: 1;
     position: relative;
@@ -353,8 +353,8 @@ nav ul li a i{
 	margin-top: 10px;
 }
 .slide-text {
-	padding: 40px;
-	height: 200px;
+	padding: 400px;
+	height: 500px;
 }
 .slide-text p {
     font-size: 1rem;
