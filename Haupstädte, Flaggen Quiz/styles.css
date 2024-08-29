@@ -348,7 +348,9 @@ nav ul li a i{
 		height: 350px;
 		margin: 100px auto 50px auto;
 	}
-	
+	.swiper-button-prev, .swiper-button-next {
+		display: none;
+	}
 .slide-text h2 {
     font-size: 2rem;
 	margin-top: 10px;
