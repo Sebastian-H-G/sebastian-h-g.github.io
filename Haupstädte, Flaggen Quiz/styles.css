@@ -161,7 +161,7 @@ nav ul li a:hover {
     justify-content: center;
     align-items: center;
 	margin-bottom: 15px;
-    padding: 25px;
+    padding: 25x;
     background-color: rgba(255, 255, 255, 0.7); /* Slight background for visibility */
     z-index: 1;
     position: relative;
@@ -170,13 +170,14 @@ nav ul li a:hover {
 
 .slide-text h2 {
     font-size: 1.8rem; /* Adjusted font size */
-    margin: 20px auto 5px auto;
+    margin: 10px auto 0px auto;
     background-color: transparent; /* Removed background color */
 }
 
 .slide-text p {
     font-size: 1rem;
     margin-top: 5px;
+	margin-bottom: 30px;
     background-color: transparent; /* Removed background color */
     font-weight: bold;
 }
