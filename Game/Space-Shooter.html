@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes"><title>Space Shooter Game</title><link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet" href="space-shooter.css">
+    <link rel="stylesheet" href="space-shooter.css"><link rel="manifest" href="/manifest.json">
 	<link rel="icon" href="Bilder/space_shooter.ico" type="image/x-icon">
 <link rel="icon" href="Bilder/space_shooter-16x16.png" sizes="16x16" type="image/png">
 <link rel="icon" href="Bilder/space_shooter-32x32.png" sizes="32x32" type="image/png">
@@ -78,18 +78,20 @@
         <button id="close-achievements">Close</button>
     </div>
     <button id="achievements-button" style="position: fixed; bottom: 10px; right: 10px;">Achievements</button>
-<script>// Register the service worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registered with scope:', registration.scope);
-      })
-      .catch((error) => {
-        console.error('Service Worker registration failed:', error);
+<script>
+    // Register the service worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered with scope:', registration.scope);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
       });
-  });
-}</script>
+    }
+  </script>
     <script src="space-shooter.js"></script>
 </body>
 </html>
