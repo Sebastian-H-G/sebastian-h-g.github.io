@@ -365,3 +365,10 @@ nav ul li a i{
 }
 .swiper-slide img {object-fit: fill;}
 }
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #414959;
+        color: #ffffff;
+    }
+}
