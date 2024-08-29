@@ -350,7 +350,9 @@ nav ul li a i{
 .slide-text h2 {
     font-size: 2rem;
 }
-
+.slide-text {
+	padding: 40px;
+}
 .slide-text p {
     font-size: 1rem;
 }
