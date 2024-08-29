@@ -344,7 +344,8 @@ nav ul li a i{
 	margin-right: 0px;
 }
 	.swiper-container {
-		height: 350px;
+		height: 450px;
+		margin: 100px;
 	}
 	
 .slide-text h2 {
@@ -353,7 +354,7 @@ nav ul li a i{
 }
 .slide-text {
 	padding: 30px;
-	height: 100px;
+	height: 60px;
 }
 .slide-text p {
     font-size: 1rem;
