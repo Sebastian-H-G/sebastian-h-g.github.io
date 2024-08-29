@@ -135,7 +135,7 @@ nav ul li a:hover {
 .swiper-container {
     width: 90%;
     height: 530px; /* Adjusted height to accommodate text below the image */
-    margin: 65px auto;
+    margin: 60px auto;
     position: relative;
 }
 
@@ -155,7 +155,7 @@ nav ul li a:hover {
 }
 
 .slide-text {
-    height: 20%; /* Adjust this to control the height of the text area */
+    height: 100%; /* Adjust this to control the height of the text area */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -345,13 +345,16 @@ nav ul li a i{
 }
 	.swiper-container {
 		height: 350px;
+		margin: 60px;
 	}
 	
 .slide-text h2 {
     font-size: 2rem;
+	margin-top: 10px;
 }
 .slide-text {
 	padding: 40px;
+	height: 200px;
 }
 .slide-text p {
     font-size: 1rem;
