@@ -552,6 +552,7 @@ footer {
 
     .score, .highscore {
         font-size: 18px; /* Adjust font size */
+		padding: 10px 13px;
     }
 
     #difficulty {
@@ -617,7 +618,7 @@ footer {
     .score, .highscore {
         width: 90px; /* Full width for stacked items */
         font-size: 14px; /* Adjust font size */
-        padding: 15px 18px;
+        padding: 10px 13px;
         border-radius: 7px; /* Adjust border-radius */
     }
   .navbar {
