@@ -134,8 +134,8 @@ nav ul li a:hover {
 /* Swiper Container */
 .swiper-container {
     width: 90%;
-    height: 526px; /* Adjusted height to accommodate text below the image */
-    margin: 80px auto;
+    height: 530px; /* Adjusted height to accommodate text below the image */
+    margin: 65px auto;
     position: relative;
 }
 
@@ -355,6 +355,7 @@ nav ul li a i{
 }
 .slide-text p {
     font-size: 1rem;
+	margin-bottom: 10px;
 }
 .swiper-slide img {object-fit: fill;}
 }
