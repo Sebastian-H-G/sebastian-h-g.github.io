@@ -135,7 +135,7 @@ nav ul li a:hover {
 .swiper-container {
     width: 90%;
     height: 530px; /* Adjusted height to accommodate text below the image */
-    margin: 75px auto;
+    margin: 85px auto 75px auto;
     position: relative;
 }
 
@@ -371,4 +371,16 @@ nav ul li a i{
         background-color: #414959;
         color: #ffffff;
     }
+.quiz-section {
+	background-color: #3e83b8;
 }
+.quiz-link {
+background-color: #24bd9c;
+}
+
+}
+
+
+
+
+
