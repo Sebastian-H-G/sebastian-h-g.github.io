@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
+	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 	<link rel="stylesheet" href="styles.css">
 	
 	<link rel="icon" href="Logos/Geography.ico" type="image/x-icon">
@@ -24,7 +26,6 @@
 <link rel="apple-touch-icon" sizes="152x152" href="Logos/Geography-152x152.webp">
 <link rel="apple-touch-icon" sizes="180x180" href="Logos/Geography-180x180.webp">
 
-	
 </head>
 <body>
 
@@ -174,10 +175,88 @@
     </div>
   </div>
 </footer>
+<script>
+function applyDarkModeStyles() {
+    // Apply dark mode styles
+    document.body.style.backgroundColor = '#061D4B';
+    document.body.style.color = '#ffffff';
 
+    const header = document.querySelector('header');
+    if (header) header.style.background = '#002F5F';
+
+    const slideText = document.querySelector('.slide-text');
+    if (slideText) slideText.style.backgroundColor = '#7A0C6F';
+    if (slideText) slideText.style.color = 'white';
+
+    const quizSection = document.querySelector('.quiz-section');
+    if (quizSection) quizSection.style.backgroundColor = '#246394';
+
+    const quizLink = document.querySelectorAll('.quiz-link');
+    quizLink.forEach(link => {
+        link.style.backgroundColor = '#0F9B7E';
+        // Add hover effect using JavaScript event listeners
+        link.addEventListener('mouseover', function() {
+            this.style.backgroundColor = '#0A6B5A';
+        });
+        link.addEventListener('mouseout', function() {
+            this.style.backgroundColor = '#0F9B7E';
+        });
+    });
+
+    const footer = document.querySelector('.footer');
+    if (footer) footer.style.background = '#062768';
+}
+
+function applyLightModeStyles() {
+    // Reset or apply light mode styles if needed
+    document.body.style.backgroundColor = ''; // Reset to original or default styles
+    document.body.style.color = '';
+
+    const header = document.querySelector('header');
+    if (header) header.style.background = '';
+
+    const slideText = document.querySelector('.slide-text');
+    if (slideText) slideText.style.backgroundColor = '';
+    if (slideText) slideText.style.color = '';
+
+    const quizSection = document.querySelector('.quiz-section');
+    if (quizSection) quizSection.style.backgroundColor = '';
+
+    const quizLink = document.querySelectorAll('.quiz-link');
+    quizLink.forEach(link => {
+        link.style.backgroundColor = '';
+        // Remove hover effect or reset
+        link.removeEventListener('mouseover', function() {
+            this.style.backgroundColor = '#0A6B5A';
+        });
+        link.removeEventListener('mouseout', function() {
+            this.style.backgroundColor = '#0F9B7E';
+        });
+    });
+
+    const footer = document.querySelector('.footer');
+    if (footer) footer.style.background = '';
+}
+
+// Function to check the user's color scheme preference
+function applyTheme() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        applyDarkModeStyles();
+    } else {
+        applyLightModeStyles();
+    }
+}
+
+// Apply the correct theme on initial load
+applyTheme();
+
+// Listen for changes in the system theme and apply dynamically
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    applyTheme();
+});
+</script>
 <!-- Initialize Swiper -->
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
 	<script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

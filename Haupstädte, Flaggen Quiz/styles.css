@@ -368,16 +368,26 @@ nav ul li a i{
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #414959;
+        background-color: #061D4B;
         color: #ffffff;
     }
+	header {background: #002F5F;}
+	.slide-text {
+		background-color: #7A0C6F;
+		color: white;
+	}
 .quiz-section {
-	background-color: #3e83b8;
+	background-color: #246394;
 }
 .quiz-link {
-background-color: #24bd9c;
+background-color: #0F9B7E;
 }
-
+.quiz-link:hover {
+	background-color: #0A6B5A ;
+}
+.footer {
+	background: #062768;
+}
 }
 
 
