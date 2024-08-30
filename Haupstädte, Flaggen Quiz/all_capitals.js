@@ -162,14 +162,14 @@ const questions = [
         country: 'Comoros'
     },
     { 
-        question: 'What is the capital of Congo, Democratic Republic of the? 🇨🇩', 
+        question: 'What is the capital of the Democratic Republic of Congo? 🇨🇩', 
         correctAnswer: 'Kinshasa', 
         easyOptions: ['Kinshasa', 'Brazzaville', 'Lagos', 'Nairobi'], 
         hardOptions: ['Kinshasa', 'Lubumbashi', 'Goma', 'Kisangani'], 
         country: 'Congo, Democratic Republic of the'
     },
     { 
-        question: 'What is the capital of Congo, Republic of the? 🇨🇬', 
+        question: 'What is the capital of the Republic of Congo? 🇨🇬', 
         correctAnswer: 'Brazzaville', 
         easyOptions: ['Brazzaville', 'Kinshasa', 'Lagos', 'Yaoundé'], 
         hardOptions: ['Brazzaville', 'Pointe-Noire', 'Dolisie', 'Oyo'], 
