@@ -36,7 +36,7 @@
       <div class="navbar">
         <ul class="nav-list">
             <li class="nav-item dropdown">
-                <a href="All_Capitals.html" class="dropdown-toggle">Continents</a>
+                <a href="All_Capitals.html" id="box-shadow"class="dropdown-toggle">Continents</a>
                 <ul class="dropdown-menu">
                     <li><a href="Europe_Capitals.html">Europe</a></li>
                     <li><a href="Africa_Capitals.html">Afrika</a></li>
@@ -121,6 +121,161 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
+</script>
+<script>
+function applyDarkModeStyles() {
+    // Apply dark mode styles
+    document.body.style.backgroundColor = '#467676';
+    document.body.style.color = 'white';
+
+    const header = document.querySelector('header');
+    if (header) {
+        header.style.background = '#02526A';
+        header.style.color = 'white';
+    }
+
+    const footer = document.querySelector('.footer');
+    if (footer) footer.style.background = '#02526A';
+
+    const scoreBoard = document.querySelector('.score-board');
+    if (scoreBoard) scoreBoard.style.background = '#718182';
+
+    const navItems = document.querySelectorAll('.nav-item a');
+    navItems.forEach(item => {
+        item.style.backgroundColor = '#7A33B2';
+        item.style.color = 'white';
+        // Add hover effect using JavaScript
+        item.addEventListener('mouseover', function() {
+            this.style.backgroundColor = '#5A1F8A';
+        });
+        item.addEventListener('mouseout', function() {
+            this.style.backgroundColor = '#7A33B2';
+        });
+    });
+
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    if (dropdownMenu) {
+        dropdownMenu.style.backgroundColor = '#7A33B2';
+        dropdownMenu.style.color = 'white';
+
+        const dropdownLinks = dropdownMenu.querySelectorAll('li a');
+        dropdownLinks.forEach(link => {
+            link.style.color = 'white';
+            // Add hover effect using JavaScript
+            link.addEventListener('mouseover', function() {
+                this.style.backgroundColor = '#5A1F8A';
+            });
+            link.addEventListener('mouseout', function() {
+                this.style.backgroundColor = '#7A33B2';
+            });
+        });
+    }
+
+    const dashboardButtons = document.querySelectorAll('.dashboard-btn');
+    dashboardButtons.forEach(button => {
+        button.style.backgroundColor = '#9D1A7C';
+        button.style.border = 'none';
+        // Add hover effect using JavaScript
+        button.addEventListener('mouseover', function() {
+            this.style.backgroundColor = '#7A145F';
+        });
+        button.addEventListener('mouseout', function() {
+            this.style.backgroundColor = '#9D1A7C';
+        });
+    });
+
+    const difficultySelector = document.querySelector('.difficulty-selector');
+    if (difficultySelector) difficultySelector.style.backgroundColor = '#507D60';
+
+    const selectDif = document.querySelector('.select-dif');
+    if (selectDif) selectDif.style.color = 'white';
+}
+
+function applyLightModeStyles() {
+    // Reset or apply light mode styles (if needed)
+    document.body.style.backgroundColor = ''; // Reset to original or default styles
+    document.body.style.color = '';
+
+    const header = document.querySelector('header');
+    if (header) {
+        header.style.background = '';
+        header.style.color = '';
+    }
+
+    const footer = document.querySelector('.footer');
+    if (footer) footer.style.background = '';
+
+    const scoreBoard = document.querySelector('.score-board');
+    if (scoreBoard) scoreBoard.style.background = '';
+
+    const navItems = document.querySelectorAll('.nav-item a');
+    navItems.forEach(item => {
+        item.style.backgroundColor = '';
+        item.style.color = '';
+        // Remove hover effect or reset
+        item.removeEventListener('mouseover', function() {
+            this.style.backgroundColor = '#5A1F8A';
+        });
+        item.removeEventListener('mouseout', function() {
+            this.style.backgroundColor = '#7A33B2';
+        });
+    });
+
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    if (dropdownMenu) {
+        dropdownMenu.style.backgroundColor = '';
+        dropdownMenu.style.color = '';
+
+        const dropdownLinks = dropdownMenu.querySelectorAll('li a');
+        dropdownLinks.forEach(link => {
+            link.style.color = '';
+            // Remove hover effect
+            link.removeEventListener('mouseover', function() {
+                this.style.backgroundColor = '#5A1F8A';
+            });
+            link.removeEventListener('mouseout', function() {
+                this.style.backgroundColor = '#7A33B2';
+            });
+        });
+    }
+
+    const dashboardButtons = document.querySelectorAll('.dashboard-btn');
+    dashboardButtons.forEach(button => {
+        button.style.backgroundColor = '';
+        button.style.border = '';
+        // Remove hover effect or reset
+        button.removeEventListener('mouseover', function() {
+            this.style.backgroundColor = '#7A145F';
+        });
+        button.removeEventListener('mouseout', function() {
+            this.style.backgroundColor = '#9D1A7C';
+        });
+    });
+
+    const difficultySelector = document.querySelector('.difficulty-selector');
+    if (difficultySelector) difficultySelector.style.backgroundColor = '';
+
+    const selectDif = document.querySelector('.select-dif');
+    if (selectDif) selectDif.style.color = '';
+}
+
+// Function to check the user's color scheme preference
+function applyTheme() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        applyDarkModeStyles();
+    } else {
+        applyLightModeStyles();
+    }
+}
+
+// Apply the correct theme on initial load
+applyTheme();
+
+// Listen for changes in the system theme and apply dynamically
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    applyTheme();
+});
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-geojson@latest"></script>
