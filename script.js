@@ -14,7 +14,7 @@ document.getElementById('showPasswordField').addEventListener('click', function(
 
 document.getElementById('unlockButton').addEventListener('click', function() {
     var password = document.getElementById('password').value;
-    if (password === '1234') { // Example password
+    if (password === '7304') { // Example password
         localStorage.setItem('loggedIn', 'true'); // Save login state
         showAppMenu();
     } else {
