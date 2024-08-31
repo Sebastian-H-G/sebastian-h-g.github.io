@@ -325,7 +325,7 @@ bottom: 0;
 		padding: 10px;
 	}
 	h1 {
-		margin-top: 10px;
+		margin-top: 20px;
 	}
 	.options {
 		width: 80%;
@@ -334,12 +334,12 @@ bottom: 0;
 		padding: 10px;
 	}
 	.flag-image {
-		width: 70%;
-	}
-	.controls {
 		width: 80%;
 	}
+	.controls {
+		width: 85%;
+	}
 	.footer {
-		margin-top: 130px;
+		margin-top: 150px;
 	}
 }
