@@ -86,7 +86,7 @@ function createConfetti() {
         });
     }
 
-    const fallingDuration = 4000; // 3 seconds
+    const fallingDuration = 3000; // 3 seconds
     const fadeDuration = 2000; // 2 seconds for fading out
     const startTime = Date.now();
 
