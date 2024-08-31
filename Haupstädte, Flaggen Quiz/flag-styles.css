@@ -124,7 +124,7 @@ h1 {
 }
 
 .option {
-    background-color: #DC3545;
+    background-color: #007BFF;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -139,7 +139,7 @@ h1 {
 }
 
 .option:hover {
-    background-color: #C42333;
+    background-color: #0056b3;
     transform: scale(1.05);
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
