@@ -3,34 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geography Quiz</title>
-    <link rel="stylesheet" href="map-styles.css">
-    <!-- Leaflet.js CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <title>Map Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
-    <div id="quiz-container">
-        <h1 id="question">Which country is this?</h1>
-        
-        <!-- Map container -->
-        <div id="map"></div>
-        
-        <!-- Feedback Message -->
-        <div id="feedback">Select a country!</div>
-        
-        <!-- Continent Selector -->
-        <div id="continent-selector">
-            <button data-continent="world">World</button>
-            <button data-continent="africa">Africa</button>
-            <button data-continent="europe">Europe</button>
-            <button data-continent="asia">Asia</button>
-            <button data-continent="north-america">North America</button>
-            <button data-continent="south-america">South America</button>
+    <div id="game-container">
+        <div id="question">Which country is ...?</div>
+        <div id="map" style="height: 500px;"></div>
+        <div id="feedback"></div>
+        <div id="score-container">
+            <div id="score">Score: 0</div>
+            <div id="highscore">Highscore: 0</div>
         </div>
     </div>
 
-    <!-- Leaflet.js JavaScript -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="map-script.js"></script>
+    <div id="continent-selector">
+        <button data-continent="world">World</button>
+        <button data-continent="africa">Africa</button>
+        <button data-continent="europe">Europe</button>
+        <button data-continent="asia">Asia</button>
+        <button data-continent="north-america">North America</button>
+        <button data-continent="south-america">South America</button>
+    </div>
 </body>
 </html>
