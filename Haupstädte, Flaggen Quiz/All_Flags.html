@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flag Quiz Game</title>
+    <link rel="stylesheet" href="flag-styles.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+<canvas id="confettiCanvas"></canvas>
+    <div class="container">
+	<div class="padding-container">
+        <header>
+            <h1>Flag Quiz</h1>
+            <div class="scoreboard">
+                <p class="score">Score: <span id="score">0</span></p>
+                <p class="highscore">High Score: <span id="highscore">0</span></p>
+            </div>
+        </header>
+
+        <div class="quiz-container">
+            <h2 id="question">Which country does this flag belong to?</h2>
+            <div id="flag-container">
+                <img id="flag-img" src="" alt="Country Flag" class="flag-image">
+            </div>
+            <div class="options">
+                <button class="option" onclick="checkAnswer(0)">Option 1</button>
+                <button class="option" onclick="checkAnswer(1)">Option 2</button>
+                <button class="option" onclick="checkAnswer(2)">Option 3</button>
+                <button class="option" onclick="checkAnswer(3)">Option 4</button>
+            </div>
+            <p id="message"></p>
+        </div>
+
+        <div class="controls">
+            <label for="continent-select">Select Continent:</label>
+            <select id="continent-select" onchange="startQuiz()">
+                <option value="all">All</option>
+                <option value="africa">Africa</option>
+                <option value="europe">Europe</option>
+                <option value="asia">Asia</option>
+                <option value="north america">North America</option>
+                <option value="south america">South America</option>
+                <option value="oceania">Oceania</option>
+            </select>
+        </div>
+		</div>
+<footer class="footer" data-aos="fade-up">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <a href="index.html"><img src="Logos/Flag.webp" alt="Company Logo"></a>
+    </div>
+    <div class="footer-info">
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script src="flag-script.js"></script>
+</body>
+</html>

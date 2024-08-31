@@ -1,0 +1,313 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    overflow: auto;
+}
+
+.container {
+    background-color: #f5f5dc;
+    border-radius: 8px;
+	overflow: auto;
+    width: 100%;
+	height: 100%;
+    text-align: center;
+}
+
+.padding-container {
+	padding: 40px;
+}
+
+header {
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 45px;
+    color: #333;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
+	color: #e53935; /* Red color */
+}
+
+.scoreboard {
+	display: flex;
+    justify-content: center;
+    gap: 30px;
+	width: 35;
+  padding: 20px 30px;
+  margin: 10px auto 0 auto;
+  color: black;
+  border-radius: 7px;
+}
+
+.score:hover, .highscore:hover {
+	transform: scale(1.001);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+.score, .highscore {
+    font-size: 20px;
+  border-radius: 7px;
+    font-weight: bold;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add box-shadow */
+    position: relative;
+	transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
+}
+.score {
+  background-color: #007BFF;
+   padding: 15px 20px;
+  border: 1px solid black;
+}
+.highscore {
+ background-color: #FFD700;
+  padding: 15px 20px;
+  border: 1px solid black;
+  z-index: 100;
+}
+.score span, .highscore span {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.score span.animate, .highscore span.animate {
+    transform: scale(1.2);
+}
+
+.scoreboard p {
+    margin: 5px 0;
+}
+
+.quiz-container {
+    margin-bottom: 20px;
+}
+
+#question {
+	margin-bottom: 20px;
+	font-family: 'Poppins', sans-serif;
+	font-weight: 600;
+	color: #00796b; /* Teal color */
+}
+
+#flag-container {
+    opacity: 1;
+    transition: opacity 0.6s ease-in-out;
+}
+
+.flag-image {
+    width: 30%;
+    height: auto;
+    margin-bottom: 15px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+	transition: box-shadow 0.3s ease
+}
+
+.flag-image:hover {
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+	width: 60%;
+	margin: 10px auto;
+    justify-content: space-around;
+}
+
+.option {
+    background-color: #DC3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 15px;
+	font-weight: bold;
+    margin: 5px;
+	font-size: 20px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    flex: 1 1 calc(50% - 10px);
+    transition: background-color 0.3s, transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+.option:hover {
+    background-color: #C42333;
+    transform: scale(1.05);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.controls {
+	padding: 20px;
+	background-color: #F0C416;
+	font-weight: bold;
+	font-size: 20px;
+	width: 30%;
+	border-radius: 7px;
+	margin: 40px auto 10px auto;
+}
+
+#continent-select {
+	padding: 10px;
+	font-size: 17px;
+	font-weight: bold;
+	background-color: red;
+	border-radius: 7px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+	transition: transform 0.3s ease-in-out, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#continent-select:hover {
+	transform: scale(1.001);
+	background-color: #ff6f6f;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+#continent-select option {
+	font-weight: bold;
+}
+
+
+
+/* Message Styling */
+#message {
+    margin-top: 15px;
+	font-size: 20px;
+    font-weight: bold;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+/* Correct message styling */
+.correct {
+    color: #28a745; /* Green for correct */
+    animation: correctAnimation 0.7s ease-in-out;
+}
+
+/* Wrong message styling */
+.wrong {
+    color: #dc3545; /* Red for wrong */
+    animation: wrongAnimation 0.5s ease-in-out;
+}
+
+/* Correct answer animation: scaling */
+@keyframes correctAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+}
+
+/* Wrong answer animation: shake */
+@keyframes wrongAnimation {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+#confettiCanvas {
+    position: absolute; /* Use absolute positioning */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    pointer-events: none; /* Prevent the canvas from blocking other interactions */
+    z-index: 1000; /* Ensure it's above other elements but not too high */
+}
+
+
+
+.footer {
+  background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+bottom: 0;
+  display: flex;
+  margin-top: 0px;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
