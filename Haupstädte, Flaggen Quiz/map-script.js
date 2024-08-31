@@ -1,118 +1,115 @@
-    // Initialize variables
-    let currentCountry = null;
-    let selectedContinent = 'world';
-    let currentGeoJSONLayer = null;  // Holds the current GeoJSON layer for easier removal
-    let score = 0;
-    let highscore = 0;
-    let attempts = 0;
-    let correctLayer = null;  // Holds the correct country layer to highlight later
+// Initialize variables
+        let currentCountry = null;
+        let selectedContinent = 'world';
+        let currentGeoJSONLayer = null;
+        let score = 0;
+        let highscore = 0;
+        let attempts = 0;
+        let correctCountryLayer = null;  // Holds the correct country for highlighting
 
-    // Set up the map with Leaflet.js
-    let map = L.map('map').setView([20, 0], 2);  // Initial view of the world
+        // Set up the map with Leaflet.js
+        let map = L.map('map').setView([20, 0], 2);  // Initial view of the world
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
 
-    // Load GeoJSON data for the selected continent
-    function loadGeoJSON(continent) {
-        fetch(`geojson/${continent}.json`)
-            .then(response => response.json())
-            .then(data => {
-                // If there is an existing layer, remove it
-                if (currentGeoJSONLayer) {
-                    map.removeLayer(currentGeoJSONLayer);
-                }
+        // Load GeoJSON data for the selected continent
+        function loadGeoJSON(continent) {
+            fetch(`geojson/${continent}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    if (currentGeoJSONLayer) {
+                        map.removeLayer(currentGeoJSONLayer);
+                    }
 
-                // Add the new GeoJSON layer to the map without displaying country names
-                currentGeoJSONLayer = L.geoJSON(data, {
-                    style: { color: "#3388ff", weight: 2 },  // Styling the countries
-                    onEachFeature: onCountryClick
-                }).addTo(map);
+                    // Add the new GeoJSON layer to the map without displaying country names or popups
+                    currentGeoJSONLayer = L.geoJSON(data, {
+                        style: { color: "#3388ff", weight: 2 },
+                        onEachFeature: function (feature, layer) {
+                            layer.on('click', function () {
+                                handleCountryClick(feature, layer);
+                            });
+                        }
+                    }).addTo(map);
 
-                // Fit the map to the bounds of the new layer
-                map.fitBounds(currentGeoJSONLayer.getBounds());
+                    map.fitBounds(currentGeoJSONLayer.getBounds());
 
-                // Generate a new question based on the loaded continent
-                generateQuestion(data);
-            })
-            .catch(error => console.error('Error loading GeoJSON:', error));
-    }
+                    generateQuestion(data);
+                })
+                .catch(error => console.error('Error loading GeoJSON:', error));
+        }
 
-    // Handle country clicks and check for correctness
-    function onCountryClick(feature, layer) {
-        layer.on('click', function () {
+        // Handle country clicks and check for correctness
+        function handleCountryClick(feature, layer) {
             if (attempts < 2) {
                 if (feature.properties.name === currentCountry) {
                     document.getElementById('feedback').textContent = 'Correct!';
-                    score += 1;  // Increase score
+                    score += 10;
                     updateScore();
-                    attempts = 0;  // Reset attempts
-                    setTimeout(nextCountry, 2000);  // Move to next country after 2 seconds
+                    attempts = 0;
+                    setTimeout(nextCountry, 2000);
                 } else {
                     attempts += 1;
                     if (attempts === 2) {
                         document.getElementById('feedback').textContent = `Wrong! The correct answer was ${currentCountry}.`;
-                        highlightCorrectCountry();  // Highlight the correct country
-                        score = 0;  // Reset score
+                        score = 0;
                         updateScore();
-                        attempts = 0;  // Reset attempts
-                        setTimeout(nextCountry, 2000);  // Move to next country after 2 seconds
+                        highlightCorrectCountry();
+                        setTimeout(nextCountry, 2000);
                     } else {
                         document.getElementById('feedback').textContent = 'Wrong, try again!';
                     }
                 }
             }
-        });
-    }
-
-    // Highlight the correct country after 2 wrong guesses
-    function highlightCorrectCountry() {
-        if (correctLayer) {
-            correctLayer.setStyle({ color: '#FF0000', weight: 3 });  // Highlight in red
         }
-    }
 
-    // Generate a random country question
-    function generateQuestion(geoData) {
-        const countries = geoData.features.map(feature => feature.properties.name);
-        currentCountry = countries[Math.floor(Math.random() * countries.length)];
+        // Highlight the correct country after two incorrect guesses
+        function highlightCorrectCountry() {
+            currentGeoJSONLayer.eachLayer(function (layer) {
+                if (layer.feature.properties.name === currentCountry) {
+                    layer.setStyle({ color: "#FF0000", weight: 3 });  // Highlight correct country in red
+                    correctCountryLayer = layer;  // Store the layer to reset style later if needed
+                }
+            });
+        }
 
-        // Find the correct layer to highlight it later if needed
-        geoData.features.forEach(feature => {
-            if (feature.properties.name === currentCountry) {
-                correctLayer = L.geoJSON(feature);  // Store the correct country layer
+        // Generate a random country question
+        function generateQuestion(geoData) {
+            const countries = geoData.features.map(feature => feature.properties.name);
+            currentCountry = countries[Math.floor(Math.random() * countries.length)];
+            document.getElementById('question').textContent = `Which country is ${currentCountry}?`;
+        }
+
+        // Move to the next country (called after 2 seconds)
+        function nextCountry() {
+            document.getElementById('feedback').textContent = '';  // Clear feedback message
+            if (correctCountryLayer) {
+                correctCountryLayer.setStyle({ color: "#3388ff", weight: 2 });  // Reset the style of the correct country
+                correctCountryLayer = null;  // Clear reference
+            }
+            loadGeoJSON(selectedContinent);
+        }
+
+        // Handle continent selection
+        document.getElementById('continent-selector').addEventListener('click', function (e) {
+            if (e.target.tagName === 'BUTTON') {
+                selectedContinent = e.target.dataset.continent;
+                loadGeoJSON(selectedContinent);
+                score = 0;
+                attempts = 0;
+                updateScore();
             }
         });
 
-        document.getElementById('question').textContent = `Which country is ${currentCountry}?`;
-    }
-
-    // Move to the next country (called after 2 seconds)
-    function nextCountry() {
-        document.getElementById('feedback').textContent = '';  // Clear feedback message
-        loadGeoJSON(selectedContinent);  // Reload the map with the selected continent
-    }
-
-    // Handle continent selection
-    document.getElementById('continent-selector').addEventListener('click', function (e) {
-        if (e.target.tagName === 'BUTTON') {
-            selectedContinent = e.target.dataset.continent;
-            loadGeoJSON(selectedContinent);
-            score = 0;  // Reset score when changing continents
-            attempts = 0;  // Reset attempts
-            updateScore();
+        // Update score and high score
+        function updateScore() {
+            document.getElementById('score').textContent = `Score: ${score}`;
+            if (score > highscore) {
+                highscore = score;
+                document.getElementById('highscore').textContent = `Highscore: ${highscore}`;
+            }
         }
-    });
 
-    // Update score and high score
-    function updateScore() {
-        document.getElementById('score').textContent = `Score: ${score}`;
-        if (score > highscore) {
-            highscore = score;
-            document.getElementById('highscore').textContent = `Highscore: ${highscore}`;
-        }
-    }
-
-    // Initial setup: Load the world map first
-    loadGeoJSON('world');
+        // Initial setup: Load the world map first
+        loadGeoJSON('world');
