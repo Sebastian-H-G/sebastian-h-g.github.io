@@ -116,4 +116,3 @@
 
     // Initial setup: Load the world map first
     loadGeoJSON('world');
-
