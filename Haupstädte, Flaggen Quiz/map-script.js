@@ -46,7 +46,7 @@
             if (attempts < 2) {
                 if (feature.properties.name === currentCountry) {
                     document.getElementById('feedback').textContent = 'Correct!';
-                    score += 10;  // Increase score
+                    score += 1;  // Increase score
                     updateScore();
                     attempts = 0;  // Reset attempts
                     setTimeout(nextCountry, 2000);  // Move to next country after 2 seconds
