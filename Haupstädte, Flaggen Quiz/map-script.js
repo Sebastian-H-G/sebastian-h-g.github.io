@@ -1,4 +1,3 @@
-<script>
     // Initialize variables
     let currentCountry = null;
     let selectedContinent = 'world';
@@ -117,4 +116,4 @@
 
     // Initial setup: Load the world map first
     loadGeoJSON('world');
-</script>
+
