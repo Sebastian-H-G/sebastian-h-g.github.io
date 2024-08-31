@@ -235,7 +235,7 @@ h1 {
   overflow: hidden;
 bottom: 0;
   display: flex;
-  margin-top: 0px;
+  margin-top: 50px;
   margin-bottom: 0;
   justify-content: center;
 }
@@ -335,5 +335,8 @@ bottom: 0;
 	}
 	.controls {
 		width: 80%;
+	}
+	.footer {
+		margin-top: 100px;
 	}
 }
