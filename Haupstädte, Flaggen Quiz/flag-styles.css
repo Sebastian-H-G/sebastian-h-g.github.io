@@ -126,7 +126,7 @@ h1 {
     color: #fff;
     border: none;
     border-radius: 5px;
-    padding: 15px;
+    padding: 20px;
 	font-weight: bold;
     margin: 5px;
 	font-size: 20px;
@@ -328,7 +328,7 @@ bottom: 0;
 		margin-top: 25px;
 	}
 	.options {
-		width: 80%;
+		width: 95%;
 	}
 	.flag-image {
 		width: 80%;
@@ -337,6 +337,6 @@ bottom: 0;
 		width: 85%;
 	}
 	.footer {
-		margin-top: 170px;
+		margin-top: 140px;
 	}
 }
