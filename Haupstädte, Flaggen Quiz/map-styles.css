@@ -21,8 +21,9 @@ body {
 }
 
 .heading {
-	margin: 0 auto 30px auto;
-	font-family: 'Montserrat', sans-serif;
+	margin: 50px auto 10px auto;
+	font-family: 'Nerko One', sans-serif;
+	font-size: 50px;
 }
 
 /* Main container for the game */
@@ -37,8 +38,8 @@ body {
 
 /* Question area */
 #question {
-    font-size: 50px;
-	font-family: "Nerko One", cursive;
+    font-size: 30px;
+	font-family: "Montserrat", cursive;
 	font-weight: 400;
     font-weight: bold;
     margin-bottom: 20px;
@@ -63,8 +64,9 @@ body {
 /* Score and Highscore styling */
 #score-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     font-size: 18px;
+	gap: 30px;
     margin-top: 20px;
 }
 
@@ -131,7 +133,7 @@ body {
   overflow: hidden;
   width: 100vw;
   display: flex;
-  margin-top: 1000px;
+  margin-top: 1250px;
   justify-content: center;
 }
 
