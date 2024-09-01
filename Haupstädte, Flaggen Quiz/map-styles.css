@@ -95,7 +95,7 @@ body {
 
 /* Continent selector */
 #continent-selector {
-    margin-top: 0px;
+    margin: 0px auto;
 }
 
 #continent-selector button {
