@@ -44,8 +44,8 @@ function loadGeoJSON(continent) {
                     };
                 },
                 onEachFeature: function (feature, layer) {
-                    // Disable the default country name popups
-                    layer.bindPopup('');
+                    // Remove default tooltips and popups
+                    layer.unbindPopup();
                     
                     // Add hover effects
                     layer.on('mouseover', function () {
@@ -87,7 +87,7 @@ function handleCountryClick(feature, layer) {
                 document.getElementById('feedback').textContent = `Wrong! The correct answer was ${currentCountry}.`;
                 score = 0;  // Reset score
                 updateScore();
-                highlightCorrectCountry();  // Highlight the correct country in green
+                highlightCorrectCountry();  // Highlight the correct country in a more eye-catching way
                 setTimeout(nextCountry, 2000);  // Move to next country after 2 seconds
             } else {
                 document.getElementById('feedback').textContent = 'Wrong, try again!';
@@ -99,7 +99,7 @@ function handleCountryClick(feature, layer) {
 // Highlight the correct country after two wrong guesses
 function highlightCorrectCountry() {
     if (correctLayer) {
-        correctLayer.setStyle({ color: "green", weight: 4 });
+        correctLayer.setStyle({ color: "orange", weight: 6, dashArray: '10, 5' });  // More eye-catching style
     }
 }
 
