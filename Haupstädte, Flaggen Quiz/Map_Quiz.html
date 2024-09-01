@@ -6,27 +6,53 @@
     <title>Map Quiz</title>
     <link rel="stylesheet" href="map-styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Noto+Sans:wght@400;700&display=swap">
 </head>
 <body>
     <div id="game-container">
+	<h1 class="heading">Map Quiz</h1>
         <div id="question">Which country is ...?</div>
         <div id="map" style="height: 500px;"></div>
         <div id="feedback"></div>
         <div id="score-container">
             <div id="score">Score: 0</div>
+			
+			<div id="continent-selector">
+        <button style="background-color: #3388ff" data-continent="world">World</button>
+        <button style="background-color: #ffcc00" data-continent="africa">Africa</button>
+        <button style="background-color: #66ccff" data-continent="europe">Europe</button>
+        <button style="background-color: #ff6666" data-continent="asia">Asia</button>
+        <button style="background-color: #99ff99" data-continent="north-america">North America</button>
+        <button style="background-color: #ff9999" data-continent="south-america">South America</button>
+		<button style="background-color: #ffccff" data-continent="oceania">Oceania</button>
+    </div>
+			
             <div id="highscore">Highscore: 0</div>
         </div>
     </div>
 
-    <div id="continent-selector">
-        <button data-continent="world">World</button>
-        <button data-continent="africa">Africa</button>
-        <button data-continent="europe">Europe</button>
-        <button data-continent="asia">Asia</button>
-        <button data-continent="north-america">North America</button>
-        <button data-continent="south-america">South America</button>
+    
+	
+	<footer class="footer" data-aos="fade-up">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <a href="/index.html"><img src="Logos/Map.webp" alt="Company Logo"></a>
     </div>
+    <div class="footer-info">
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
 </body>
 <script src="map-script.js"></script>
 </html>

@@ -9,7 +9,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f0f0f0;
     color: #333;
     display: flex;
     flex-direction: column;
@@ -17,18 +17,22 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
+	overflow-x: hidden;
+}
+
+.heading {
+	margin: 0 auto 30px auto;
+	font-family: 'Montserrat', sans-serif;
 }
 
 /* Main container for the game */
 #game-container {
-    background-color: #fff;
-    border: 2px solid #ddd;
+    background-color: #f0f0f0;
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-    width: 80%;
-    max-width: 900px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 1300px;
 }
 
 /* Question area */
@@ -44,6 +48,7 @@ body {
     border-radius: 10px;
     margin-bottom: 20px;
     height: 500px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
 }
 
 /* Feedback message styling */
@@ -58,24 +63,44 @@ body {
     display: flex;
     justify-content: space-between;
     font-size: 18px;
-    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 #score, #highscore {
     font-weight: bold;
+	 font-size: 20px;
+  border-radius: 7px;
+    font-weight: bold;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add box-shadow */
+    position: relative;
+	transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
+}
+
+#score {
+	background-color: #007BFF;
+   padding: 15px 20px;
+  border: 1px solid black;
+}
+
+#highscore {
+	background-color: #FFD700;
+  padding: 15px 20px;
+  border: 1px solid black;
+
 }
 
 /* Continent selector */
 #continent-selector {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 #continent-selector button {
     background-color: #007bff;
-    color: white;
+    color: black;
+	font-weight: bold;
     border: none;
     padding: 10px 15px;
-    font-size: 16px;
+    font-size: 20px;
     margin: 5px;
     border-radius: 5px;
     cursor: pointer;
@@ -89,4 +114,90 @@ body {
 #continent-selector button:focus {
     outline: none;
     background-color: #00448f;
+}
+
+
+
+
+
+/* Footer Styling */
+.footer {
+  background: linear-gradient(135deg, #0d47a1, #42a5f5); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: absolute;
+  overflow: hidden;
+  width: 100vw;
+  display: flex;
+  margin-top: 1000px;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
 }
