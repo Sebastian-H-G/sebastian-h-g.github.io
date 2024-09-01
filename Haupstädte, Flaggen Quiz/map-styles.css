@@ -216,6 +216,9 @@ body {
 	body {
 		background-color: #333;
 	}
+	#game-container {
+		background-color: #333;
+	}
 	.heading {
 		color: white;
 	}
