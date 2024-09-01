@@ -37,7 +37,9 @@ body {
 
 /* Question area */
 #question {
-    font-size: 24px;
+    font-size: 50px;
+	font-family: "Nerko One", cursive;
+	font-weight: 400;
     font-weight: bold;
     margin-bottom: 20px;
 }
