@@ -133,11 +133,11 @@ nav ul li a:hover {
 
 .flag-mx::before {
     content: '🇲🇽'; /* Mexico flag emoji */
-	margin-bottom: 2px;
+	margin-bottom: 4px;
 }
 
 .flag-de::before {
-	margin-bottom: 2px;
+	margin-bottom: 4px;
 	content: '🇩🇪';
 }
 
