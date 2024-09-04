@@ -150,7 +150,7 @@ nav ul li a:hover {
 }
 
 .quiz-link-slide {
-	text-decoration: underline;
+	text-decoration: none;
 	color: white;
 }
 
