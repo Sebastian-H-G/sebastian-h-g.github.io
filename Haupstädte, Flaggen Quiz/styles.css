@@ -164,14 +164,15 @@ nav ul li a:hover {
     z-index: 0;
 }
 
-.slide-text {
-    height: 20%; /* Adjust this to control the height of the text area */
+.slide-text { 
+	height: auto;/* Adjust this to control the height of the text area */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 	margin-bottom: 15px;
-    padding: 25px;
+	min-height: 115px;
+    padding: 20px;
     background-color: rgba(255, 255, 255, 0.7); /* Slight background for visibility */
     z-index: 1;
     position: relative;
@@ -180,7 +181,7 @@ nav ul li a:hover {
 
 .slide-text h2 {
     font-size: 1.8rem; /* Adjusted font size */
-    margin: 10px auto 0px auto;
+    margin: 6px auto 0px auto;
     background-color: transparent; /* Removed background color */
 }
 
@@ -362,7 +363,7 @@ nav ul li a i{
 		display: none;
 	}
 .slide-text h2 {
-    font-size: 2rem;
+    font-size: 1.7rem;
 	margin-top: 10px;
 }
 .slide-text {
