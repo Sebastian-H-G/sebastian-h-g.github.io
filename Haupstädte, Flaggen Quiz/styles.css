@@ -131,6 +131,14 @@ nav ul li a:hover {
 	transform: scale(1.05);
 }
 
+.flag-mx::before {
+    content: '🇲🇽'; /* Mexico flag emoji */
+}
+
+.flag-de::before {
+	content: '🇩🇪';
+}
+
 /* Swiper Container */
 .swiper-container {
     width: 90%;
