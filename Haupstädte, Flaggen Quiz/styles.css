@@ -145,8 +145,13 @@ nav ul li a:hover {
 .swiper-container {
     width: 90%;
     height: 530px; /* Adjusted height to accommodate text below the image */
-    margin: 85px auto 75px auto;
+    margin: 100px auto 75px auto;
     position: relative;
+}
+
+.quiz-link-slide {
+	text-decoration: underline;
+	color: white;
 }
 
 .swiper-slide {
