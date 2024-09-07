@@ -182,8 +182,9 @@ function triggerWiggleAndGlowAnimation() {
 function updateScore() {
     document.getElementById('score').textContent = `Score: ${score}`;
     if (score > highscore) {
-        highscore = score;
 		createConfetti();
+		triggerWiggleAndGlowAnimation();
+        highscore = score;
         document.getElementById('highscore').textContent = `Highscore: ${highscore}`;
     }
 }
