@@ -298,17 +298,17 @@ main {
     border: none;
     border-radius: 5px;
     color: #fff;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 1); /* Add box-shadow */
+	box-shadow: 0 5px 0 #388E3C;
     cursor: pointer;
     font-size: 20px;
   font-weight: bold;
     padding: 17px 30px;
-    transition: background-color 0.3s ease, transform 0.3s ease-in-out;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.option-btn:hover {
-    background-color: #45a049;
-	transform: scale(1.07);
+.option-btn:active {
+	transform: translateY(5px);
+	box-shadow: 0 2px 0 #388E3C;
 }
 
 .message {

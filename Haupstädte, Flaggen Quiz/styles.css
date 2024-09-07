@@ -149,11 +149,6 @@ nav ul li a:hover {
     position: relative;
 }
 
-.quiz-link-slide {
-	text-decoration: none;
-	color: white;
-}
-
 .swiper-slide {
     display: flex;
     flex-direction: column;
@@ -237,30 +232,28 @@ gap: 20px;
 max-width: 100px;
 height: auto;
 }
+/* Default state */
 .quiz-link {
-  display: block;
-  margin-top: 20px;
-  text-align: center;
-  padding: 10px 20px;
-  background-color: #007BFF;
-  color: white;
-  border-radius: 10px;
-  font-weight: bold;
-  text-decoration: none;
-  transition: background-color 0.5s ease-in-out, transform 0.5s ease-in-out;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: #007BFF; /* Change as needed */
+    color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: transform 0.5s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 0 #0056b3;
 }
 
-.quiz-link:hover {
-  transform: scale(1.01);
-  background-color: #0056b3;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-}
 
+/* Active state */
 .quiz-link:active {
-  transform: translateY(4px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transform: translateY(5px); /* Move button down when pressed */
+    box-shadow: 0 2px 0 #0056b3; /* Adjust shadow for active state */
 }
+
 
 
 /* Footer Styling */
@@ -404,12 +397,15 @@ nav ul li a i{
 .quiz-section {
 	background-color: #246394;
 }
-.quiz-link {
-background-color: #0F9B7E;
-}
-.quiz-link:hover {
-	background-color: #0A6B5A ;
-}
+    .quiz-link {
+        background-color: #0F9B7E; /* Dark mode background */
+        box-shadow: 0 5px 0 #0C7A65;
+    }
+
+
+    .quiz-link:active {
+        box-shadow: 0 2px 0 #0C7A65; /* Adjust shadow for active state */
+    }
 .footer {
 	background: #062768;
 }
