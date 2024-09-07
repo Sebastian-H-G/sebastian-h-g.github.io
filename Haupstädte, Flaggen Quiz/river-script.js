@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeMap();
 });
 
-async function loadQuiz() {
+function loadQuiz() {
     const questions = [
         {
             question: "Which river is the longest?",
