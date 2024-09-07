@@ -49,11 +49,13 @@
  Forests</a></li>
  <li><a href="#cities"><i class="fas fa-city"></i> Cities</a></li>
  </ul>
- <ul>		
+ <ul>
+ <li><a href="#countries-shape"><i class="fas fa-globe"></i>Country Shape</a></li> 
  <li><a href="#germany"><div class="flag-de"></div>
 Germany</a></li>
  <li><a href="#mexico"><div class="flag-mx"></div>Mexico</a></li>
  <li><a href="#usa"><i class="fas fa-flag-usa"></i>USA</a></li>
+ 
  <li><a href="#memory-quiz"><i class="fas fa-brain"></i> Memory</a></li>
         </ul>
     </nav>
@@ -112,7 +114,7 @@ Germany</a></li>
             </div>
         </div>
 		<div class="swiper-slide">
-            <img src="Bilder/.JPEG" alt="Deserts & Forests">
+            <img src="Bilder/slide 2.JPEG" alt="Deserts & Forests">
             <div class="slide-text">
                 <h2>Desert Secrets & Forest Wonders</h2>
                 <p>A Quiz That Takes You From Sun-Baked Deserts to Verdant Forests - Test Your Expertise!</p>
@@ -142,7 +144,7 @@ Germany</a></li>
                 <p>Test your knowledge of world capitals.</p>
             </div>
         </div>
-        <a href="All_Capitals.html" class="quiz-link">Start Quiz</a>
+        <a href="All_Capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 
     <section id="flag-quiz" class="quiz-section" data-aos="fade-up">
@@ -153,7 +155,7 @@ Germany</a></li>
                 <p>Identify the flags of different countries.</p>
             </div>
         </div>
-        <a href="All_Flags.html" class="quiz-link">Start Quiz</a>
+        <a href="All_Flags.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 
     <section id="map-quiz" class="quiz-section" data-aos="fade-up">
@@ -164,7 +166,7 @@ Germany</a></li>
                 <p>Locate countries and cities on a map.</p>
             </div>
         </div>
-        <a href="Map_Quiz.html" class="quiz-link">Start Quiz</a>
+        <a href="Map_Quiz.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 
     <section id="river-quiz" class="quiz-section" data-aos="fade-up">
@@ -175,7 +177,7 @@ Germany</a></li>
                 <p>Match rivers with their respective countries.</p>
             </div>
         </div>
-        <a href="All_Maps.html" class="quiz-link">Start Quiz</a>
+        <a href="All_Maps.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 	<section id="moutain-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
@@ -185,7 +187,7 @@ Germany</a></li>
                 <p>Climb the Peaks of Knowledge!</p>
             </div>
         </div>
-        <a href="Mountain_Quiz.html" class="quiz-link">Start Quiz</a>
+        <a href="Mountain_Quiz.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 	<section id="population-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
@@ -195,7 +197,7 @@ Germany</a></li>
                 <p>How Well Do You Know the World’s People? Take the Quiz!</p>
             </div>
         </div>
-        <a href="Population_Quiz.html" class="quiz-link">Start Quiz</a>
+        <a href="Population_Quiz.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 	<section id="deserts-and-forests" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
@@ -205,7 +207,7 @@ Germany</a></li>
             <p>Explore the Extremes: Are You Ready to Challenge Your Knowledge of Desert Dunes and Forest Groves? Dive Into the Challenge!</p>
         </div>
     </div>
-    <a href="Deserts & Forests.html" class="quiz-link">Start Quiz</a>
+    <a href="Deserts & Forests.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
 <section id="cities" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
@@ -215,7 +217,17 @@ Germany</a></li>
             <p>Explore the World’s Most Iconic Cities: A Quiz That Will Challenge Your Urban Knowledge and Test Your Global Awareness!</p>
         </div>
     </div>
-    <a href="Cities.html" class="quiz-link">Start Quiz</a>
+    <a href="Cities.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+</section> 
+<section id="countries-shape" class="quiz-section" data-aos="fade-up">
+    <div class="quiz-content">
+        <img src="Logos/shape.JPEG" alt="Cities Quiz Logo" class="quiz-logo">
+        <div>
+            <h2>Countries Shape Quiz</h2>
+            <p>Can You Guess the Country by Its Shape?</p>
+        </div>
+    </div>
+    <a href="Cities.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section> 
 <section id="germany" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
@@ -225,7 +237,7 @@ Germany</a></li>
             <p>Wissen ist Macht: Stell dich dem Deutschland-Quiz und beweis es!</p>
         </div> 
     </div>
-    <a href="Germany.html" class="quiz-link">Start Quiz</a>
+    <a href="Germany.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
 <section id="mexico" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
@@ -235,7 +247,7 @@ Germany</a></li>
             <p>¡Más allá del sombrero y el tequila! ¿Cuánto sabes de México? Pon a prueba tu pasión por México con nuestro quiz.</p>
         </div>
     </div>
-    <a href="Mexico.html" class="quiz-link">Start Quiz</a>
+    <a href="Mexico.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
 <section id="usa" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
@@ -245,7 +257,7 @@ Germany</a></li>
             <p>Stars, Stripes, and Smarts: Are You a USA Expert? Put Your Knowledge to the Test and Ace This Quiz!</p>
         </div>
     </div>
-    <a href="USA.html" class="quiz-link">Start Quiz</a>
+    <a href="USA.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
 
 	<section id="memory-quiz" class="quiz-section" data-aos="fade-up">
@@ -256,7 +268,7 @@ Germany</a></li>
                 <p>Test your memory with geography-based challenges.</p>
             </div>
         </div>
-        <a href="Memory_Quiz.html" class="quiz-link">Start Quiz</a>
+        <a href="Memory_Quiz.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 </main>
 
@@ -279,6 +291,12 @@ Germany</a></li>
   </div>
 </footer>
 <script>
+function delayLink(event, element) {
+  event.preventDefault(); // Prevents the default link behavior
+  setTimeout(function() {
+    window.location.href = element.href; // Navigate to the link after delay
+  }, 300); // Adjust the delay in milliseconds (300ms here)
+}
 function applyDarkModeStyles() {
     // Apply dark mode styles
     document.body.style.backgroundColor = '#061D4B';

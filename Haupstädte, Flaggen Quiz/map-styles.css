@@ -122,6 +122,32 @@ body {
 
 
 
+@keyframes wiggleAndGlow {
+    0% {
+        transform: rotate(0deg) scale(1);
+        box-shadow: 0 0 10px #ffd700;
+    }
+    25% {
+        transform: rotate(-5deg) scale(1.2);
+        box-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700;
+    }
+    50% {
+        transform: rotate(5deg) scale(1.2);
+        box-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700;
+    }
+    75% {
+        transform: rotate(-5deg) scale(1.2);
+        box-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700;
+    }
+    100% {
+        transform: rotate(0deg) scale(1);
+        box-shadow: 0 0 10px #ffd700;
+    }
+}
+
+#highscore.animate {
+    animation: wiggleAndGlow 1s ease-in-out;
+}
 
 
 /* Footer Styling */
