@@ -133,11 +133,11 @@ nav ul li a:hover {
 
 .flag-mx::before {
     content: '🇲🇽'; /* Mexico flag emoji */
-	margin-bottom: 6px;
+	margin-bottom: 10px;
 }
 
 .flag-de::before {
-	margin-bottom: 6px;
+	margin-bottom: 10px;
 	content: '🇩🇪';
 }
 
@@ -150,7 +150,7 @@ nav ul li a:hover {
 }
 
 .quiz-link-slide {
-	text-decoration: underline;
+	text-decoration: none;
 	color: white;
 }
 
@@ -371,7 +371,7 @@ nav ul li a i{
 }
 	.swiper-container {
 		height: 350px;
-		margin: 120px auto 50px auto;
+		margin: 140px auto 50px auto;
 	}
 	.swiper-button-prev, .swiper-button-next {
 		display: none;
@@ -381,7 +381,7 @@ nav ul li a i{
 	margin-top: 10px;
 }
 .slide-text {
-	padding: 30px;
+	padding: 18px;
 	height: 80px;
 }
 .slide-text p {
