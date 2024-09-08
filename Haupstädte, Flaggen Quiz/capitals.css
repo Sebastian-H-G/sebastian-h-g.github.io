@@ -293,3 +293,11 @@ bottom: 0;
   z-index: 0; /* Ensure it's behind the footer content */
 }
 
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #333;
+	}
+	#question-text {
+		color: white;
+	}
+}d
