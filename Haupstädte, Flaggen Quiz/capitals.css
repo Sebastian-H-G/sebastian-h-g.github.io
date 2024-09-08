@@ -310,7 +310,6 @@ bottom: 0;
 		width: 95%;
 	}
 	.feedback-correct {
-  width: 50%;
-}
+	width: auto;}
 .feedback-wrong {
-	width: 80%;
+width: auto;}
