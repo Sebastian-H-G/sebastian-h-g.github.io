@@ -1,3 +1,11 @@
+/* Disable text selection for the entire PWA */
+* {
+    user-select: none;
+    -webkit-user-select: none; /* For Safari */
+    -moz-user-select: none;    /* For Firefox */
+    -ms-user-select: none;     /* For Internet Explorer/Edge */
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f2f5;
@@ -171,6 +179,7 @@ nav ul li a:hover {
     justify-content: center;
     align-items: center;
 	margin-bottom: 15px;
+	border-radius: 2px;
 	min-height: 115px;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.7); /* Slight background for visibility */
@@ -209,17 +218,16 @@ margin-top: 10px;	/* Ensure pagination stays above the background */
 
 /* Quiz Section Styles */
 .quiz-section {
-background-color: white;
-margin: 40px 7%;
-padding: 30px;
-border-radius: 15px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: white;
+  margin: 40px 7%;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 .quiz-section:hover {
-transform: translateY(-5px);
-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
 }
 
 .quiz-content {
@@ -232,6 +240,7 @@ gap: 20px;
 max-width: 100px;
 height: auto;
 }
+
 /* Default state */
 .quiz-link {
     display: block;
@@ -247,14 +256,11 @@ height: auto;
     box-shadow: 0 5px 0 #0056b3;
 }
 
-
 /* Active state */
 .quiz-link:active {
     transform: translateY(5px); /* Move button down when pressed */
     box-shadow: 0 2px 0 #0056b3; /* Adjust shadow for active state */
 }
-
-
 
 /* Footer Styling */
 .footer {
@@ -396,6 +402,8 @@ nav ul li a i{
 	}
 .quiz-section {
 	background-color: #246394;
+	box-shadow: 0 5px 0 #1b4f74;
+
 }
     .quiz-link {
         background-color: #0F9B7E; /* Dark mode background */

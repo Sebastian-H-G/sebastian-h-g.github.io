@@ -59,6 +59,23 @@ async function startQuiz() {
         document.getElementById('message').style.opacity = "1"; // Ensure message container is visible
     }, 600); // Delay for fade-out animation
 }
+
+function triggerWiggleAndGlowAnimation() {
+    // Select all elements with the class 'highscore'
+    const highscoreElements = document.querySelectorAll('.highscore');
+    
+    highscoreElements.forEach(element => {
+        // Remove the animation class if it's already there to allow retriggering the animation
+        element.classList.remove('animate');
+        
+        // Use a timeout to ensure the class is removed before adding it back
+        setTimeout(() => {
+            element.classList.add('animate');
+        }, 10);
+    });
+}
+
+
 function createConfetti() {
     const canvas = document.getElementById('confettiCanvas');
     const ctx = canvas.getContext('2d');
@@ -142,7 +159,6 @@ function createConfetti() {
     animateConfetti();
 }
 
-
 // Check answer
 function checkAnswer(selectedIndex) {
     const messageElement = document.getElementById("message");
@@ -163,6 +179,7 @@ function checkAnswer(selectedIndex) {
             highScore = score;
             localStorage.setItem("highscore", highScore);
             document.getElementById("highscore").innerText = highScore;
+			triggerWiggleAndGlowAnimation();
             createConfetti();
         }
 
@@ -187,6 +204,10 @@ function checkAnswer(selectedIndex) {
     }
 }
 
-
 // Initialize the quiz on load
-startQuiz();
+window.onload = function() {
+    startQuiz();
+};
+
+// Add event listener to continent dropdown
+document.getElementById("continent-select").addEventListener("change", startQuiz);

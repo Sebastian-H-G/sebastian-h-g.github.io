@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Quiz</title>
+	    
+    <link rel="stylesheet" href="capitals.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="manifest" href="/manifest_capital.json">
+
+  <link rel="icon" href="Logos/Capital.ico" type="image/x-icon">
+<link rel="icon" href="Logos/Capital-16x16.webp" sizes="16x16" type="image/webp">
+<link rel="icon" href="Logos/Capital-32x32.webp" sizes="32x32" type="image/webp">
+<link rel="icon" href="Logos/Capital-48x48.webp" sizes="48x48" type="image/webp">
+
+<!-- Apple Touch Icons -->
+<link rel="apple-touch-icon" href="Logos/Capital.webp">
+<link rel="apple-touch-icon" sizes="57x57" href="Logos/Capital-57x57.webp">
+<link rel="apple-touch-icon" sizes="72x72" href="Logos/Capital-72x72.webp">
+<link rel="apple-touch-icon" sizes="114x114" href="Logos/Capital-114x114.webp">
+<link rel="apple-touch-icon" sizes="152x152" href="Logos/Capital-152x152.webp">
+<link rel="apple-touch-icon" sizes="180x180" href="Logos/Capital-180x180.webp">
+
+  
+</head>
+<body>
+    <header>
+      <h1><span class="break">Capital Quiz</span></h1>
+        <div class="score-board">
+            <div class="score" id="score">Score: <span>0</span></div>
+            <div class="highscore" id="highscore">Highscore: <span>0</span></div>
+        </div>
+      <div class="navbar">
+        <ul class="nav-list">
+            <li class="nav-item dropdown">
+                <a href="All_Capitals.html" id="box-shadow"class="dropdown-toggle">Continents</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Europe_Capitals.html">Europe</a></li>
+                    <li><a href="Africa_Capitals.html">Afrika</a></li>
+                    <li><a href="Southamerica_Capitals.html">South America</a></li>
+                     <li><a href="Northamerica_Capitals.html">North America</a></li>
+                     <li><a href="Asia_Capitals.html">Asia</a></li>
+                </ul>
+            </li>
+</ul>
+    </div>
+    </header>
+	<button id="dashboard-btn" class="dashboard-btn">Open Dashboard</button>
+	<div class="div-difficlut">	 <div class="difficulty-selector">
+        <label class="select-dif" for="difficulty">Select Difficulty:</label>
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div></div>
+	<main>
+        <div id="question-container">
+            <p id="question">Question will appear here</p>
+            <div class="options">
+                <button class="option-btn">Option 1</button>
+                <button class="option-btn">Option 2</button>
+                <button class="option-btn">Option 3</button>
+                <button class="option-btn">Option 4</button>
+            </div>
+            <div id="message" class="message"></div>
+        </div>
+      <div id="map" style="height: 400px; margin-top: 20px;"></div>
+    </main>
+
+    <!-- Modal for Dashboard -->
+    <div id="dashboard-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Dashboard</h2>
+            <div id="dashboard-content">
+                <div class="metrics">
+                    <p>Achievements: <span id="achievements">0</span></p>
+                    <p>Activity: <span id="activity">0</span></p>
+                    <p>Usage: <span id="usage">0</span></p>
+                    <p>Correct Answers: <span id="correct-answers">0</span></p>
+                    <p>Other Metrics: <span id="other-metrics">0</span></p>
+                </div>
+                <div class="charts">
+                    <canvas id="scoreChart"></canvas>
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+<canvas id="confettiCanvas"></canvas>
+
+<footer class="footer" data-aos="fade-up">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <a href="index.html"><img src="Logos/Capital.webp" alt="Company Logo"></a>
+    </div>
+    <div class="footer-info">
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer><script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker_capital.js')
+      .then((registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed:', error);
+      });
+  });
+}
+</script>
+<script>
+function applyDarkModeStyles() {
+    // Apply dark mode styles
+    document.body.style.backgroundColor = '#467676';
+    document.body.style.color = 'white';
+
+    const header = document.querySelector('header');
+    if (header) {
+        header.style.background = '#02526A';
+        header.style.color = 'white';
+    }
+
+    const footer = document.querySelector('.footer');
+    if (footer) footer.style.background = '#02526A';
+
+    const scoreBoard = document.querySelector('.score-board');
+    if (scoreBoard) scoreBoard.style.background = '#718182';
+
+    const navItems = document.querySelectorAll('.nav-item a');
+    navItems.forEach(item => {
+        item.style.backgroundColor = '#7A33B2';
+        item.style.color = 'white';
+        // Add hover effect using JavaScript
+        item.addEventListener('mouseover', function() {
+            this.style.backgroundColor = '#5A1F8A';
+        });
+        item.addEventListener('mouseout', function() {
+            this.style.backgroundColor = '#7A33B2';
+        });
+    });
+
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    if (dropdownMenu) {
+        dropdownMenu.style.backgroundColor = '#7A33B2';
+        dropdownMenu.style.color = 'white';
+
+        const dropdownLinks = dropdownMenu.querySelectorAll('li a');
+        dropdownLinks.forEach(link => {
+            link.style.color = 'white';
+            // Add hover effect using JavaScript
+            link.addEventListener('mouseover', function() {
+                this.style.backgroundColor = '#5A1F8A';
+            });
+            link.addEventListener('mouseout', function() {
+                this.style.backgroundColor = '#7A33B2';
+            });
+        });
+    }
+
+    const dashboardButtons = document.querySelectorAll('.dashboard-btn');
+    dashboardButtons.forEach(button => {
+        button.style.backgroundColor = '#9D1A7C';
+        button.style.border = 'none';
+        // Add hover effect using JavaScript
+        button.addEventListener('mouseover', function() {
+            this.style.backgroundColor = '#7A145F';
+        });
+        button.addEventListener('mouseout', function() {
+            this.style.backgroundColor = '#9D1A7C';
+        });
+    });
+
+    const difficultySelector = document.querySelector('.difficulty-selector');
+    if (difficultySelector) difficultySelector.style.backgroundColor = '#507D60';
+
+    const selectDif = document.querySelector('.select-dif');
+    if (selectDif) selectDif.style.color = 'white';
+}
+
+function applyLightModeStyles() {
+    // Reset or apply light mode styles (if needed)
+    document.body.style.backgroundColor = ''; // Reset to original or default styles
+    document.body.style.color = '';
+
+    const header = document.querySelector('header');
+    if (header) {
+        header.style.background = '';
+        header.style.color = '';
+    }
+
+    const footer = document.querySelector('.footer');
+    if (footer) footer.style.background = '';
+
+    const scoreBoard = document.querySelector('.score-board');
+    if (scoreBoard) scoreBoard.style.background = '';
+
+    const navItems = document.querySelectorAll('.nav-item a');
+    navItems.forEach(item => {
+        item.style.backgroundColor = '';
+        item.style.color = '';
+        // Remove hover effect or reset
+        item.removeEventListener('mouseover', function() {
+            this.style.backgroundColor = '#5A1F8A';
+        });
+        item.removeEventListener('mouseout', function() {
+            this.style.backgroundColor = '#7A33B2';
+        });
+    });
+
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    if (dropdownMenu) {
+        dropdownMenu.style.backgroundColor = '';
+        dropdownMenu.style.color = '';
+
+        const dropdownLinks = dropdownMenu.querySelectorAll('li a');
+        dropdownLinks.forEach(link => {
+            link.style.color = '';
+            // Remove hover effect
+            link.removeEventListener('mouseover', function() {
+                this.style.backgroundColor = '#5A1F8A';
+            });
+            link.removeEventListener('mouseout', function() {
+                this.style.backgroundColor = '#7A33B2';
+            });
+        });
+    }
+
+    const dashboardButtons = document.querySelectorAll('.dashboard-btn');
+    dashboardButtons.forEach(button => {
+        button.style.backgroundColor = '';
+        button.style.border = '';
+        // Remove hover effect or reset
+        button.removeEventListener('mouseover', function() {
+            this.style.backgroundColor = '#7A145F';
+        });
+        button.removeEventListener('mouseout', function() {
+            this.style.backgroundColor = '#9D1A7C';
+        });
+    });
+
+    const difficultySelector = document.querySelector('.difficulty-selector');
+    if (difficultySelector) difficultySelector.style.backgroundColor = '';
+
+    const selectDif = document.querySelector('.select-dif');
+    if (selectDif) selectDif.style.color = '';
+}
+
+// Function to check the user's color scheme preference
+function applyTheme() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        applyDarkModeStyles();
+    } else {
+        applyLightModeStyles();
+    }
+}
+
+// Apply the correct theme on initial load
+applyTheme();
+
+// Listen for changes in the system theme and apply dynamically
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    applyTheme();
+});
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-geojson@latest"></script>
+   <script src="all_capitals.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+</body>
+</html>
