@@ -183,7 +183,7 @@ margin-top: 30px;
 }
 	/* Style for feedback container */
 #feedback {
-  font-size: 1em;
+  font-size: 1.2em;
   font-weight: bold;
   text-align: center;
   margin: 10px auto;
@@ -194,19 +194,31 @@ margin-top: 30px;
 
 /* Correct answer style */
 .feedback-correct {
-  color: #ffffff; /* White text */
-  background-color: #4CAF50; /* Green background */
-  box-shadow: 0 5px 0 #388E3C;
-  width: 10%;
-
+  color: #4CAF50; /* White text */
+  animation: correctAnimation 0.5s ease-in-out;
 }
 
 /* Wrong answer style */
 .feedback-wrong {
-	width: 20%;
-  color: #ffffff; /* White text */
-  box-shadow: 0 5px 0 #D32F2F;
-  background-color: #F44336; /* Red background */
+  color: #F44336; /* White text */
+   animation: wrongAnimation 0.5s ease-in-out;
+}
+
+
+/* Correct answer animation: scaling */
+@keyframes correctAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+}
+
+/* Wrong answer animation: shake */
+@keyframes wrongAnimation {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
 }
 
 /* Footer Styling */
@@ -310,6 +322,6 @@ bottom: 0;
 		width: 95%;
 	}
 	.feedback-correct {
-	width: 60%;}
+	width: auto;}
 .feedback-wrong {
-width: 80%;}
+width: auto;}
