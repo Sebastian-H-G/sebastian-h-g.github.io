@@ -1,0 +1,221 @@
+ *{
+	 margin: 0;
+	 padding: 0;
+ }
+ body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5dc;
+    color: #333;
+    height: 100%;
+    overflow: auto;
+	overflow-x: hidden;
+ }
+ .quiz-container {
+	 padding: 20px 20px 10px 20px;
+ }
+ h1 {
+	text-align: center;
+	font-size: 45px;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
+	margin-bottom: 20px; 
+	color: #e53935; /* Red color */
+ }
+ #question {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 600;
+	margin-bottom: 10px;
+	text-align: center;
+	color: #00796b; /* Teal color */
+ }
+#map {
+	height: 500px;
+	margin: 0 auto;
+	width: 68%;
+}
+/* Define the keyframes for the animation */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes wrong {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+/* Apply animation to the messages */
+.message {
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+  display: none; /* Hide by default */
+}
+
+.message.correct {
+  color: green;
+  animation: fadeInOut 2s forwards;
+}
+
+.message.wrong {
+  color: red;
+  animation: wrong 1s;
+}
+
+.scoreboard {
+	display: flex;
+	justify-content: center;
+	gap: 30px;
+	width: 35;
+	padding: 0px 30px;
+	margin: 0 auto 30px auto;
+	color: black;
+	border-radius: 7px;
+}
+
+
+.score, .highscore {
+    font-size: 20px;
+  border-radius: 7px;
+    font-weight: bold;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add box-shadow */
+    position: relative;
+	transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
+}
+.score {
+  background-color: #007BFF;
+   padding: 15px 20px;
+   box-shadow: 0 5px 0 #0056b3;
+}
+.highscore {
+ background-color: #FFD700;
+  padding: 15px 20px;
+box-shadow: 0 5px 0 #c0a500;
+  z-index: 100;
+}
+.score span, .highscore span {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.score span.animate, .highscore span.animate {
+    transform: scale(1.2);
+}
+
+
+
+
+.footer {
+  background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+bottom: 0;
+  display: flex;
+  margin-top: 70px;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100vw;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #333;
+	}
+	#question {
+		color: white;
+	}
+}

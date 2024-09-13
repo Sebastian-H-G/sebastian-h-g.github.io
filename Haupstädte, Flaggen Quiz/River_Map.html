@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>River Quiz</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="river-map.css"/>
+</head>
+<body>
+<div class="quiz-container">
+<h1 class="heading">River Map</h1>
+
+	<div class="scoreboard">
+        <p class="score">Score: <span id="score">0</span></p>
+        <p class="highscore">High Score: <span id="highscore">0</span></p>
+	</div>
+	  	
+        <h2 id="question">Click on the correct river to start!</h2>
+<div class="message correct" id="correctMessage">Correct! Well done!</div>
+    <div class="message wrong" id="wrongMessage">Wrong river!</div>
+	<div id="map"></div>
+	
+	</div>
+    <footer class="footer" data-aos="fade-up">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <a href="index.html"><img src="Logos/River.webp" alt="Company Logo"></a>
+    </div>
+    <div class="footer-info">
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="river-map.js"></script>
+
+</body>
+</html>

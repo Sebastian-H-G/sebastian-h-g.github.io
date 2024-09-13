@@ -4,22 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>River Quiz</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="river.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 <body>
-    <header>
-        <h1>River Quiz</h1>
-        <p>Test your knowledge about rivers around the world!</p>
-    </header>
-    <main>
-        <div id="quiz-container"></div>
-        <div id="map" class="map-container"></div>
-    </main>
-    <footer>
-        <p>&copy; 2024 River Quiz</p>
-    </footer>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="scripts.js"></script>
+
+    <div class="quiz-container">
+        <header>
+            <h1>River Quiz</h1>
+        </header>
+
+        <section class="scoreboard">
+            <p>Score: <span id="score">0</span></p>
+            <p>High Score: <span id="highscore">0</span></p>
+        </section>
+
+        <section class="quiz-content">
+            <div class="question-container">
+                <p id="question">Loading question...</p>
+                <ul class="options">
+                    <li class="option" onclick="checkAnswer(this)">Option 1</li>
+                    <li class="option" onclick="checkAnswer(this)">Option 2</li>
+                    <li class="option" onclick="checkAnswer(this)">Option 3</li>
+                    <li class="option" onclick="checkAnswer(this)">Option 4</li>
+                </ul>
+            </div>
+            <button id="toggle-map">Show Map</button>
+			<a href="River_Map.html" style="z-index: 100">Map</a>
+            <div id="map-container" style="display: none;">
+                <div id="map"></div>
+            </div>
+        </section>
+
+        <section class="controls">
+            <label for="difficulty">Difficulty:</label>
+            <select id="difficulty" onchange="loadQuestion()">
+                <option value="easy">Easy</option>
+                <option value="hard">Hard</option>
+            </select>
+        </section>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="river.js"></script>
 </body>
 </html>
