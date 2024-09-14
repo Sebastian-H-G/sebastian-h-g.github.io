@@ -320,3 +320,17 @@ bottom: 0;
 		color: white;
 	}
 }
+
+@media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
+
+	h1 {
+		margin-top: 15px;
+	}
+	.options {
+		width: 95%;
+	}
+
+	.footer {
+		margin-top: 180px;
+	}
+}
