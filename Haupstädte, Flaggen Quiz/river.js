@@ -274,39 +274,45 @@ const riverData = [
 
 // Question types
 const questionTypes = ["country", "length", "mouth", "trivia", "flow"];
-
 // Function to check answer
 function checkAnswer(selectedElement) {
     const selectedOption = selectedElement.innerText;
     const feedbackElement = document.getElementById("feedback-message");
-    
+
+    // Remove any previous class to reset animations
+    feedbackElement.classList.remove('feedback-correct', 'feedback-wrong');
+
     if (selectedOption === correctAnswer) {
         score++;
         document.getElementById("score").innerText = score;
-        feedbackElement.innerText = "Correct!";
-        feedbackElement.style.color = "green";
+        feedbackElement.innerText = "🎉 Correct! Well done! 🎉";
+        feedbackElement.classList.add('feedback-correct');
 
         if (score > highscore) {
             highscore = score;
             localStorage.setItem("riverHighScore", highscore);
             document.getElementById("highscore").innerText = highscore;
         }
+
         setTimeout(() => {
             feedbackElement.innerText = ""; // Clear the message after a short delay
+            feedbackElement.classList.remove('feedback-correct'); // Remove animation class
             loadQuestion(); // Load new question
         }, 1000);
     } else {
         score = 0;
         document.getElementById("score").innerText = score;
-        feedbackElement.innerText = `Wrong! The correct answer was ${correctAnswer}.`;
-        feedbackElement.style.color = "red";
+        feedbackElement.innerText = `Wrong! 😕 The correct answer was ${correctAnswer}.`;
+        feedbackElement.classList.add('feedback-wrong');
 
         setTimeout(() => {
             feedbackElement.innerText = ""; // Clear the message after a short delay
+            feedbackElement.classList.remove('feedback-wrong'); // Remove animation class
             loadQuestion(); // Load new question
         }, 2000);
     }
 }
+
 
 // Utility function to shuffle an array (Fisher-Yates shuffle)
 function shuffle(array) {
