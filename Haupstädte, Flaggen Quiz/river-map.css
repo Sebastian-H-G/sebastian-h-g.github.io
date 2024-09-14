@@ -211,6 +211,34 @@ bottom: 0;
   z-index: 0; /* Ensure it's behind the footer content */
 }
 
+.go-back {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 15px 25px;
+	border-radius: 10px;
+	font-weight: bold;
+	cursor: pointer;
+	margin: 35px auto 0 auto;
+	font-size: 17px;
+	background-color: #FFA07A;
+	cursor: pointer;
+	border: none;
+	box-shadow: 0 5px 0 #F08080; /* Light Coral shadow */
+}
+
+.go-back:active {
+	-webkit-transform: translateY(5px);
+    transform: translateY(5px);
+    -webkit-box-shadow: 0 2px 0 #F08080;
+    box-shadow: 0 2px 0 #F08080;
+}
+
+.link {
+	text-decoration: none;
+	color: #fff;
+}
+
 @media (prefers-color-scheme: dark) {
 	body {
 		background-color: #333;

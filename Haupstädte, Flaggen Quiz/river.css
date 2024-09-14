@@ -158,7 +158,8 @@ background-color: #20B2AA;
 
 #map {
     height: 400px;
-    width: 100%;
+    width: 80%;
+	margin: 35px auto 0 auto;
     background-color: #333;
 }
 
