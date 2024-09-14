@@ -160,14 +160,15 @@ box-shadow: 0 5px 0 #c69f12;
 	padding: 10px;
 	font-size: 17px;
 	font-weight: bold;
-	background-color: red;
+	background-color: #FF0000;
 	border-radius: 7px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	transition: transform 0.3s ease-in-out, background-color 0.3s ease, box-shadow 0.3s ease;
+	box-shadow: 0 3px 0 #CC0000;
+	border: none;
+	transition: transform 0.1s ease-in-out;
 }
 
-#continent-select:hover {
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+#continent-select:active {
+	transform: translateY(5px);
 }
 
 #continent-select option {

@@ -37,9 +37,20 @@ border-radius: 7px;
 #continent {
 	padding: 5px;
 	border-radius: 9px;
+	border: none;
 	color: black;
 	font-weight: bold;
 	background-color: #ABC2A7;
+	box-shadow: 0 2px 0 #8A9B81;
+	outline: none;
+	transition: transform 0.1s ease-in-out;
+}
+#continent:focus {
+	outline: none;
+}
+#continent:active {
+	transform: translateY(5px);
+	outline: none;
 }
 .mode {
 background-color: #16F2DF;
@@ -53,8 +64,18 @@ padding:15px;
 	padding: 5px;
 	border-radius: 9px;
 	color: black;
+	border: none;
 	font-weight: bold;
 	background-color: #ABC2A7;
+	box-shadow: 0 2px 0 #9AAB95;
+	outline: none;
+	transition: transform 0.1s ease-in-out;
+}
+#mode:focus{
+	outline: none;
+}
+#mode:active {
+		transform: translateY(5px);
 }
 .score, .highscore {
 	font-size: 18px;

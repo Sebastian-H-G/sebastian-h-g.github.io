@@ -82,16 +82,16 @@ body {
 }
 
 #score {
-	background-color: #007BFF;
+  background-color: #007BFF;
    padding: 15px 20px;
-  border: 1px solid black;
+   box-shadow: 0 5px 0 #0056b3;
 }
 
 #highscore {
-	background-color: #FFD700;
+ background-color: #FFD700;
   padding: 15px 20px;
-  border: 1px solid black;
-
+box-shadow: 0 5px 0 #c0a500;
+  z-index: 100;
 }
 
 #continent-selector {
