@@ -94,34 +94,37 @@ body {
 
 }
 
-/* Continent selector */
 #continent-selector {
-    margin: 10px auto 0 auto;
-}
-
-#continent-selector button {
-    background-color: #007bff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 15px 25px;
+	border-radius: 10px;
+	font-weight: bold;
+	cursor: pointer;
+	background-color: #FFA07A;
     color: black;
 	font-weight: bold;
     border: none;
     padding: 10px 15px;
     font-size: 20px;
-    margin: 5px;
-    border-radius: 5px;
-    cursor: pointer;
+	box-shadow: 0 5px 0 #F08080; /* Light Coral shadow */
+     margin: 10px auto 0 auto;
     transition: background-color 0.3s;
 }
-
-#continent-selector button:hover {
-    background-color: #0056b3;
+#continent-selector option {
+	padding: 10px;
 }
 
-#continent-selector button:focus {
-    outline: none;
-    background-color: #00448f;
+#continent-selector:active {
+		-webkit-transform: translateY(5px);
+    transform: translateY(5px);
+    -webkit-box-shadow: 0 2px 0 #F08080;
+    box-shadow: 0 2px 0 #F08080;
 }
-
-
+#continent-selector:focus {
+	outline: none;
+}
 
 @keyframes wiggleAndGlow {
     0% {
