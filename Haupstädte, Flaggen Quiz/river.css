@@ -1,34 +1,78 @@
 * {
     margin: 0;
     padding: 0;
+	user-select: none;
+    -webkit-user-select: none; /* For Safari */
+    -moz-user-select: none;    /* For Firefox */
+    -ms-user-select: none;     /* For Internet Explorer/Edge */
     box-sizing: border-box;
 }
 
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(to right, #5f72be, #9b23ea);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background: #f5f5dc;
     color: #fff;
+	overflow: auto;
+	overflow-x: hidden;
 }
 
 .quiz-container {
-    background-color: #222;
     border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-    padding: 30px;
-    max-width: 600px;
+    padding: 20px;
+	overflow: auto;
+	margin-bottom: 155px;
     width: 100%;
     text-align: center;
 }
 
 header h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #FFD700;
+    font-size: 45px;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
+	color: #e53935; /* Red color */
 }
+
+
+.scoreboard {
+	display: flex;
+	justify-content: center;
+	gap: 30px;
+	width: 35;
+	  padding: 20px 30px;
+	  margin: 10px auto 0 auto;
+	  color: black;
+	  border-radius: 7px;
+}
+
+
+.score, .highscore {
+    font-size: 20px;
+  border-radius: 7px;
+    font-weight: bold;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add box-shadow */
+    position: relative;
+	transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
+}
+.score {
+  background-color: #007BFF;
+   padding: 15px 20px;
+   box-shadow: 0 5px 0 #0056b3;
+}
+.highscore {
+ background-color: #FFD700;
+  padding: 15px 20px;
+box-shadow: 0 5px 0 #c0a500;
+  z-index: 100;
+}
+.score span, .highscore span {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.score span.animate, .highscore span.animate {
+    transform: scale(1.2);
+}
+
 
 .scoreboard p {
     font-size: 1.2rem;
@@ -44,38 +88,65 @@ header h1 {
 
 #question {
     font-size: 1.5rem;
+	font-family: 'Poppins', sans-serif;
+	font-weight: 600;
+	color: #00796b; /* Teal color */
 }
 
 .options {
     list-style: none;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+	width: 60%;
+	margin: 10px auto;
+    justify-content: space-around;
 }
 
 .option {
-    background-color: #444;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 10px;
-    transition: background-color 0.3s;
+background-color: #20B2AA;
+    color: #fff;
+    border: none;
+	text-align: center;
+    border-radius: 5px;
+    padding: 20px;
+	font-weight: bold;
+	display: flex;
+	justify-content: center;
+    margin: 5px;
+	align-items: center;
+	box-shadow: 0 5px 0 #009688;
+	font-size: 20px;
     cursor: pointer;
+    flex: 1 1 calc(50% - 10px);
+    transition: background-color 0.3s, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.option:hover {
-    background-color: #FFD700;
-}
 
+.option:active {
+    -webkit-transform: translateY(5px);
+    transform: translateY(5px);
+    -webkit-box-shadow: 0 2px 0 #009688;
+    box-shadow: 0 2px 0 #009688;
+}
 #toggle-map {
     margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #5f72be;
+    padding: 15px 25px;
+    background-color: #FF6F61;
     border: none;
     border-radius: 10px;
     color: #fff;
+	font-weight: bold;
+	font-size: 17px;
+	box-shadow: 0 5px 0 #FF3D3D;
     cursor: pointer;
 }
 
-#toggle-map:hover {
-    background-color: #9b23ea;
+#toggle-map:active {
+    -webkit-transform: translateY(5px);
+    transform: translateY(5px);
+    -webkit-box-shadow: 0 2px 0 #FF3D3D;
+    box-shadow: 0 2px 0 #FF3D3D;
 }
 
 #map-container {
@@ -89,15 +160,125 @@ header h1 {
     background-color: #333;
 }
 
-.controls {
-    margin-top: 20px;
+#button-link {
+	padding: 15px 25px;
+	border-radius: 10px;
+	font-weight: bold;
+	cursor: pointer;
+	font-size: 17px;
+	background-color: #FFA07A;
+	margin-left: 15px; 
+	cursor: pointer;
+	border: none;
+	box-shadow: 0 5px 0 #F08080; /* Light Coral shadow */
 }
 
-select {
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    background-color: #5f72be;
-    color: #fff;
+#button-link:active {
+	-webkit-transform: translateY(5px);
+    transform: translateY(5px);
+    -webkit-box-shadow: 0 2px 0 #F08080;
+    box-shadow: 0 2px 0 #F08080;
+}
+
+#link {
+	text-decoration: none;
+	color: #fff;
+}
+
+
+
+
+.footer {
+  background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+bottom: 0;
+  display: flex;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #333;
+	}
+	#question {
+		color: white;
+	}
 }

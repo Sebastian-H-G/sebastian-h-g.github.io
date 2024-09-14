@@ -6,6 +6,9 @@
     <title>River Quiz</title>
     <link rel="stylesheet" href="river.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -15,36 +18,47 @@
         </header>
 
         <section class="scoreboard">
-            <p>Score: <span id="score">0</span></p>
-            <p>High Score: <span id="highscore">0</span></p>
+            <p class="score">Score: <span id="score">0</span></p>
+            <p class="highscore">High Score: <span id="highscore">0</span></p>
         </section>
 
-        <section class="quiz-content">
-            <div class="question-container">
-                <p id="question">Loading question...</p>
-                <ul class="options">
-                    <li class="option" onclick="checkAnswer(this)">Option 1</li>
-                    <li class="option" onclick="checkAnswer(this)">Option 2</li>
-                    <li class="option" onclick="checkAnswer(this)">Option 3</li>
-                    <li class="option" onclick="checkAnswer(this)">Option 4</li>
-                </ul>
-            </div>
-            <button id="toggle-map">Show Map</button>
-			<a href="River_Map.html" style="z-index: 100">Map</a>
-            <div id="map-container" style="display: none;">
-                <div id="map"></div>
-            </div>
-        </section>
-
-        <section class="controls">
-            <label for="difficulty">Difficulty:</label>
-            <select id="difficulty" onchange="loadQuestion()">
-                <option value="easy">Easy</option>
-                <option value="hard">Hard</option>
-            </select>
-        </section>
+       <section class="quiz-content">
+    <div class="question-container">
+        <p id="question">Loading question...</p>
+        <ul class="options">
+            <li class="option" onclick="checkAnswer(this)">Option 1</li>
+            <li class="option" onclick="checkAnswer(this)">Option 2</li>
+            <li class="option" onclick="checkAnswer(this)">Option 3</li>
+            <li class="option" onclick="checkAnswer(this)">Option 4</li>
+        </ul>
     </div>
+    <div id="feedback-message"></div> <!-- New feedback message element -->
+    <button id="toggle-map">Show Map</button>
+    <button id="button-link"><a id="link" href="River_Map.html">Interactive Map</a></button>
+    <div id="map-container" style="display: none;">
+        <div id="map"></div>
+    </div>
+</section>
 
+    </div>
+<footer class="footer" data-aos="fade-up">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <a href="index.html"><img src="Logos/River.webp" alt="Company Logo"></a>
+    </div>
+    <div class="footer-info">
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="river.js"></script>
 </body>
