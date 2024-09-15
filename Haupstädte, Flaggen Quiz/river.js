@@ -313,6 +313,29 @@ function checkAnswer(selectedElement) {
     }
 }
 
+  // Select all buttons with the class "myButton"
+  const buttons = document.querySelectorAll(".option");
+
+  buttons.forEach(button => {
+    // Add active class on touchstart
+    button.addEventListener("touchstart", () => {
+      button.classList.add("active");
+    });
+
+    // Remove active class on touchend
+    button.addEventListener("touchend", () => {
+      button.classList.remove("active");
+    });
+
+    // Also handle mouse clicks for desktops
+    button.addEventListener("mousedown", () => {
+      button.classList.add("active");
+    });
+
+    button.addEventListener("mouseup", () => {
+      button.classList.remove("active");
+    });
+  });
 
 // Utility function to shuffle an array (Fisher-Yates shuffle)
 function shuffle(array) {

@@ -60,6 +60,32 @@ async function startQuiz() {
     }, 600); // Delay for fade-out animation
 }
 
+
+  // Select all buttons with the class "myButton"
+  const buttons = document.querySelectorAll(".option");
+
+  buttons.forEach(button => {
+    // Add active class on touchstart
+    button.addEventListener("touchstart", () => {
+      button.classList.add("active");
+    });
+
+    // Remove active class on touchend
+    button.addEventListener("touchend", () => {
+      button.classList.remove("active");
+    });
+
+    // Also handle mouse clicks for desktops
+    button.addEventListener("mousedown", () => {
+      button.classList.add("active");
+    });
+
+    button.addEventListener("mouseup", () => {
+      button.classList.remove("active");
+    });
+  });
+
+
 function triggerWiggleAndGlowAnimation() {
     // Select all elements with the class 'highscore'
     const highscoreElements = document.querySelectorAll('.highscore');
