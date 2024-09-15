@@ -266,7 +266,7 @@ height: auto;
 .footer {
   background: linear-gradient(135deg, #0d47a1, #42a5f5); /* Blue gradient */
   color: #fff;
-  padding: 20px 0;
+  padding: 30px 0;
   position: relative;
   overflow: hidden;
   display: flex;
