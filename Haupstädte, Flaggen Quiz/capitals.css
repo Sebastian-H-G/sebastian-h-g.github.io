@@ -1,4 +1,7 @@
 body {
+	-webkit-overflow-scrolling: touch;
+	-webkit-user-select: none; /* Prevent text selection */
+	-webkit-touch-callout: none; /* Disable long-press action (share menu) */
   font-family: Arial, sans-serif;
   text-align: center;
   margin: 0;

@@ -10,6 +10,9 @@
 
 body {
     font-family: 'Arial', sans-serif;
+	-webkit-overflow-scrolling: touch;
+	-webkit-user-select: none; /* Prevent text selection */
+	-webkit-touch-callout: none; /* Disable long-press action (share menu) */
     background: #f5f5dc;
     color: #fff;
 	overflow: auto;

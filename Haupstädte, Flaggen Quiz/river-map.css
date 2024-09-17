@@ -5,6 +5,9 @@
  body {
     font-family: Arial, sans-serif;
     background-color: #f5f5dc;
+	-webkit-overflow-scrolling: touch;
+	-webkit-user-select: none; /* Prevent text selection */
+	-webkit-touch-callout: none; /* Disable long-press action (share menu) */
     color: #333;
     height: 100%;
     overflow: auto;
