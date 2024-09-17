@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>River Length Sort Quiz</title>
+  <link rel="stylesheet" href="interactive-river.css">
+</head>
+<body>
+  <h1>Sort the Rivers by Length</h1>
+
+  <div class="river-list"></div>
+
+  <div class="drop-zone">
+    <p style="background-color: white">Drop the rivers here in order:</p>
+  </div>
+
+  <button id="submit">Submit</button>
+  
+  <!-- Modal -->
+  <div class="modal hidden">
+    <div class="modal-content">
+      <p class="message"></p>
+      <button id="try-again">Try Again</button>
+      <button id="show-solution">Show Solution</button>
+      <button id="reset">Reset</button>
+    </div>
+  </div>
+
+  <script src="interactive-river.js"></script>
+</body>
+</html>
