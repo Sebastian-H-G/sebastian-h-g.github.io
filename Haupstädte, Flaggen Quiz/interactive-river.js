@@ -35,7 +35,7 @@ function populateRivers() {
   const riverList = document.querySelector('.river-list');
   riverList.innerHTML = '';
   const dropZone = document.querySelector('.drop-zone');
-  dropZone.innerHTML = '<p id="drop-zone-text" "class="fixed-text">Drop the rivers here in order:</p>';
+  dropZone.innerHTML = '<p id="drop-zone-text" class="fixed-text">Drop the rivers here in order:</p>';
 
   const shuffledRivers = shuffleRivers(riversData);
 
@@ -126,10 +126,11 @@ document.getElementById('submit').addEventListener('click', function() {
     if (length === correctLength) {
       droppedRivers[i].classList.add('correct');
       droppedRivers[i].style.backgroundColor = 'green'; // Highlight green when correct
+	  droppedRivers[i].style.boxShadow = 'none';
     } else {
       droppedRivers[i].classList.add('incorrect');
       droppedRivers[i].style.backgroundColor = 'red';
-droppedRivers[i].style.boxShadow = 'none';	 
+droppedRivers[i].style.boxShadow = 'none';	  // Highlight red when incorrect
       correctOrder = false;
     }
   }
@@ -152,12 +153,13 @@ droppedRivers[i].style.boxShadow = 'none';
 });
 
 document.getElementById('show-solution').addEventListener('click', function() {
-  dropZone.innerHTML = '<p class="fixed-text">Drop the rivers here in order:</p>'; // Keep the fixed text
+  dropZone.innerHTML = '<p id="drop-zone-text" class="fixed-text">Drop the rivers here in order:</p>'; // Keep the fixed text
   riversData.sort((a, b) => b.length - a.length).forEach(river => {
     const correctRiver = document.createElement('p');
     correctRiver.textContent = `${river.name} - ${river.length} km`;
     correctRiver.classList.add('correct');
     correctRiver.style.backgroundColor = 'green'; // Mark the solution rivers as correct (green)
+	correctRiver.style.boxShadow = 'none';
     dropZone.appendChild(correctRiver);
   });
   const resetButton = document.querySelector('#reset');

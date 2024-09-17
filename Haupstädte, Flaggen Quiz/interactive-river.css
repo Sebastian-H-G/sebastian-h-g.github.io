@@ -23,11 +23,13 @@ body {
   box-shadow: 0 5px 0px #8ec3e4; /* Updated box-shadow */
   width: 150px;
   text-align: center;
+  transition: transform 0.3s ease;
   border-radius: 5px; /* Optional: adds rounded corners */
 }
 
 .river-list p:active {
   cursor: grabbing; /* Change cursor on active drag */
+  transform: translateY(5px);
 }
 
 
@@ -53,7 +55,7 @@ body {
 /* Style the rivers in the drop zone */
 .drop-zone p {
   padding: 10px;
-  margin: 5px;
+  margin: 15px;
   background-color: #e3f2fd;
   box-shadow: 0 5px 0 #bbdefb;
   border-radius: 5px;
@@ -69,11 +71,13 @@ body {
 .correct {
   background-color: #c8e6c9 !important;
   border: 2px solid #2e7d32;
+  box-shadow: none;
 }
 
 .incorrect {
   background-color: #ffcdd2 !important;
   border: 2px solid #c62828;
+  box-shadow: none;
 }
 or: #721c24;
 }
