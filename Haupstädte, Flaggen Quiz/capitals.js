@@ -105,30 +105,27 @@ function highlightCountry(country) {
 
   map.setView([country.latlng[0], country.latlng[1]], 4);
 }
+// Select all buttons with the class "quiz-link"
+const buttons = document.querySelectorAll(".option-button");
 
-  // Select all buttons with the class "myButton"
-  const buttons = document.querySelectorAll(".option-button");
-
-  buttons.forEach(button => {
-    // Add active class on touchstart
-    button.addEventListener("touchstart", () => {
-      button.classList.add("active");
-    });
-
-    // Remove active class on touchend
-    button.addEventListener("touchend", () => {
-      button.classList.remove("active");
-    });
-
-    // Also handle mouse clicks for desktops
-    button.addEventListener("mousedown", () => {
-      button.classList.add("active");
-    });
-
-    button.addEventListener("mouseup", () => {
-      button.classList.remove("active");
-    });
+buttons.forEach(button => {
+  // Handle touchstart
+  button.addEventListener("touchstart", () => {
+    button.classList.add("active");  // Add the active class (button pressed down)
+    setTimeout(() => {
+      button.classList.remove("active");  // Automatically remove the class after a short delay
+    }, 100);  // Adjust this time as needed
   });
+
+  // Handle mousedown (for desktops)
+  button.addEventListener("mousedown", () => {
+    button.classList.add("active");  // Add the active class (button pressed down)
+    setTimeout(() => {
+      button.classList.remove("active");  // Automatically remove the class after a short delay
+    }, 100);  // Adjust this time as needed
+  });
+});
+
 
 function triggerWiggleAndGlowAnimation() {
     // Select all elements with the class 'highscore'
