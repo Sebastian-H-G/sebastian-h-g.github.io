@@ -130,7 +130,7 @@ box-shadow: 0 5px 0 #c0a500;
 	font-size: 20px;
     cursor: pointer;
     flex: 1 1 calc(50% - 10px);
-    transition: background-color 0.3s, transform 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color 0.3s, transform 0.1s ease, box-shadow 0.3s ease;
 }
 
 .option-button:active {
