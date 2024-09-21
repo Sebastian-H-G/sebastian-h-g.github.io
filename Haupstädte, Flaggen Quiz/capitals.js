@@ -114,7 +114,7 @@ buttons.forEach(button => {
     button.classList.add("active");  // Add the active class (button pressed down)
     setTimeout(() => {
       button.classList.remove("active");  // Automatically remove the class after a short delay
-    }, 100);  // Adjust this time as needed
+    }, 1000);  // Adjust this time as needed
   });
 
   // Handle mousedown (for desktops)
@@ -122,7 +122,7 @@ buttons.forEach(button => {
     button.classList.add("active");  // Add the active class (button pressed down)
     setTimeout(() => {
       button.classList.remove("active");  // Automatically remove the class after a short delay
-    }, 100);  // Adjust this time as needed
+    }, 1000);  // Adjust this time as needed
   });
 });
 
