@@ -227,14 +227,14 @@ bottom: 0;
 	background-color: #FFA07A;
 	cursor: pointer;
 	border: none;
-	box-shadow: 0 5px 0 #F08080; /* Light Coral shadow */
+	box-shadow: 0 10px 0 #F08080; /* Light Coral shadow */
 }
 
 .go-back:active {
 	-webkit-transform: translateY(5px);
     transform: translateY(5px);
-    -webkit-box-shadow: 0 2px 0 #F08080;
-    box-shadow: 0 2px 0 #F08080;
+    -webkit-box-shadow: 0 3px 0 #F08080;
+    box-shadow: 0 3px 0 #F08080;
 }
 
 .link {

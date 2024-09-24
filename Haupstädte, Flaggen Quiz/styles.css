@@ -256,13 +256,13 @@ height: auto;
     font-weight: bold;
     text-decoration: none;
     transition: transform 0.5s ease, box-shadow 0.3s ease;
-    box-shadow: 0 5px 0 #0056b3;
+    box-shadow: 0 10px 0 #0056b3;
 }
 
 /* Active state */
 .quiz-link:active {
-    transform: translateY(5px); /* Move button down when pressed */
-    box-shadow: 0 2px 0 #0056b3; /* Adjust shadow for active state */
+    transform: translateY(7px); /* Move button down when pressed */
+    box-shadow: 0 3px 0 #0056b3; /* Adjust shadow for active state */
 }
 
 /* Footer Styling */
