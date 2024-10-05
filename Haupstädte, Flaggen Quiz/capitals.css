@@ -44,16 +44,17 @@ border-radius: 7px;
 	color: black;
 	font-weight: bold;
 	background-color: #ABC2A7;
-	box-shadow: 0 10px 0 #8A9B81;
+	box-shadow: 0 5px 0 #8A9B81;
 	outline: none;
-	transition: transform 0.1s ease-in-out;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 #continent:focus {
 	outline: none;
 }
 #continent:active {
+	transform: scale(0.98);
 	transform: translateY(5px);
-		box-shadow: 0 3px 0 #8A9B81;
+	box-shadow: 0 3px 0 #8A9B81;
 	outline: none;
 }
 .mode {
@@ -71,7 +72,7 @@ padding:15px;
 	border: none;
 	font-weight: bold;
 	background-color: #ABC2A7;
-	box-shadow: 0 10px 0 #9AAB95;
+	box-shadow: 0 5px 0 #9AAB95;
 	outline: none;
 	transition: transform 0.1s ease-in-out;
 }
@@ -126,19 +127,20 @@ box-shadow: 0 5px 0 #c0a500;
     color: #fff;
     border: none;
     border-radius: 5px;
-    padding: 20px;
+    padding: 15px;
 	font-weight: bold;
-    margin: 5px;
+    margin: 7px;
 	font-size: 20px;
     cursor: pointer;
-    flex: 1 1 calc(50% - 10px);
-    transition: background-color 0.3s, transform 0.1s ease, box-shadow 0.3s ease;
+    flex: 1 1 calc(50% - 40px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .option-button:active {
-	transform: translateY(7px);
-	box-shadow: 0 2px 0 #D98A1D;
+	transform: translateY(4px) scale(0.98);
+	box-shadow: 0 3px 0 #D98A1D;
 }
+
 
 #feedback {
   font-size: 18px;

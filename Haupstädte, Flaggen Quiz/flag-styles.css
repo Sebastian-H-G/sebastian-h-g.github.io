@@ -132,19 +132,17 @@ box-shadow: 0 5px 0 #c0a500;
     border-radius: 5px;
     padding: 20px;
 	font-weight: bold;
-    margin: 5px;
-	box-shadow: 0 5px 0 #C02F3C;
+    margin: 7px;
+	box-shadow: 0 6px 0 #C02F3C;
 	font-size: 20px;
     cursor: pointer;
-    flex: 1 1 calc(50% - 10px);
-    transition: background-color 0.3s, transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 1 1 calc(50% - 40px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .option:active {
-    -webkit-transform: translateY(5px);
-    transform: translateY(5px);
-    -webkit-box-shadow: 0 2px 0 #C02F3C;
-    box-shadow: 0 2px 0 #C02F3C;
+    transform: translateY(5px) scale(0.98);
+    box-shadow: 0 3px 0 #C02F3C;
 }
 
 
