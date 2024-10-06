@@ -62,28 +62,38 @@ async function startQuiz() {
 
 
   // Select all buttons with the class "myButton"
-  const buttons = document.querySelectorAll(".option");
+const buttons = document.querySelectorAll(".option");
 
-  buttons.forEach(button => {
+buttons.forEach(button => {
     // Add active class on touchstart
     button.addEventListener("touchstart", () => {
-      button.classList.add("active");
+        button.classList.add("active");
     });
 
-    // Remove active class on touchend
+    // Remove active class on touchend and trigger vibration
     button.addEventListener("touchend", () => {
-      button.classList.remove("active");
+        button.classList.remove("active");
+        // Trigger vibration on touchend
+        if ("vibrate" in navigator) {
+            navigator.vibrate(200); // Vibrate for 200 milliseconds
+        }
     });
 
     // Also handle mouse clicks for desktops
     button.addEventListener("mousedown", () => {
-      button.classList.add("active");
+        button.classList.add("active");
     });
 
+    // Remove active class on mouseup and trigger vibration
     button.addEventListener("mouseup", () => {
-      button.classList.remove("active");
+        button.classList.remove("active");
+        // Trigger vibration on mouseup
+        if ("vibrate" in navigator) {
+            navigator.vibrate(200); // Vibrate for 200 milliseconds
+        }
     });
-  });
+});
+
 
 
 function triggerWiggleAndGlowAnimation() {
