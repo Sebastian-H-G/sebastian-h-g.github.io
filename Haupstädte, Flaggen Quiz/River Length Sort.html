@@ -7,17 +7,19 @@
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="river-length-sort.css">
 </head>
 <body>
 <h1 class="heading">Sort the Rivers by their length!</h1>
     <div>
         <label class="select" for="riverCount">Select number of rivers:</label>
         <select id="riverCount">
-            <option value="5">5</option>
-            <option value="10" selected>10</option>
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
             <option value="15">15</option>
             <option value="20">20</option>
+			<option value="25">25</option>
+			<option value="30">30</option>
         </select>
     </div>
 
@@ -32,6 +34,7 @@
 	<button id="resetButton">Reset</button>
 </div>
 
+	<button class="go-back"><a class="link" href="River.html">⬅️ River Quiz</a></button>
     <p id="resultMessage"></p>
 
     <!-- Modal for incorrect order -->
@@ -61,7 +64,7 @@
   </div>
 </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-    <script src="test.js"></script>
+    <script src="river-length-sort.js"></script>
 </body>
 </html>
 

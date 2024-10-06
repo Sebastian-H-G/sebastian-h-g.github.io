@@ -20,8 +20,31 @@ const riverData = [
     { name: 'Ganges', length: 2525 },
     { name: 'Indus', length: 3180 },
     { name: 'Tigris', length: 1900 },
-    { name: 'Rhine', length: 1233 }
+    { name: 'Rhine', length: 1233 },
+
+    // Additional 20 rivers
+    { name: 'Dnieper', length: 2201 },
+    { name: 'Irrawaddy', length: 2170 },
+    { name: 'Salween', length: 2820 },
+    { name: 'Orinoco', length: 2140 },
+    { name: 'Brahmaputra', length: 3848 },
+    { name: 'Tarim', length: 2030 },
+    { name: 'Colorado', length: 2330 },
+    { name: 'Euphrates', length: 2800 },
+    { name: 'Araguaia', length: 2110 },
+    { name: 'Shatt al-Arab', length: 200 },
+    { name: 'Fraser', length: 1375 },
+    { name: 'Red River', length: 2188 },
+    { name: 'Shenandoah', length: 240 },
+    { name: 'Seine', length: 777 },
+    { name: 'Loire', length: 1012 },
+    { name: 'Elbe', length: 1094 },
+    { name: 'Thames', length: 346 },
+    { name: 'Tagus', length: 1038 },
+    { name: 'Po', length: 652 },
+    { name: 'Shannon', length: 360 }
 ];
+
 
 const riverBox = document.getElementById('rivers');
 const dropZone = document.getElementById('dropzone');
@@ -55,7 +78,7 @@ function shuffleRivers(array) {
 }
 
 // Load rivers dynamically based on the selected count
-function loadRivers(count = 10) {
+function loadRivers(count = 5) {
     riverBox.innerHTML = '';
     const shuffledRivers = shuffleRivers(riverData.slice(0, count));
     shuffledRivers.forEach(river => {
