@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <title>Phobias Quiz</title>
+    <style>
+        * {
+		margin: 0;
+		padding: 0;
+		}
+		body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+			overflow-x: hidden;
+            text-align: center;
+        }
+
+        #quiz-container {
+            padding: 20px;
+            width: 90%;
+            margin: 0 auto;
+        }
+		#heading {
+			font-size: 45px;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
+	color: #e53935; /* Red color */
+			margin-top: 20px;
+		}
+		#question {
+				margin-bottom: 20px;
+	font-family: 'Poppins', sans-serif;
+	font-weight: 600;
+	color: white;
+	font-size: 20px;
+		}
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+		.option-container{
+    display: flex;
+    flex-wrap: wrap;
+	width: 100%;
+	margin: 15px auto 7px auto;
+    justify-content: space-around;
+}
+        button {
+    background-color: #DC3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 25px;
+	font-weight: bold;
+    margin: 7px;
+	box-shadow: 0 6px 0 #C02F3C;
+	font-size: 20px;
+    cursor: pointer;
+    flex: 1 1 calc(50% - 40px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+		button:active {
+    transform: translateY(5px) scale(0.98);
+    box-shadow: 0 3px 0 #C02F3C;
+}
+		.scoreboard {
+	display: flex;
+    justify-content: center;
+    gap: 30px;
+	width: 35;
+  padding: 20px 30px;
+  margin: 10px auto 0 auto;
+  color: black;
+  border-radius: 7px;
+}
+.score, .highscore {
+    font-size: 20px;
+  border-radius: 7px;
+    font-weight: bold;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add box-shadow */
+    position: relative;
+	transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
+}
+.score {
+  background-color: #007BFF;
+   padding: 15px 20px;
+   box-shadow: 0 5px 0 #0056b3;
+}
+.highscore {
+ background-color: #FFD700;
+  padding: 15px 20px;
+box-shadow: 0 5px 0 #c0a500;
+  z-index: 100;
+}
+
+
+        #feedback {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #score, #highscore {
+            font-size: 18px;
+        }
+
+        #image-container {
+            margin: 10px 0;
+        }
+
+        #image-container img {
+            max-width: 400px;
+            max-height: 400px;
+        }
+		
+.footer {
+  background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+bottom: 0;
+  display: flex;
+  margin-top: 200px;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
+
+
+@media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
+#image-container img {
+            max-width: 300px;
+            max-height: 300px;
+        }
+}
+
+
+    </style>
+</head>
+<body>
+<h1 id="heading">Phobias Quiz</h1>
+<div id="quiz-container">
+    <p id="question">Loading question...</p>
+    <div id="image-container"></div>
+    <div class="option-container"><div id="options">
+        <!-- Answer buttons will be generated here -->
+    </div></div>
+    <p id="feedback"></p>
+	<div class="scoreboard">
+    <p class="score">Score: <span id="score">0</span></p>
+    <p class="highscore">High Score: <span id="highscore">0</span></p>
+	</div>
+</div>
+<footer class="footer" data-aos="fade-up">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <a href="/index.html"><img src="Logos/Phobia.webp" alt="Company Logo"></a>
+    </div>
+    <div class="footer-info">
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+    // List of phobias with definitions and optional images
+    const phobias = [
+    {name: "Acrophobia", fear: "heights"},
+    {name: "Arachnophobia", fear: "spiders", image: "Phobias Images/spider.png"}, 
+    {name: "Claustrophobia", fear: "confined spaces"},
+    {name: "Ophidiophobia", fear: "snakes", image: "Phobias Images/snake.jpg"},
+    {name: "Hydrophobia", fear: "water", image: "Phobias Images/water.jpg"},
+    {name: "Nyctophobia", fear: "the dark"},
+    {name: "Aviophobia", fear: "flying"},
+    {name: "Cynophobia", fear: "dogs", image: "Phobias Images/dog.jpg"},
+    {name: "Trypophobia", fear: "clusters of holes"},
+    {name: "Chionophobia", fear: "snow", image: "Phobias Images/snow.jpg"},
+    {name: "Anthophobia", fear: "flowers", image: "Phobias Images/flowers.webp"},
+    {name: "Phasmophobia", fear: "ghosts", image: "Phobias Images/ghosts.jpg"},
+    {name: "Atychiphobia", fear: "failure"},
+    {name: "Brontophobia", fear: "thunder"},
+    {name: "Entomophobia", fear: "insects", image: "Phobias Images/insects.jpg"},
+    {name: "Dendrophobia", fear: "trees", image: "Phobias Images/trees.jpg"},
+    {name: "Cacophobia", fear: "ugliness"},
+    {name: "Mysophobia", fear: "germs", image: "Phobias Images/germs.jpg"},
+    {name: "Sociophobia", fear: "social situations"},
+    {name: "Glossophobia", fear: "public speaking"},
+    {name: "Phonophobia", fear: "loud sounds"},
+    {name: "Xenophobia", fear: "strangers"},
+    {name: "Atelophobia", fear: "incomplete things"},
+    {name: "Astrophobia", fear: "stars or celestial objects", image: "Phobias Images/star.jpg"},
+    {name: "Taphophobia", fear: "burial or being buried alive"},
+    {name: "Technophobia", fear: "technology", image: "Phobias Images/technology.jpg"},
+    {name: "Koumpounophobia", fear: "buttons", image: "Phobias Images/buttons.jpg"},
+    {name: "Nyctophobia", fear: "darkness"},
+    {name: "Lilapsophobia", fear: "tornadoes or hurricanes", image: "Phobias Images/tornado.webp"},
+    {name: "Haphephobia", fear: "touch"},
+    {name: "Ombrophobia", fear: "rain", image: "Phobias Images/rain.jpg"},
+    {name: "Selachophobia", fear: "sharks", image: "Phobias Images/sharks.jpg"},
+    {name: "Pogonophobia", fear: "beards"},
+    {name: "Selenophobia", fear: "the moon", image: "Phobias Images/moon.jpg"},
+    {name: "Cacophobia", fear: "bad quality"},
+    {name: "Chiraptophobia", fear: "being touched"},
+    {name: "Dysmorphophobia", fear: "deformity"},
+    {name: "Nomophobia", fear: "losing mobile phone contact", image: "Phobias Images/nomophobia.jpg"},
+    {name: "Phagophobia", fear: "swallowing"},
+    {name: "Colorphobia", fear: "colors", image: "Phobias Images/colors.jpg"},
+    {name: "Ablutophobia", fear: "washing or bathing"},
+    {name: "Pediophobia", fear: "dolls"},
+    {name: "Erythrophobia", fear: "the color red", image: "Phobias Images/red.jpg"},
+    {name: "Chorophobia", fear: "dancing"},
+    {name: "Scotophobia", fear: "darkness"},
+    {name: "Anemophobia", fear: "wind"},
+    {name: "Lepidopterophobia", fear: "butterflies", image: "Phobias Images/butterflies.jpg"},
+    {name: "Megalophobia", fear: "large objects"},
+    {name: "Hematophobia", fear: "blood", image: "Phobias Images/blood.jpg"},
+    {name: "Cacophobia", fear: "evil or badness"},
+    {name: "Hoplophobia", fear: "weapons", image: "Phobias Images/weapons.webp"},
+    {name: "Iatrophobia", fear: "doctors"},
+    {name: "Toxophobia", fear: "poisons"},
+    {name: "Pteromerhanophobia", fear: "flying in an airplane", image: "Phobias Images/flying.jpg"},
+    {name: "Sanguivoriphobia", fear: "vampires"},
+    {name: "Zoophobia", fear: "animals", image: "Phobias Images/animals.jpg"},
+    {name: "Thermophobia", fear: "heat"},
+    {name: "Triskaidekaphobia", fear: "the number 13", image: "Phobias Images/13.jpg"},
+    {name: "Neophobia", fear: "new things"},
+    {name: "Cenophobia", fear: "voids or empty spaces"},
+    {name: "Alliumphobia", fear: "garlic", image: "Phobias Images/garlic.webp"},
+];
+
+
+    let score = 0;
+    let highscore = localStorage.getItem('phobiaHighScore') || 0;
+    document.getElementById('highscore').innerText = highscore;
+
+    function shuffle(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    function generateQuestion() {
+        document.getElementById('feedback').innerText = ''; // Clear feedback for the next question
+        document.getElementById('image-container').innerHTML = ''; // Clear image
+
+        const questionType = Math.random() > 0.5 ? 1 : 2;  // Randomly choose between two question types
+        const phobia = phobias[Math.floor(Math.random() * phobias.length)];  // Randomly select a phobia
+        const correctAnswer = questionType === 1 ? phobia.fear : phobia.name;
+
+        // Always include the correct answer and shuffle
+        const options = shuffle([correctAnswer, ...shuffle(phobias.filter(p => p.name !== phobia.name)).slice(0, 3).map(p => questionType === 1 ? p.fear : p.name)]);
+
+        const questionText = questionType === 1 ?
+            `What are you afraid of when you have ${phobia.name}?` :
+            `If you are afraid of ${phobia.fear}, what phobia do you have?`;
+
+        document.getElementById('question').innerText = questionText;
+
+        // Show image if relevant and only for fear-based questions
+        if (questionType === 2 && phobia.image) {
+            const img = document.createElement('img');
+            img.src = phobia.image;
+            document.getElementById('image-container').appendChild(img);
+        }
+
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+
+        options.forEach(option => {
+            const button = document.createElement('button');
+            button.innerText = option;
+            button.addEventListener('click', () => checkAnswer(option, correctAnswer));
+            optionsDiv.appendChild(button);
+        });
+    }
+
+    function checkAnswer(selectedAnswer, correctAnswer) {
+        const feedback = document.getElementById('feedback');
+        if (selectedAnswer === correctAnswer) {
+            feedback.innerText = "Correct!";
+            score++;
+        } else {
+            feedback.innerText = `Wrong! The correct answer was ${correctAnswer}.`;
+            score = 0;  // Reset score when a mistake is made
+        }
+        document.getElementById('score').innerText = score;
+
+        // Update highscore if needed
+        if (score > highscore) {
+            highscore = score;
+            localStorage.setItem('phobiaHighScore', highscore);
+            document.getElementById('highscore').innerText = highscore;
+        }
+
+        // Load the next question after 1 second delay, clearing feedback
+        setTimeout(generateQuestion, 1000);
+    }
+
+    // Start the quiz by generating the first question
+    generateQuestion();
+</script>
+
+</body>
+</html>
