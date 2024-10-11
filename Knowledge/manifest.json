@@ -4,7 +4,7 @@
     "start_url": ".",
     "display": "standalone",
     "background_color": "#333",
-    "theme_color": "#DC3545",
+    "theme_color": "#333",
     "description": "Test your knowledge about phobias!",
     "icons": [
         {
