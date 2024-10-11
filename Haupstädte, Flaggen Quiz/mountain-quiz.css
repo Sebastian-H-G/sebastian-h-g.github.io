@@ -1,3 +1,7 @@
+* {
+	margin: 0;
+	padding: 0;
+}
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f4f8;
@@ -26,11 +30,38 @@ body {
   flex-direction: column;
   justify-content: center;
   border-radius: 10px;
-  padding: 20px;
+  padding: 25px 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 90%;
   text-align: center;
 }
+.options {
+    display: flex;
+    flex-wrap: wrap;
+	width: 60%;
+	margin: 10px auto;
+    justify-content: space-around;
+}
+
+.option {
+    background-color: #DC3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 20px;
+	font-weight: bold;
+    margin: 7px;
+	box-shadow: 0 6px 0 #C02F3C;
+	font-size: 20px;
+    cursor: pointer;
+    flex: 1 1 calc(50% - 40px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.option:active {
+    transform: translateY(5px) scale(0.98);
+    box-shadow: 0 3px 0 #C02F3C;
+}
+
 
 h1 {
   font-size: 24px;
@@ -86,26 +117,123 @@ box-shadow: 0 5px 0 #c0a500;
   margin-top: 20px;
 }
 
-button {
-  font-size: 16px;
-  margin: 5px;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
 
 #feedback-message { margin: 10px 0; }
-
+.next-btn-container {display: flex; justify-content: center;}
 .next-btn {
   display: none;
-  margin-top: 20px;
-  background-color: #28a745;
+	padding: 20px;
+	background-color: #A3C971;
+	font-weight: bold;
+	    cursor: pointer;
+	font-size: 20px;
+box-shadow: 0 7px 0 #7F9B5A;	
+	width: 30%;
+	border: none;
+	border-radius: 7px;
+	margin: 20px auto 0px auto;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.next-btn:active {
+    transform: translateY(5px) scale(0.98);
+    box-shadow: 0 3px 0 #7F9B5A;
+}
+
+.correct {
+	text-align: center;
+	font-weight: bold;
+	font-size: 22px;
+}
+
+.wrong {
+	text-align: center;
+	font-weight: bold;
+	font-size: 22px;
+}
+
+.footer {
+  background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+bottom: 0;
+  display: flex;
+  margin-top: 150px;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
 }

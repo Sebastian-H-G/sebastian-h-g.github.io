@@ -29,161 +29,39 @@ const mountainData = [
     features: ["Glaciers", "Snow"],
     facts: ["Third highest mountain in the world", "First climbed in 1955"]
   },
-  {
-    name: "Lhotse",
-    range: "Himalayas",
-    image: "lhotse.jpg",
-    country: ["Nepal", "China"],
-    height: 8516,
-    prominence: 610,
-    features: ["Glaciers", "Steep cliffs"],
-    facts: ["Fourth highest mountain", "Shares a saddle with Mount Everest"]
-  },
-  {
-    name: "Makalu",
-    range: "Himalayas",
-    image: "makalu.jpg",
-    country: ["Nepal", "China"],
-    height: 8485,
-    prominence: 2386,
-    features: ["Steep pyramid-like peak", "Glaciers"],
-    facts: ["Fifth highest mountain", "Known for its isolated position"]
-  },
-  {
-    name: "Cho Oyu",
-    range: "Himalayas",
-    image: "cho_oyu.jpg",
-    country: ["Nepal", "China"],
-    height: 8188,
-    prominence: 2340,
-    features: ["Broad peak", "Glaciers"],
-    facts: ["Sixth highest mountain", "Popular for climbers due to easy approach"]
-  },
-  {
-    name: "Dhaulagiri",
-    range: "Himalayas",
-    image: "dhaulagiri.jpg",
-    country: ["Nepal"],
-    height: 8167,
-    prominence: 3357,
-    features: ["Steep slopes", "Snow"],
-    facts: ["Seventh highest mountain", "Isolated from other high peaks"]
-  },
-  {
-    name: "Manaslu",
-    range: "Himalayas",
-    image: "manaslu.jpg",
-    country: ["Nepal"],
-    height: 8163,
-    prominence: 3092,
-    features: ["Glaciers", "Steep slopes"],
-    facts: ["Eighth highest mountain", "First ascent in 1956"]
-  },
-  {
-    name: "Nanga Parbat",
-    range: "Himalayas",
-    image: "nanga_parbat.jpg",
-    country: ["Pakistan"],
-    height: 8126,
-    prominence: 4608,
-    features: ["Snow", "Rocky ridges"],
-    facts: ["Ninth highest mountain", "Known as the 'Killer Mountain'"]
-  },
-  {
-    name: "Annapurna",
-    range: "Himalayas",
-    image: "annapurna.jpg",
-    country: ["Nepal"],
-    height: 8091,
-    prominence: 2984,
-    features: ["Steep ridges", "Snow"],
-    facts: ["Tenth highest mountain", "First climbed in 1950"]
-  },
-  {
-    name: "Mont Blanc",
-    range: "Alps",
-    image: "mont_blanc.jpg",
-    country: ["France", "Italy"],
-    height: 4807,
-    prominence: 4695,
-    features: ["Glaciers", "Snow"],
-    facts: ["Highest mountain in the Alps", "Popular for mountaineering and skiing"]
-  },
-  {
-    name: "Matterhorn",
-    range: "Alps",
-    image: "matterhorn.jpg",
-    country: ["Switzerland", "Italy"],
-    height: 4478,
-    prominence: 1042,
-    features: ["Pyramidal peak", "Rocky ridges"],
-    facts: ["Iconic mountain of the Alps", "Famous for its steep faces"]
-  },
-  {
-    name: "Grossglockner",
-    range: "Alps",
-    image: "grossglockner.jpg",
-    country: ["Austria"],
-    height: 3798,
-    prominence: 2423,
-    features: ["Glaciers", "Snow"],
-    facts: ["Highest mountain in Austria", "Home to the Pasterze Glacier"]
-  },
-  {
-    name: "Elbrus",
-    range: "Caucasus",
-    image: "elbrus.jpg",
-    country: ["Russia"],
-    height: 5642,
-    prominence: 4741,
-    features: ["Dormant volcano", "Snow-covered"],
-    facts: ["Highest mountain in Europe", "Part of the Seven Summits"]
-  },
-  {
-    name: "Eiger",
-    range: "Alps",
-    image: "eiger.jpg",
-    country: ["Switzerland"],
-    height: 3967,
-    prominence: 362,
-    features: ["Steep north face", "Snow"],
-    facts: ["Famous for its dangerous north face", "Part of the Bernese Alps"]
-  },
-  {
-    name: "Zugspitze",
-    range: "Alps",
-    image: "zugspitze.jpg",
-    country: ["Germany"],
-    height: 2962,
-    prominence: 1746,
-    features: ["Rocky peak", "Snow"],
-    facts: ["Highest mountain in Germany", "Located on the border with Austria"]
-  },
-  {
-    name: "Mount Olympus",
-    range: "Olympus Range",
-    image: "mount_olympus.jpg",
-    country: ["Greece"],
-    height: 2917,
-    prominence: 2355,
-    features: ["Rocky peak", "Snow-covered in winter"],
-    facts: ["Mythical home of the Greek gods", "Highest mountain in Greece"]
-  },
-  {
-    name: "Mount Etna",
-    range: "Sicily",
-    image: "mount_etna.jpg",
-    country: ["Italy"],
-    height: 3326,
-    prominence: 3356,
-    features: ["Active volcano", "Lava flows"],
-    facts: ["Europe's highest and most active volcano", "Located on the island of Sicily"]
-  }
+
+
 ];
+
+
+
 let score = 0;
 let currentQuestionIndex = 0;
 let highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
 const usedOptions = new Set(); // Track used options to avoid duplicates
+
+// Utility function to get unique random options, including the correct answer
+function getUniqueRandomOptions(correct, options) {
+  const uniqueOptions = new Set(); // Use a set to avoid duplicates
+  uniqueOptions.add(correct); // Ensure the correct answer is included
+
+  // Randomly pick unique options until we have enough
+  while (uniqueOptions.size < 4) {
+    const randomOption = options[Math.floor(Math.random() * options.length)];
+    uniqueOptions.add(randomOption);
+  }
+
+  const optionArray = Array.from(uniqueOptions); // Convert Set back to Array
+
+  // Shuffle the array so that the correct answer appears in a random position
+  return shuffle(optionArray); 
+}
+
+// Shuffle function to randomize the array
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
 
 // Display the initial high score on page load
 document.getElementById('highscore').innerText = `High Score: ${highScore}`;
@@ -272,12 +150,24 @@ function showQuestion({ type, question, correctAnswer, options, image = null }) 
     questionHtml += `<img src="${image}" alt="Mountain Image" style="max-width: 100%; height: auto;">`;
   }
 
-  options.forEach(option => {
-    questionHtml += `<button onclick="checkAnswer('${option}', '${correctAnswer}')">${option}</button>`;
+  // Add the options container with the class "options"
+  questionHtml += `<div class="options">`;
+
+  // Shuffle the options so the correct answer appears randomly
+  const shuffledOptions = shuffle(options); // Ensure options are shuffled
+
+  shuffledOptions.forEach(option => {
+    // Add class "option" to each button
+    questionHtml += `<button class="option" onclick="checkAnswer('${option}', '${correctAnswer}')">${option}</button>`;
   });
+
+  questionHtml += `</div>`; // Close the options container
 
   questionContainer.innerHTML = questionHtml;
 }
+
+
+
 
 // Function to check if the selected answer is correct
 function checkAnswer(selectedAnswer, correctAnswer) {
@@ -288,10 +178,10 @@ function checkAnswer(selectedAnswer, correctAnswer) {
 
     if (selectedAnswer === correctAnswer) {
         score++;
-        feedbackMessage.innerHTML = `<p style="color: green;">Correct!</p>`;
+        feedbackMessage.innerHTML = `<p class="correct" style="color: green;">Correct!</p>`;
     } else {
         score = 0; // Reset score to 0 on wrong answer
-        feedbackMessage.innerHTML = `<p style="color: red;">Wrong! The correct answer was: ${correctAnswer}</p>`;
+        feedbackMessage.innerHTML = `<p class="wrong" style="color: red;">Wrong! The correct answer was: ${correctAnswer}</p>`;
     }
 
     // Disable all buttons
