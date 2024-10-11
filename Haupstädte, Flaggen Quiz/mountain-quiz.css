@@ -117,6 +117,15 @@ box-shadow: 0 5px 0 #c0a500;
   margin-top: 20px;
 }
 
+.mountain-image {
+	max-width: 60%;
+	height: auto; 
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+	display: flex;
+	justify-content: center;
+	margin: 0 auto 20px auto;
+	align-items: center;
+}
 
 #feedback-message { margin: 10px 0; }
 .next-btn-container {display: flex; justify-content: center;}

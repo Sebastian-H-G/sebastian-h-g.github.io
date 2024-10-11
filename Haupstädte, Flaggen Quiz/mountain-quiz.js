@@ -2,7 +2,7 @@ const mountainData = [
   {
     name: "Mount Everest",
     range: "Himalayas",
-    image: "everest.jpg",
+    image: "Mountain Images/everest.jpg",
     country: ["Nepal", "China"],
     height: 8848,
     prominence: 8848,
@@ -12,7 +12,7 @@ const mountainData = [
   {
     name: "K2",
     range: "Karakoram",
-    image: "k2.jpg",
+    image: "Mountain Images/k2.jpg",
     country: ["Pakistan", "China"],
     height: 8611,
     prominence: 4017,
@@ -22,15 +22,163 @@ const mountainData = [
   {
     name: "Kangchenjunga",
     range: "Himalayas",
-    image: "kangchenjunga.jpg",
+    image: "Mountain Images/kangchenjunga.jpg",
     country: ["Nepal", "India"],
     height: 8586,
     prominence: 3922,
     features: ["Glaciers", "Snow"],
     facts: ["Third highest mountain in the world", "First climbed in 1955"]
   },
-
-
+    {
+    name: "Lhotse",
+    range: "Himalayas",
+    image: "Mountain Images/lhotse.jpg",
+    country: ["Nepal", "China"],
+    height: 8516,
+    prominence: 610,
+    features: ["Glaciers", "Steep cliffs"],
+    facts: ["Fourth highest mountain", "Shares a saddle with Mount Everest"]
+  },
+  {
+    name: "Makalu",
+    range: "Himalayas",
+    image: "Mountain Images/makalu.jpg",
+    country: ["Nepal", "China"],
+    height: 8485,
+    prominence: 2386,
+    features: ["Steep pyramid-like peak", "Glaciers"],
+    facts: ["Fifth highest mountain", "Known for its isolated position"]
+  },
+  {
+    name: "Cho Oyu",
+    range: "Himalayas",
+    image: "Mountain Images/cho_oyu.jpg",
+    country: ["Nepal", "China"],
+    height: 8188,
+    prominence: 2340,
+    features: ["Broad peak", "Glaciers"],
+    facts: ["Sixth highest mountain", "Popular for climbers due to easy approach"]
+  },
+  {
+    name: "Dhaulagiri",
+    range: "Himalayas",
+    image: "Mountain Images/dhaulagiri.jpg",
+    country: ["Nepal"],
+    height: 8167,
+    prominence: 3357,
+    features: ["Steep slopes", "Snow"],
+    facts: ["Seventh highest mountain", "Isolated from other high peaks"]
+  },
+  {
+    name: "Manaslu",
+    range: "Himalayas",
+    image: "Mountain Images/manaslu.jpg",
+    country: ["Nepal"],
+    height: 8163,
+    prominence: 3092,
+    features: ["Glaciers", "Steep slopes"],
+    facts: ["Eighth highest mountain", "First ascent in 1956"]
+  },
+  {
+    name: "Nanga Parbat",
+    range: "Himalayas",
+    image: "Mountain Images/nanga_parbat.webp",
+    country: ["Pakistan"],
+    height: 8126,
+    prominence: 4608,
+    features: ["Snow", "Rocky ridges"],
+    facts: ["Ninth highest mountain", "Known as the 'Killer Mountain'"]
+  },
+  {
+    name: "Annapurna",
+    range: "Himalayas",
+    image: "Mountain Images/annapurna.jpg",
+    country: ["Nepal"],
+    height: 8091,
+    prominence: 2984,
+    features: ["Steep ridges", "Snow"],
+    facts: ["Tenth highest mountain", "First climbed in 1950"]
+  },
+  {
+    name: "Mont Blanc",
+    range: "Alps",
+    image: "Mountain Images/mont_blanc.jpg",
+    country: ["France", "Italy"],
+    height: 4807,
+    prominence: 4695,
+    features: ["Glaciers", "Snow"],
+    facts: ["Highest mountain in the Alps", "Popular for mountaineering and skiing"]
+  },
+  {
+    name: "Matterhorn",
+    range: "Alps",
+    image: "Mountain Images/matterhorn.jpg",
+    country: ["Switzerland", "Italy"],
+    height: 4478,
+    prominence: 1042,
+    features: ["Pyramidal peak", "Rocky ridges"],
+    facts: ["Iconic mountain of the Alps", "Famous for its steep faces"]
+  },
+  {
+    name: "Grossglockner",
+    range: "Alps",
+    image: "Mountain Images/grossglockner.jpg",
+    country: ["Austria"],
+    height: 3798,
+    prominence: 2423,
+    features: ["Glaciers", "Snow"],
+    facts: ["Highest mountain in Austria", "Home to the Pasterze Glacier"]
+  },
+  {
+    name: "Elbrus",
+    range: "Caucasus",
+    image: "Mountain Images/elbrus.jpg",
+    country: ["Russia"],
+    height: 5642,
+    prominence: 4741,
+    features: ["Dormant volcano", "Snow-covered"],
+    facts: ["Highest mountain in Europe", "Part of the Seven Summits"]
+  },
+  {
+    name: "Eiger",
+    range: "Alps",
+    image: "Mountain Images/eiger.jpg",
+    country: ["Switzerland"],
+    height: 3967,
+    prominence: 362,
+    features: ["Steep north face", "Snow"],
+    facts: ["Famous for its dangerous north face", "Part of the Bernese Alps"]
+  },
+  {
+    name: "Zugspitze",
+    range: "Alps",
+    image: "Mountain Images/zugspitze.jpg",
+    country: ["Germany"],
+    height: 2962,
+    prominence: 1746,
+    features: ["Rocky peak", "Snow"],
+    facts: ["Highest mountain in Germany", "Located on the border with Austria"]
+  },
+  {
+    name: "Mount Olympus",
+    range: "Olympus Range",
+    image: "Mountain Images/mount_olympus.jpg",
+    country: ["Greece"],
+    height: 2917,
+    prominence: 2355,
+    features: ["Rocky peak", "Snow-covered in winter"],
+    facts: ["Mythical home of the Greek gods", "Highest mountain in Greece"]
+  },
+  {
+    name: "Mount Etna",
+    range: "Sicily",
+    image: "Mountain Images/mount_etna.webp",
+    country: ["Italy"],
+    height: 3326,
+    prominence: 3356,
+    features: ["Active volcano", "Lava flows"],
+    facts: ["Europe's highest and most active volcano", "Located on the island of Sicily"]
+  }
 ];
 
 
@@ -147,7 +295,7 @@ function showQuestion({ type, question, correctAnswer, options, image = null }) 
   let questionHtml = `<h1 class="question">${question}</h1>`;
 
   if (image) {
-    questionHtml += `<img src="${image}" alt="Mountain Image" style="max-width: 100%; height: auto;">`;
+    questionHtml += `<img src="${image}" class="mountain-image" alt="Mountain Image">`;
   }
 
   // Add the options container with the class "options"
