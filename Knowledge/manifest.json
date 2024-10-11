@@ -1,7 +1,7 @@
 {
     "name": "Phobias Quiz",
     "short_name": "PhobiasQuiz",
-    "start_url": "/",
+    "start_url": ".",
     "display": "standalone",
     "background_color": "#333",
     "theme_color": "#DC3545",
