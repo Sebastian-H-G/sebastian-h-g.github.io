@@ -1,0 +1,26 @@
+{
+    "name": "Phobias Quiz",
+    "short_name": "PhobiasQuiz",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#333",
+    "theme_color": "#DC3545",
+    "description": "Test your knowledge about phobias!",
+    "icons": [
+        {
+            "src": "Logos/Phobias-192x192.webp",
+            "sizes": "192x192",
+            "type": "image/webp"
+        },
+        {
+            "src": "Logos/Phobias-512x512.webp",
+            "sizes": "512x512",
+            "type": "image/webp"
+        },
+        {
+            "src": "Logos/Phobias.ico",
+            "sizes": "any",
+            "type": "image/x-icon"
+        }
+    ]
+}

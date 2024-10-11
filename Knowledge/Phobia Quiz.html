@@ -3,10 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phobias Quiz</title>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
-    <title>Phobias Quiz</title>
+	<link rel="manifest" href="manifest.json">
+<link rel="icon" href="Logos/Phobia.ico" type="image/x-icon">
+<link rel="icon" href="Logos/Phobia-16x16.webp" sizes="16x16" type="image/webp">
+<link rel="icon" href="Logos/Phobia-32x32.webp" sizes="32x32" type="image/webp">
+<link rel="icon" href="Logos/Phobia-48x48.webp" sizes="48x48" type="image/webp">
+
+<!-- Apple Touch Icons -->
+<link rel="apple-touch-icon" href="Logos/Phobia.webp">
+<link rel="apple-touch-icon" sizes="57x57" href="Logos/Phobia-57x57.webp">
+<link rel="apple-touch-icon" sizes="72x72" href="Logos/Phobia-72x72.webp">
+<link rel="apple-touch-icon" sizes="114x114" href="Logos/Phobia-114x114.webp">
+<link rel="apple-touch-icon" sizes="152x152" href="Logos/Phobia-152x152.webp">
+<link rel="apple-touch-icon" sizes="180x180" href="Logos/Phobia-180x180.webp">
+
+
     <style>
         * {
 		margin: 0;
@@ -214,6 +229,8 @@ bottom: 0;
 
     </style>
 </head>
+
+
 <body>
 <h1 id="heading">Phobias Quiz</h1>
 <div id="quiz-container">
@@ -246,6 +263,19 @@ bottom: 0;
     </div>
   </div>
 </footer>
+	<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((registration) => {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      })
+      .catch((error) => {
+        console.log('ServiceWorker registration failed: ', error);
+      });
+  });
+}
+</script>
 <script>
     // List of phobias with definitions and optional images
     const phobias = [
