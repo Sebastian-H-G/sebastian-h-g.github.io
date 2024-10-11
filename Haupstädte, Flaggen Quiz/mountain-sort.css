@@ -1,0 +1,308 @@
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+.heading {
+	font-size: 30px;
+	text-align: center;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
+	color: #e53935; /* Red color */
+}
+header {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #00bcd4, #009688);
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+header p {
+    font-size: 1.2em;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+}
+
+.game-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+}
+
+label {
+	margin: 10px auto;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+
+#riverCount {
+	margin: 10px auto;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+
+.sortable-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #fff;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 20px auto;
+    max-width: 820px;
+    justify-content: center;
+}
+
+.sortable-container li {
+    list-style: none;
+    background-color: #00bcd4;
+    padding: 10px 20px;
+    width: 100px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    height: 39px;
+    margin: 0 5px 0 5px;
+    border: 1px solid #006064;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    cursor: grab;
+    transition: background-color 0.3s ease;
+}
+
+.sortable-container li:hover {
+    background-color: #009688;
+}
+
+#dropzone {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    min-height: 200px;
+    background-color: #f0f0f0;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    padding: 35px 15px 15px 15px;
+}
+
+#dropzone p {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    text-align: center;
+    font-size: 1.2em;
+    color: #aaa;
+	margin-top: 10px;
+    pointer-events: none;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Spacing between the buttons */
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 12px 25px;
+	display: flex;
+	justify-content: center;
+    font-size: 1.2em;
+    background-color: #FF6F61;
+    color: white;
+    border: none;
+	box-shadow: 0 5px 0 #C74A3D;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+    background-color: #FF4C3B;
+}
+button:active {
+    transform: translateY(5px) scale(0.98);
+    box-shadow: 0 3px 0 #C02F3C;
+}
+
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    margin: 15% auto;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content p {
+    font-size: 1.2em;
+    margin: 20px 0;
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.go-back {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 15px 25px;
+	border-radius: 10px;
+	font-weight: bold;
+	cursor: pointer;
+	margin: 35px auto 0 auto;
+	font-size: 17px;
+	background-color: #FFA07A;
+	cursor: pointer;
+	border: none;
+	box-shadow: 0 10px 0 #F08080; /* Light Coral shadow */
+}
+.go-back:hover {
+	background-color: #FFA07A;
+}
+.go-back:active {
+	-webkit-transform: translateY(5px);
+    transform: translateY(5px);
+    -webkit-box-shadow: 0 3px 0 #F08080;
+    box-shadow: 0 3px 0 #F08080;
+}
+
+.link {
+	text-decoration: none;
+	color: #fff;
+}
+
+.footer {
+  background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+bottom: 0;
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
+
+
+
+@media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
+	#dropzone {flex-direction: column;}
+}
+
+
+
