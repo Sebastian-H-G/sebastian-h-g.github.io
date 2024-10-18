@@ -11,15 +11,6 @@
             width: 600px;
             float: left;
         }
-        .country-piece {
-            cursor: pointer;
-            padding: 10px;
-            margin: 5px;
-            border: 1px solid #ccc;
-            background-color: #f0f0f0;
-            text-align: center;
-            user-select: none;
-        }
         #country-box {
             width: 200px;
             height: 600px;
@@ -28,10 +19,11 @@
             float: left;
             margin-right: 20px;
         }
-        .draggable {
-            background-color: #ffcccc;
-            border: 1px solid #ff8888;
+        .draggable-country {
             cursor: move;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            margin: 10px;
         }
         .dropped {
             background-color: #ccffcc;
@@ -70,11 +62,11 @@
             .then(data => {
                 const countryBox = document.getElementById('country-box');
 
-                // Add country names to the draggable box
+                // Add country shapes to the draggable box
                 data.features.forEach(feature => {
                     const countryDiv = document.createElement('div');
                     countryDiv.textContent = feature.properties.name;
-                    countryDiv.className = 'country-piece draggable';
+                    countryDiv.className = 'draggable-country';
                     countryDiv.setAttribute('draggable', true);
                     countryDiv.setAttribute('data-country', feature.properties.name);
 
