@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>South America Puzzle</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 800px;
+        }
+        .country-piece {
+            cursor: pointer;
+            fill-opacity: 0.6;
+        }
+        #puzzle-container {
+            border: 1px solid #ccc;
+            width: 600px;
+            height: 600px;
+            position: relative;
+        }
+        #country-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>South America Puzzle - Drag and Drop Countries</h1>
+
+    <div id="puzzle-container">
+        <div id="map"></div>
+    </div>
+
+    <div id="country-box">
+        <!-- Draggable country shapes will appear here -->
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-path-drag"></script> <!-- For draggable paths -->
+    <script>
+        // Initialize the Leaflet map (center on South America)
+        var map = L.map('map', {dragging: false}).setView([-15, -60], 3);
+
+        // Add tile layer (just for better map visuals in the background)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Load the South America countries GeoJSON
+        const geoJsonUrl = 'https://raw.githubusercontent.com/johan/world.geo.json/master/countries/SAM.geo.json';
+
+        fetch(geoJsonUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Add country shapes to the map
+                L.geoJson(data, {
+                    style: {
+                        color: '#3388ff',
+                        weight: 1,
+                        fillOpacity: 0.5
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.bindTooltip(feature.properties.name).openTooltip();
+
+                        // Make the country draggable
+                        layer.dragging.enable();
+
+                        // Log when a country is dragged
+                        layer.on('dragend', function (event) {
+                            const layer = event.target;
+                            console.log(layer.feature.properties.name + ' dragged');
+                        });
+
+                        // Add country shape to the puzzle box as well (for dragging)
+                        const countryBox = document.getElementById('country-box');
+                        const countryDiv = document.createElement('div');
+                        countryDiv.textContent = feature.properties.name;
+                        countryDiv.className = 'country-piece';
+                        countryBox.appendChild(countryDiv);
+                    }
+                }).addTo(map);
+            });
+    </script>
+
+</body>
+</html>

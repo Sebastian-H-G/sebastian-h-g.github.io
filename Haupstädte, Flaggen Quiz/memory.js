@@ -1,49 +1,50 @@
+// script.js
 document.addEventListener('DOMContentLoaded', () => {
     const allCards = [
-        { name: 'Germany', img: 'flags/de.webp' },
-        { name: 'France', img: 'flags/fr.webp' },
-        { name: 'Italy', img: 'flags/it.webp' },
-        { name: 'Spain', img: 'flags/es.webp' },
-        { name: 'United Kingdom', img: 'flags/gb.webp' },
-        { name: 'Netherlands', img: 'flags/nl.webp' },
-        { name: 'Belgium', img: 'flags/be.webp' },
-        { name: 'Switzerland', img: 'flags/ch.webp' },
-        { name: 'Austria', img: 'flags/at.webp' },
-        { name: 'Sweden', img: 'flags/se.webp' },
-        { name: 'Norway', img: 'flags/no.webp' },
-        { name: 'Denmark', img: 'flags/dk.webp' },
-        { name: 'Finland', img: 'flags/fi.webp' },
-        { name: 'Ireland', img: 'flags/ie.webp' },
-        { name: 'Portugal', img: 'flags/pt.webp' },
-        { name: 'Greece', img: 'flags/gr.webp' },
-        { name: 'Poland', img: 'flags/pl.webp' },
-        { name: 'Czech Republic', img: 'flags/cz.webp' },
-        { name: 'Hungary', img: 'flags/hu.webp' },
-        { name: 'Slovakia', img: 'flags/sk.webp' },
-        { name: 'Slovenia', img: 'flags/si.webp' },
-        { name: 'Croatia', img: 'flags/hr.webp' },
-        { name: 'Bulgaria', img: 'flags/bg.webp' },
-        { name: 'Romania', img: 'flags/ro.webp' },
-        { name: 'Serbia', img: 'flags/rs.webp' },
-        { name: 'Montenegro', img: 'flags/me.webp' },
-        { name: 'North Macedonia', img: 'flags/mk.webp' },
-        { name: 'Albania', img: 'flags/al.webp' },
-        { name: 'Bosnia and Herzegovina', img: 'flags/ba.webp' },
-        { name: 'Estonia', img: 'flags/ee.webp' },
-        { name: 'Latvia', img: 'flags/lv.webp' },
-        { name: 'Lithuania', img: 'flags/lt.webp' },
-        { name: 'Ukraine', img: 'flags/ua.webp' },
-        { name: 'Moldova', img: 'flags/md.webp' },
-        { name: 'Belarus', img: 'flags/by.webp' },
-        { name: 'Russia', img: 'flags/ru.webp' },
-        { name: 'Turkey', img: 'flags/tr.webp' },
-        { name: 'Cyprus', img: 'flags/cy.webp' },
-        { name: 'Iceland', img: 'flags/is.webp' },
-        { name: 'Liechtenstein', img: 'flags/li.webp' },
-        { name: 'Monaco', img: 'flags/mc.webp' },
-        { name: 'San Marino', img: 'flags/sm.webp' },
-        { name: 'Vatican City', img: 'flags/va.webp' },
-    ];
+    { name: 'Germany', img: 'flags/de.webp' },
+    { name: 'France', img: 'flags/fr.webp' },
+    { name: 'Italy', img: 'flags/it.webp' },
+    { name: 'Spain', img: 'flags/es.webp' },
+    { name: 'United Kingdom', img: 'flags/gb.webp' },
+    { name: 'Netherlands', img: 'flags/nl.webp' },
+    { name: 'Belgium', img: 'flags/be.webp' },
+    { name: 'Switzerland', img: 'flags/ch.webp' },
+    { name: 'Austria', img: 'flags/at.webp' },
+    { name: 'Sweden', img: 'flags/se.webp' },
+    { name: 'Norway', img: 'flags/no.webp' },
+    { name: 'Denmark', img: 'flags/dk.webp' },
+    { name: 'Finland', img: 'flags/fi.webp' },
+    { name: 'Ireland', img: 'flags/ie.webp' },
+    { name: 'Portugal', img: 'flags/pt.webp' },
+    { name: 'Greece', img: 'flags/gr.webp' },
+    { name: 'Poland', img: 'flags/pl.webp' },
+    { name: 'Czech Republic', img: 'flags/cz.webp' },
+    { name: 'Hungary', img: 'flags/hu.webp' },
+    { name: 'Slovakia', img: 'flags/sk.webp' },
+    { name: 'Slovenia', img: 'flags/si.webp' },
+    { name: 'Croatia', img: 'flags/hr.webp' },
+    { name: 'Bulgaria', img: 'flags/bg.webp' },
+    { name: 'Romania', img: 'flags/ro.webp' },
+    { name: 'Serbia', img: 'flags/rs.webp' },
+    { name: 'Montenegro', img: 'flags/me.webp' },
+    { name: 'North Macedonia', img: 'flags/mk.webp' },
+    { name: 'Albania', img: 'flags/al.webp' },
+    { name: 'Bosnia and Herzegovina', img: 'flags/ba.webp' },
+    { name: 'Estonia', img: 'flags/ee.webp' },
+    { name: 'Latvia', img: 'flags/lv.webp' },
+    { name: 'Lithuania', img: 'flags/lt.webp' },
+    { name: 'Ukraine', img: 'flags/ua.webp' },
+    { name: 'Moldova', img: 'flags/md.webp' },
+    { name: 'Belarus', img: 'flags/by.webp' },
+    { name: 'Russia', img: 'flags/ru.webp' },
+    { name: 'Turkey', img: 'flags/tr.webp' },
+    { name: 'Cyprus', img: 'flags/cy.webp' },
+    { name: 'Iceland', img: 'flags/is.webp' },
+    { name: 'Liechtenstein', img: 'flags/li.webp' },
+    { name: 'Monaco', img: 'flags/mc.webp' },
+    { name: 'San Marino', img: 'flags/sm.webp' },
+    { name: 'Vatican City', img: 'flags/va.webp' },
+];
 
     const maxPairs = 12;
     let cardsArray = [];
@@ -51,8 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let player1Score = 0;
     let player2Score = 0;
     let isTwoPlayerMode = false;
-    let movesCount = 0;
-    let fewestMoves = localStorage.getItem('fewestMoves') || Infinity;
 
     function selectRandomPairs() {
         const shuffled = [...allCards].sort(() => 0.5 - Math.random());
@@ -121,13 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         secondCard = this;
         lockBoard = true;
-        movesCount++; // Increment moves when a pair is flipped
+
         checkForMatch();
     }
 
     function checkForMatch() {
         const isMatch = firstCard.dataset.name === secondCard.dataset.name &&
-            firstCard.dataset.type !== secondCard.dataset.type;
+                        firstCard.dataset.type !== secondCard.dataset.type;
 
         if (isMatch) {
             disableCards();
@@ -176,87 +175,72 @@ document.addEventListener('DOMContentLoaded', () => {
             switchTurn();
         }
     }
+function createConfetti() {
+    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+
+    function createPiece() {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti');
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = Math.random() * 20 + 'px';
+        piece.style.height = Math.random() * 20 + 'px';
+        piece.style.left = (Math.random() * window.innerWidth) + 'px';
+        piece.style.top = '-20px';
+        piece.style.animationDuration = '3s'; // Set animation duration to 3 seconds
+        document.body.appendChild(piece);
+        piece.addEventListener('animationend', function() {
+            piece.parentNode.removeChild(piece);
+        });
+    }
+
+    // Adjust the number of confetti pieces
+    const totalPieces = 700;
+    const interval = 5; // milliseconds
+
+    let i = 0;
+    let intervalId = setInterval(function() {
+        createPiece();
+        i++;
+        if (i >= totalPieces) {
+            clearInterval(intervalId);
+        }
+    }, interval);
+}
 
     function showWinMessage() {
-        let winnerMessage = '';
+    let winnerMessage = '';
 
-        if (isTwoPlayerMode) {
-            if (player1Score > player2Score) {
-                winnerMessage = `
-                    <h2>🎉 Player 1 wins! 🎉</h2>
-                    <img src="Bilder/win.png" alt="Player 1 Trophy" class="win-image"><br>
-					<p>Moves: ${movesCount}</p>
-                <p>Fewest Moves: ${fewestMoves}</p>
-                    <button id="restart-btn">Restart Game</button>
-                `;
-            } else if (player2Score > player1Score) {
-                winnerMessage = `
-                    <h2>🎉 Player 2 wins! 🎉</h2>
-                    <img src="Bilder/win.png" alt="Player 2 Trophy" class="win-image"><br>
-					<p>Moves: ${movesCount}</p>
-                <p>Fewest Moves: ${fewestMoves}</p>
-                    <button id="restart-btn">Restart Game</button>
-                `;
-            } else {
-                winnerMessage = `
-                    <h2>🤝 It's a tie! 🤝</h2><br>
-                    <button id="restart-btn">Restart Game</button>
-                `;
-            }
-        } else {
-            if (movesCount < fewestMoves) {
-                fewestMoves = movesCount;
-                localStorage.setItem('fewestMoves', fewestMoves);
-            }
-
+    if (isTwoPlayerMode) {
+        if (player1Score > player2Score) {
             winnerMessage = `
-                <h2>🏆 Congratulations, you won! 🏆</h2>
-                <p>Moves: ${movesCount}</p>
-                <p>Fewest Moves: ${fewestMoves}</p>
-                <img src="Bilder/win.png" alt="Winner" class="win-image"><br>
-                <button id="restart-btn">Restart Game</button>
+                <h2>🎉 Player 1 wins! 🎉</h2>
+                <img src="Bilder/win.png" alt="Player 1 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
             `;
+        } else if (player2Score > player1Score) {
+            winnerMessage = `
+                <h2>🎉 Player 2 wins! 🎉</h2>
+                <img src="Bilder/win.png" alt="Player 2 Trophy" class="win-image"><br><button id="restart-btn">Restart Game</button>
+            `;
+        } else {
+            winnerMessage = `
+                <h2>🤝 It\'s a tie! 🤝</h2><br>
+            <br><button id="restart-btn">Restart Game</button>`;
         }
-
-        document.getElementById('win-message').innerHTML = winnerMessage;
-        winMessage.classList.remove('hidden');
-        createConfetti();
-        document.getElementById('restart-btn').addEventListener('click', restartGame);
+    } else {
+        winnerMessage = `
+            <h2>🏆 Congratulations, you won! 🏆</h2>
+            <img src="Bilder/win.png" alt="Winner" class="win-image"><br>
+            <button id="restart-btn">Restart Game</button>
+        `;
     }
 
-    function createConfetti() {
-        const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
-
-        function createPiece() {
-            const piece = document.createElement('div');
-            piece.classList.add('confetti');
-            piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            piece.style.width = Math.random() * 20 + 'px';
-            piece.style.height = Math.random() * 20 + 'px';
-            piece.style.left = (Math.random() * window.innerWidth) + 'px';
-            piece.style.top = '-20px';
-            piece.style.animationDuration = '3s'; // Set animation duration to 3 seconds
-            document.body.appendChild(piece);
-            piece.addEventListener('animationend', function () {
-                piece.parentNode.removeChild(piece);
-            });
-        }
-
-        const totalPieces = 700;
-        const interval = 5; // milliseconds
-
-        let i = 0;
-        let intervalId = setInterval(function () {
-            createPiece();
-            i++;
-            if (i >= totalPieces) {
-                clearInterval(intervalId);
-            }
-        }, interval);
-    }
+    document.getElementById('win-message').innerHTML = winnerMessage;
+    winMessage.classList.remove('hidden');
+      createConfetti();
+      document.getElementById('restart-btn').addEventListener('click', restartGame);
+}
 
     function restartGame() {
-        movesCount = 0; // Reset move counter
         matchedPairs = 0;
         player1Score = 0;
         player2Score = 0;
@@ -267,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modeSelection.classList.remove('hidden');
         winMessage.classList.add('hidden');
         board.classList.add('hidden');
-        createBoard();
+      createBoard();
     }
 
     function startGame(mode) {
@@ -275,25 +259,28 @@ document.addEventListener('DOMContentLoaded', () => {
         modeSelection.classList.add('hidden');
         status.classList.remove('hidden');
         board.classList.remove('hidden');
-        movesCount = 0; // Reset move count at the start of a new game
-
-        if (!isTwoPlayerMode) {
-            status.classList.add('hidden'); // Hide player status in single-player mode
-        } else {
-            status.classList.remove('hidden'); // Show player status in two-player mode
-        }
-
         createBoard();
     }
+  function switchTurn() {
+  currentPlayer = (currentPlayer === 1) ? 2 : 1;
+  currentPlayerElement.textContent = `Player ${currentPlayer}`;
+}
 
-    function switchTurn() {
-        currentPlayer = (currentPlayer === 1) ? 2 : 1;
-        currentPlayerElement.textContent = `Player ${currentPlayer}`;
-    }
+// Attach event listener
+switchTurnBtn.addEventListener('click', switchTurn);
+function returnToModeSelection() {
+  restartGame();
+}
 
-    switchTurnBtn.addEventListener('click', switchTurn);
-    returnToModeBtn.addEventListener('click', restartGame);
+// Attach event listener
+returnToModeBtn.addEventListener('click', returnToModeSelection);
+
     singlePlayerBtn.addEventListener('click', () => startGame('single-player'));
     twoPlayerBtn.addEventListener('click', () => startGame('two-player'));
     restartBtn.addEventListener('click', restartGame);
+    switchTurnBtn.addEventListener('click', switchTurn);
+    returnToModeBtn.addEventListener('click', returnToModeSelection);
+
+    // Initialize game
+    restartGame();
 });
