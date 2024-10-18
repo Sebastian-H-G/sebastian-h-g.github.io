@@ -8,23 +8,36 @@
     <style>
         #map {
             height: 600px;
-            width: 800px;
+            width: 600px;
+            float: left;
         }
         .country-piece {
             cursor: pointer;
-            fill-opacity: 0.6;
-        }
-        #puzzle-container {
+            padding: 10px;
+            margin: 5px;
             border: 1px solid #ccc;
-            width: 600px;
-            height: 600px;
-            position: relative;
+            background-color: #f0f0f0;
+            text-align: center;
+            user-select: none;
         }
         #country-box {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
             width: 200px;
+            height: 600px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            float: left;
+            margin-right: 20px;
+        }
+        .draggable {
+            background-color: #ffcccc;
+            border: 1px solid #ff8888;
+            cursor: move;
+        }
+        .dropped {
+            background-color: #ccffcc;
+        }
+        .droppable {
+            border: 2px dashed #888;
         }
     </style>
 </head>
@@ -32,32 +45,48 @@
 
     <h1>South America Puzzle - Drag and Drop Countries</h1>
 
-    <div id="puzzle-container">
-        <div id="map"></div>
-    </div>
-
     <div id="country-box">
         <!-- Draggable country shapes will appear here -->
     </div>
 
+    <div id="map" class="droppable"></div>
+
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-path-drag"></script> <!-- For draggable paths -->
     <script>
         // Initialize the Leaflet map (center on South America)
-        var map = L.map('map', {dragging: false}).setView([-15, -60], 3);
+        var map = L.map('map', {dragging: false, zoomControl: false}).setView([-15, -60], 3);
 
-        // Add tile layer (just for better map visuals in the background)
+        // Add tile layer for better visuals (optional)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Load the South America countries GeoJSON
+        // GeoJSON URL for South American countries
         const geoJsonUrl = 'https://raw.githubusercontent.com/johan/world.geo.json/master/countries/SAM.geo.json';
 
+        // Fetch the GeoJSON data and populate the country pieces and the map
         fetch(geoJsonUrl)
             .then(response => response.json())
             .then(data => {
-                // Add country shapes to the map
+                const countryBox = document.getElementById('country-box');
+
+                // Add country names to the draggable box
+                data.features.forEach(feature => {
+                    const countryDiv = document.createElement('div');
+                    countryDiv.textContent = feature.properties.name;
+                    countryDiv.className = 'country-piece draggable';
+                    countryDiv.setAttribute('draggable', true);
+                    countryDiv.setAttribute('data-country', feature.properties.name);
+
+                    // Add event listeners for drag and drop
+                    countryDiv.addEventListener('dragstart', (e) => {
+                        e.dataTransfer.setData('text/plain', feature.properties.name);
+                    });
+
+                    countryBox.appendChild(countryDiv);
+                });
+
+                // Add country outlines on the map (not draggable)
                 L.geoJson(data, {
                     style: {
                         color: '#3388ff',
@@ -65,26 +94,42 @@
                         fillOpacity: 0.5
                     },
                     onEachFeature: function (feature, layer) {
-                        layer.bindTooltip(feature.properties.name).openTooltip();
-
-                        // Make the country draggable
-                        layer.dragging.enable();
-
-                        // Log when a country is dragged
-                        layer.on('dragend', function (event) {
-                            const layer = event.target;
-                            console.log(layer.feature.properties.name + ' dragged');
+                        layer.on('dragover', function (e) {
+                            e.preventDefault();
                         });
 
-                        // Add country shape to the puzzle box as well (for dragging)
-                        const countryBox = document.getElementById('country-box');
-                        const countryDiv = document.createElement('div');
-                        countryDiv.textContent = feature.properties.name;
-                        countryDiv.className = 'country-piece';
-                        countryBox.appendChild(countryDiv);
+                        layer.on('drop', function (e) {
+                            const countryName = e.dataTransfer.getData('text');
+                            if (countryName === feature.properties.name) {
+                                e.preventDefault();
+                                const droppedDiv = document.querySelector(`[data-country="${countryName}"]`);
+                                droppedDiv.classList.add('dropped');
+                                droppedDiv.setAttribute('draggable', false);  // Prevent further dragging
+                            }
+                        });
+
+                        // Add countries to the map
+                        layer.addTo(map);
                     }
-                }).addTo(map);
+                });
             });
+
+        // Allow dropping on the map container
+        const mapContainer = document.getElementById('map');
+
+        mapContainer.addEventListener('dragover', function (e) {
+            e.preventDefault();
+        });
+
+        mapContainer.addEventListener('drop', function (e) {
+            const countryName = e.dataTransfer.getData('text/plain');
+            const countryDiv = document.querySelector(`[data-country="${countryName}"]`);
+
+            if (countryDiv) {
+                countryDiv.style.backgroundColor = '#ccffcc';
+                countryDiv.classList.add('dropped');
+            }
+        });
     </script>
 
 </body>
