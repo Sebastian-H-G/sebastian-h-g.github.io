@@ -160,3 +160,165 @@ bottom: 0;
   z-index: 0; /* Ensure it's behind the footer content */
 }
 
+
+
+
+@media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
+    /* Reset margins and paddings for a clean slate */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 10px; /* Reduced margin */
+        background: #4CECC7;
+    }
+    .question {
+        font-size: 1.3em; /* Slightly smaller font */
+        margin-bottom: 15px; /* Reduced margin */
+        margin-top: 15px; /* Reduced margin */
+    }
+    .options-container {
+        width: 80%; /* Adjusted width to fit on smaller screens */
+        margin: 0 auto;
+    }
+    button {
+        background-color: #F08A3C;
+        color: #fff;
+        width: 80%; /* Increased button width to take up more space */
+        height: 45%; /* Adjusted height for better scaling */
+        border: none;
+        border-radius: 5px;
+        padding: 15px; /* Reduced padding */
+        font-weight: bold;
+        margin: 10px;
+        box-shadow: 0 6px 0 #D6742F;
+        font-size: 18px; /* Smaller font size */
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    button:active {
+        transform: translateY(5px) scale(0.98);
+        box-shadow: 0 3px 0 #D6742F;
+    }
+    .message {
+        margin-top: 15px;
+        font-size: 1em; /* Smaller font size */
+    }
+    .scoreboard {
+        display: flex;
+        justify-content: center;
+        gap: 5px; /* Reduced gap */
+        width: 80%; /* Adjusted width */
+        padding: 15px 20px; /* Reduced padding */
+        margin: 10px auto 0 auto;
+        color: black;
+        border-radius: 7px;
+    }
+    .score, .highscore {
+        font-size: 18px; /* Smaller font size */
+        width: 40%; /* Adjusted width */
+        margin: 0 auto;
+        font-weight: bold;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        position: relative;
+        transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
+    }
+    .score {
+        background-color: #007BFF;
+        padding: 12px 18px; /* Reduced padding */
+        box-shadow: 0 5px 0 #0056b3;
+    }
+    .highscore {
+        background-color: #FFD700;
+        padding: 12px 18px; /* Reduced padding */
+        box-shadow: 0 5px 0 #c0a500;
+        z-index: 100;
+    }
+
+    .footer {
+        background: linear-gradient(to right, #E32679, #EC4C92);
+        color: #fff;
+        padding: 15px 0; /* Reduced padding */
+        position: absolute;
+        width: 100vw;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+        margin-bottom: 0;
+    }
+
+    .footer-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 1000px; /* Adjusted max-width */
+        width: 100%;
+        padding: 0 15px; /* Reduced padding */
+        position: relative;
+        z-index: 1;
+    }
+
+    .footer-logo {
+        margin-right: 20px; /* Reduced space between logo and content */
+    }
+
+    .footer-logo img {
+        width: 100px; /* Smaller logo */
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .footer-logo img:hover {
+        transform: scale(1.05);
+    }
+
+    .footer-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-social {
+        display: flex;
+        gap: 12px; /* Reduced gap */
+        margin-bottom: 10px;
+    }
+
+    .footer-social a {
+        color: #fff;
+        font-size: 18px; /* Reduced font size */
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .footer-social a:hover {
+        transform: scale(1.2);
+    }
+
+    .footer-copyright {
+        font-size: 12px; /* Smaller font size */
+        line-height: 20px;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+        opacity: 0.5;
+        animation: animateBg 8s linear infinite;
+        z-index: 0;
+    }
+}
