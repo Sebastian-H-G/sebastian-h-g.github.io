@@ -2,10 +2,10 @@
   "name": "Mythologies Quiz",
   "short_name": "Mythologies",
   "description": "A quiz about various mythologies.",
-  "start_url": "./index.html",
+  "start_url": "./mythology.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#E32679",
+  "background_color": "#4CECC7",
+  "theme_color": "#4CECC7",
   "icons": [
     {
       "src": "Logos/mythology-192x192.png",
