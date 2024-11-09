@@ -1,0 +1,162 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;}
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+	  background: #4CECC7;
+    }
+    .question {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+	  margin-top: 20px;
+    }
+	.options-container {
+	width: 70%;
+	margin: 0 auto;}
+    
+	button {
+      background-color: #F08A3C;
+    color: #fff;
+	width: 45%;
+	height: 55%;
+    border: none;
+    border-radius: 5px;
+    padding: 20px;
+	font-weight: bold;
+    margin: 10px;
+	box-shadow: 0 6px 0 #D6742F;
+	font-size: 20px;
+    cursor: pointer;
+    flex: 1 1 calc(50% - 40px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    button:active {
+    transform: translateY(5px) scale(0.98);
+    box-shadow: 0 3px 0 #D6742F;
+}
+    .message {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+	.scoreboard {
+	display: flex;
+    justify-content: center;
+    gap: 0px;
+	width: 35%;
+  padding: 20px 30px;
+  margin: 10px auto 0 auto;
+  color: black;
+  border-radius: 7px;
+}
+    .score, .highscore {
+    font-size: 20px;
+  border-radius: 7px;
+  width: 40%;
+  margin: 0 auto;
+    font-weight: bold;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add box-shadow */
+    position: relative;
+	transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
+}
+.score {
+  background-color: #007BFF;
+   padding: 15px 20px;
+   box-shadow: 0 5px 0 #0056b3;
+}
+.highscore {
+ background-color: #FFD700;
+  padding: 15px 20px;
+box-shadow: 0 5px 0 #c0a500;
+  z-index: 100;
+}
+	
+.footer {
+  background: linear-gradient(to right, #E32679, #EC4C92); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: absolute;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+bottom: 0;
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
+

@@ -1,0 +1,169 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const allCards = [
+        { name: 'Germany', img: 'flags/de.webp' },
+        { name: 'France', img: 'flags/fr.webp' },
+        { name: 'Brazil', img: 'flags/br.webp' }, // example for South America
+        { name: 'Nigeria', img: 'flags/ng.webp' }, // example for Africa
+        { name: 'Japan', img: 'flags/jp.webp' }, // example for Asia
+        // add more cards for each continent here
+    ];
+
+    // Separate arrays for each continent
+    const africaCards = [
+        { name: 'Nigeria', img: 'flags/ng.webp' },
+        { name: 'South Africa', img: 'flags/za.webp' },
+        // add more African countries
+    ];
+    
+    const europeCards = [
+        { name: 'Germany', img: 'flags/de.webp' },
+        { name: 'France', img: 'flags/fr.webp' },
+        { name: 'Italy', img: 'flags/it.webp' },
+        { name: 'Spain', img: 'flags/es.webp' },
+        { name: 'United Kingdom', img: 'flags/gb.webp' },
+        { name: 'Netherlands', img: 'flags/nl.webp' },
+        { name: 'Belgium', img: 'flags/be.webp' },
+        { name: 'Switzerland', img: 'flags/ch.webp' },
+        { name: 'Austria', img: 'flags/at.webp' },
+        { name: 'Sweden', img: 'flags/se.webp' },
+        { name: 'Norway', img: 'flags/no.webp' },
+        { name: 'Denmark', img: 'flags/dk.webp' },
+        { name: 'Finland', img: 'flags/fi.webp' },
+        { name: 'Ireland', img: 'flags/ie.webp' },
+        { name: 'Portugal', img: 'flags/pt.webp' },
+        { name: 'Greece', img: 'flags/gr.webp' },
+        { name: 'Poland', img: 'flags/pl.webp' },
+        { name: 'Czech Republic', img: 'flags/cz.webp' },
+        { name: 'Hungary', img: 'flags/hu.webp' },
+        { name: 'Slovakia', img: 'flags/sk.webp' },
+        { name: 'Slovenia', img: 'flags/si.webp' },
+        { name: 'Croatia', img: 'flags/hr.webp' },
+        { name: 'Bulgaria', img: 'flags/bg.webp' },
+        { name: 'Romania', img: 'flags/ro.webp' },
+        { name: 'Serbia', img: 'flags/rs.webp' },
+        { name: 'Montenegro', img: 'flags/me.webp' },
+        { name: 'North Macedonia', img: 'flags/mk.webp' },
+        { name: 'Albania', img: 'flags/al.webp' },
+        { name: 'Bosnia and Herzegovina', img: 'flags/ba.webp' },
+        { name: 'Estonia', img: 'flags/ee.webp' },
+        { name: 'Latvia', img: 'flags/lv.webp' },
+        { name: 'Lithuania', img: 'flags/lt.webp' },
+        { name: 'Ukraine', img: 'flags/ua.webp' },
+        { name: 'Moldova', img: 'flags/md.webp' },
+        { name: 'Belarus', img: 'flags/by.webp' },
+        { name: 'Russia', img: 'flags/ru.webp' },
+        { name: 'Turkey', img: 'flags/tr.webp' },
+        { name: 'Cyprus', img: 'flags/cy.webp' },
+        { name: 'Iceland', img: 'flags/is.webp' },
+        { name: 'Liechtenstein', img: 'flags/li.webp' },
+        { name: 'Monaco', img: 'flags/mc.webp' },
+        { name: 'San Marino', img: 'flags/sm.webp' },
+        { name: 'Vatican City', img: 'flags/va.webp' },
+    ];
+
+    const asiaCards = [
+        { name: 'Japan', img: 'flags/jp.webp' },
+        { name: 'China', img: 'flags/cn.webp' },
+        // add more Asian countries
+    ];
+
+    const northAmericaCards = [
+        { name: 'United States', img: 'flags/us.webp' },
+        { name: 'Canada', img: 'flags/ca.webp' },
+        // add more North American countries
+    ];
+
+    const southAmericaCards = [
+        { name: 'Brazil', img: 'flags/br.webp' },
+        { name: 'Argentina', img: 'flags/ar.webp' },
+        // add more South American countries
+    ];
+
+    const oceaniaCards = [
+        { name: 'Australia', img: 'flags/au.webp' },
+        { name: 'New Zealand', img: 'flags/nz.webp' },
+        // add more Oceania countries
+    ];
+
+    const maxPairs = 12;
+    let cardsArray = [];
+    let continent = 'all'; // default to all cards
+
+    function startQuiz() {
+        // Get the selected continent
+        const selectedContinent = document.getElementById('continent-select').value;
+        
+        switch (selectedContinent) {
+            case 'africa':
+                continent = africaCards;
+                break;
+            case 'europe':
+                continent = europeCards;
+                break;
+            case 'asia':
+                continent = asiaCards;
+                break;
+            case 'north america':
+                continent = northAmericaCards;
+                break;
+            case 'south america':
+                continent = southAmericaCards;
+                break;
+            case 'oceania':
+                continent = oceaniaCards;
+                break;
+            default:
+                continent = allCards; // default to all cards
+                break;
+        }
+
+        createBoard();
+    }
+
+    function selectRandomPairs() {
+        const shuffled = [...continent].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, maxPairs);
+    }
+
+    function createCardsArray() {
+        const selectedPairs = selectRandomPairs();
+        cardsArray = [];
+        selectedPairs.forEach(pair => {
+            cardsArray.push({ ...pair, type: 'name' });
+            cardsArray.push({ ...pair, type: 'flag' });
+        });
+    }
+
+    function createBoard() {
+        createCardsArray();
+        shuffle(cardsArray);
+        const board = document.getElementById('game-board');
+        board.innerHTML = '';
+        cardsArray.forEach(card => {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('card');
+            cardElement.dataset.name = card.name;
+            cardElement.dataset.type = card.type;
+            cardElement.innerHTML = `
+                <div class="card-face front"></div>
+                <div class="card-face back">${card.type === 'name' ? card.name : `<img src="${card.img}" alt="${card.name}">`}</div>
+                <div class="animation-overlay"></div>
+            `;
+            cardElement.addEventListener('click', flipCard);
+            board.appendChild(cardElement);
+        });
+    }
+
+    // The rest of your game logic remains the same
+    // flipCard(), checkForMatch(), etc. are unchanged
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+    
+    // Initialize with default 'all' selection
+    startQuiz();
+});

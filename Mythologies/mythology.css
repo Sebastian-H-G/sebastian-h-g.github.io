@@ -1,0 +1,156 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: ;
+  background-color: #f3f3f3;
+  height: 100vh;
+}
+
+header h1 {
+  font-size: 3rem;
+  color: #333;
+  margin-top: 50px;
+  margin-bottom: 5rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.icon-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.icon {
+  text-align: center;
+  text-decoration: none;
+  color: #555;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+  color: #333;
+}
+
+.icon-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover; /* Ensures the icon scales properly */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+}
+
+.icon-image:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.icon p {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+	
+.footer {
+  background: linear-gradient(to right, #E32679, #EC4C92); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: absolute;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+bottom: 0;
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
+
