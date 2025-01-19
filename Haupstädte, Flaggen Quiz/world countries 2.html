@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countries of the World Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    #quiz-container {
+      display: none;
+      margin-top: 20px;
+    }
+    #timer {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    #score {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    #grid {
+      margin-top: 20px;
+      display: none;
+    }
+    svg {
+      margin-top: 20px;
+      max-width: 100%;
+      height: auto;
+    }
+    .country {
+      fill: #ccc;
+      stroke: #000;
+      stroke-width: 0.5;
+      cursor: pointer;
+    }
+    .highlight {
+      fill: #6c6;
+    }
+  </style>
+</head>
+<body>
+  <h1>Countries of the World Quiz</h1>
+  <button id="start-quiz-button">Start Quiz</button>
+
+  <div id="quiz-container">
+    <div id="timer">Time Remaining: <span id="time">15:00</span></div>
+    <div id="score">Score: <span id="current-score">0</span> / 196 countries</div>
+    <input id="answer-box" type="text" placeholder="Enter country's name here...">
+    <div id="result"></div>
+    <svg id="world-map" viewBox="0 0 2000 1000">
+      
+    <button id="give-up-button">Give Up?</button>
+  </div>
+
+  <div id="grid">
+    <!-- Table of countries grouped by continent will appear here -->
+  </div>
+
+  <script>
+    const startButton = document.getElementById('start-quiz-button');
+    const quizContainer = document.getElementById('quiz-container');
+    const timerElement = document.getElementById('time');
+    const scoreElement = document.getElementById('current-score');
+    const answerBox = document.getElementById('answer-box');
+    const resultElement = document.getElementById('result');
+    const giveUpButton = document.getElementById('give-up-button');
+    const gridContainer = document.getElementById('grid');
+
+    const countries = { "Europe": ["Albania", "Andorra", "Austria", "Belarus", "Belgium"], "North America": ["Antigua and Barbuda", "Bahamas", "Barbados", "Canada", "United States"] };
+    const guessedCountries = new Set();
+
+    let timer;
+    let timeRemaining = 15 * 60; // 15 minutes in seconds
+
+    function startQuiz() {
+      startButton.style.display = 'none';
+      quizContainer.style.display = 'block';
+      startTimer();
+    }
+
+    function startTimer() {
+      updateTimerDisplay();
+      timer = setInterval(() => {
+        timeRemaining--;
+        updateTimerDisplay();
+        if (timeRemaining <= 0) {
+          endQuiz(false);
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timeRemaining / 60);
+      const seconds = timeRemaining % 60;
+      timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function checkAnswer() {
+      const answer = answerBox.value.trim();
+      for (const [continent, countryList] of Object.entries(countries)) {
+        if (countryList.includes(answer) && !guessedCountries.has(answer)) {
+          guessedCountries.add(answer);
+          scoreElement.textContent = guessedCountries.size;
+          resultElement.textContent = `${answer} is correct!`;
+          answerBox.value = '';
+          return;
+        }
+      }
+      resultElement.textContent = `${answer} is not correct or already guessed.`;
+      answerBox.value = '';
+    }
+
+    function showGrid() {
+      gridContainer.innerHTML = Object.entries(countries).map(([continent, countryList]) => `
+        <table class="block">
+          <tr><td class="gx1"><div class="h">${continent}</div></td></tr>
+          ${countryList.sort().map(country => `
+            <tr><td class="gxh answer-display"><div class="h">${country}</div></td></tr>
+          `).join('')}
+        </table>
+      `).join('');
+      gridContainer.style.display = 'block';
+    }
+
+    function endQuiz(allCorrect) {
+      clearInterval(timer);
+      answerBox.disabled = true;
+      resultElement.textContent = allCorrect
+        ? `Congratulations! You guessed all countries!`
+        : `Time's up! You guessed ${guessedCountries.size} countries.`;
+      showGrid();
+      startButton.textContent = 'Restart Quiz';
+      startButton.style.display = 'block';
+    }
+
+    startButton.addEventListener('click', () => {
+      if (startButton.textContent === 'Restart Quiz') {
+        location.reload();
+      } else {
+        startQuiz();
+      }
+    });
+
+    giveUpButton.addEventListener('click', () => endQuiz(false));
+
+    answerBox.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        checkAnswer();
+      }
+    });
+  </script>
+</body>
+</html>
