@@ -6,88 +6,21 @@
     <title>Countries Quiz</title>
     <link href="worldcountries.css" rel="stylesheet">
     <style>
-        /* Container for the map */
-        #map-container {
-            position: relative;
-            width: 70vw; /* Adjust this as needed */
-            height: 70vh; /* Adjust this as needed */
-            margin: 0 auto;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-        }
-
-        /* Zoom Controls */
-        #zoom-controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        button {
-            padding: 4px 8px;
-            margin: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        /* Arrow buttons for zoom movement */
-        .arrow-button {
-            padding: 5px 7px;
-            font-size: 18px;
-        }
-		.arrow-button1 {
-            padding: 3px;
-            font-size: 18px;
-        }
-
-        /* Make sure the map fills the container */
-        #worldMap {
-            transform-origin: center center;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        /* Ensure the input field and scoreboard are spaced correctly */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+     
     </style>
 </head>
 <body>
     <h1>Countries of the World Quiz</h1>
-    <input type="text" id="countryInput" placeholder="Type a country name">
+    <div class="flexbox"><div class="outScoreBoard"><div id="scoreBoard">Score: 0 / 196</div></div><input type="text" id="countryInput" placeholder="Type a country name"><button id="pauseButton" class="pause"></button><div id="timer">15:00</div>
+   </div>
+    <div id="pauseMessage" style="display: none;"></div><br>
     
+    <button id="giveUpButton">Give Up</button>
+    <button id="restartButton" style="display: none;">↻</button>
+    <div id="message" style="display: none; color: red; font-size: 20px; margin: 0 auto 20px auto; font-weight: 900;"></div>
     <!-- Map Container -->
     <div id="map-container">
-        <div id="worldMap">
-		    <!-- Zoom Controls -->
-    <div id="zoom-controls">
-        <button id="zoom-in"><img src="icons/zoom in.webp" width="20" height="20"></button>
-        <button id="zoom-out"><img src="icons/zoom out.png" width="20" height="20"></button><br>
-        
-        <!-- Arrow Buttons -->
-        <button id="zoom-up" class="arrow-button">↑</button><br>
-        <button id="zoom-left" class="arrow-button1">←</button>
-        <button id="zoom-right" class="arrow-button1">→</button><br>
-        <button id="zoom-down" class="arrow-button">↓</button>
-    </div>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-200 0 1500 1001">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 0 1050 650" id="svgMap" preserveAspectRatio="xMidYMid meet">
                 <path
      d="m 479.68275,331.6274 -0.077,0.025 -0.258,0.155 -0.147,0.054 -0.134,0.027 -0.105,-0.011 -0.058,-0.091 0.006,-0.139 -0.024,-0.124 -0.02,-0.067 0.038,-0.181 0.086,-0.097 0.119,-0.08 0.188,0.029 0.398,0.116 0.083,0.109 10e-4,0.072 -0.073,0.119 z"
      title="Andorra"
@@ -1109,57 +1042,53 @@
      title="Zimbabwe"
      id="Zimbabwe"  fill="#c0c0c0" stroke="#000" class="africa"/>
             </svg>
-        </div>
+        
     </div>
 
-    <div id="scoreBoard">Score: 0 / 196</div>
-    <div id="timer">15:00</div>
-
+    
+    <div id="results"></div>
     <script src="worldcountries.js"></script>
-    <script>
-        let zoomLevel = 1;
-        let offsetX = 0;
-        let offsetY = 0;
+    <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@9.4.0/dist/panzoom.min.js"></script>
+    <script>const svg = document.getElementById('svgMap');
+      const container = document.getElementById('map-container');
+      
+      let scale = 1;
+      let lastTouchDistance = 0;
+      let panX = 0, panY = 0;
+      
+      container.addEventListener('touchmove', (e) => {
+          e.preventDefault(); // Prevent browser default zoom behavior
+      
+          if (e.touches.length === 2) {
+              // Pinch-to-Zoom logic
+              const dx = e.touches[0].pageX - e.touches[1].pageX;
+              const dy = e.touches[0].pageY - e.touches[1].pageY;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+      
+              if (!lastTouchDistance) lastTouchDistance = distance;
+      
+              scale *= distance / lastTouchDistance;
+              scale = Math.max(1, Math.min(5, scale)); // Clamp scale between 1x and 5x
+      
+              svg.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+              lastTouchDistance = distance;
+          } else if (e.touches.length === 1) {
+              // Panning logic
+              const touch = e.touches[0];
+              if (!lastTouchDistance) {
+                  panX += touch.movementX || 0;
+                  panY += touch.movementY || 0;
+      
+                  svg.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+              }
+          }
+      });
+      
+      container.addEventListener('touchend', () => {
+          lastTouchDistance = 0;
+      });
+      </script>
 
-        // Function to apply the zoom effect
-        function applyZoom() {
-            const mapElement = document.getElementById('worldMap');
-            mapElement.style.transform = `scale(${zoomLevel}) translate(${offsetX}px, ${offsetY}px)`;
-        }
-
-        // Zoom in and zoom out buttons
-        document.getElementById('zoom-in').addEventListener('click', function() {
-            zoomLevel += 0.1;
-            applyZoom();
-        });
-
-        document.getElementById('zoom-out').addEventListener('click', function() {
-            zoomLevel -= 0.1;
-            if (zoomLevel < 0.1) zoomLevel = 0.1;  // Prevent zooming out too far
-            applyZoom();
-        });
-
-        // Arrow buttons for moving zoom
-        document.getElementById('zoom-up').addEventListener('click', function() {
-            offsetY -= 20;
-            applyZoom();
-        });
-
-        document.getElementById('zoom-down').addEventListener('click', function() {
-            offsetY += 20;
-            applyZoom();
-        });
-
-        document.getElementById('zoom-right').addEventListener('click', function() {
-            offsetX -= 20;
-            applyZoom();
-        });
-
-        document.getElementById('zoom-left').addEventListener('click', function() {
-            offsetX += 20;
-            applyZoom();
-        });
-    </script>
 </body>
 </html>
 
