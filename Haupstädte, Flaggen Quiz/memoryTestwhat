@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game - Flags and Countries</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 150px);
+            grid-gap: 10px;
+        }
+        .memory-card {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            transform: scale(1);
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        .memory-card:active {
+            transform: scale(0.97);
+            transition: transform 0.2s;
+        }
+        .memory-card.flip {
+            transform: rotateY(180deg);
+        }
+        .front-face, .back-face {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            border-radius: 5px;
+        }
+        .front-face {
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+        .back-face {
+            background-color: #333;
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="memory-game">
+        <div class="memory-card">
+            <div class="front-face">🇺🇸</div>
+            <div class="back-face"><img src="neutral-image.png" alt="Neutral Image"></div>
+        </div>
+        <div class="memory-card">
+            <div class="front-face">United States</div>
+            <div class="back-face"><img src="neutral-image.png" alt="Neutral Image"></div>
+        </div>
+        <!-- Add more memory cards as needed -->
+    </div>
+</body>
+</html>

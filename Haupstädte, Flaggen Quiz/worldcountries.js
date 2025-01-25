@@ -417,6 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isPaused = false;
             pauseButton.classList.remove('play');
             pauseButton.classList.add('pause');
+            countryInput.disabled = true;
             document.getElementById('map-container').style.display = 'block'; // Enable map interaction
             document.getElementById('pauseMessage').style.display = 'none';
 
