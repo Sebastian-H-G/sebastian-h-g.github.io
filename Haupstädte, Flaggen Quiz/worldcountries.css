@@ -43,10 +43,18 @@ h1 {
   display: inline-block;
   text-align: center;
 }
+
+svg path {
+  stroke: #333;
+  stroke-width: 0.5;
+  fill: #FFF990;
+}
 .correct {
   fill: green;
 }
-
+.not-guessed {
+  fill: red;
+}
 
   /* General styles for the map container */
   #map-container {
@@ -202,6 +210,7 @@ h1 {
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 /* Individual continent table styles */
@@ -213,6 +222,7 @@ h1 {
   border: 1px solid #ddd;
   text-align: left;
   font-family: Arial, sans-serif;
+  font-weight: bold;
 }
 
 /* Caption for continent name */
@@ -231,7 +241,7 @@ h1 {
   padding: 8px 12px;
   border-bottom: 1px solid #ddd;
   font-size: 1rem;
-  color: #555;
+  color: rgb(4, 189, 4);
 }
 
 /* Highlight missed countries */
