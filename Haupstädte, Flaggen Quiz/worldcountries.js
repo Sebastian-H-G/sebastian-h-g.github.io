@@ -337,7 +337,7 @@ function showTables() {
 
 const correctCountries = [];
 let score = 0;
-let timeRemaining = 15 * 60;
+let timeRemaining = 5;
 
 const countryInput = document.getElementById('countryInput');
 const scoreBoard = document.getElementById('scoreBoard');
@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (timeRemaining <= 0) {
                     clearInterval(countdownInterval);
                     const messageElement = document.getElementById('message');
-                    messageElement.textContent = 'Time is up!';
+                    messageElement.textContent = `Time is up! You named ${score} countries.`;
                     messageElement.style.display = 'block';
                     countryInput.disabled = true;
                     endGame();
