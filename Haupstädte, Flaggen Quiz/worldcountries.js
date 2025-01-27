@@ -337,7 +337,7 @@ function showTables() {
 
 const correctCountries = [];
 let score = 0;
-let timeRemaining = 5;
+let timeRemaining = 15 * 60;
 
 const countryInput = document.getElementById('countryInput');
 const scoreBoard = document.getElementById('scoreBoard');
