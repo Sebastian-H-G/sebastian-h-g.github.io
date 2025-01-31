@@ -253,7 +253,8 @@ body {
     }
 }
 
-@media only screen and (max-width: 2532px) and (max-height: 1170px) and (orientation: landscape) {
+/* iPhone 15 Landscape Mode */
+@media only screen and (max-width: 852px) and (max-height: 393px) and (orientation: landscape) {
     .restart-btn {
         padding: 8px 16px;
         margin: 8px;
@@ -261,8 +262,8 @@ body {
         background-color: #6a2d76;
     }
     .grid {
-        grid-template-columns: repeat(2, 100px);
-        grid-template-rows: repeat(8, 100px);
+        grid-template-columns: repeat(4, 100px);
+        grid-template-rows: repeat(6, 100px);
         row-gap: 25px;
         column-gap: 20px;
     }
