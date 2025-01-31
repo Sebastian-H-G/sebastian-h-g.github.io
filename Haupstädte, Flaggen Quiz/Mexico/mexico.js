@@ -138,13 +138,15 @@ document.addEventListener('DOMContentLoaded', () => {
         isPaused = false;
         score = 0;
         timeRemaining = 5 * 60;
-        document.getElementById('pauseMessage').style.display = 'none';
-        correctCountries.length = 0;
+        correctCountries.length = 0; // Clear the correct countries
+    
         // Reset the color of all country paths to their default
         const countryPaths = document.querySelectorAll('path'); // Select all path elements
         countryPaths.forEach(path => {
-        path.style.fill = '#FFF990'; // Reset to default color
+            path.classList.remove('correct', 'not-guessed'); // Remove any existing classes
+            path.style.fill = '#FFF990'; // Reset to default color
         });
+    
         // Reset UI elements
         countryInput.disabled = false;
         countryInput.value = '';
@@ -154,12 +156,13 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('pauseButton').style.display = 'block';
         document.getElementById('pauseButton').disabled = false;
         document.getElementById('pauseButton').classList.remove('play');
-        displayCountriesTable();
         document.getElementById('pauseButton').classList.add('pause');
         document.getElementById('giveUpButton').style.display = 'block';
         document.getElementById('restartButton').style.display = 'none';
         document.getElementById('map-container').style.display = 'block';
         document.getElementById('countries-container').style.display = 'none';
+        document.getElementById('pauseMessage').style.display = 'none';
+    
         // Start a new countdown
         startCountdown();
     }
