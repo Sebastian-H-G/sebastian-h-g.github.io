@@ -6,7 +6,26 @@
     <title>Countries Quiz</title>
     <link href="../worldcountries.css" rel="stylesheet">
     <style>
-     
+     #countries-container table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+    #countries-container th, #countries-container td {
+        padding: 12px;
+        border: 1px solid #ddd;
+    }
+    #countries-container th {
+        background-color: #f2f2f2;
+    }
+    #countries-container tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    #countries-container tr:hover {
+        background-color: #f1f1f1;
+    }
     </style>
 </head>
 <body>
@@ -163,8 +182,7 @@
      </svg>     
     </div>
 
-    
-    <div id="results"></div>
+    <div id="countries-container"></div>
     <script src="mexico.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@9.4.0/dist/panzoom.min.js"></script>
     <script>const svg = document.getElementById('svgMap');

@@ -4,6 +4,18 @@ const countries = [
 function normalizeCountryName(name) {
     return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '').toLowerCase();
 }
+function displayCountriesTable() {
+    const columns = 4; // Number of columns in the table
+    let table = '<table><tr>';
+    for (let i = 0; i < countries.length; i++) {
+        table += `<td>${countries[i]}</td>`;
+        if ((i + 1) % columns === 0) {
+            table += '</tr><tr>';
+        }
+    }
+    table += '</tr></table>';
+    document.getElementById('countries-container').innerHTML = table;
+}
 const correctCountries = [];
 let score = 0;
 let timeRemaining = 5 * 60;
@@ -57,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     countryInput.disabled = true;
                     endGame();
                     // Disable the input field
-                    showTables();
+                    displayCountriesTable()
                 }
             }
         }, 1000);
@@ -108,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('pauseMessage').style.display = 'none';
         document.getElementById('map-container').style.display = 'block';
         countryInput.disabled = true; // Disable the input field
-        showTables();
+        displayCountriesTable()
         endGame();
     }
 
@@ -139,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('giveUpButton').style.display = 'block';
         document.getElementById('restartButton').style.display = 'none';
         document.getElementById('map-container').style.display = 'block';
-
+        document.getElementById('countries-container').style.display = 'none';
         // Start a new countdown
         startCountdown();
     }
