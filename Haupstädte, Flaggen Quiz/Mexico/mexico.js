@@ -8,7 +8,11 @@ function displayCountriesTable() {
     const columns = 4; // Number of columns in the table
     let table = '<table><tr>';
     for (let i = 0; i < countries.length; i++) {
-        table += `<td>${countries[i]}</td>`;
+        const country = countries[i];
+        const normalizedCountry = normalizeCountryName(country);
+        const isGuessed = correctCountries.map(c => normalizeCountryName(c)).includes(normalizedCountry);
+        const color = isGuessed ? 'green' : 'red';
+        table += `<td style="color: ${color}">${country}</td>`;
         if ((i + 1) % columns === 0) {
             table += '</tr><tr>';
         }
@@ -16,6 +20,7 @@ function displayCountriesTable() {
     table += '</tr></table>';
     document.getElementById('countries-container').innerHTML = table;
 }
+
 const correctCountries = [];
 let score = 0;
 let timeRemaining = 5 * 60;
@@ -82,7 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 countryElement.classList.add('not-guessed');
             }
         });
+        displayCountriesTable(); // Ensure the table is displayed at the end of the game
     }
+    
     function togglePause() {
         const pauseButton = document.getElementById('pauseButton');
         if (!isPaused && pauseCount < maxPauses) {
@@ -112,15 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function giveUp() {
         clearInterval(countdownInterval);
         const messageElement = document.getElementById('message');
-        messageElement.textContent = `Abandoaste! Nombraste ${score} estados.`;
+        messageElement.textContent = `Abandonaste! Nombraste ${score} estados.`;
         messageElement.style.display = 'block';
+        displayCountriesTable(); // Ensure the table is displayed
         document.getElementById('pauseButton').style.display = 'none';
         document.getElementById('giveUpButton').style.display = 'none';
         document.getElementById('restartButton').style.display = 'block';
         document.getElementById('pauseMessage').style.display = 'none';
         document.getElementById('map-container').style.display = 'block';
         countryInput.disabled = true; // Disable the input field
-        displayCountriesTable()
         endGame();
     }
 
@@ -147,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('pauseButton').style.display = 'block';
         document.getElementById('pauseButton').disabled = false;
         document.getElementById('pauseButton').classList.remove('play');
+        displayCountriesTable();
         document.getElementById('pauseButton').classList.add('pause');
         document.getElementById('giveUpButton').style.display = 'block';
         document.getElementById('restartButton').style.display = 'none';

@@ -6,11 +6,12 @@
     <title>Countries Quiz</title>
     <link href="../worldcountries.css" rel="stylesheet">
     <style>
-     #countries-container table {
+    #countries-container table {
         width: 100%;
         border-collapse: collapse;
         margin: 20px 0;
         font-size: 18px;
+        font-weight: bold;
         text-align: left;
     }
     #countries-container th, #countries-container td {
@@ -26,6 +27,9 @@
     #countries-container tr:hover {
         background-color: #f1f1f1;
     }
+    #countries-container p {
+        color: green;
+    }
     </style>
 </head>
 <body>
@@ -34,7 +38,7 @@
    </div>
     <div id="pauseMessage" style="display: none;"></div><br>
       <button id="imageButton"><a href="index.html">
-      <img id="logo" src="Logos/Geography.jpg" alt="Button Image" style="width: 73px; height: 70px;">
+      <img id="logo" src="../Logos/Geography.jpg" alt="Button Image" style="width: 73px; height: 70px;">
    </a></button>
     <button id="giveUpButton">Abandonar</button>
     <button id="restartButton" style="display: none;">↻</button>
