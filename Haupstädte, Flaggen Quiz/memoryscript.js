@@ -509,7 +509,7 @@ function glow(cards) {
 
     setTimeout(() => {
         cards.forEach(card => card.classList.remove('glow-green'));
-    }, 500);
+    }, 1000);
 }
 function getCountryName(flagSrc) {
     let country = selectedCountries.find(c => c.flag === flagSrc);

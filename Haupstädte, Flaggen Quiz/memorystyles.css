@@ -20,15 +20,24 @@ body {
 }
 
 .glow-green {
-    animation: glow-green 2s ease-in-out;
+    animation: glow-green 1.5s ease-in-out;
 }
 
 @keyframes glow-green {
-    from {
-        box-shadow: 0 0 5px 5px green;
+    0% {
+        box-shadow: 0 0 2px 2px green;
     }
-    to {
-        box-shadow: 0 0 0 0 green;
+    25% {
+        box-shadow: 0 0 7px 7px green;
+    }
+    50% {
+        box-shadow: 0 0 10px 10px green;
+    }
+    75% {
+        box-shadow: 0 0 7px 7px green;
+    }
+    100% {
+        box-shadow: 0 0 2px 2px green;
     }
 }
 .buttons{
