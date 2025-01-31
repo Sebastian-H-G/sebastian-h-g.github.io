@@ -1,0 +1,223 @@
+body {
+    font-family: "Funnel Sans", serif;
+    text-align: center;
+    background-color: lightblue;
+    user-select: none;
+    overflow-x: hidden;
+}
+
+.landing-container, .game-container {
+    margin-top: 20px;
+}
+
+.game-container {
+    margin-bottom: 80px;
+}
+.buttons button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 18px;
+}
+
+.glow-green {
+    animation: glow-green 2s ease-in-out;
+}
+
+@keyframes glow-green {
+    from {
+        box-shadow: 0 0 5px 5px green;
+    }
+    to {
+        box-shadow: 0 0 0 0 green;
+    }
+}
+.buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.heading {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 50px;
+    color: #333;
+    margin: 20px auto 40px;
+}
+
+#heading {
+    margin: 10px auto;
+}
+
+#imageButton {
+    position: absolute;
+    bottom:50px; 
+    left: 50%;
+    transform: translateX(-50%);
+    border: none;
+    background: none;
+    box-shadow: 0 7px 0 #d1d3c5;
+    padding: 0;
+    border-radius: 10px;
+}
+
+#imageButton:active {
+    box-shadow: 0 3px 0 #d1d3c5;
+    transform: translateX(-50%) scale(0.98); /* Preserve translateX(-50%) and add scale */
+}
+  
+  img {
+    margin: 0;
+    padding: 0;
+    display: block;
+    border-radius: 10px;
+  }
+.buttons button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 25px;
+    background-color: #7c3986;
+    color: white;
+    font-family: "Caveat", serif;
+    border: none;
+    font-weight: 900;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #5a2d5e;
+}
+#goback {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    background-color: #7c3986;
+    font-size: 14px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 5px 0 #5a2d5e;
+    cursor: pointer;
+}
+
+#goback:active {
+    box-shadow: 0 2px 0 #5a2d5e;
+    transform: translateY(3px);
+}
+#confettiCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2000000000;
+}
+
+
+@keyframes confetti-fall {
+    0% {
+      transform: translateY(-20vh) rotateZ(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotateZ(720deg);
+      opacity: 0;
+    }
+  }
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    z-index: 50000000000;
+    background-color: #f00; /* initial color */
+    pointer-events: none;
+    animation: confetti-fall 1s linear forwards;
+  }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(6, 130px);
+    grid-template-rows: repeat(4, 110px);
+    row-gap: 35px;
+    column-gap: 25px;
+    margin: 20px auto;
+    justify-content: center;
+}
+
+.card {
+    width: 130px;
+    height: 130px;
+    box-shadow: 0 5px 0 gray;
+    background-color: #aeabab;
+    border-radius: 8px;
+    font-weight: bold;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    border-radius: 6px;
+    transition: transform 0.5s;
+    box-shadow: 0 5px 0 gray;
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border-radius: 8px;
+}
+
+.card-back {
+    background-image: url('Logos/Memory.webp'); 
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.card-front {
+    background-color: white;
+    transform: rotateY(180deg);
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    height: 40%;
+    font-size: 45px;
+    font-family: "Caveat", serif;
+    margin: 0 auto;
+    transform: translate(-50%, -50%);
+    background: lightcoral;
+    padding: 20px;
+    color: white;
+    box-shadow: 0px 10px 30px gray;
+    text-align: center;
+    font-weight: 900;
+    z-index: 1000;
+    border-radius: 10px;
+}
+
+
+.restart-btn {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 18px;
+    background-color: #7c3986;
+    color: white;
+    border: none;
+    font-weight: 900;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #5a2d5e;
+}

@@ -512,3 +512,4 @@ bottom: 0;
   animation: animateBg 8s linear infinite;
   z-index: 0; /* Ensure it's behind the footer content */
 }
+}

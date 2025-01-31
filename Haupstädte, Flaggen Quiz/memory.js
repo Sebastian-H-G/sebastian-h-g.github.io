@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const maxPairs = 12;
     let cardsArray = [];
+    let pairFound = false;
     let currentPlayer = 1;
     let player1Score = 0;
     let player2Score = 0;
@@ -131,8 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isMatch) {
             disableCards();
             updateScore();
+            pairFound = true;
         } else {
             unflipCards();
+            pairFound = false;
+            switchTurn();
         }
     }
 
@@ -228,7 +232,7 @@ function createConfetti() {
         }
     } else {
         winnerMessage = `
-            <h2>🏆 Congratulations, you won! 🏆</h2>
+            <h2>🏆 Congratulations, you found all pairs! 🏆</h2>
             <img src="Bilder/win.png" alt="Winner" class="win-image"><br>
             <button id="restart-btn">Restart Game</button>
         `;
@@ -260,11 +264,22 @@ function createConfetti() {
         status.classList.remove('hidden');
         board.classList.remove('hidden');
         createBoard();
+    
+        if (!isTwoPlayerMode) {
+            document.getElementById('current-turn').style.display = 'none'; // Hide current player display
+            document.getElementById('switch-turn-btn').style.display = 'none'; // Hide switch turn button
+        } else {
+            document.getElementById('current-turn').style.display = 'block'; // Show current player display
+            document.getElementById('switch-turn-btn').style.display = 'block'; // Show switch turn button
+        }
     }
-  function switchTurn() {
-  currentPlayer = (currentPlayer === 1) ? 2 : 1;
-  currentPlayerElement.textContent = `Player ${currentPlayer}`;
-}
+    function switchTurn() {
+        if (!pairFound) {
+            currentPlayer = (currentPlayer === 1) ? 2 : 1;
+            currentPlayerElement.textContent = `Player ${currentPlayer}`;
+        }
+        pairFound = false; // Reset the flag for the next turn
+    }
 
 // Attach event listener
 switchTurnBtn.addEventListener('click', switchTurn);

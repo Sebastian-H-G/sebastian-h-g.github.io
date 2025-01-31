@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="memorystyles.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1 id="heading1">Memory Game</h1>
+        <h2 id="current-continent">Continent: </h2>
+        <button id="goback" onclick="goBack()">Back to Menu</button>
+        <div class="grid"></div>
+    </div>
+
+    <div id="win-modal" class="modal" style="display: none;">
+        <p>🎉Congratulations! 🎉 You found all pairs! 👏</p>
+        <button class="restart-btn" onclick="restartGame()">Play Again</button>
+    </div>
+    <canvas id="confettiCanvas"></canvas>
+    <script src="memoryscript.js"></script>
+</body>
+</html>

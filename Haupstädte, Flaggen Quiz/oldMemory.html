@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <link rel="stylesheet" href="memory.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="mode-selection" class="mode-selection">
+      <h1 id="memory-heading1"><u>MEMORY</u></h1>
+	  <div class="controls">
+            <label for="continent-select">Select Continent:</label>
+            <select id="continent-select" onchange="startQuiz()">
+                <option value="all">All</option>
+                <option value="africa">Africa</option>
+                <option value="europe">Europe</option>
+                <option value="asia">Asia</option>
+                <option value="north america">North America</option>
+                <option value="south america">South America</option>
+                <option value="oceania">Oceania</option>
+            </select>
+        </div>
+        <h2 id="memory-heading2">Choose Game Mode</h2>
+        <button id="single-player-btn" class="sophisticated-button">Single Player</button>
+        <button id="two-player-btn" class="sophisticated-button">Two Player</button>
+		
+		<footer class="footer" data-aos="fade-up">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <a href="index.html"><img src="Logos/Memory.jpg" alt="Company Logo"></a>
+    </div>
+    <div class="footer-info">
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+    </div> 
+    <div id="game-board" class="board hidden">
+  <h1 id="memory-heading3">Europe Flags Memory</h1></div>
+    <div id="status" class="hidden">
+        <p id="current-turn">Current Turn: <span id="current-player">Player 1</span></p>
+        <button id="switch-turn-btn" style="display: none;">Switch Turn</button><br>
+        <button id="return-to-mode-btn">Return to Mode Selection</button>
+    </div>
+    <div id="win-message" class="win-message hidden">
+        <h2 id="winner-message">Congratulations!</h2>
+        <button id="restart-btn">Restart Game</button>
+    </div>
+  <canvas id="confettiCanvas"></canvas>
+    <script src="memory.js"></script>
+</body>
+</html> 
