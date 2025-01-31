@@ -144,6 +144,7 @@ body {
     grid-template-rows: repeat(2, 150px);
     row-gap: 35px;
     column-gap: 25px;
+    width: 90%;
     margin: 20px auto;
     justify-content: center;
 }
@@ -262,8 +263,8 @@ body {
         background-color: #6a2d76;
     }
     .grid {
-        grid-template-columns: repeat(6, 150px);
-        grid-template-rows: repeat(6, 150px);
+        grid-template-columns: repeat(6, 175px);
+        grid-template-rows: repeat(6, 175px);
         row-gap: 25px;
         column-gap: 20px;
     }
@@ -271,7 +272,7 @@ body {
         margin: 20px;
     }
     .card {
-        width: 150px;
-        height: 150px;
+        width: 175px;
+        height: 175px;
     }
 }
