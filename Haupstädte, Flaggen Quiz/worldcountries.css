@@ -201,7 +201,28 @@ svg path {
 }
 
 
+#imageButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 20px auto 0 30px;
+  border: none;
+  background: none;
+  box-shadow: 0 7px 0 #d1d3c5;
+  padding: 0;
+  border-radius: 7px;
+}
+#imageButton:active {
+  box-shadow: 0 3px 0 #d1d3c5;
+  transform: scale(0.98); /* Slightly shrinks */
+}
 
+img {
+  margin: 0;
+  padding: 0;
+  display: block;
+  border-radius: 7px;
+}
 
 /* Style for the container holding all tables */
 #continentTables {
@@ -263,3 +284,35 @@ svg path {
 }
 
 
+/* iPhone 15 Portrait Mode */
+@media only screen and (max-width: 393px) and (max-height: 852px) and (orientation: portrait) {
+  body {
+      font-size: 14px; /* Adjust font size */
+  }
+  h1 {
+      font-size: 2rem; /* Adjust heading size */
+      margin-top: 20px; /* Add more space */
+  }
+  #countryInput {
+      width: 250px; /* Adjust input width */
+  }
+  .flexbox {
+      flex-direction: column; /* Stack items vertically */
+  }
+}
+
+/* iPhone 15 Landscape Mode */
+@media only screen and (max-width: 852px) and (max-height: 393px) and (orientation: landscape) {
+  body {
+      font-size: 16px; /* Adjust font size */
+  }
+  h1 {
+      font-size: 2.5rem; /* Adjust heading size */
+  }
+  #countryInput {
+      width: 300px; /* Adjust input width */
+  }
+  .flexbox {
+      flex-direction: row; /* Align items horizontally */
+  }
+}

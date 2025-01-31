@@ -450,12 +450,18 @@ document.addEventListener('DOMContentLoaded', () => {
         isPaused = false;
         score = 0;
         timeRemaining = 15 * 60;
+        document.getElementById('pauseMessage').style.display = 'none';
         correctCountries.length = 0;
-
+        // Reset the color of all country paths to their default
+        const countryPaths = document.querySelectorAll('path'); // Select all path elements
+        countryPaths.forEach(path => {
+        path.style.fill = '#FFF990'; // Reset to default color
+        });
         // Reset UI elements
         countryInput.disabled = false;
         countryInput.value = '';
-        scoreBoard.textContent = 'Score: 0';
+        document.getElementById('continentTables').style.display = 'none';
+        scoreBoard.textContent = 'Score: 0 / 196';
         timerElement.textContent = '15:00';
         document.getElementById('message').style.display = 'none';
         document.getElementById('pauseButton').style.display = 'block';
