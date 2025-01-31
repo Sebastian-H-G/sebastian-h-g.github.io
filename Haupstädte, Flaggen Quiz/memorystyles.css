@@ -263,8 +263,8 @@ body {
         background-color: #6a2d76;
     }
     .grid {
-        grid-template-columns: repeat(6, 250px);
-        grid-template-rows: repeat(6, 250px);
+        grid-template-columns: repeat(4, 100px);
+        grid-template-rows: repeat(6, 100px);
         row-gap: 25px;
         column-gap: 20px;
     }
@@ -272,7 +272,7 @@ body {
         margin: 20px;
     }
     .card {
-        width: 250px;
-        height: 250px;
+        width: 100px;
+        height: 100px;
     }
 }
