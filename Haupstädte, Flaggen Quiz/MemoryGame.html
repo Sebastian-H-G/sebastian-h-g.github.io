@@ -22,7 +22,10 @@
 
     <div id="win-modal" class="modal" style="display: none;">
         <p>🎉Congratulations! 🎉 You found all pairs! 👏</p>
-        <button class="restart-btn" onclick="restartGame()">Play Again</button>
+        <div class="modal-content">    
+            <img class="image" onclick="createConfetti()" src="Bilder/memory win.png" alt="winning pic">
+            <img class="image" onclick="restartGame()" src="Bilder/play again.png" alt="play again pic">
+        </div>
     </div>
     <canvas id="confettiCanvas"></canvas>
     <script src="memoryscript.js"></script>

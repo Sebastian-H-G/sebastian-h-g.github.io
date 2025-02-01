@@ -372,6 +372,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    function checkAllStatesGuessed() {
+        return correctCountries.length === countries.length;
+    }
+    
     function startCountdown() {
         countdownInterval = setInterval(() => {
             if (!isPaused) {
@@ -380,10 +384,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 const seconds = timeRemaining % 60;
                 timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     
-                if (timeRemaining <= 0) {
+                if (timeRemaining <= 0 || checkAllStatesGuessed()) {
                     clearInterval(countdownInterval);
                     const messageElement = document.getElementById('message');
-                    messageElement.textContent = `Time is up! You named ${score} countries.`;
+                    const giveUpButton = document.getElementById('giveUpButton');
+                    
+                    if (checkAllStatesGuessed()) {
+                        createConfetti();
+                        messageElement.textContent = `Congratulations! 👏 You named all countries. 🎉`;
+                        messageElement.style.color = 'green';
+                        showTables();
+                        messageElement.classList.add('congrats-animation');
+                        setTimeout(() => {
+                            messageElement.classList.remove('congrats-animation');
+                        }, 1500);
+    
+                        // Change "Give Up" button to "Restart" button
+                        giveUpButton.textContent = 'Restart';
+                        giveUpButton.onclick = () => location.reload();
+                    } else {
+                        messageElement.textContent = `Time is up! You named ${score} countries.`;
+                        giveUpButton.disabled = true;
+                    }
+                    
                     messageElement.style.display = 'block';
                     countryInput.disabled = true;
                     endGame();
@@ -392,8 +415,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }, 1000);
+    }   
+    // Confetti animation function
+function createConfetti() {
+    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+
+    function createPiece() {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti');
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = Math.random() * 20 + 'px';
+        piece.style.height = Math.random() * 20 + 'px';
+        piece.style.left = (Math.random() * window.innerWidth) + 'px';
+        piece.style.top = '-20px';
+        piece.style.animationDuration = '2s'; // Set animation duration to 3 seconds
+        document.body.appendChild(piece);
+        piece.addEventListener('animationend', function() {
+            piece.parentNode.removeChild(piece);
+        });
     }
-    
+
+    // Adjust the number of confetti pieces
+    const totalPieces = 700;
+    const interval = 5; // milliseconds
+
+    let i = 0;
+    let intervalId = setInterval(function() {
+        createPiece();
+        i++;
+        if (i >= totalPieces) {
+            clearInterval(intervalId);
+        }
+    }, interval);
+}
     function endGame() {
         countries.forEach(country => {
             const countryElement = document.querySelector(`[title="${country}"]`);

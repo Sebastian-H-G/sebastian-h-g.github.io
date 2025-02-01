@@ -8,7 +8,8 @@
 
 body {
 	-webkit-overflow-scrolling: touch;
-	-webkit-user-select: none; /* Prevent text selection */
+    user-select: none; /* Prevent text selection */
+    -webkit-user-select: none; /* Prevent text selection */
 	-webkit-touch-callout: none; /* Disable long-press action (share menu) */
     font-family: Arial, sans-serif;
     background-color: #f0f2f5;

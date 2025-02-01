@@ -58,6 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    function checkAllStatesGuessed() {
+        return correctCountries.length === countries.length;
+    }
+    
     function startCountdown() {
         countdownInterval = setInterval(() => {
             if (!isPaused) {
@@ -66,20 +70,70 @@ document.addEventListener('DOMContentLoaded', () => {
                 const seconds = timeRemaining % 60;
                 timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     
-                if (timeRemaining <= 0) {
+                if (timeRemaining <= 0 || checkAllStatesGuessed()) {
                     clearInterval(countdownInterval);
                     const messageElement = document.getElementById('message');
-                    messageElement.textContent = `El tiempo se ha acabado! Nombraste ${score} estados.`;
+                    const giveUpButton = document.getElementById('giveUpButton');
+                    
+                    if (checkAllStatesGuessed()) {
+                        createConfetti();
+                        messageElement.textContent = `Felicidades! 👏 Has nombrado correctamente todos los estados. 🎉`;
+                        messageElement.style.color = 'green';
+                        displayCountriesTable();
+                        messageElement.classList.add('congrats-animation');
+                        setTimeout(() => {
+                            messageElement.classList.remove('congrats-animation');
+                        }, 1500);
+    
+                        // Change "Give Up" button to "Restart" button
+                        giveUpButton.textContent = 'Reiniciar';
+                        giveUpButton.onclick = () => location.reload();
+                    } else {
+                        messageElement.textContent = `El tiempo ha acabado! Nombraste ${score} estados.`;
+                        giveUpButton.disabled = true;
+                    }
+                    
                     messageElement.style.display = 'block';
                     countryInput.disabled = true;
                     endGame();
                     // Disable the input field
-                    displayCountriesTable()
+                    displayCountriesTable();
                 }
             }
         }, 1000);
+    } 
+   // Confetti animation function
+   function createConfetti() {
+    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+
+    function createPiece() {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti');
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = Math.random() * 20 + 'px';
+        piece.style.height = Math.random() * 20 + 'px';
+        piece.style.left = (Math.random() * window.innerWidth) + 'px';
+        piece.style.top = '-20px';
+        piece.style.animationDuration = '2s'; // Set animation duration to 3 seconds
+        document.body.appendChild(piece);
+        piece.addEventListener('animationend', function() {
+            piece.parentNode.removeChild(piece);
+        });
     }
-    
+
+    // Adjust the number of confetti pieces
+    const totalPieces = 700;
+    const interval = 5; // milliseconds
+
+    let i = 0;
+    let intervalId = setInterval(function() {
+        createPiece();
+        i++;
+        if (i >= totalPieces) {
+            clearInterval(intervalId);
+        }
+    }, interval);
+}
     function endGame() {
         countries.forEach(country => {
             const countryElement = document.querySelector(`[title="${country}"]`);
@@ -121,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageElement = document.getElementById('message');
         messageElement.textContent = `Abandonaste! Nombraste ${score} estados.`;
         messageElement.style.display = 'block';
+        countryInput.value = ''; // Clear the input field
         displayCountriesTable(); // Ensure the table is displayed
         document.getElementById('pauseButton').style.display = 'none';
         document.getElementById('giveUpButton').style.display = 'none';
@@ -132,39 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function restartGame() {
-        // Reset game state
-        clearInterval(countdownInterval);
-        pauseCount = 0;
-        isPaused = false;
-        score = 0;
-        timeRemaining = 5 * 60;
-        correctCountries.length = 0; // Clear the correct countries
-    
-        // Reset the color of all country paths to their default
-        const countryPaths = document.querySelectorAll('path'); // Select all path elements
-        countryPaths.forEach(path => {
-            path.classList.remove('correct', 'not-guessed'); // Remove any existing classes
-            path.style.fill = '#FFF990'; // Reset to default color
-        });
-    
-        // Reset UI elements
-        countryInput.disabled = false;
-        countryInput.value = '';
-        scoreBoard.textContent = 'Score: 0 / 32';
-        timerElement.textContent = '5:00';
-        document.getElementById('message').style.display = 'none';
-        document.getElementById('pauseButton').style.display = 'block';
-        document.getElementById('pauseButton').disabled = false;
-        document.getElementById('pauseButton').classList.remove('play');
-        document.getElementById('pauseButton').classList.add('pause');
-        document.getElementById('giveUpButton').style.display = 'block';
-        document.getElementById('restartButton').style.display = 'none';
-        document.getElementById('map-container').style.display = 'block';
-        document.getElementById('countries-container').style.display = 'none';
-        document.getElementById('pauseMessage').style.display = 'none';
-    
-        // Start a new countdown
-        startCountdown();
+        location.reload();
     }
 
     document.getElementById('pauseButton').addEventListener('click', togglePause);
