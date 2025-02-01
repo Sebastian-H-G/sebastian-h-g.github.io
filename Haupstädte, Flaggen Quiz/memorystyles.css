@@ -305,6 +305,19 @@ footer {
         width: 100px;
         height: 100px;
     }
+    .image {
+        width: 200px;
+        height: 200px;
+    }
+    .modal-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .modal {
+        width: 80%;
+        height: 80%;
+        font-size: 37px;
+    }
 }
 
 /* iPhone 15 Landscape Mode */
