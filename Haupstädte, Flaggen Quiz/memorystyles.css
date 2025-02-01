@@ -315,7 +315,7 @@ footer {
     }
     .modal {
         width: 80%;
-        height: 80%;
+        height: 60%;
         font-size: 37px;
     }
 }
@@ -340,5 +340,19 @@ footer {
     .card {
         width: 100px;
         height: 100px;
+    }
+    
+    .image {
+        width: 200px;
+        height: 200px;
+    }
+    .modal-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .modal {
+        width: 80%;
+        height: 60%;
+        font-size: 37px;
     }
 }
