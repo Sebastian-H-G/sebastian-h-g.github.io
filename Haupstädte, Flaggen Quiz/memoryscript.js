@@ -414,7 +414,7 @@ const countries = {
     ]
      
 };
-const MAX_PAIRS = 1;
+const MAX_PAIRS = 12;
 let continent = localStorage.getItem('continent') || 'world';
 let selectedCountries = shuffle(countries[continent]).slice(0, MAX_PAIRS);
 
