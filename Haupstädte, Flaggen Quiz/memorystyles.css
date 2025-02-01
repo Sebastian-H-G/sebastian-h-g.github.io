@@ -140,8 +140,8 @@ body {
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(6, 175px);
-    grid-template-rows: repeat(4, 175px);
+    grid-template-columns: repeat(6, 200px);
+    grid-template-rows: repeat(4, 200px);
     row-gap: 35px;
     column-gap: 25px;
     margin: 20px auto;
@@ -149,8 +149,8 @@ body {
 }
 
 .card {
-    width: 175px;
-    height: 175px;
+    width: 200px;
+    height: 200px;
     box-shadow: 0 5px 0 gray;
     background-color: #aeabab;
     border-radius: 8px;
