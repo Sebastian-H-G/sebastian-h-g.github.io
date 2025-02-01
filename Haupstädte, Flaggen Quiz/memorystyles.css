@@ -241,8 +241,8 @@ body {
         margin: 20px;
     }
     .grid {
-        grid-template-columns: repeat(2, 100px);
-        grid-template-rows: repeat(8, 100px);
+        grid-template-columns: repeat(4, 100px);
+        grid-template-rows: repeat(6, 100px);
         row-gap: 25px;
         column-gap: 20px;
     }
