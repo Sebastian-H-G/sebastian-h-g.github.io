@@ -140,8 +140,8 @@ body {
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(8, 175px);
-    grid-template-rows: repeat(3, 175px);
+    grid-template-columns: repeat(6, 175px);
+    grid-template-rows: repeat(4, 175px);
     row-gap: 35px;
     column-gap: 25px;
     margin: 20px auto;
