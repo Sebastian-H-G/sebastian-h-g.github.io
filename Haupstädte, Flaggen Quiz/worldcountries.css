@@ -270,7 +270,7 @@ footer {
   padding: 20px;
 	width: 100vw;
   background-color: rgb(205, 90, 90);
-  margin-top: 100px;
+
   position: relative;
 	margin-top: 50px;
   bottom: 0;
@@ -327,6 +327,9 @@ footer {
       width: 250px; /* Adjust input width */
       padding: 8px; /* Adjust padding */
   }
+  footer{
+    margin-top: 100px;
+  }
 
 }
 
@@ -341,7 +344,8 @@ footer {
   #countryInput {
       width: 300px; /* Adjust input width */
   }
-  .flexbox {
-      flex-direction: row; /* Align items horizontally */
+  footer{
+    margin-top: 100px;
   }
+
 }
