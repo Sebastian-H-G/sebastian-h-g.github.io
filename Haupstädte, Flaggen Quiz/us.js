@@ -23,7 +23,7 @@ const countries = [
         
         const correctCountries = [];
         let score = 0;
-        let timeRemaining = 5 * 60;
+        let timeRemaining = 5;
         
         const countryInput = document.getElementById('countryInput');
         const scoreBoard = document.getElementById('scoreBoard');
@@ -49,7 +49,7 @@ const countries = [
         document.addEventListener('DOMContentLoaded', () => {
             let countdownInterval;
             let pauseCount = 0;
-            const maxPauses = 1;
+            const maxPauses = 2;
             let isPaused = false;
             function endGame() {
                 countries.forEach(country => {
@@ -79,21 +79,22 @@ const countries = [
                                 createConfetti();
                                 messageElement.textContent = `Congratulations! 👏 You named all states correctly. 🎉`;
                                 messageElement.style.color = 'green';
+                                pauseButton.style.display = 'none';
                                 displayCountriesTable();
                                 messageElement.classList.add('congrats-animation');
                                 setTimeout(() => {
                                     messageElement.classList.remove('congrats-animation');
                                 }, 1500);
-                                if (navigator.vibrate) {
-                                    console.log('Vibration triggered'); // Add this line for debugging
-                                    navigator.vibrate(200); // Vibrate for 200 milliseconds
-                                }
+                                
                                 // Change "Give Up" button to "Restart" button
                                 giveUpButton.textContent = 'Restart';
                                 giveUpButton.onclick = () => location.reload();
                             } else {
                                 messageElement.textContent = `Time is up! You named ${score} states.`;
-                                giveUpButton.disabled = true;
+                                // Change "Give Up" button to "Restart" button
+                                giveUpButton.textContent = 'Restart';
+                                giveUpButton.onclick = () => location.reload();
+                                pauseButton.style.display = 'none';
                             }
                             
                             messageElement.style.display = 'block';

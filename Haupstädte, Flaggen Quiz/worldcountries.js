@@ -395,6 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         createConfetti();
                         messageElement.textContent = `Congratulations! 👏 You named all countries. 🎉`;
                         messageElement.style.color = 'green';
+                        pauseButton.style.display = 'none';
                         showTables();
                         messageElement.classList.add('congrats-animation');
                         setTimeout(() => {
@@ -409,7 +410,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         giveUpButton.onclick = () => location.reload();
                     } else {
                         messageElement.textContent = `Time is up! You named ${score} countries.`;
-                        giveUpButton.disabled = true;
+                        giveUpButton.textContent = 'Restart';
+                        giveUpButton.onclick = () => location.reload();
+                        pauseButton.style.display = 'none';
                     }
                     
                     messageElement.style.display = 'block';

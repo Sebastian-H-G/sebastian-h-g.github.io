@@ -79,6 +79,7 @@ const countries = [
                             createConfetti();
                             messageElement.textContent = `Herzlichen Glückwunsch! 👏 Du hast alle Bundesländer richtig genannt. 🎉`;
                             messageElement.style.color = 'green';
+                            pauseButton.style.display = 'none';
                             displayCountriesTable();
                             messageElement.classList.add('congrats-animation');
                             setTimeout(() => {
@@ -93,7 +94,9 @@ const countries = [
                             giveUpButton.onclick = () => location.reload();
                         } else {
                             messageElement.textContent = `Die Zeit ist um! Du hast ${score} Bundesländer gennant.`;
-                            giveUpButton.disabled = true;
+                            giveUpButton.textContent = 'Neustart';
+                            giveUpButton.onclick = () => location.reload();
+                            pauseButton.style.display = 'none';
                         }
                         
                         messageElement.style.display = 'block';

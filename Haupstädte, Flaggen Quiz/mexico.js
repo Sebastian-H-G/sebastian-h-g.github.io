@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         createConfetti();
                         messageElement.textContent = `Felicidades! 👏 Has nombrado correctamente todos los estados. 🎉`;
                         messageElement.style.color = 'green';
+                        pauseButton.style.display = 'none';
                         displayCountriesTable();
                         messageElement.classList.add('congrats-animation');
                         setTimeout(() => {
@@ -94,7 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         giveUpButton.onclick = () => location.reload();
                     } else {
                         messageElement.textContent = `El tiempo ha acabado! Nombraste ${score} estados.`;
-                        giveUpButton.disabled = true;
+                        giveUpButton.textContent = 'Reiniciar';
+                        giveUpButton.onclick = () => location.reload();
+                        pauseButton.style.display = 'none';
                     }
                     
                     messageElement.style.display = 'block';
