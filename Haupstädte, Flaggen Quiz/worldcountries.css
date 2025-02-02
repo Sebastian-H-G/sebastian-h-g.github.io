@@ -321,14 +321,14 @@ footer {
   }
   h1 {
       font-size: 2rem; /* Adjust heading size */
-      margin-top: 20px; /* Add more space */
+      margin-top: 50px; /* Add more space */
   }
   #countryInput {
       width: 250px; /* Adjust input width */
       padding: 8px; /* Adjust padding */
   }
   footer{
-    margin-top: 100px;
+    margin-top: 600px;
   }
 
 }
