@@ -293,9 +293,6 @@ function createTables() {
             const cell = document.createElement('td');
             cell.textContent = country;
             const normalizedCountry = normalizeCountryName(country);
-            if (!correctCountries.includes(normalizedCountry)) {
-                cell.classList.add('missed');
-            }
             row.appendChild(cell);
             table.appendChild(row);
         });
@@ -317,9 +314,6 @@ function createTables() {
             const cell = document.createElement('td');
             cell.textContent = country;
             const normalizedCountry = normalizeCountryName(country);
-            if (!correctCountries.includes(normalizedCountry)) {
-                cell.classList.add('missed');
-            }
             row.appendChild(cell);
             table.appendChild(row);
         });
@@ -327,7 +321,7 @@ function createTables() {
         container.appendChild(table);
     });
 
-    document.body.appendChild(container);
+    document.getElementById('results').appendChild(container);
 }
 
 function showTables() {
