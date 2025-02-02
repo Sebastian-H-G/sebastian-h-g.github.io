@@ -400,7 +400,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         setTimeout(() => {
                             messageElement.classList.remove('congrats-animation');
                         }, 1500);
-    
+                        if (navigator.vibrate) {
+                            console.log('Vibration triggered'); // Add this line for debugging
+                            navigator.vibrate(200); // Vibrate for 200 milliseconds
+                        }
                         // Change "Give Up" button to "Restart" button
                         giveUpButton.textContent = 'Restart';
                         giveUpButton.onclick = () => location.reload();
