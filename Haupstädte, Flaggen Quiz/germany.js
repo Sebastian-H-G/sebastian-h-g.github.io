@@ -149,6 +149,22 @@ function createConfetti() {
         }
     }, interval);
 }
+    // Add event listener for keydown to detect Control + X
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === 'x') {
+            isPaused = !isPaused; // Toggle the timerRunning variable
+            pauseButton.disabled = true;
+            if (timerRunning) {
+                startTimer();
+            } else {
+                stopTimer();
+            }
+        }
+    });
+    
+    function stopTimer() {
+        isPaused = true;
+    }
         function togglePause() {
             const pauseButton = document.getElementById('pauseButton');
             if (!isPaused && pauseCount < maxPauses) {
