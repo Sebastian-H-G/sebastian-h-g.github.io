@@ -1,5 +1,6 @@
 const countries = [
-    "Alabama",  ];
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+ ];
         function normalizeCountryName(name) {
             return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '').toLowerCase();
         }
@@ -159,26 +160,6 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
-    function addStateLabels() {
-        function getPathCenter(path) {
-            let bbox = path.getBBox(); // Get bounding box of the shape
-            return { x: bbox.x + bbox.width / 2, y: bbox.y + bbox.height / 2 };
-        }
-
-        const statePaths = document.querySelectorAll("path"); // Get all state paths
-        statePaths.forEach(state => {
-            let center = getPathCenter(state);
-            
-            let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            text.setAttribute("x", center.x);
-            text.setAttribute("y", center.y);
-            text.setAttribute("font-size", "16");
-            text.setAttribute("text-anchor", "middle");
-            text.setAttribute("fill", "black");
-            text.textContent = state.id; // Set text to state ID or name
-            document.getElementById("map").appendChild(text);
-        });
-    }
 
 function stopTimer() {
     isPaused = true;
