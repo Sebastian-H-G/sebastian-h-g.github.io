@@ -80,7 +80,6 @@ const countries = [
                                 messageElement.textContent = `Congratulations! 👏 You named all states correctly. 🎉`;
                                 messageElement.style.color = 'green';
                                 pauseButton.style.display = 'none';
-                                addStateLabels();
                                 displayCountriesTable();
                                 messageElement.classList.add('congrats-animation');
                                 setTimeout(() => {
