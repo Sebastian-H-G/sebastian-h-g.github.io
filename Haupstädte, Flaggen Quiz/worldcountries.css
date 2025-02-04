@@ -314,6 +314,15 @@ footer {
   color: rgba(255, 255, 255, 0.8);
 }
 
+#showlabels {
+  position: absolute;
+  z-index: 100000;
+  top: 0;
+  left: 0;
+  margin: 10px;
+  font-size: 24px;
+}
+
 /* iPhone 15 Portrait Mode */
 @media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
   body {

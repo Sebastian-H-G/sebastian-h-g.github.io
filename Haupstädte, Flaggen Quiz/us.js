@@ -147,6 +147,43 @@ const countries = [
             }
         }, interval);
     }
+    function getCentroid(path) {
+        let length = path.getTotalLength();
+        let numPoints = 1500; // Increase for better accuracy
+        let sumX = 0, sumY = 0;
+
+        for (let i = 0; i < numPoints; i++) {
+            let point = path.getPointAtLength((i / numPoints) * length);
+            sumX += point.x;
+            sumY += point.y;
+        }
+
+        return { x: sumX / numPoints, y: sumY / numPoints };
+    }
+
+    function addStateLabels() {
+        const statePaths = document.querySelectorAll("path");
+        statePaths.forEach(state => {
+            let center = getCentroid(state);
+            
+            let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", center.x);
+            text.setAttribute("y", center.y);
+            text.setAttribute("font-size", "5");
+            text.setAttribute("fill", "black");
+            text.setAttribute("dominant-baseline", "middle");
+            text.textContent = state.id;
+
+            document.getElementById("map").appendChild(text);
+
+            // Adjust text horizontally based on its width
+            let textWidth = text.getComputedTextLength();
+            text.setAttribute("x", center.x - textWidth / 2);
+        });
+    }
+
+
+
     // Add event listener for keydown to detect Control + X
 document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'x') {
@@ -159,7 +196,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
-
+document.getElementById('showlabels').addEventListener('click', addStateLabels);
 function stopTimer() {
     isPaused = true;
 }
