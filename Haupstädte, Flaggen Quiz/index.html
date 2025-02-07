@@ -114,8 +114,38 @@
         #dialogWrap {
     display: none; /* Hide the password prompt initially */
 }
-
     </style>
+    <script>
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('service-worker.js').then(() => {
+            console.log('Service Worker Registered');
+          });
+        }
+  
+        async function checkPassword() {
+          if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({ action: 'getPassword' });
+          }
+        }
+  
+        navigator.serviceWorker.addEventListener('message', (event) => {
+          if (event.data && event.data.password) {
+            decryptPage(event.data.password);
+          }
+        });
+  
+        function savePassword(password) {
+          if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({ action: 'setPassword', password });
+          }
+        }
+  
+        function decryptPage(password) {
+          console.log('Decrypting with password:', password);
+          document.getElementById('dialogWrap').style.display = 'none';
+          document.getElementById('logoutButton').style.display = 'block';
+        }
+      </script>
   </head>
   <body>
     <button id="logoutButton" style="display: none;">Logout</button>
