@@ -24,13 +24,17 @@
 <link rel="apple-touch-icon" sizes="152x152" href="Logos/Capital-152x152.webp">
 <link rel="apple-touch-icon" sizes="180x180" href="Logos/Capital-180x180.webp">
 <script>
-(function() {
-    if (!localStorage.getItem("firstLogin")) {
-        window.location.href = "index.html"; // Redirect if not authenticated
-    }
-})();
+    (function() {
+        // Check if a password is stored (sessionStorage or localStorage)
+        const storedPassword = sessionStorage.getItem("pagecrypt_pass"); // Use localStorage if login should persist after closing the browser.
 
+        if (!storedPassword) {
+            // Redirect to the index.html in the same folder
+            window.location.href = "index.html"; // Adjust if necessary
+        }
+    })();
 </script>
+
 
 
 </head>

@@ -9,13 +9,17 @@
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="river-length-sort.css">
 <script>
-(function() {
-    if (!localStorage.getItem("firstLogin")) {
-        window.location.href = "index.html"; // Redirect if not authenticated
-    }
-})();
+    (function() {
+        // Check if a password is stored (sessionStorage or localStorage)
+        const storedPassword = sessionStorage.getItem("pagecrypt_pass"); // Use localStorage if login should persist after closing the browser.
 
+        if (!storedPassword) {
+            // Redirect to the index.html in the same folder
+            window.location.href = "index.html"; // Adjust if necessary
+        }
+    })();
 </script>
+
 
 
 
