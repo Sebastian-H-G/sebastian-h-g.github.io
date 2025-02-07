@@ -25,39 +25,11 @@
 <link rel="apple-touch-icon" sizes="114x114" href="Logos/Geography-114x114.webp">
 <link rel="apple-touch-icon" sizes="152x152" href="Logos/Geography-152x152.webp">
 <link rel="apple-touch-icon" sizes="180x180" href="Logos/Geography-180x180.webp">
-<script>
-    (function() {
-      if (!localStorage.getItem("authenticated")) {
-        window.location.href = "index.html"; // Redirect if not authenticated
-      }
-    })();
-  </script>
-  <style>
-#logoutbtn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 10px 20px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-#logoutbtn:hover {
-    background-color: #d32f2f;
-}
-#logoutbtn:focus {
-    outline: none;
-}
-    </style>
+
 </head>
 <body>
 
 <header>
-    <button id="logoutbtn" onclick="logout()">Log Out</button>
     <div class="logo">
         <img src="Logos/Geography.webp" alt="Geography Quiz Logo">
     </div>
@@ -236,7 +208,7 @@ Germany</a></li>
                 <p>How Well Do You Know the World’s People? Take the Quiz!</p>
             </div>
         </div>
-      <a href="Population_Quiz.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>a>
+      <a href="Population_Quiz.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 	<section id="deserts-and-forests" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
@@ -329,13 +301,6 @@ Germany</a></li>
     </div>
   </div>
 </footer>
-<script>
-    function logout() {
-      localStorage.removeItem("authenticated");
-      window.location.href = "index.html"; // Redirect to login page
-    }
-  </script>
-<!-- Initialize Swiper -->
 
 	<script>
 if ('serviceWorker' in navigator) {
