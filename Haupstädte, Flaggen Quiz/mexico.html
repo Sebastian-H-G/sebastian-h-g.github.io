@@ -99,6 +99,13 @@
 }
 
     </style>
+	<script>
+  (function() {
+    if (!localStorage.getItem("authenticated")) {
+      window.location.href = "index.html"; // Redirect if not authenticated
+    }
+  })();
+</script>
 </head>
 <body>
     <h1>Estados de Mexico</h1>

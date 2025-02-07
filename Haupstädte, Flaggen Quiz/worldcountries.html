@@ -48,6 +48,13 @@
     animation: confetti-fall 1s linear forwards;
   }
     </style>
+		<script>
+  (function() {
+    if (!localStorage.getItem("authenticated")) {
+      window.location.href = "index.html"; // Redirect if not authenticated
+    }
+  })();
+</script>
 </head>
 <body>
     <h1>Countries of the World Quiz</h1>
@@ -1103,6 +1110,7 @@
           
           </div>
   </footer>
+
     <script src="worldcountries.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@9.4.0/dist/panzoom.min.js"></script>
 
