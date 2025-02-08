@@ -23,7 +23,28 @@ body {
        5px 5px 0 #444;
  transition: transform 0.3s ease-in-out;
  } 
-
+/* Page transition animations */
+.page-enter {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  
+  .page-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+  
+  .page-exit {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .page-exit-active {
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: opacity 0.4s ease-in, transform 0.4s ease-in;
+  }
 #memory-heading1 {
   font-family: 'Abril Fatface', cursive;
   font-size: 4.5em;

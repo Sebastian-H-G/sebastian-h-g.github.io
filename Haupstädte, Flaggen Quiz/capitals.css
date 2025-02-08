@@ -24,6 +24,30 @@ body {
 	font-weight: 600;
 	color: #00796b; /* Teal color */
 }
+/* Page enters - starts off-screen and fades in */
+.page-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 1s ease-out, transform 1s ease-out;  /* Slower animation */
+}
+
+/* Page exits - slides out and fades */
+.page-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 1s ease-in, transform 1s ease-in;  /* Slower animation */
+}
+
 .selections {
 	display: flex;
 	justify-content: center;
@@ -275,7 +299,6 @@ bottom: 0;
   max-width: 1200px;
   width: 100vw;
   padding: 0 20px;
-  position: ; /* Ensure positioning context for pseudo-element */
   z-index: 1; /* Ensure content is above the animation */
 }
 
@@ -354,3 +377,4 @@ bottom: 0;
 	width: auto;}
 .feedback-wrong {
 width: auto;}
+}

@@ -26,13 +26,16 @@
 <link rel="apple-touch-icon" sizes="114x114" href="Logos/Geography-114x114.webp">
 <link rel="apple-touch-icon" sizes="152x152" href="Logos/Geography-152x152.webp">
 <link rel="apple-touch-icon" sizes="180x180" href="Logos/Geography-180x180.webp">
-
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js"></script>
+<script src="firebase-messaging.js" defer></script>
+<script src="main.js"></script>
 </head>
-<body>
+<body class="page-exit">
 
 <header>
     <div class="logo">
-        <img src="Logos/Geography.webp" alt="Geography Quiz Logo">
+        <img src="Logos/Geography.webp" alt="Optimized" loading="lazy">
     </div>
 	
 	 <h1 class="wave-text">Welcome to the Geography Quiz!</h1>
@@ -68,63 +71,63 @@ Germany</a></li>
 <div class="swiper-container">
     <div class="swiper-wrapper">
         <div class="swiper-slide">
-            <img src="Bilder/slide1.webp" alt="Slide 1" loading="lazy" >
+            <img src="Bilder/slide1.webp" alt="Optimized" loading="lazy" >
             <div class="slide-text">
                 <h2>Discover the World</h2>
                 <p>Explore our geography quizzes and test your knowledge.</p>
             </div>
         </div>
         <div class="swiper-slide">
-            <img src="Bilder/capital slide.webp" alt="Slide 2" loading="lazy" >
+            <img src="Bilder/capital slide.webp" alt="Optimized" loading="lazy" >
             <div class="slide-text">
                 <h2>Learn About Capitals</h2>
                 <p>Challenge yourself with our capital city quiz.</p>
             </div>
         </div>
         <div class="swiper-slide">
-            <img src="Bilder/flag slide.webp" alt="Slide 3" loading="lazy" >
+            <img src="Bilder/flag slide.webp" alt="Optimized" loading="lazy" >
             <div class="slide-text">
                 <h2>Flags of the World</h2>
                 <p>See how many flags you can identify.</p>
             </div>
         </div>
 				<div class="swiper-slide">
-            <img src="Bilder/map slide.webp" alt="Slide 3" loading="lazy" >
+            <img src="Bilder/map slide.webp" alt="Optimized" loading="lazy" >
             <div class="slide-text">
                 <h2>Navigate with Precision</h2>
                 <p>Test your ability to locate countries, cities, and landmarks on a map.</p>
             </div>
         </div>
 		<div class="swiper-slide">
-            <img src="Bilder/river slide.jpeg" alt="Slide 3" loading="lazy" >
+            <img src="Bilder/river slide.jpeg" alt="Optimized" loading="lazy" >
             <div class="slide-text">
                 <h2>Flow Through Knowledge</h2>
                 <p>Can you identify the countries through which famous rivers flow?</p>
             </div>
         </div>
 		<div class="swiper-slide">
-            <img src="Bilder/Mountain.JPEG" alt="Slide 3" loading="lazy" >
+            <img src="Bilder/Mountain.JPEG" alt="Optimized" loading="lazy" >
             <div class="slide-text">
                 <h2>Conquer the Mountain of Questions!</h2>
                 <p>Ready to scale new heights? Test your knowledge of the world's tallest peaks, famous ranges, and mountain facts.</p>
             </div>
         </div>
 		<div class="swiper-slide">
-            <img src="Bilder/population.JPEG" alt="Slide 3" loading="lazy" >
+            <img src="Bilder/population.JPEG" alt="Optimized" loading="lazy" >
             <div class="slide-text">
                 <h2>Guess the Numbers: The Ultimate Population Quiz!</h2>
                 <p>Think you know the world's population stats? Dive into our quiz and test your knowledge!</p>
             </div>
         </div>
 		<div class="swiper-slide">
-            <img src="Bilder/slide 2.JPEG" alt="Deserts & Forests" loading="lazy" >
+            <img src="Bilder/slide 2.JPEG" alt="Optimized" loading="lazy" >
             <div class="slide-text">
                 <h2>Desert Secrets & Forest Wonders</h2>
                 <p>A Quiz That Takes You From Sun-Baked Deserts to Verdant Forests - Test Your Expertise!</p>
             </div>
         </div>
 		<div class="swiper-slide">
-            <img src="Bilder/memory slide.webp" alt="Slide 3" loading="lazy" >
+            <img src="Bilder/memory slide.webp" alt="Optimized" loading="lazy" >
             <div class="slide-text">
                 <h2>Geography Meets Memory</h2>
                 <p>Engage your brain with geography-based memory games and quizzes.</p>
@@ -141,7 +144,7 @@ Germany</a></li>
     <!-- Quiz Sections -->
     <section id="capital-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="Logos/Capital.webp" alt="Capital Quiz Logo" class="quiz-logo" loading="lazy">
+            <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
                 <h2>Capital Quiz</h2>
                 <p>Test your knowledge of world capitals.</p>
@@ -152,7 +155,7 @@ Germany</a></li>
 
     <section id="flag-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="Logos/Flag.webp" alt="Flag Quiz Logo" class="quiz-logo"  loading="lazy">
+            <img src="Logos/Flag.webp" alt="Optimized" class="quiz-logo"  loading="lazy">
             <div>
                 <h2>Flag Quiz</h2>
                 <p>Identify the flags of different countries.</p>
@@ -163,7 +166,7 @@ Germany</a></li>
 
     <section id="map-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="Logos/Map.webp" alt="Map Quiz Logo" class="quiz-logo" loading="lazy">
+            <img src="Logos/Map.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
                 <h2>Map Quiz</h2>
                 <p>Locate countries and cities on a map.</p>
@@ -173,7 +176,7 @@ Germany</a></li>
     </section>
     <section id="worldcountries" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="Logos/worldcountries.png" alt="World Countries Quiz Logo" class="quiz-logo" loading="lazy">
+            <img src="Logos/worldcountries.png" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
                 <h2>Countries of the World Quiz</h2>
                 <p>How many countries can you name? As you answer, the map will be filled in.</p>
@@ -183,7 +186,7 @@ Germany</a></li>
     </section>
     <section id="river-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="Logos/River.webp" alt="River Quiz Logo" class="quiz-logo" loading="lazy">
+            <img src="Logos/River.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
                 <h2>River Quiz</h2>
                 <p>Match rivers with their respective countries.</p>
@@ -193,7 +196,7 @@ Germany</a></li>
     </section>
 	<section id="moutain-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="Logos/Mountain.webp" alt="Moutain Quiz Logo" class="quiz-logo" loading="lazy">
+            <img src="Logos/Mountain.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
                 <h2>Mountain</h2>
                 <p>Climb the Peaks of Knowledge!</p>
@@ -203,7 +206,7 @@ Germany</a></li>
     </section>
 	<section id="population-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="Logos/Population.webp" alt="Memory Quiz Logo" class="quiz-logo" loading="lazy">
+            <img src="Logos/Population.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
                 <h2>Population</h2>
                 <p>How Well Do You Know the World’s People? Take the Quiz!</p>
@@ -213,7 +216,7 @@ Germany</a></li>
     </section>
 	<section id="deserts-and-forests" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
-        <img src="Logos/Desert&Forest.JPEG" alt="Deserts & Forests Quiz Logo" class="quiz-logo" loading="lazy">
+        <img src="Logos/Desert&Forest.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
             <h2>Deserts & Forests</h2>
             <p>Explore the Extremes: Are You Ready to Challenge Your Knowledge of Desert Dunes and Forest Groves? Dive Into the Challenge!</p>
@@ -223,7 +226,7 @@ Germany</a></li>
 </section>
 <section id="cities" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
-        <img src="Logos/Cities.JPEG" alt="Cities Quiz Logo" class="quiz-logo" loading="lazy">
+        <img src="Logos/Cities.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
             <h2>Cities Quiz</h2>
             <p>Explore the World’s Most Iconic Cities: A Quiz That Will Challenge Your Urban Knowledge and Test Your Global Awareness!</p>
@@ -233,7 +236,7 @@ Germany</a></li>
 </section> 
 <section id="countries-shape" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
-        <img src="Logos/shape.JPEG" alt="Cities Quiz Logo" class="quiz-logo" loading="lazy">
+        <img src="Logos/shape.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
             <h2>Countries Shape Quiz</h2>
             <p>Can You Guess the Country by Its Shape?</p>
@@ -243,7 +246,7 @@ Germany</a></li>
 </section> 
 <section id="germany" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
-        <img src="Logos/Germany.JPEG" alt="Germany Quiz Logo" class="quiz-logo" loading="lazy">
+        <img src="Logos/Germany.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
             <h2>Germany States</h2>
             <p>Wissen ist Macht: Stell dich dem Deutschland-Quiz und beweis es!</p>
@@ -253,7 +256,7 @@ Germany</a></li>
 </section>
 <section id="mexico" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
-        <img src="Logos/Mexico.JPEG" alt="Mexico Quiz Logo" class="quiz-logo" loading="lazy">
+        <img src="Logos/Mexico.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
             <h2>Mexico States</h2>
             <p>¡Más allá del sombrero y el tequila! ¿Cuánto sabes de México? Pon a prueba tu pasión por México con nuestro quiz.</p>
@@ -263,7 +266,7 @@ Germany</a></li>
 </section>
 <section id="usa" class="quiz-section" data-aos="fade-up">
     <div class="quiz-content">
-        <img src="Logos/USA.JPEG" alt="USA Quiz Logo" class="quiz-logo">
+        <img src="Logos/USA.JPEG" alt="Optimized" class="quiz-logo">
         <div>
             <h2>USA States</h2>
             <p>Stars, Stripes, and Smarts: Are You a USA Expert? Put Your Knowledge to the Test and Ace This Quiz!</p>
@@ -274,7 +277,7 @@ Germany</a></li>
 
 	<section id="memory-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="Logos/Memory.webp" alt="Memory Quiz Logo" class="quiz-logo" loading="lazy">
+            <img src="Logos/Memory.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
                 <h2>Memory</h2>
                 <p>Test your memory with geography-based challenges.</p>
@@ -287,7 +290,7 @@ Germany</a></li>
 <footer class="footer" data-aos="fade-up">
   <div class="footer-container">
     <div class="footer-logo">
-      <a href="/index.html"><img src="Logos/Geography.webp" alt="Company Logo"></a>
+      <a href="/index.html"><img src="Logos/Geography.webp" alt="Optimized"></a>
     </div>
     <div class="footer-info">
       <div class="footer-social">
@@ -303,6 +306,7 @@ Germany</a></li>
   </div>
 </footer>
 
+
 	<script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -316,7 +320,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
-
+<script src="transitions.js" defer></script>
 <script>
 // Select all buttons with the class "quiz-link"
 const buttons = document.querySelectorAll(".quiz-link");

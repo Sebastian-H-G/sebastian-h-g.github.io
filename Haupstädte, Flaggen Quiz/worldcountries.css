@@ -7,7 +7,30 @@ body {
   font-family: Arial, sans-serif;
   text-align: center;
   overflow-x: hidden;
+}/* Page enters - starts off-screen and fades in */
+.page-enter {
+  opacity: 0;
+  transform: translateX(100%);
 }
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 1s ease-out, transform 1s ease-out;  /* Slower animation */
+}
+
+/* Page exits - slides out and fades */
+.page-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 1s ease-in, transform 1s ease-in;  /* Slower animation */
+}
+
 h1 {
   font-size: 2.5rem;
   margin: 10px auto;

@@ -1,7 +1,10 @@
-const CACHE_NAME = 'geo-quiz-cache-v5'; // Update version when modifying cache
+importScripts("https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js");
+
+const CACHE_NAME = 'geo-quiz-cache-v6'; // Updated version
 const urlsToCache = [
   '/',  
-  'index.html',
+ 'index.html',
   'styles.css',
   'https://unpkg.com/swiper/swiper-bundle.min.css',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
@@ -69,6 +72,18 @@ const urlsToCache = [
   'offline.html' // Ensure you have an offline fallback page
 ];
 
+// ** Initialize Firebase **
+firebase.initializeApp({
+  apiKey: "YOUR_API_KEY",
+  authDomain: "your-app.firebaseapp.com",
+  projectId: "your-app-id",
+  storageBucket: "your-app.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+});
+
+const messaging = firebase.messaging();
+
 // ** Install & Precache Critical Files **
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -116,4 +131,14 @@ self.addEventListener('fetch', (event) => {
         .catch(() => caches.match('offline.html')); // Show offline page if network fails
     })
   );
+});
+
+// ** Handle Background Push Notifications **
+messaging.onBackgroundMessage((payload) => {
+  console.log("Received background message", payload);
+
+  self.registration.showNotification(payload.notification.title, {
+    body: payload.notification.body,
+    icon: payload.notification.icon
+  });
 });
