@@ -81,13 +81,30 @@ footer {
     bottom: 0;
     margin-bottom:0;
 }
+.map-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            padding: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: lightgray;
+        }
+        svg {
+            width: 100%;
+            margin: 10px;
+            height: 100%;
+            touch-action: none; /* Prevents default browser zooming */
+        }
+
     </style>
 </head>
 <body class="page-exit">
   
     <h1>Africa Countries Quiz</h1>
     <button id="showlabels" style="display: none;">👁️</button>
-    <div class="flexbox"><div class="outScoreBoard"><div id="scoreBoard">Score: 0 / 54</div></div><input type="text" id="countryInput" placeholder="Type a country"><button id="pauseButton" class="pause"></button><div id="timer">5:00</div>
+    <div class="flexbox"><div class="outScoreBoard"><div id="scoreBoard">Score: 0 / 54</div></div><input type="text" id="countryInput" placeholder="Type a country"><button id="pauseButton" class="pause"></button><div id="timer">7:00</div>
    </div>
     <div id="pauseMessage" style="display: none;"></div><br>
     <button id="giveUpButton">Give up</button>
@@ -96,19 +113,15 @@ footer {
     <div id="message" style="display: none; color: red; font-size: 20px; margin: 0 auto 20px auto; font-weight: 900;"></div>
     <!-- Map Container -->
     <div id="map-container">
-        <?xml version="1.0" encoding="UTF-8" standalone="no"?>
         <svg
-        xmlns:mapsvg="http://mapsvg.com"
-        xmlns:dc="http://purl.org/dc/elements/1.1/"
-        xmlns:cc="http://creativecommons.org/ns#"
-        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-        xmlns:svg="http://www.w3.org/2000/svg"
-        xmlns="http://www.w3.org/2000/svg"
+        id="map"
+
         mapsvg:geoViewBox="-25.360994 37.343521 59.838547 -34.833225"
         viewBox="0 0 239.057 217.318"
+        preserveAspectRatio="xMidYMid slice"
         id="svg2"
         version="1.1"
-        style="max-width: 60%; height: auto; margin: 10px 0 10px 0;">
+        style="max-width: 90%; height: auto;">
      
 
           <defs
@@ -364,7 +377,11 @@ footer {
         </svg>
         
     </div>
-
+    <div class="controls">
+      <label for="svgWidth">Map Width: </label>
+      <input type="range" id="svgWidth" min="50" max="100" value="80" oninput="updateSvgWidth(this.value)">
+      <span id="widthValue">80%</span>
+  </div>
     <div id="countries-container"></div>
     <canvas id="confettiCanvas"></canvas>
     <footer>
@@ -383,6 +400,123 @@ footer {
             
             </div>
     </footer>
+    <script>
+              function updateSvgWidth(value) {
+            const svg = document.getElementById("map");
+            svg.style.width = value + "%";
+            document.getElementById("widthValue").textContent = value + "%";
+        }
+      const svg = document.getElementById("map");
+      let viewBox = { x: 0, y: 0, width: 239.057, height: 217.318 };
+      let lastDistance = null;
+      let minZoom = 50;
+      let maxZoom = 239.057;
+      let isPanning = false;
+      let startX, startY;
+      let zoomedIn = false;
+      let resetTimeout;
+
+      function animateViewBox(targetViewBox, duration = 1000) {
+          const startX = viewBox.x, startY = viewBox.y, startWidth = viewBox.width, startHeight = viewBox.height;
+          const diffX = targetViewBox.x - startX;
+          const diffY = targetViewBox.y - startY;
+          const diffWidth = targetViewBox.width - startWidth;
+          const diffHeight = targetViewBox.height - startHeight;
+          
+          let startTime;
+          function step(timestamp) {
+              if (!startTime) startTime = timestamp;
+              const progress = Math.min((timestamp - startTime) / duration, 1);
+              viewBox.x = startX + diffX * progress;
+              viewBox.y = startY + diffY * progress;
+              viewBox.width = startWidth + diffWidth * progress;
+              viewBox.height = startHeight + diffHeight * progress;
+              svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+              if (progress < 1) {
+                  requestAnimationFrame(step);
+              } else {
+                  zoomedIn = false;
+              }
+          }
+          requestAnimationFrame(step);
+      }
+
+      function resetViewBoxSmooth() {
+          animateViewBox({ x: 0, y: 0, width: 239.057, height: 217.318 });
+      }
+
+      function startResetTimer() {
+          clearTimeout(resetTimeout);
+          resetTimeout = setTimeout(resetViewBoxSmooth, 7000);
+      }
+
+      function getDistance(touches) {
+          let dx = touches[0].clientX - touches[1].clientX;
+          let dy = touches[0].clientY - touches[1].clientY;
+          return Math.sqrt(dx * dx + dy * dy);
+      }
+
+      function getMidPoint(touches) {
+          return {
+              x: (touches[0].clientX + touches[1].clientX) / 2,
+              y: (touches[0].clientY + touches[1].clientY) / 2
+          };
+      }
+
+      svg.addEventListener("touchmove", (event) => {
+          if (event.touches.length === 2) {
+              event.preventDefault();
+              let distance = getDistance(event.touches);
+              let midPoint = getMidPoint(event.touches);
+
+              if (lastDistance) {
+                  let scaleFactor = lastDistance / distance;
+                  let newWidth = viewBox.width * scaleFactor;
+                  let newHeight = viewBox.height * scaleFactor;
+
+                  if (newWidth < minZoom) newWidth = minZoom;
+                  if (newWidth > maxZoom) newWidth = maxZoom;
+                  newHeight = (newWidth / viewBox.width) * viewBox.height;
+
+                  let svgRect = svg.getBoundingClientRect();
+                  let midX = viewBox.x + ((midPoint.x - svgRect.left) / svgRect.width) * viewBox.width;
+                  let midY = viewBox.y + ((midPoint.y - svgRect.top) / svgRect.height) * viewBox.height;
+
+                  viewBox.x = midX - ((midX - viewBox.x) * (newWidth / viewBox.width));
+                  viewBox.y = midY - ((midY - viewBox.y) * (newHeight / viewBox.height));
+                  viewBox.width = newWidth;
+                  viewBox.height = newHeight;
+
+                  zoomedIn = newWidth < maxZoom;
+                  svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+                  startResetTimer();
+              }
+              lastDistance = distance;
+          } else if (event.touches.length === 1 && zoomedIn) {
+              event.preventDefault();
+              if (!isPanning) {
+                  isPanning = true;
+                  startX = event.touches[0].clientX;
+                  startY = event.touches[0].clientY;
+              } else {
+                  let dx = (startX - event.touches[0].clientX) * (viewBox.width / svg.clientWidth);
+                  let dy = (startY - event.touches[0].clientY) * (viewBox.height / svg.clientHeight);
+                  viewBox.x += dx;
+                  viewBox.y += dy;
+                  svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+                  startX = event.touches[0].clientX;
+                  startY = event.touches[0].clientY;
+                  startResetTimer();
+              }
+          }
+      });
+
+      svg.addEventListener("touchend", () => {
+          lastDistance = null;
+          isPanning = false;
+          startResetTimer();
+      });
+  </script>
     <script src="africa.js"></script>
 <script src="transition.js"></script>
 

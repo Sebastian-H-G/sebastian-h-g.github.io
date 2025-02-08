@@ -22,7 +22,7 @@ const countries = [
         
         const correctCountries = [];
         let score = 0;
-        let timeRemaining = 5 * 60;
+        let timeRemaining = 7 * 60;
         
         const countryInput = document.getElementById('countryInput');
         const scoreBoard = document.getElementById('scoreBoard');

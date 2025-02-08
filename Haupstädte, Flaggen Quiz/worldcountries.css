@@ -196,7 +196,12 @@ svg path {
   background: none;
   cursor: pointer;
 }
-
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
   /* Styling for SVG map to prevent accidental selection */
   #svg-map {
     width: 100%;
