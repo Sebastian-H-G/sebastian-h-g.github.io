@@ -1,6 +1,6 @@
-const CACHE_NAME = 'geo-quiz-cache-v1';
+const CACHE_NAME = 'geo-quiz-cache-v5'; // Update version when modifying cache
 const urlsToCache = [
-  '/',
+  '/',  
   'index.html',
   'styles.css',
   'https://unpkg.com/swiper/swiper-bundle.min.css',
@@ -32,19 +32,88 @@ const urlsToCache = [
   'All_Flags.html',
   'Map_Quiz.html',
   'All_Maps.html',
-  'Memory_Quiz.html'
+  'Memory_Quiz.html',
+  'us.html',
+  'mexico.html',
+  'Memory_Quiz.html',
+  'Mountain_Quiz.html',
+  'mountain-sort.html',
+  'Germany.html',
+  'MemoryGame.html',
+  'River_Map.html',
+  'River.html',
+  'capitals.js',
+  'flag-script',
+  'germany.js',
+  'map-script.js',
+  'memory.js',
+  'memoryscript.js',
+  'mexico.js',
+  'capitals.css',
+  'flag-styles.css',
+  'map-styles.css',
+  'memory.css',
+  'memorystyles.css',
+  'mountain-quiz.css',
+  'mountain-sort.css',
+  'river.css',
+  'river-lenght-sort',
+  'worldcountries.css',
+  'us.js',
+  'river.js',
+  'river-length-sort.js',
+  'river-map.js',
+  'worldcountries.js',
+  'worldcountries.html',
+  'River Length Sort.html',
+  'offline.html' // Ensure you have an offline fallback page
 ];
 
+// ** Install & Precache Critical Files **
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
   );
+  self.skipWaiting();
 });
 
+// ** Cleanup Old Caches **
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))
+      );
+    })
+  );
+  self.clients.claim();
+});
+
+// ** Fetch & Dynamic Caching for JS, CSS, Images **
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => response || fetch(event.request))
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse; // Serve from cache if available
+      }
+
+      return fetch(event.request)
+        .then((response) => {
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            return response;
+          }
+
+          // Cache JavaScript, CSS, and images dynamically
+          if (['script', 'style', 'image'].includes(event.request.destination)) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+          }
+
+          return response;
+        })
+        .catch(() => caches.match('offline.html')); // Show offline page if network fails
+    })
   );
 });
