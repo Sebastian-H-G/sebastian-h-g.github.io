@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Country Quiz</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .hidden { display: none; }
+        svg { width: 80vw; height: 60vh; }
+        .button { margin: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        #quiz-container { margin-top: 20px; }
+        #multiple-choice-buttons button {
+            margin: 5px; padding: 10px; font-size: 16px; cursor: pointer;
+        }
+        input { padding: 8px; font-size: 16px; text-align: center; }
+        #timer, #score { font-size: 18px; font-weight: bold; margin: 10px; }
+    </style>
+</head>
+<body>
+
+<div id="start-page">
+    <h1>Welcome to the Country Quiz!</h1>
+    <button class="button" id="start-input">Play with Input Mode</button>
+    <button class="button" id="start-multiple-choice">Play with Multiple Choice</button>
+</div>
+
+<div id="quiz-page" class="hidden">
+    <p id="timer">Time Left: 7:00</p>
+    <p id="score">Score: 0 / 54</p>
+    <svg id="map" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="quiz-container"></div>
+    <p id="feedback"></p>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const startPage = document.getElementById("start-page");
+        const quizPage = document.getElementById("quiz-page");
+        const quizContainer = document.getElementById("quiz-container");
+        const feedback = document.getElementById("feedback");
+        const svg = document.getElementById("map");
+        const timerDisplay = document.getElementById("timer");
+        const scoreDisplay = document.getElementById("score");
+
+        const countryPaths = [
+            { d: "M100,100 L200,100 L200,200 L100,200 Z", name: "Country A" },
+            { d: "M300,150 L400,150 L400,250 L300,250 Z", name: "Country B" },
+            { d: "M500,200 L600,200 L600,300 L500,300 Z", name: "Country C" }
+        ];
+        
+        let gameMode = "";
+        let score = 0;
+        let maxScore = 54;
+        let timeLeft = 7 * 60;
+        let timer;
+        let currentCountry;
+
+        function startGame(mode) {
+            gameMode = mode;
+            startPage.classList.add("hidden");
+            quizPage.classList.remove("hidden");
+            score = 0;
+            timeLeft = 7 * 60;
+            updateScore();
+            startTimer();
+            nextCountry();
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    endGame();
+                } else {
+                    timeLeft--;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `Time Left: ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        }
+
+        function updateScore() {
+            scoreDisplay.textContent = `Score: ${score} / ${maxScore}`;
+        }
+
+        function endGame() {
+            quizPage.innerHTML = `<h2>Time's Up!</h2><p>Your final score: ${score} / ${maxScore}</p>
+                                  <button class="button" onclick="location.reload()">Restart</button>`;
+        }
+
+        function nextCountry() {
+            const randomIndex = Math.floor(Math.random() * countryPaths.length);
+            currentCountry = countryPaths[randomIndex];
+            
+            svg.innerHTML = "";
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", currentCountry.d);
+            path.setAttribute("fill", "blue");
+            path.setAttribute("stroke", "black");
+            svg.appendChild(path);
+
+            quizContainer.innerHTML = "";
+            feedback.textContent = "";
+
+            if (gameMode === "input") {
+                setupInputMode();
+            } else {
+                setupMultipleChoiceMode();
+            }
+        }
+
+        function setupInputMode() {
+            quizContainer.innerHTML = `<p>Type the name of the country:</p>
+                                       <input type="text" id="answer" autofocus>`;
+            const input = document.getElementById("answer");
+            input.focus();
+            input.addEventListener("input", () => {
+                if (input.value.trim().toLowerCase() === currentCountry.name.toLowerCase()) {
+                    score++;
+                    updateScore();
+                    nextCountry();
+                }
+            });
+        }
+
+        function setupMultipleChoiceMode() {
+            let choices = new Set([currentCountry.name]);
+            while (choices.size < 4) {
+                const randomCountry = countryPaths[Math.floor(Math.random() * countryPaths.length)].name;
+                choices.add(randomCountry);
+            }
+            const choicesArray = Array.from(choices).sort(() => Math.random() - 0.5);
+            quizContainer.innerHTML = "<p>Which country is this?</p>";
+            const buttonContainer = document.createElement("div");
+            choicesArray.forEach(choice => {
+                const button = document.createElement("button");
+                button.textContent = choice;
+                button.onclick = () => {
+                    feedback.textContent = choice === currentCountry.name ? "Correct!" : "Wrong!";
+                    if (choice === currentCountry.name) score++;
+                    updateScore();
+                    setTimeout(nextCountry, 1000);
+                };
+                buttonContainer.appendChild(button);
+            });
+            quizContainer.appendChild(buttonContainer);
+        }
+
+        document.getElementById("start-input").addEventListener("click", () => startGame("input"));
+        document.getElementById("start-multiple-choice").addEventListener("click", () => startGame("multiple-choice"));
+    });
+</script>
+
+</body>
+</html>
