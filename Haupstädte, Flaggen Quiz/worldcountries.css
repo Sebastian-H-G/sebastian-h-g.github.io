@@ -33,7 +33,7 @@ body {
 
 h1 {
   font-size: 2.5rem;
-  margin: 10px auto;
+  margin: 30px auto;
   padding: 10px;
   color: #333;
 }
@@ -154,7 +154,7 @@ svg path {
   height: 40px;
   position: absolute;
   right: 0;
-  margin: 15px;
+  margin: 5px 15px 15px 15px;
   user-select: none;
   top: 0;
   background-color: #e06b68; /* Red theme */
@@ -200,8 +200,54 @@ svg path {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  gap: 10px; /* Adds space between elements */
+  background: #85add4; /* Light background for better contrast */
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+  margin: 15px auto;
 }
+
+.controls label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.controls input[type="range"] {
+  appearance: none;
+  width: 150px;
+  height: 6px;
+  background: #00ffea;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 2px solid #00ffea;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.controls input[type="range"]:hover {
+  background: #11cdbd;
+}
+
+#widthValue {
+  font-weight: bold;
+  font-size: 14px;
+  color: #00ffea;
+  padding-left: 5px;
+}
+
   /* Styling for SVG map to prevent accidental selection */
   #svg-map {
     width: 100%;
@@ -365,7 +411,7 @@ footer {
       padding: 8px; /* Adjust padding */
   }
   footer{
-    margin-top: 400px;
+    margin-top: 200px;
   }
 
 }

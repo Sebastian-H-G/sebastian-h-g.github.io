@@ -120,8 +120,9 @@ xmlns:svg="http://www.w3.org/2000/svg"
 xmlns="http://www.w3.org/2000/svg"
 mapsvg:geoViewBox="-118.369112 32.716750 -86.725536 14.531518"
 viewBox="0 0 792.41846 497.54324"
-width="68%"
-height="68%">
+width="70%"
+height="70%"
+id="svgMap">
        <path
           d="m 390.52786,309.79244 -2.34,-2.26 -0.07,-1.21 1.24,-2.87 3.33,-4.59 0.93,-3.24 1.07,-0.73 1.79,-0.38 3.47,-1.97 1.21,-0.92 0.39,-1.26 0.73,-0.17 0.77,1.39 1.33,1.34 4.44,2.63 0.59,2.44 1.14,2.04 0,0 0.26,0.59 -0.24,1.6 1.96,2.14 -4.28,1.97 -2.55,3.55 -0.72,0.5 -3.02,1.04 -1.26,0.06 -2.17,-1.02 -1.74,-1.41 -4.21,-0.38 z"
           title="Aguascalientes"
@@ -252,7 +253,11 @@ height="68%">
           id="MX-ZAC" />
      </svg>     
     </div>
-
+    <div class="controls">
+      <label for="svgWidth">Anchura del mapa: </label>
+      <input type="range" id="svgWidth" min="40" max="100" value="70" oninput="updateSvgWidth(this.value)">
+      <span id="widthValue">70%</span>
+  </div>
     <div id="countries-container"></div>
     <canvas id="confettiCanvas"></canvas>
     <footer style="text-align: center; padding: 20px;">
@@ -271,8 +276,132 @@ height="68%">
           
           </div>
   </footer>
-  <script src="transition.js"></script>
+<script>
+    function updateSvgWidth(value) {
+            const svg = document.querySelector("#map-container svg");
+            svg.style.width = value + "%";
+            document.getElementById("widthValue").textContent = value + "%";
+        }
+   document.addEventListener("DOMContentLoaded", function() {
+    const svg = document.querySelector("#svgMap"); // Select SVG inside the world map
+    if (!svg) {
+        console.error("SVG not found inside #svgMap");
+        return;
+    }
+    
+    let viewBox = { x: -20, y: 0, width: 792.41846, height: 497.54324 };
+    let lastDistance = null;
+    let minZoom = 200;
+    let maxZoom = 1050;
+    let isPanning = false;
+    let startX, startY;
+    let zoomedIn = false;
+    let resetTimeout; 
+    
+    function animateViewBox(targetViewBox, duration = 1000) {
+        const startX = viewBox.x, startY = viewBox.y, startWidth = viewBox.width, startHeight = viewBox.height;
+        const diffX = targetViewBox.x - startX;
+        const diffY = targetViewBox.y - startY;
+        const diffWidth = targetViewBox.width - startWidth;
+        const diffHeight = targetViewBox.height - startHeight;
+        
+        let startTime;
+        function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            viewBox.x = startX + diffX * progress;
+            viewBox.y = startY + diffY * progress;
+            viewBox.width = startWidth + diffWidth * progress;
+            viewBox.height = startHeight + diffHeight * progress;
+            svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                zoomedIn = false;
+            }
+        }
+        requestAnimationFrame(step);
+    }
+    
+    function resetViewBoxSmooth() {
+        animateViewBox({ x: -20, y: 0, width: 792, height: 497 });
+    }
+  
+    function startResetTimer() {
+        clearTimeout(resetTimeout);
+        resetTimeout = setTimeout(resetViewBoxSmooth, 7000);
+    }
+    
+    function getDistance(touches) {
+        let dx = touches[0].clientX - touches[1].clientX;
+        let dy = touches[0].clientY - touches[1].clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+    
+    function getMidPoint(touches) {
+        return {
+            x: (touches[0].clientX + touches[1].clientX) / 2,
+            y: (touches[0].clientY + touches[1].clientY) / 2
+        };
+    }
+    
+    svg.addEventListener("touchmove", (event) => {
+        if (event.touches.length === 2) {
+            event.preventDefault();
+            let distance = getDistance(event.touches);
+            let midPoint = getMidPoint(event.touches);
+            
+            if (lastDistance) {
+                let scaleFactor = lastDistance / distance;
+                let newWidth = viewBox.width * scaleFactor;
+                let newHeight = viewBox.height * scaleFactor;
+                
+                if (newWidth < minZoom) newWidth = minZoom;
+                if (newWidth > maxZoom) newWidth = maxZoom;
+                newHeight = (newWidth / viewBox.width) * viewBox.height;
+                
+                let svgRect = svg.getBoundingClientRect();
+                let midX = viewBox.x + ((midPoint.x - svgRect.left) / svgRect.width) * viewBox.width;
+                let midY = viewBox.y + ((midPoint.y - svgRect.top) / svgRect.height) * viewBox.height;
+                
+                viewBox.x = midX - ((midX - viewBox.x) * (newWidth / viewBox.width));
+                viewBox.y = midY - ((midY - viewBox.y) * (newHeight / viewBox.height));
+                viewBox.width = newWidth;
+                viewBox.height = newHeight;
+                
+                zoomedIn = newWidth < maxZoom;
+                svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+                startResetTimer();
+            }
+            lastDistance = distance;
+        } else if (event.touches.length === 1 && zoomedIn) {
+            event.preventDefault();
+            if (!isPanning) {
+                isPanning = true;
+                startX = event.touches[0].clientX;
+                startY = event.touches[0].clientY;
+            } else {
+                let dx = (startX - event.touches[0].clientX) * (viewBox.width / svg.clientWidth);
+                let dy = (startY - event.touches[0].clientY) * (viewBox.height / svg.clientHeight);
+                viewBox.x += dx;
+                viewBox.y += dy;
+                svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+                startX = event.touches[0].clientX;
+                startY = event.touches[0].clientY;
+                startResetTimer();
+            }
+        }
+    });
+    
+    svg.addEventListener("touchend", () => {
+        lastDistance = null;
+        isPanning = false;
+        startResetTimer();
+    });
+});
 
+</script>
+  <script src="transition.js"></script>
     <script src="mexico.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@9.4.0/dist/panzoom.min.js"></script>
     
