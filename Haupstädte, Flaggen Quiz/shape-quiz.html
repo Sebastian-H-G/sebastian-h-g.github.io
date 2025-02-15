@@ -28,12 +28,14 @@
 </head>
 <body>
 
+<!-- Start Page -->
 <div id="start-page">
     <h1>Welcome to the Country Quiz!</h1>
     <button class="button" id="start-input">Play with Input Mode</button>
     <button class="button" id="start-multiple-choice">Play with Multiple Choice</button>
 </div>
 
+<!-- Quiz Page -->
 <div id="quiz-page" class="hidden">
     <p id="timer">Time Left: 7:00</p>
     <p id="score">Score: 0 / 54</p>
@@ -59,11 +61,11 @@
         ];
         
         let gameMode = "";
+        let currentIndex = 0;
         let score = 0;
         let maxScore = 54;
         let timeLeft = 7 * 60;
         let timer;
-        let currentCountry;
 
         function startGame(mode) {
             gameMode = mode;
@@ -104,12 +106,14 @@
         }
 
         function nextCountry() {
-            const randomIndex = Math.floor(Math.random() * countryPaths.length);
-            currentCountry = countryPaths[randomIndex];
-            
+            if (currentIndex >= countryPaths.length) {
+                currentIndex = 0;
+            }
+
+            const country = countryPaths[currentIndex];
             svg.innerHTML = "";
             const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-            path.setAttribute("d", currentCountry.d);
+            path.setAttribute("d", country.d);
             path.setAttribute("fill", "blue");
             path.setAttribute("stroke", "black");
             svg.appendChild(path);
@@ -118,19 +122,21 @@
             feedback.textContent = "";
 
             if (gameMode === "input") {
-                setupInputMode();
+                setupInputMode(country);
             } else {
-                setupMultipleChoiceMode();
+                setupMultipleChoiceMode(country);
             }
+
+            currentIndex++;
         }
 
-        function setupInputMode() {
+        function setupInputMode(country) {
             quizContainer.innerHTML = `<p>Type the name of the country:</p>
                                        <input type="text" id="answer" autofocus>`;
+
             const input = document.getElementById("answer");
-            input.focus();
             input.addEventListener("input", () => {
-                if (input.value.trim().toLowerCase() === currentCountry.name.toLowerCase()) {
+                if (input.value.trim().toLowerCase() === country.name.toLowerCase()) {
                     score++;
                     updateScore();
                     nextCountry();
@@ -138,26 +144,34 @@
             });
         }
 
-        function setupMultipleChoiceMode() {
-            let choices = new Set([currentCountry.name]);
+        function setupMultipleChoiceMode(country) {
+            let choices = new Set([country.name]);
             while (choices.size < 4) {
                 const randomCountry = countryPaths[Math.floor(Math.random() * countryPaths.length)].name;
                 choices.add(randomCountry);
             }
             const choicesArray = Array.from(choices).sort(() => Math.random() - 0.5);
+
             quizContainer.innerHTML = "<p>Which country is this?</p>";
             const buttonContainer = document.createElement("div");
+            buttonContainer.id = "multiple-choice-buttons";
+
             choicesArray.forEach(choice => {
                 const button = document.createElement("button");
                 button.textContent = choice;
                 button.onclick = () => {
-                    feedback.textContent = choice === currentCountry.name ? "Correct!" : "Wrong!";
-                    if (choice === currentCountry.name) score++;
+                    if (choice === country.name) {
+                        feedback.textContent = "Correct!";
+                        score++;
+                    } else {
+                        feedback.textContent = "Wrong!";
+                    }
                     updateScore();
                     setTimeout(nextCountry, 1000);
                 };
                 buttonContainer.appendChild(button);
             });
+
             quizContainer.appendChild(buttonContainer);
         }
 

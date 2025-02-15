@@ -249,7 +249,84 @@ margin-top: 10px;	/* Ensure pagination stays above the background */
 }
 
 
+
+
+/* Animation for showing the quiz sections */
+@keyframes slideDown {
+    from {
+        max-height: 0;
+        opacity: 0;
+    }
+    to {
+        max-height: auto; /* Large enough to fit all content */
+        opacity: 1;
+    }
+}
+
+/* Animation for hiding the quiz sections */
+@keyframes slideUp {
+    from {
+        max-height: 1000px;
+        opacity: 1;
+    }
+    to {
+        max-height: 0;
+        opacity: 0;
+    }
+}
+
+#quiz-sections {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+.toggle-arrow {
+    transition: transform 0.3s ease-in-out;
+    margin-left: 15px;
+
+}
+.rotated {
+    transform: rotate(180deg);
+}
+
+.hidden {
+    display: none;
+}
+
+/* When visible, apply slideDown */
+#quiz-sections.show {
+    animation: slideDown 0.5s ease-out forwards;
+}
+
+/* When hiding, apply slideUp */
+#quiz-sections.hide {
+    animation: slideUp 0.5s ease-in forwards;
+}
+
+
 /* Quiz Section Styles */
+.quiz-section-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin: 20px 5%;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
+    background-color: rgb(211, 140, 40);
+    color: white;
+    font-size: 2rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 900;
+}
+#section-symbol {
+    font-size: 2rem;
+    margin: 10px;
+}
+
 .quiz-section {
   background-color: white;
   margin: 40px 7%;

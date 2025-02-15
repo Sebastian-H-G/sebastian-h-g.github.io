@@ -22,23 +22,29 @@
         }
         .container {
             background: white;
-            padding: 50px;
+            padding: 2.5%;
+            width: 60%;
+            height: 85%;
             border-radius: 15px;
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25);
             animation: slideIn 1.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         @keyframes slideIn {
             from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
         h1 {
-            font-size: 2.5em;
+            font-size: 2em;
             color: #222;
         }
         p {
             color: #555;
             margin: 10px 0;
-            font-size: 1.1em;
+            font-size: 1em;
+            text-align: center;
         }
         .progress {
             width: 100%;
@@ -62,14 +68,14 @@
         .btn {
             display: inline-block;
             margin-top: 20px;
-            padding: 12px 25px;
+            padding: 10px 20px;
             text-decoration: none;
             background: #007BFF;
             color: white;
             border-radius: 8px;
             transition: 0.3s ease-in-out;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            font-size: 1.1em;
+            font-size: 1em;
         }
         .btn:hover {
             background: #0056b3;
@@ -96,10 +102,14 @@
             color: #0056b3;
         }
         .image-container {
-            margin-top: 20px;
+          
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
         .image-container img {
-            max-width: 100%;
+            width: 80%;
+            max-width: 300px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
@@ -115,7 +125,7 @@
             <div class="progress-bar"></div>
         </div>
         <div class="image-container fade-text" style="animation-delay: 1s;">
-            <img src="Bilder/comi.webp" alt="Coming Soon Illustration">
+            <img src="Bilder/comingsoon.webp" alt="Coming Soon Illustration">
         </div>
         <a href="#" class="btn fade-text" style="animation-delay: 1.2s;">Contact Us</a>
         <a href="https://www.goequiz.com" class="back-link fade-text" style="animation-delay: 1.4s;">Meanwhile, go back to the main page &rarr;</a>

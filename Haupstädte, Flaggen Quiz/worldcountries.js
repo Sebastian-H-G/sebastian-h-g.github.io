@@ -36,12 +36,12 @@ const countryMappings = {
     "Belarus": ["Belarus"],
     "Belize": ["Belize"],
     "Canada": ["Kanada"],
-    "Cocos (Keeling) Islands": ["Kokosinseln"],
-    "Democratic Republic of Congo": ["Demokratische Republik Kongo"],
+    "Cocos  (Keeling)  Islands": ["Kokosinseln", "Cocos Islands"],
+    "Democratic Republic of Congo": ["Demokratische Republik Kongo", "DR Kongo", "DR Congo"],
     "Central African Republic": ["Zentralafrikanische Republik"],
-    "Republic of Congo": ["Republik Kongo"],
+    "Republic of Congo": ["Republik Kongo", "Kongo", "Congo"],
     "Switzerland": ["Schweiz"],
-    "Côte d'Ivoire": ["Elfenbeinküste"],
+    "Côte d'Ivoire": ["Elfenbeinküste", "Ivory Coast", "Elfenbeinkueste"],
     "Cook Islands": ["Cookinseln"],
     "Chile": ["Chile"],
     "Cameroon": ["Kamerun"],
@@ -49,11 +49,11 @@ const countryMappings = {
     "Colombia": ["Kolumbien"],
     "Costa Rica": ["Costa Rica"],
     "Cuba": ["Kuba"],
-    "Cape Verde": ["Kap Verde"],
+    "Cape Verde": ["Kap Verde", "Cabo Verde",],
     "Curaçao": ["Curaçao"],
     "Christmas Island": ["Weihnachtsinsel"],
     "Cyprus": ["Zypern"],
-    "Czech Republic": ["Tschechische Republik"],
+    "Czech Republic": ["Tschechische Republik", "Tschechien", "Chech Republic", ],
     "Germany": ["Deutschland"],
     "Djibouti": ["Dschibuti"],
     "Denmark": ["Dänemark"],
@@ -76,11 +76,11 @@ const countryMappings = {
     "United Kingdom": ["Vereinigtes Königreich", "UK", "Großbritannien"],
     "Georgia": ["Georgien"],
     "Grenada": ["Grenada"],
-    "French Guiana": ["Französisch-Guayana", "Französisch Guayana"],
+    "French Guiana": ["Französisch-Guayana", "French-Guiana", "Französisch Guayana"],
     "Guernsey": ["Guernsey"],
     "Ghana": ["Ghana"],
     "Gibraltar": ["Gibraltar"],
-    "Greenland": ["Grönland"],
+    "Greenland": ["Grönland",],
     "Gambia": ["Gambia"],
     "Guinea": ["Guinea"],
     "Glorioso Islands": ["Glorieuses-Inseln", "Glorieuses Inseln"],
@@ -117,16 +117,16 @@ const countryMappings = {
     "Cambodia": ["Kambodscha"],
     "Kiribati": ["Kiribati"],
     "Comoros": ["Komoren"],
-    "Saint Kitts and Nevis": ["St. Kitts und Nevis"],
-    "North Korea": ["Nordkorea"],
-    "South Korea": ["Südkorea"],
+    "Saint Kitts and Nevis": ["St. Kitts und Nevis", "St. Kitts and Nevis", "Saint Kitts und Nevis"],
+    "North Korea": ["Nordkorea, Nord Korea"],
+    "South Korea": ["Südkorea, Süd Korea"],
     "Kosovo": ["Kosovo"],
     "Kuwait": ["Kuwait"],
     "Cayman Islands": ["Kaimaninseln"],
     "Kazakhstan": ["Kasachstan"],
     "Laos": ["Laos"],
     "Lebanon": ["Libanon"],
-    "Saint Lucia": ["St. Lucia"],
+    "Saint Lucia": ["St. Lucia",],
     "Liechtenstein": ["Liechtenstein"],
     "Sri Lanka": ["Sri Lanka"],
     "Liberia": ["Liberia"],
@@ -140,9 +140,9 @@ const countryMappings = {
     "Moldova": ["Moldawien"],
     "Madagascar": ["Madagaskar"],
     "Montenegro": ["Montenegro"],
-    "Saint Martin": ["Saint-Martin", "Saint Martin"],
+    "Saint Martin": ["Saint-Martin", "St. Martin"],
     "Marshall Islands": ["Marshallinseln"],
-    "Macedonia": ["Nordmazedonien"],
+    "Macedonia": ["Nordmazedonien", "Mazedonien", "Northmazedonia", "North Mazedonia", "Nord Mazedonien"],
     "Mali": ["Mali"],
     "Macau": ["Macau"],
     "Myanmar": ["Myanmar"],
@@ -154,6 +154,7 @@ const countryMappings = {
     "Malta": ["Malta"],
     "Mauritius": ["Mauritius"],
     "Maldives": ["Malediven"],
+    "Micronesia": ["Mikronesien"],
     "Malawi": ["Malawi"],
     "Mexico": ["Mexiko"],
     "Malaysia": ["Malaysia"],
@@ -181,7 +182,7 @@ const countryMappings = {
     "Saint Pierre and Miquelon": ["Saint-Pierre und Miquelon", "Saint Pierre und Miquelon"],
     "Pitcairn Islands": ["Pitcairninseln"],
     "Puerto Rico": ["Puerto Rico"],
-    "Palestinian": ["Palästinensische Gebiete"],
+    "Palestinian": ["Palästinensische Gebiete", "Palästina", "Palestina"],
     "Portugal": ["Portugal"],
     "Palau": ["Palau"],
     "Paraguay": ["Paraguay"],
@@ -199,7 +200,7 @@ const countryMappings = {
     "Singapore": ["Singapur"],
     "Saint Helena": ["St. Helena"],
     "Slovenia": ["Slowenien"],
-    "Svalbard and Jan Mayen (Spitzenbergen)": ["Spitzbergen und Jan Mayen"],
+    "Svalbard and Jan Mayen (Spitzenbergen)": ["Spitzenbergen und Jan Mayen", "Spitzenbergen", "Svalbard"],
     "Slovakia": ["Slowakei"],
     "Sierra Leone": ["Sierra Leone"],
     "San Marino": ["San Marino"],
@@ -207,7 +208,7 @@ const countryMappings = {
     "Somalia": ["Somalia"],
     "Suriname": ["Suriname"],
     "South Sudan": ["Südsudan"],
-    "Sao Tome and Principe": ["São Tomé und Príncipe"],
+    "Sao Tome and Principe": ["São Tomé und Príncipe", "Sao Tome und Principe", "Sao Tome Principe"],
     "El Salvador": ["El Salvador"],
     "Syria": ["Syrien"],
     "Swaziland": ["Eswatini"],
@@ -218,7 +219,7 @@ const countryMappings = {
     "Thailand": ["Thailand"],
     "Tajikistan": ["Tadschikistan"],
     "Tokelau": ["Tokelau"],
-    "Timor-Leste": ["Osttimor"],
+    "Timor-Leste": ["Osttimor", "Timor Leste"],
     "Turkmenistan": ["Turkmenistan"],
     "Tunisia": ["Tunesien"],
     "Tonga": ["Tonga"],
@@ -233,7 +234,7 @@ const countryMappings = {
     "Uruguay": ["Uruguay"],
     "Uzbekistan": ["Usbekistan"],
     "Vatican City": ["Vatikanstadt"],
-    "Saint Vincent and the Grenadines": ["St. Vincent und die Grenadinen"],
+    "Saint Vincent and the Grenadines": ["St. Vincent und die Grenadinen", "Saint Vincent und die Grenadinen", "St. Vincent and the Grenadinen"],
     "Venezuela": ["Venezuela"],
     "British Virgin Islands": ["Britische Jungferninseln"],
     "US Virgin Islands": ["Amerikanische Jungferninseln"],
@@ -260,17 +261,17 @@ function normalizeCountryName(country) {
 }
 
 const countries = [
-    "Andorra", "United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Anguilla", "Albania", "Armenia", "Angola", "Argentina", "American Samoa", "Austria", "Australia", "Aruba", "Aland Islands", "Azerbaijan", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Burundi", "Benin", "Saint Barthelemy", "Brunei", "Bolivia", "Bermuda", "Bonaire,  Saint Eustachius and Saba", "Brazil", "Bahamas", "Bhutan", "Bouvet Island", "Botswana", "Belarus", "Belize", "Canada", "Cocos  (Keeling)  Islands", "Democratic Republic of Congo", "Central African Republic", "Republic of Congo", "Switzerland", "Côte d'Ivoire", "Cook Islands", "Chile", "Cameroon", "China", "Colombia", "Costa Rica", "Cuba", "Cape Verde", "Curaçao", "Christmas Island", "Cyprus", "Czech Republic", "Germany", "Djibouti", "Denmark", "Dominica", "Dominican Republic", "Algeria", "Ecuador", "Egypt", "Estonia", "Western Sahara", "Eritrea", "Spain", "Ethiopia", "Finland", "Fiji", "Falkland Islands", "Federated States of", "Faroe Islands", "France", "Gabon", "United Kingdom", "Georgia", "Grenada", "French Guiana", "Guernsey", "Ghana", "Gibraltar", "Greenland", "Gambia", "Guinea", "Glorioso Islands", "Guadeloupe", "Equatorial Guinea", "Greece", "South Georgia and South Sandwich Islands", "Guatemala", "Guam", "Guinea-Bissau", "Guyana", "Hong Kong", "Heard Island and McDonald Islands", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "Ireland", "Israel", "Isle of Man", "India", "British Indian Ocean Territory", "Iraq", "Iran", "Iceland", "Italy", "Jersey", "Jamaica", "Jordan", "Japan", "Juan De Nova Island", "Kenya", "Kyrgyzstan", "Cambodia", "Kiribati", "Comoros", "Saint Kitts and Nevis", "North Korea", "South Korea", "Kosovo", "Kuwait", "Cayman Islands", "Kazakhstan", "Laos", "Lebanon", "Saint Lucia", "Liechtenstein", "Sri Lanka", "Liberia", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Libya", "Morocco", "Monaco", "Moldova", "Madagascar", "Montenegro", "Saint Martin", "Marshall Islands", "Macedonia", "Mali", "Macau", "Myanmar", "Mongolia", "Northern Mariana Islands", "Martinique", "Mauritania", "Montserrat", "Malta", "Mauritius", "Maldives", "Malawi", "Mexico", "Malaysia", "Mozambique", "Namibia", "New Caledonia", "Niger", "Norfolk Island", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "Nauru", "Niue", "New Zealand", "Oman", "Panama", "Peru", "French Polynesia", "Papua New Guinea", "Philippines", "Pakistan", "Poland", "Saint Pierre and Miquelon", "Pitcairn Islands", "Puerto Rico", "Palestinian", "Portugal", "Palau", "Paraguay", "Qatar", "Reunion", "Romania", "Serbia", "Russia", "Rwanda", "Saudi Arabia", "Solomon Islands", "Seychelles", "Sudan", "Sweden", "Singapore", "Saint Helena", "Slovenia", "Svalbard and Jan Mayen (Spitzenbergen)", "Slovakia", "Sierra Leone", "San Marino", "Senegal", "Somalia", "Suriname", "South Sudan", "Sao Tome and Principe", "El Salvador", "Syria", "Swaziland", "Turks and Caicos Islands", "Chad", "French Southern and Antarctic Lands", "Togo", "Thailand", "Tajikistan", "Tokelau", "Timor-Leste", "Turkmenistan", "Tunisia", "Tonga", "Turkey", "Trinidad and Tobago", "Tuvalu", "Taiwan", "Tanzania", "Ukraine", "Uganda", "Jarvis Island", "Baker Island", "Howland Island", "Johnston Atoll", "Midway Islands", "Wake Island", "United States", "Uruguay", "Uzbekistan", "Vatican City", "Saint Vincent and the Grenadines", "Venezuela", "British Virgin Islands", "US Virgin Islands", "Vietnam", "Vanuatu", "Wallis and Futuna", "Samoa", "Yemen", "Mayotte", "South Africa", "Zambia", "Zimbabwe"
+    "Andorra", "United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Anguilla", "Albania", "Armenia", "Angola", "Argentina", "American Samoa", "Austria", "Australia", "Aruba", "Aland Islands", "Azerbaijan", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Burundi", "Benin", "Saint Barthelemy", "Brunei", "Bolivia", "Bermuda", "Bonaire,  Saint Eustachius and Saba", "Brazil", "Bahamas", "Bhutan", "Bouvet Island", "Botswana", "Belarus", "Belize", "Canada", "Cocos  (Keeling)  Islands", "Democratic Republic of Congo", "Central African Republic", "Republic of Congo", "Switzerland", "Côte d'Ivoire", "Cook Islands", "Chile", "Cameroon", "China", "Colombia", "Costa Rica", "Cuba", "Cape Verde", "Curaçao", "Christmas Island", "Cyprus", "Czech Republic", "Germany", "Djibouti", "Denmark", "Dominica", "Dominican Republic", "Algeria", "Ecuador", "Egypt", "Estonia", "Western Sahara", "Eritrea", "Spain", "Ethiopia", "Finland", "Fiji", "Falkland Islands", "Federated States of", "Faroe Islands", "France", "Gabon", "United Kingdom", "Georgia", "Grenada", "French Guiana", "Guernsey", "Ghana", "Gibraltar", "Greenland", "Gambia", "Guinea", "Glorioso Islands", "Guadeloupe", "Equatorial Guinea", "Greece", "South Georgia and South Sandwich Islands", "Guatemala", "Guam", "Guinea-Bissau", "Guyana", "Hong Kong", "Heard Island and McDonald Islands", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "Ireland", "Israel", "Isle of Man", "India", "British Indian Ocean Territory", "Iraq", "Iran", "Iceland", "Italy", "Jersey", "Jamaica", "Jordan", "Japan", "Juan De Nova Island", "Kenya", "Kyrgyzstan", "Cambodia", "Kiribati", "Comoros", "Saint Kitts and Nevis", "North Korea", "South Korea", "Kosovo", "Kuwait", "Cayman Islands", "Kazakhstan", "Laos", "Lebanon", "Saint Lucia", "Liechtenstein", "Sri Lanka", "Liberia", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Libya", "Morocco", "Monaco", "Moldova", "Madagascar", "Montenegro", "Saint Martin", "Marshall Islands", "Macedonia", "Micronesia", "Mali", "Macau", "Myanmar", "Mongolia", "Northern Mariana Islands", "Martinique", "Mauritania", "Montserrat", "Malta", "Mauritius", "Maldives", "Malawi", "Mexico", "Malaysia", "Mozambique", "Namibia", "New Caledonia", "Niger", "Norfolk Island", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "Nauru", "Niue", "New Zealand", "Oman", "Panama", "Peru", "French Polynesia", "Papua New Guinea", "Philippines", "Pakistan", "Poland", "Saint Pierre and Miquelon", "Pitcairn Islands", "Puerto Rico", "Palestinian", "Portugal", "Palau", "Paraguay", "Qatar", "Reunion", "Romania", "Serbia", "Russia", "Rwanda", "Saudi Arabia", "Solomon Islands", "Seychelles", "Sudan", "Sweden", "Singapore", "Saint Helena", "Slovenia", "Svalbard and Jan Mayen (Spitzenbergen)", "Slovakia", "Sierra Leone", "San Marino", "Senegal", "Somalia", "Suriname", "South Sudan", "Sao Tome and Principe", "El Salvador", "Syria", "Swaziland", "Turks and Caicos Islands", "Chad", "French Southern and Antarctic Lands", "Togo", "Thailand", "Tajikistan", "Tokelau", "Timor-Leste", "Turkmenistan", "Tunisia", "Tonga", "Turkey", "Trinidad and Tobago", "Tuvalu", "Taiwan", "Tanzania", "Ukraine", "Uganda", "Jarvis Island", "Baker Island", "Howland Island", "Johnston Atoll", "Midway Islands", "Wake Island", "United States", "Uruguay", "Uzbekistan", "Vatican City", "Saint Vincent and the Grenadines", "Venezuela", "British Virgin Islands", "US Virgin Islands", "Vietnam", "Vanuatu", "Wallis and Futuna", "Samoa", "Yemen", "Mayotte", "South Africa", "Zambia", "Zimbabwe"
 ];
 
 function createTables() {
     const continents = {
         africa: ["Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros", "Congo", "Cote d'Ivoire", "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Kenya", "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "Sao Tome and Principe", "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe"],
         asia: ["Afghanistan", "Armenia", "Azerbaijan", "Bahrain", "Bangladesh", "Bhutan", "Brunei", "Cambodia", "China", "Cyprus", "Georgia", "India", "Indonesia", "Iran", "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan", "Kuwait", "Kyrgyzstan", "Laos", "Lebanon", "Malaysia", "Maldives", "Mongolia", "Myanmar", "Nepal", "North Korea", "Oman", "Pakistan", "Palestine", "Philippines", "Qatar", "Saudi Arabia", "Singapore", "South Korea", "Sri Lanka", "Syria", "Tajikistan", "Thailand", "Timor-Leste", "Turkey", "Turkmenistan", "United Arab Emirates", "Uzbekistan", "Vietnam", "Yemen"],
-        europe: ["Albania", "Andorra", "Armenia", "Austria", "Azerbaijan", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kazakhstan", "Kosovo", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "North Macedonia", "Norway", "Poland", "Portugal", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", "Switzerland", "Turkey", "Ukraine", "United Kingdom", "Vatican City"],
-        northAmerica: ["Antigua and Barbuda", "Bahamas", "Barbados", "Belize", "Canada", "Costa Rica", "Cuba", "Dominica", "Dominican Republic", "El Salvador", "Grenada", "Guatemala", "Haiti", "Honduras", "Jamaica", "Mexico", "Nicaragua", "Panama", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Trinidad and Tobago", "United States"],
+        europe: ["Albania", "Andorra", "Austria", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kosovo", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "Macedonia", "Norway", "Poland", "Portugal", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", "Switzerland", "Turkey", "Ukraine", "United Kingdom", "Vatican City"],
+        northAmerica: ["Antigua and Barbuda", "Anguilla", "Bahamas", "Barbados", "Belize", "Bermuda", "Canada", "Costa Rica", "Cuba", "Dominica", "Dominican Republic", "El Salvador", "Grenada", "Guatemala", "Haiti", "Honduras", "Jamaica", "Mexico", "Nicaragua", "Panama", "Puerto Rico", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Trinidad and Tobago", "United States"],
         southAmerica: ["Argentina", "Bolivia", "Brazil", "Chile", "Colombia", "Ecuador", "Guyana", "Paraguay", "Peru", "Suriname", "Uruguay", "Venezuela"],
-        oceania: ["Australia", "South Georgia and South Sandwich Islands","Fiji", "Kiribati", "Marshall Islands", "", "Nauru", "New Zealand", "Palau", "Papua New Guinea", "Samoa", "Solomon Islands", "Tonga", "Tuvalu", "Vanuatu"]
+        oceania: ["Australia", "South Georgia and South Sandwich Islands","Fiji", "Kiribati", "Marshall Islands", "Micronesia", "Nauru", "New Zealand", "Palau", "Papua New Guinea", "Samoa", "Solomon Islands", "Tonga", "Tuvalu", "Vanuatu"]
     };
 
     const orderedContinents = ["africa", "asia", "europe", "northAmerica"];
@@ -359,6 +360,7 @@ function checkCountry(countryName) {
         scoreBoard.textContent = `Score: ${score} / 196`;
         document.querySelector(`[title="${originalCountryName}"]`).classList.add('correct');
         countryInput.value = ''; // Clear the input field
+        counntryInput.focus(); // Focus the input field
     }
 }
 
