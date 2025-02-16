@@ -20,11 +20,11 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        .container {
+    .container {
     background: white;
-    padding: 2.5%;
-    width: 60%;
-    height: 85%;
+    padding: 3%;
+    width: 50%;
+    height: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,7 +46,7 @@ h1, p, .progress, .image-container, .btn, .back-link {
 
 .image-container img {
     width: 100%; /* Makes the image adapt fully */
-    max-width: 300px; /* Prevents it from becoming too large */
+    max-width: 200px; /* Prevents it from becoming too large */
     height: auto; /* Keeps aspect ratio */
 }
 
@@ -64,25 +64,53 @@ h1, p, .progress, .image-container, .btn, .back-link {
             font-size: 1em;
             text-align: center;
         }
-        .progress {
-            width: 100%;
-            height: 12px;
-            background: #ddd;
-            border-radius: 6px;
-            overflow: hidden;
-            margin: 20px 0;
-            position: relative;
-        }
-        .progress-bar {
-            width: 0;
-            height: 100%;
-            background: #007BFF;
-            animation: progressAnim 3s ease-in-out forwards;
-        }
-        @keyframes progressAnim {
-            from { width: 0; }
-            to { width: 85%; }
-        }
+.progress {
+    width: 90%; /* Ensures the progress bar doesn't stretch too far */
+    height: 40px; /* Thicker height for the progress bar container */
+    background: #ddd;
+    border-radius: 6px;
+    margin: 20px 0;
+    position: relative;
+    padding: 10px 0; /* Adds space inside the progress bar for the rocket */
+}
+
+.progress-bar {
+    width: 0;
+    height: 100%;
+    border-radius: 6px;
+    background: #007BFF;
+    animation: progressAnim 3s ease-in-out forwards;
+    position: absolute;
+    top: 0;
+}
+
+.rocket {
+    font-size: 1.5em; /* Adjusted size */
+    position: absolute;
+    top: -7px; /* Above the progress bar */
+    left: 0;
+    transform: rotate(45deg); /* Rotates the rocket */
+    animation: rocketMove 3s ease-in-out forwards;
+    z-index: 100; /* Ensures the rocket appears above the progress bar */
+    transform-origin: center center; /* Keeps rotation centered */
+}
+
+@keyframes progressAnim {
+    from { width: 0; }
+    to { width: 85%; }
+}
+
+@keyframes rocketMove {
+    from {
+        left: 0;
+    }
+    to {
+        left: 95%;
+    }
+}
+
+
+
         .btn {
             display: inline-block;
             margin-top: 20px;
@@ -126,10 +154,43 @@ h1, p, .progress, .image-container, .btn, .back-link {
         }
         .image-container img {
             width: 80%;
-            max-width: 300px;
+            max-width: 250px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
+    @media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
+    .container {
+        width: 90%; /* Make the container more compact */
+        height: auto; /* Allow it to expand based on content */
+        padding: 5%; /* Add more padding for better spacing */
+    }
+    
+    h1 {
+        font-size: 1.5em; /* Reduce heading size */
+    }
+    
+    p {
+        font-size: 0.9em; /* Reduce text size slightly */
+    }
+
+    .progress {
+        width: 100%; /* Make sure progress bar fills the container */
+    }
+
+    .image-container img {
+        max-width: 150px; /* Slightly reduce image size */
+    }
+
+    .btn {
+        padding: 8px 16px; /* Adjust button size */
+        font-size: 0.9em; /* Reduce text size */
+    }
+
+    .back-link {
+        font-size: 0.9em; /* Reduce text size */
+    }
+}
+
     </style>
 </head>
 <body>
@@ -139,13 +200,15 @@ h1, p, .progress, .image-container, .btn, .back-link {
         <p class="fade-text" style="animation-delay: 0.7s;">We are working hard to bring you a better experience. Expect new features, enhanced design, and much more.</p>
         <p class="fade-text" style="animation-delay: 0.9s;">If you have any questions or inquiries, feel free to reach out to us.</p>
         <div class="progress">
-            <div class="progress-bar"></div>
-        </div>
+            <div class="progress-bar">
+                <span class="rocket">🚀</span>
+            </div>
+        </div>        
         <div class="image-container fade-text" style="animation-delay: 1s;">
             <img src="Bilder/comingsoon.webp" alt="Coming Soon Illustration">
         </div>
-        <a href="#" class="btn fade-text" style="animation-delay: 1.2s;">Contact Us</a>
-        <a href="https://www.goequiz.com" class="back-link fade-text" style="animation-delay: 1.4s;">Meanwhile, go back to the main page &rarr;</a>
+        <a href="https://www.duolingo.com" class="btn fade-text" style="animation-delay: 1.2s;">Contact Us</a>
+        <a href="index.html" class="back-link fade-text" style="animation-delay: 1.4s;">Meanwhile, go back to the main page &rarr;</a>
     </div>
 </body>
 </html>
