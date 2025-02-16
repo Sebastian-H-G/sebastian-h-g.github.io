@@ -1,5 +1,5 @@
 const countries = [
-"Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros", "Democratic Republic of the Congo", "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Ivory Coast", "Kenya", "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Republic of the Congo", "Rwanda", "Sao Tome Principe", "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Western Sahara", "Zambia", "Zimbabwe" ];
+"Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros", "Democratic Republic of the Congo", "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Ivory Coast", "Kenya", "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Republic of the Congo", "Rwanda", "Reunion", "Sao Tome Principe", "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Western Sahara", "Zambia", "Zimbabwe" ];
         function normalizeCountryName(name) {
             return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '').toLowerCase();
         }
@@ -32,18 +32,23 @@ const countries = [
             checkCountry(e.target.value.trim());
         });
         
-        function checkCountry(countryName) {
-            countryName = countryName.toLowerCase();
-            const normalizedCountryName = normalizeCountryName(countryName);
-            if (countries.map(c => normalizeCountryName(c)).includes(normalizedCountryName) && !correctCountries.map(c => normalizeCountryName(c)).includes(normalizedCountryName)) {
-                const originalCountryName = countries.find(c => normalizeCountryName(c) === normalizedCountryName);
-                correctCountries.push(originalCountryName);
-                score++;
-                scoreBoard.textContent = `Score: ${score} / 54`;
-                document.querySelector(`[title="${originalCountryName}"]`).classList.add('correct');
-                countryInput.value = ''; // Clear the input field
-            }
-        }
+      
+function checkCountry(countryName) {
+    countryName = countryName.toLowerCase();
+    const normalizedCountryName = normalizeCountryName(countryName);
+    if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCase()) && !correctCountries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCase())) {
+        const originalCountryName = countries.find(c => c.toLowerCase() === normalizedCountryName.toLowerCase());
+        correctCountries.push(originalCountryName);
+        score++;
+        scoreBoard.textContent = `Score: ${score} / 54`;
+        document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
+            path.classList.add('correct');
+        });
+        
+        countryInput.value = ''; // Clear the input field
+        countryInput.focus(); // Focus the input field
+    }
+}
         
         document.addEventListener('DOMContentLoaded', () => {
             let countdownInterval;
@@ -80,6 +85,7 @@ const countries = [
                                 messageElement.style.color = 'green';
                                 pauseButton.style.display = 'none';
                                 displayCountriesTable();
+                                enableCountryTooltip();
                                 messageElement.classList.add('congrats-animation');
                                 setTimeout(() => {
                                     messageElement.classList.remove('congrats-animation');
@@ -94,6 +100,7 @@ const countries = [
                                 giveUpButton.textContent = 'Restart';
                                 giveUpButton.onclick = () => location.reload();
                                 pauseButton.style.display = 'none';
+                                enableCountryTooltip();
                             }
                             
                             messageElement.style.display = 'block';
@@ -239,6 +246,7 @@ function stopTimer() {
                 document.getElementById('map-container').style.display = 'block';
                 countryInput.disabled = true; // Disable the input field
                 endGame();
+                enableCountryTooltip();
             }
         
             function restartGame() {

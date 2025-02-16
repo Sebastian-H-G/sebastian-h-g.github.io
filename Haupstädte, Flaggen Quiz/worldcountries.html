@@ -1122,32 +1122,52 @@
           </div>
   </footer>
   <script>
-  function enableCountryTooltip() {
+function enableCountryTooltip() {
     const tooltip = document.createElement("div");
     tooltip.id = "tooltip";
     document.body.appendChild(tooltip);
 
-    tooltip.style.position = "absolute";
-    tooltip.style.background = "black";
-    tooltip.style.color = "white";
-    tooltip.style.padding = "5px 10px";
-    tooltip.style.borderRadius = "5px";
-    tooltip.style.fontSize = "14px";
-    tooltip.style.display = "none";
-    tooltip.style.pointerEvents = "none";
+    // Tooltip styling
+    Object.assign(tooltip.style, {
+        position: "absolute",
+        background: "black",
+        color: "white",
+        padding: "8px 12px",
+        borderRadius: "5px",
+        fontSize: "14px",
+        display: "none",
+        pointerEvents: "none",
+        opacity: "0",  // Start with hidden opacity
+        transform: "scale(0.8)",  // Start with a smaller scale
+        transition: "opacity 0.3s ease, transform 0.3s ease",  // Smooth transition for both opacity and scale
+    });
+
+    let tooltipTimer = null; // Timer to delay tooltip display
 
     function showTooltip(e, path) {
         const name = path.getAttribute("title");
         if (!name) return;
-        
-        tooltip.textContent = name;
-        tooltip.style.left = `${e.pageX + 10}px`;
-        tooltip.style.top = `${e.pageY + 10}px`;
-        tooltip.style.display = "block";
+
+        tooltipTimer = setTimeout(() => {
+            tooltip.textContent = name;
+            tooltip.style.left = `${e.pageX + 10}px`;
+            tooltip.style.top = `${e.pageY + 10}px`;
+
+            // Smoothly show the tooltip
+            tooltip.style.display = "block";
+            tooltip.style.opacity = "1";  // Fade in
+            tooltip.style.transform = "scale(1)";  // Scale up
+        }, 300); // 300ms delay before showing the tooltip
     }
 
     function hideTooltip() {
-        tooltip.style.display = "none";
+        clearTimeout(tooltipTimer); // Clear any active timer
+
+        // Smoothly hide the tooltip
+        tooltip.style.opacity = "0";  // Fade out
+        tooltip.style.transform = "scale(0.8)";  // Scale down
+
+        setTimeout(() => tooltip.style.display = "none", 300);  // Hide completely after transition
     }
 
     document.querySelectorAll("svg path").forEach(path => {
@@ -1167,8 +1187,7 @@ function disableCountryTooltip() {
     });
 }
 
-
-  </script>
+</script>
   <script>
     function updateSvgWidth(value) {
             const svg = document.querySelector("#map-container svg");

@@ -350,6 +350,7 @@ countryInput.addEventListener('input', (e) => {
     checkCountry(e.target.value.trim());
 });
 
+
 function checkCountry(countryName) {
     countryName = countryName.toLowerCase();
     const normalizedCountryName = normalizeCountryName(countryName);
@@ -358,9 +359,12 @@ function checkCountry(countryName) {
         correctCountries.push(originalCountryName);
         score++;
         scoreBoard.textContent = `Score: ${score} / 196`;
-        document.querySelector(`[title="${originalCountryName}"]`).classList.add('correct');
+        document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
+            path.classList.add('correct');
+        });
+        
         countryInput.value = ''; // Clear the input field
-        counntryInput.focus(); // Focus the input field
+        countryInput.focus(); // Focus the input field
     }
 }
 
@@ -527,37 +531,7 @@ function createConfetti() {
     }
 
     function restartGame() {
-        // Reset game state
-        clearInterval(countdownInterval);
-        pauseCount = 0;
-        isPaused = false;
-        score = 0;
-        timeRemaining = 15 * 60;
-        document.getElementById('pauseMessage').style.display = 'none';
-        correctCountries.length = 0;
-        // Reset the color of all country paths to their default
-        const countryPaths = document.querySelectorAll('path'); // Select all path elements
-        countryPaths.forEach(path => {
-        path.style.fill = '#FFF990'; // Reset to default color
-        });
-        // Reset UI elements
-        countryInput.disabled = false;
-        countryInput.value = '';
-        document.getElementById('continentTables').style.display = 'none';
-        scoreBoard.textContent = 'Score: 0 / 196';
-        timerElement.textContent = '15:00';
-        document.getElementById('message').style.display = 'none';
-        document.getElementById('pauseButton').style.display = 'block';
-        document.getElementById('pauseButton').disabled = false;
-        document.getElementById('pauseButton').classList.remove('play');
-        document.getElementById('pauseButton').classList.add('pause');
-        document.getElementById('giveUpButton').style.display = 'block';
-        document.getElementById('restartButton').style.display = 'none';
-        document.getElementById('results').innerHTML = '';
-        document.getElementById('map-container').style.display = 'block';
-
-        // Start a new countdown
-        startCountdown();
+location.reload();
     }
 
     document.getElementById('pauseButton').addEventListener('click', togglePause);

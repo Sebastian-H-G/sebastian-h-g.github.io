@@ -73,15 +73,15 @@ h1 {
 }
 
 svg path {
-  stroke: #333;
-  stroke-width: 0.5;
-  fill: #FFF990;
+  stroke: #333!important;
+  stroke-width: 0.5!important;
+  fill: #FFF990!important;
 }
 .correct {
-  fill: green;
+  fill: green!important;
 }
 .not-guessed {
-  fill: red;
+  fill: red!important;
 }
 
   /* General styles for the map container */
