@@ -399,6 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         messageElement.style.color = 'green';
                         pauseButton.style.display = 'none';
                         showTables();
+                        enableCountryTooltip();
                         messageElement.classList.add('congrats-animation');
                         setTimeout(() => {
                             messageElement.classList.remove('congrats-animation');
@@ -415,6 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         giveUpButton.textContent = 'Restart';
                         giveUpButton.onclick = () => location.reload();
                         pauseButton.style.display = 'none';
+                        enableCountryTooltip() ;
                     }
                     
                     messageElement.style.display = 'block';
@@ -520,6 +522,7 @@ function createConfetti() {
         document.getElementById('map-container').style.display = 'block';
         countryInput.disabled = true; // Disable the input field
         showTables();
+        enableCountryTooltip();
         endGame();
     }
 
