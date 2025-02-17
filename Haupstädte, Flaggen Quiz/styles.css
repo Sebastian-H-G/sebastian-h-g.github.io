@@ -343,7 +343,11 @@ margin-top: 10px;	/* Ensure pagination stays above the background */
 .quiz-content {
 display: flex;
 align-items: center;
+justify-content: flex-start;
 gap: 20px;
+}
+.quiz-content h2 p {
+    margin: 0;
 }
 
 .quiz-logo {
@@ -443,26 +447,50 @@ height: auto;
 
 /* Animation - Floating Circles */
 .footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
-  opacity: 0.5;
-  animation: animateBg 8s linear infinite;
-  z-index: 0; /* Ensure it's behind the footer content */
-}
-
-@keyframes animateBg {
-  from {
-    transform: translate(0, 0);
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 20%, transparent 20%) center/150px 150px;
+    opacity: 0.5;
+    animation: animateBg 12s ease-in-out infinite, colorChange 12s ease-in-out infinite;
+    z-index: 0; /* Ensure it's behind the footer content */
   }
-  to {
-    transform: translate(50px, -50px);
+  
+  /* Keyframe animation for the floating movement */
+  @keyframes animateBg {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(-50px, 50px);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
   }
-}
+  
+  /* Keyframe animation for background color variation */
+  @keyframes colorChange {
+    0% {
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 20%, transparent 20%) center/150px 150px;
+    }
+    25% {
+      background: radial-gradient(circle, rgba(255, 100, 100, 0.2) 20%, transparent 20%) center/150px 150px;
+    }
+    50% {
+      background: radial-gradient(circle, rgba(100, 255, 255, 0.2) 20%, transparent 20%) center/150px 150px;
+    }
+    75% {
+      background: radial-gradient(circle, rgba(100, 100, 255, 0.2) 20%, transparent 20%) center/150px 150px;
+    }
+    100% {
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 20%, transparent 20%) center/150px 150px;
+    }
+  }
+  
 
 @media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
 	.wave-text {
@@ -499,6 +527,12 @@ nav ul li a i{
 }
 .swiper-slide img {object-fit: fill;}
 }
+
+
+
+
+
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
     body {
