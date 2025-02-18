@@ -7,7 +7,6 @@ const countryMappings =
     "Bangladesh": ["Bangladesh", "Bangladesch"],
     "Bhutan": ["Bhutan", "Bhutan"],
     "Brunei": ["Brunei", "Brunei"],
-    "Myanmar": ["Myanmar", "Burma", "Myanmar (Birma)"],
     "Cambodia": ["Cambodia", "Kambodscha"],
     "China": ["China", "China"],
     "Cyprus": ["Republic of Cyprus", "Cyprus", "Zypern", "Republik Zypern"],
@@ -27,6 +26,7 @@ const countryMappings =
     "Malaysia": ["Malaysia", "Malaysia"],
     "Maldives": ["Maldives", "Malediven"],
     "Mongolia": ["Mongolia", "Mongolei"],
+    "Myanmar": ["Myanmar", "Burma", "Myanmar (Birma)"],
     "Nepal": ["Nepal", "Nepal"],
     "North Korea": ["Democratic People's Republic of Korea", "North Korea", "Nordkorea", "Demokratische Volksrepublik Korea"],
     "Oman": ["Oman", "Oman"],
@@ -45,6 +45,7 @@ const countryMappings =
     "Timor-Leste": ["Timor-Leste", "East Timor", "Timor-Leste", "Osttimor"],
     "Turkey": ["Republic of Turkey", "Turkey", "Türkei", "Republik Türkei"],
     "Turkmenistan": ["Turkmenistan", "Turkmenistan"],
+    "Taiwan":["Taiwan"],
     "United Arab Emirates": ["United Arab Emirates", "Vereinigte Arabische Emirate"],
     "Uzbekistan": ["Uzbekistan", "Usbekistan"],
     "Vietnam": ["Vietnam", "Vietnam"],
@@ -85,7 +86,7 @@ function normalizeCountryName(country) {
 }
 
 const countries = [
-   "Afghanistan", "Armenia", "Azerbaijan", "Bahrain", "Bangladesh", "Bhutan", "Brunei", "Myanmar", "Cambodia", "China", "Cyprus", "Georgia", "India", "Indonesia", "Iran", "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan", "Kuwait", "Kyrgyzstan", "Laos", "Lebanon", "Malaysia", "Maldives", "Mongolia", "Nepal", "North Korea", "Oman", "Pakistan", "Palestine", "Philippines", "Qatar", "Russia", "Saudi Arabia", "Singapore", "South Korea", "Sri Lanka", "Syria", "Tajikistan", "Thailand", "Timor-Leste", "Turkey", "Turkmenistan", "United Arab Emirates", "Uzbekistan", "Vietnam", "Yemen"
+   "Afghanistan", "Armenia", "Azerbaijan", "Bahrain", "Bangladesh", "Bhutan", "Brunei", "Cambodia", "China", "Cyprus", "Georgia", "India", "Indonesia", "Iran", "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan", "Kuwait", "Kyrgyzstan", "Laos", "Lebanon", "Malaysia", "Maldives", "Mongolia", "Myanmar", "Nepal", "North Korea", "Oman", "Pakistan", "Palestine", "Philippines", "Qatar", "Russia", "Saudi Arabia", "Singapore", "South Korea", "Sri Lanka", "Syria", "Taiwan", "Tajikistan", "Thailand", "Timor-Leste", "Turkey", "Turkmenistan", "United Arab Emirates", "Uzbekistan", "Vietnam", "Yemen"
 ];
 
 
