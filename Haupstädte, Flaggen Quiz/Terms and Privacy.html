@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Website Title</title>
+  <style>
+    /* Sophisticated color palette */
+    :root {
+      --primary-color: #2C3E50;
+      --secondary-color: #18BC9C;
+      --accent-color: #E74C3C;
+      --background-color: #ECF0F1;
+      --text-color: #34495E;
+    }
+
+    /* Global styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-size: 1.2rem;
+      font-family: 'Courier New', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      font-weight: bold;
+    }
+
+    /* Navigation Bar */
+nav {
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: center; /* Align links to the left */
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+nav .menu {
+  display: flex;
+  margin-left: -50rem; /* Moves the links further left */
+}
+
+nav .menu a {
+  color: #fff;
+  margin: 0 1.4rem;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease-in-out;
+}
+
+nav .menu a:hover {
+  color: var(--secondary-color);
+  transform: scale(1.1);
+}
+
+    .logo img {
+        width: 10%;
+        height: auto;
+    }
+
+    /* Section styling */
+    section {
+      padding: 150px 20px 80px;
+      min-height: 100vh;
+    }
+
+    /* Heading animations */
+    h1, h2, h3 {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive transitions on hover for headings */
+    h1:hover, h2:hover, h3:hover {
+      color: var(--accent-color);
+      transition: color 0.4s ease;
+    }
+    
+@media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) { /* Navigation Bar Adjustments for iPhone 15 */
+  nav {
+    padding: 0.8rem 1.5rem;
+  }
+
+  nav .menu a {
+    margin: 0 1rem; /* Reduce margin for smaller screens */
+    font-size: 1rem; /* Adjust font size */
+  }
+
+  .logo img {
+    width: 5%; /* Adjust logo size for small screens */
+  }
+
+  /* Adjust section padding for smaller screens */
+  section {
+    padding: 100px 15px 60px;
+  }
+
+  /* Adjust heading size for smaller screens */
+  h1, h2, h3 {
+    font-size: 1.5rem; /* Reduce font size for better readability */
+  }
+}
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo"><a href="index.html"><img src="Logos/Geography.jpg" alt="Logo"></a></div>
+    <div class="menu">
+      <a href="#home" data-translate="navHome">Home</a>
+      <a href="#about" data-translate="navAbout">About Us</a>
+      <a href="#terms" data-translate="navTerms">Terms of Service</a>
+      <a href="#privacy" data-translate="navPrivacy">Privacy Policy</a>
+      <a href="#copyright" data-translate="navCopyright">Copyright</a>
+      <a href="#legal" data-translate="navLegal">Legal Disclaimer</a>
+      <a href="#annotations" data-translate="navAnnotations">Annotations</a>
+    </div>
+  </nav>
+
+  <!-- Home Section -->
+  <section id="home">
+    <h1 data-translate="homeHeading">Home</h1>
+    Welcome to GeoQuiz!
+    <br>
+    GeoQuiz is your go-to destination for geography enthusiasts, trivia lovers, and curious minds! Our interactive quizzes are designed to challenge your knowledge of the world's capitals, landmarks, and more. Whether you're a geography pro or just getting started, we have something for everyone.
+    <br><br>
+    What makes GeoQuiz unique? The majority of our content—whether it’s the code that powers our quizzes, the beautiful images, or the text you read — is created with cutting-edge artificial intelligence. This approach allows us to constantly update and expand our content, ensuring that you’ll never run out of new and exciting challenges.
+    <br>
+    Ready to put your geography skills to the test?
+    <br><br>
+    Start exploring now, and let’s see how well you know the world!  </section>
+
+  <!-- About Us Section -->
+  <section id="about">
+    <h2 data-translate="aboutHeading">About Us</h2>
+    Welcome to GeoQuiz, a reputable platform dedicated to delivering engaging and informative quizzes. It is important to note that the majority of the content on this website, including but not limited to code, images, and written material, is predominantly generated through advanced artificial intelligence systems. This approach is employed to foster innovation, enhance efficiency, and ensure the continuous provision of high-quality and dynamic content. The utilization of artificial intelligence facilitates a more responsive and scalable method of content creation, aligning with the latest technological advancements.    
+</section>
+
+  <!-- Terms of Service Section -->
+  <section id="terms">
+    <h2 data-translate="termsHeading">Terms of Service</h2>
+    By accessing and utilizing this website, you acknowledge and consent to abide by our Terms of Service. It is essential to recognize that a significant portion of the content presented on this site, including but not limited to code snippets, graphics, and textual material, is generated through advanced artificial intelligence systems. We retain the exclusive right to modify, amend, or update both the Terms of Service and the AI-generated content at our discretion, with or without prior notice. Users are encouraged to review these terms periodically to remain informed of any changes or updates. <!-- Add your content here -->
+  </section>
+
+  <!-- Privacy Policy Section -->
+  <section id="privacy">
+    <h2 data-translate="privacyHeading">Privacy Policy</h2>
+    We are steadfast in our commitment to safeguarding your privacy. While a substantial portion of the content available on this website—including images, code, and textual information—is generated through advanced artificial intelligence systems, we prioritize the protection of your personal data. All personal information collected is processed securely and in strict accordance with applicable privacy laws and regulations. We ensure that our practices align with the highest standards of data protection and privacy, offering transparency and security in every aspect of data handling.
+    <!-- Add your content here -->
+  </section>
+
+  <!-- Copyright Notice Section -->
+  <section id="copyright">
+    <h2 data-translate="copyrightHeading">Copyright Notice</h2>
+    All materials presented on this website, encompassing text, code, images, and graphics—whether generated by artificial intelligence or otherwise—are safeguarded by applicable copyright laws and intellectual property protections. The unauthorized reproduction, distribution, or use of any such content, in whole or in part, without prior written authorization from the website’s proprietors, is unequivocally prohibited. Any infringement upon these rights may result in legal consequences, including but not limited to civil litigation and claims for damages. Users are urged to respect the intellectual property rights associated with all content and to seek proper consent before utilizing any materials from this site.<!-- Add your content here -->
+  </section>
+
+  <!-- Legal Disclaimer Section -->
+  <section id="legal">
+    <h2 data-translate="legalHeading">Legal Disclaimer</h2>
+    The information presented on this website is intended solely for general informational purposes and is primarily generated through artificial intelligence systems. While we endeavor to ensure the accuracy, relevance, and quality of the AI-produced content, we do not offer any guarantees regarding its completeness or the absence of errors. Users are advised to exercise discretion when relying on such content and are encouraged to consult additional sources where necessary to verify the information provided.
+    <!-- Add your content here -->
+  </section>
+
+  <!-- Annotations Section -->
+  <section id="annotations">
+    <h2 data-translate="annotationsHeading">Annotations</h2>
+    This section provides additional notes and clarifications regarding our policies and the AI-generated content featured on this website. We encourage you to review these annotations to gain a deeper understanding of our practices, the scope of our AI utilization, and any specific nuances or exceptions that may apply.
+<ul>
+    <li><u>Afirca Countries Quiz:</u></li>
+    The Africa Countries Quiz features 54 countries, though it is important to note that one of these, Western Sahara, is a disputed territory and not universally recognized as a sovereign state. Western Sahara is claimed by both the Sahrawi Arab Democratic Republic and Morocco, with the latter administering most of the region. Due to this territorial dispute, some international bodies and countries do not recognize Western Sahara as a separate country, thus affecting the total count of recognized African nations in various geopolitical contexts.
+    <li><u>Asia Countries Quiz:</u></li>
+    Similarly, the Asia Countries Quiz lists 50 countries; however, it should be noted that Asia technically features 49 countries due to the unique status of Taiwan. Taiwan operates as a self-governed entity with its own government, economy, and military, yet it is claimed by the People's Republic of China as part of its territory. While Taiwan is recognized as a sovereign state by a limited number of countries and has full participation in some international organizations, the People's Republic of China asserts that it is a province of China, influencing its broader diplomatic recognition. Consequently, Taiwan’s status remains a complex and politically sensitive issue in international relations.
+  </ul>
+  </section>
+
+  <script>
+    // Placeholder for translation logic
+    // This script can be expanded to fetch and apply translated text based on the user's language.
+    document.querySelectorAll('[data-translate]').forEach((el) => {
+      const key = el.getAttribute('data-translate');
+      // Example: el.textContent = translations[key] || el.textContent;
+    });
+
+    // Additional JavaScript for more sophisticated animations or interactions can be added here.
+  </script>
+</body>
+</html>
