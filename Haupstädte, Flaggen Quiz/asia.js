@@ -126,7 +126,7 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
     const originalCountryName = countries.find(c => c.toLowerCase() === normalizedCountryName.toLowerCase());
     correctCountries.push(originalCountryName);
     score++;
-    scoreBoard.textContent = `Score: ${score} / 48`;
+    scoreBoard.textContent = `Score: ${score} / 49`;
     document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
         path.classList.add('correct');
     });
