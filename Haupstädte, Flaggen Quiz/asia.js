@@ -1,54 +1,54 @@
-const countryMappings = {
-    "Alabama": ["The Yellowhammer State"],
-    "Alaska": ["The Last Frontier"],
-    "Arizona": ["The Grand Canyon State"],
-    "Arkansas": ["The Natural State"],
-    "California": ["The Golden State"],
-    "Colorado": ["The Centennial State"],
-    "Connecticut": ["The Constitution State"],
-    "Delaware": ["The First State"],
-    "Florida": ["The Sunshine State"],
-    "Georgia": ["The Peach State"],
-    "Hawaii": ["The Aloha State"],
-    "Idaho": ["The Gem State"],
-    "Illinois": ["The Prairie State"],
-    "Indiana": ["The Hoosier State"],
-    "Iowa": ["The Hawkeye State"],
-    "Kansas": ["The Sunflower State"],
-    "Kentucky": ["The Bluegrass State"],
-    "Louisiana": ["The Pelican State"],
-    "Maine": ["The Pine Tree State"],
-    "Maryland": ["The Old Line State"],
-    "Massachusetts": ["The Bay State"],
-    "Michigan": ["The Great Lakes State"],
-    "Minnesota": ["The North Star State"],
-    "Mississippi": ["The Magnolia State"],
-    "Missouri": ["The Show-Me State"],
-    "Montana": ["The Treasure State"],
-    "Nebraska": ["The Cornhusker State"],
-    "Nevada": ["The Silver State"],
-    "New Hampshire": ["The Granite State"],
-    "New Jersey": ["The Garden State"],
-    "New Mexico": ["The Land of Enchantment"],
-    "New York": ["The Empire State"],
-    "North Carolina": ["The Tar Heel State"],
-    "North Dakota": ["The Peace Garden State"],
-    "Ohio": ["The Buckeye State"],
-    "Oklahoma": ["The Sooner State"],
-    "Oregon": ["The Beaver State"],
-    "Pennsylvania": ["The Keystone State"],
-    "Rhode Island": ["The Ocean State"],
-    "South Carolina": ["The Palmetto State"],
-    "South Dakota": ["The Mount Rushmore State"],
-    "Tennessee": ["The Volunteer State"],
-    "Texas": ["The Lone Star State"],
-    "Utah": ["The Beehive State"],
-    "Vermont": ["The Green Mountain State"],
-    "Virginia": ["The Old Dominion State"],
-    "Washington": ["The Evergreen State"],
-    "West Virginia": ["The Mountain State"],
-    "Wisconsin": ["The Badger State"],
-    "Wyoming": ["The Equality State"]
+const countryMappings = 
+{
+    "Afghanistan": ["Afghanistan", "Afghanistan"],
+    "Armenia": ["Armenia", "Armenien"],
+    "Azerbaijan": ["Azerbaijan", "Aserbaidschan"],
+    "Bahrain": ["Bahrain", "Bahrain"],
+    "Bangladesh": ["Bangladesh", "Bangladesch"],
+    "Bhutan": ["Bhutan", "Bhutan"],
+    "Brunei": ["Brunei", "Brunei"],
+    "Myanmar": ["Myanmar", "Burma", "Myanmar (Birma)"],
+    "Cambodia": ["Cambodia", "Kambodscha"],
+    "China": ["China", "China"],
+    "Cyprus": ["Republic of Cyprus", "Cyprus", "Zypern", "Republik Zypern"],
+    "Georgia": ["Republic of Georgia", "Georgia", "Georgien", "Republik Georgien"],
+    "India": ["India", "Indien"],
+    "Indonesia": ["Indonesia", "Indonesien"],
+    "Iran": ["Islamic Republic of Iran", "Iran", "Islamische Republik Iran"],
+    "Iraq": ["Iraq", "Irak"],
+    "Israel": ["State of Israel", "Israel", "Staat Israel"],
+    "Japan": ["Japan", "Japan"],
+    "Jordan": ["Jordan", "Jordanien"],
+    "Kazakhstan": ["Kazakhstan", "Kasachstan"],
+    "Kuwait": ["Kuwait", "Kuwait"],
+    "Kyrgyzstan": ["Kyrgyzstan", "Kirgisistan"],
+    "Laos": ["Laos", "Laos"],
+    "Lebanon": ["Lebanon", "Libanon"],
+    "Malaysia": ["Malaysia", "Malaysia"],
+    "Maldives": ["Maldives", "Malediven"],
+    "Mongolia": ["Mongolia", "Mongolei"],
+    "Nepal": ["Nepal", "Nepal"],
+    "North Korea": ["Democratic People's Republic of Korea", "North Korea", "Nordkorea", "Demokratische Volksrepublik Korea"],
+    "Oman": ["Oman", "Oman"],
+    "Pakistan": ["Pakistan", "Pakistan"],
+    "Palestine": ["State of Palestine", "Palestinian Territories", "Palestine", "Staat Palästina", "Palästinensische Gebiete", "Palästina"],
+    "Philippines": ["Philippines", "Philippinen"],
+    "Qatar": ["Qatar", "Katar"],
+    "Russia": ["Russian Federation", "Russia", "Russische Föderation", "Russland"],
+    "Saudi Arabia": ["Saudi Arabia", "Saudi-Arabien"],
+    "Singapore": ["Singapore", "Singapur"],
+    "South Korea": ["Republic of Korea", "South Korea", "Südkorea", "Republik Korea"],
+    "Sri Lanka": ["Sri Lanka", "Sri Lanka"],
+    "Syria": ["Syria", "Syrien"],
+    "Tajikistan": ["Tajikistan", "Tadschikistan"],
+    "Thailand": ["Thailand", "Thailand"],
+    "Timor-Leste": ["Timor-Leste", "East Timor", "Timor-Leste", "Osttimor"],
+    "Turkey": ["Republic of Turkey", "Turkey", "Türkei", "Republik Türkei"],
+    "Turkmenistan": ["Turkmenistan", "Turkmenistan"],
+    "United Arab Emirates": ["United Arab Emirates", "Vereinigte Arabische Emirate"],
+    "Uzbekistan": ["Uzbekistan", "Usbekistan"],
+    "Vietnam": ["Vietnam", "Vietnam"],
+    "Yemen": ["Yemen", "Jemen"]
   }  
 ;
 
@@ -85,8 +85,8 @@ function normalizeCountryName(country) {
 }
 
 const countries = [
-    "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
- ];
+   "Afghanistan", "Armenia", "Azerbaijan", "Bahrain", "Bangladesh", "Bhutan", "Brunei", "Myanmar", "Cambodia", "China", "Cyprus", "Georgia", "India", "Indonesia", "Iran", "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan", "Kuwait", "Kyrgyzstan", "Laos", "Lebanon", "Malaysia", "Maldives", "Mongolia", "Nepal", "North Korea", "Oman", "Pakistan", "Palestine", "Philippines", "Qatar", "Russia", "Saudi Arabia", "Singapore", "South Korea", "Sri Lanka", "Syria", "Tajikistan", "Thailand", "Timor-Leste", "Turkey", "Turkmenistan", "United Arab Emirates", "Uzbekistan", "Vietnam", "Yemen"
+];
 
 
 function displayCountriesTable() {
@@ -108,7 +108,7 @@ document.getElementById('countries-container').innerHTML = table;
 
 const correctCountries = [];
 let score = 0;
-let timeRemaining = 5 * 60;
+let timeRemaining = 7 * 60;
 
 const countryInput = document.getElementById('countryInput');
 const scoreBoard = document.getElementById('scoreBoard');
@@ -125,7 +125,7 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
     const originalCountryName = countries.find(c => c.toLowerCase() === normalizedCountryName.toLowerCase());
     correctCountries.push(originalCountryName);
     score++;
-    scoreBoard.textContent = `Score: ${score} / 50`;
+    scoreBoard.textContent = `Score: ${score} / 48`;
     document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
         path.classList.add('correct');
     });
@@ -170,7 +170,7 @@ function startCountdown() {
                 
                 if (checkAllStatesGuessed()) {
                     createConfetti();
-                    messageElement.textContent = `Congratulations! 👏 You named all states correctly. 🎉`;
+                    messageElement.textContent = `Congratulations! 👏 You named all countries. 🎉`;
                     messageElement.style.color = 'green';
                     pauseButton.style.display = 'none';
                     displayCountriesTable();
@@ -187,7 +187,7 @@ function startCountdown() {
                     giveUpButton.textContent = 'Restart';
                     giveUpButton.onclick = () => location.reload();
                 } else {
-                    messageElement.textContent = `Time is up! You named ${score} states.`;
+                    messageElement.textContent = `Time is up! You named ${score} countries.`;
                     giveUpButton.textContent = 'Restart';
                     giveUpButton.onclick = () => location.reload();
                     pauseButton.style.display = 'none';
@@ -262,7 +262,7 @@ function togglePause() {
         countryInput.disabled = true;
         document.getElementById('map-container').style.display = 'none'; // Disable map interaction
         document.getElementById('pauseMessage').style.display = 'block';
-        document.getElementById('pauseMessage').textContent = `The Game is paused! Pauses left: ${maxPauses - pauseCount}`;
+        document.getElementById('pauseMessage').textContent = `Game is Paused! Pauses left: ${maxPauses - pauseCount}`;
     } else if (isPaused) {
         isPaused = false;
         pauseButton.classList.remove('play');
@@ -281,7 +281,7 @@ function togglePause() {
 function giveUp() {
     clearInterval(countdownInterval);
     const messageElement = document.getElementById('message');
-    messageElement.textContent = `You gave up! You named ${score} states.`;
+    messageElement.textContent = `You gave up! You named ${score} countries.`;
     messageElement.style.display = 'block';
     document.getElementById('pauseButton').style.display = 'none';
     document.getElementById('giveUpButton').style.display = 'none';

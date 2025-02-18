@@ -8,7 +8,7 @@ const countryMappings = {
         "Bulgaria": ["Bulgarien"],
         "Croatia": ["Kroatien"],
         "Cyprus": ["Zypern"],
-        "Czechia": ["Tschechien"],
+        "Czechia": ["Tschechien", "Czech Republic", "Tschechische Republik"],
         "Denmark": ["Dänemark"],
         "Estonia": ["Estland"],
         "Finland": ["Finnland"],
@@ -50,15 +50,36 @@ const countryMappings = {
 ;
 
 function normalizeCountryName(country) {
-    const lowerCaseCountry = country.toLowerCase();
+    const normalizedCountry = country
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "") // Remove accents
+        .replace(/[-\s]+/g, " ") // Replace hyphens and multiple spaces with a single space
+        .trim()
+        .toLowerCase();
+
     for (const [standardName, aliases] of Object.entries(countryMappings)) {
-        if (aliases.map(alias => alias.toLowerCase()).includes(lowerCaseCountry) || standardName.toLowerCase() === lowerCaseCountry) {
+        const normalizedStandard = standardName
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[-\s]+/g, " ")
+            .trim()
+            .toLowerCase();
+
+        const normalizedAliases = aliases.map(alias =>
+            alias
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[-\s]+/g, " ")
+                .trim()
+                .toLowerCase()
+        );
+
+        if (normalizedAliases.includes(normalizedCountry) || normalizedStandard === normalizedCountry) {
             return standardName;
         }
     }
     return country;
 }
-
 const countries = [
     "Andorra", "Albania", "Austria", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus", "Czechia", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kosovo", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "North Macedonia", "Norway", "Russia", "Poland", "Portugal", "Romania", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", "Switzerland", "Turkey", "Ukraine", "United Kingdom", "Vatican City",   
 ];
@@ -82,7 +103,7 @@ function displayCountriesTable() {
 
 const correctCountries = [];
 let score = 0;
-let timeRemaining = 8 * 60;
+let timeRemaining = 6 * 60;
 
 const countryInput = document.getElementById('countryInput');
 const scoreBoard = document.getElementById('scoreBoard');
@@ -112,7 +133,7 @@ function checkCountry(countryName) {
 document.addEventListener('DOMContentLoaded', () => {
     let countdownInterval;
     let pauseCount = 0;
-    const maxPauses = 3;
+    const maxPauses = 2;
     let isPaused = false;
     function endGame() {
         console.log("endGame called");
@@ -197,7 +218,7 @@ function createConfetti() {
     }
 
     // Adjust the number of confetti pieces
-    const totalPieces = 700;
+    const totalPieces = 800;
     const interval = 5; // milliseconds
 
     let i = 0;

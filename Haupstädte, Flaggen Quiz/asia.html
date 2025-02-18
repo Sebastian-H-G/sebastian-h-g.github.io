@@ -1,5 +1,119 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="546.9347534179688 276.2897033691406 337.23895263671875 217.23269653320312">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asia Countries Quiz</title>
+    <link href="worldcountries.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    #countries-container table {
+        width: 95%;
+        border-collapse: collapse;
+        margin: 20px auto;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: left;
+    }
+    #countries-container th, #countries-container td {
+        padding: 12px;
+        border: 1px solid #ddd;
+    }
+    #countries-container th {
+        background-color: #f2f2f2;
+    }
+    #countries-container tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    #countries-container tr:hover {
+        background-color: #f1f1f1;
+    }
+    #countries-container p {
+        color: green;
+    }
+    @keyframes wiggle {
+    0%, 100% {
+        transform: rotate(-3deg);
+    }
+    50% {
+        transform: rotate(3deg);
+    }
+}
+
+.congrats-animation {
+    animation: wiggle 0.5s ease-in-out infinite;
+}
+#confettiCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2000000000;
+}
+
+
+@keyframes confetti-fall {
+    0% {
+      transform: translateY(-20vh) rotateZ(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotateZ(720deg);
+      opacity: 0;
+    }
+  }
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    z-index: 50000000000;
+    background-color: #f00; /* initial color */
+    pointer-events: none;
+    animation: confetti-fall 1s linear forwards;
+  }
+footer {
+    bottom: 0;
+    margin-bottom:0;
+}
+.map-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            padding: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: lightgray;
+        }
+        svg {
+            width: 100%;
+            margin: 10px;
+            height: 100%;
+            touch-action: none; /* Prevents default browser zooming */
+        }
+
+    </style>
+</head>
+<body class="page-exit">
+  
+    <h1>Asia<br> Countries Quiz</h1>
+    <button id="showlabels" style="display: none;">👁️</button>
+    <div class="flexbox"><div class="outScoreBoard"><div id="scoreBoard">Score: 0 / 48</div></div><input type="text" id="countryInput" placeholder="Type a country"><button id="pauseButton" class="pause"></button><div id="timer">7:00</div>
+   </div>
+    <div id="pauseMessage" style="display: none;"></div><br>
+    <button id="giveUpButton">Give up</button>
+    <button id="restartButton" style="display: none;">↻</button>
+    
+    <div id="message" style="display: none; color: red; font-size: 20px; margin: 0 auto 20px auto; font-weight: 900;"></div>
+    <!-- Map Container -->
+    <div id="map-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="546.9347534179688 276.2897033691406 337.23895263671875 217.23269653320312" id="map">
             <path
                  d="m 632.89475,388.8674 0.184,0.251 0.026,1.701 0.042,0.121 -0.098,0.018 -0.11,0.129 -0.129,0.199 -0.177,0.103 -0.142,0.116 -0.134,0.144 -0.12,0.031 -0.155,-0.183 -0.107,-0.187 0.026,-0.041 0.075,-0.013 0.028,-0.097 -0.045,-0.14 -0.105,-0.053 -0.132,-0.004 -0.127,0.063 -0.135,0.124 -0.076,0.133 -0.011,0.267 0.035,0.3 -10e-4,0.146 -0.074,0.181 -0.026,0.266 0.053,0.206 0.048,0.123 0.005,0.104 -0.126,0.328 0.109,0.062 0.361,0.023 0.106,0.222 0.072,0.152 -0.02,0.09 -0.256,0.067 -0.322,0.074 -0.231,-0.021 -0.418,0.1 -0.223,0.154 0.065,0.096 0.077,0.074 0.035,0.203 -0.065,0.288 -0.118,0.279 -0.147,0.348 -0.17,0.399 -0.233,0.6 -0.197,0.471 -0.021,0.339 0.005,0.221 -0.022,0.441 -0.187,0.243 -0.042,0.007 -0.223,-0.029 -0.075,-0.01 -0.213,-0.028 -0.33,-0.043 -0.429,-0.057 -0.507,-0.066 -0.565,-0.075 -0.604,-0.08 -0.625,-0.082 -0.624,-0.082 -0.605,-0.08 -0.565,-0.074 -0.507,-0.067 -0.428,-0.057 -0.33,-0.043 -0.213,-0.028 -0.075,-0.01 -0.236,-0.031 -0.127,-0.164 -0.154,-0.198 -0.155,-0.199 -0.154,-0.199 -0.154,-0.199 -0.154,-0.199 -0.154,-0.199 -0.154,-0.199 -0.154,-0.199 -0.154,-0.2 -0.154,-0.199 -0.155,-0.2 -0.154,-0.2 -0.154,-0.2 -0.154,-0.2 -0.154,-0.2 -0.154,-0.2 -0.104,-0.134 -0.057,-0.151 -0.011,-0.396 0,-0.087 0.104,-0.16 0.05,0.114 0.116,0.155 0.197,-0.038 0.092,0.026 0.068,0.549 0.145,0.195 0.176,0.078 0.597,0.043 0.371,-0.074 0.731,-0.358 0.384,-0.129 1.062,0.022 0.851,0.149 1.325,0.088 0.257,-0.023 0.715,-0.288 0.438,-0.254 0.261,-0.073 0.172,-0.246 0.113,-0.32 0.101,-0.209 0.129,-0.1 0.122,-0.178 0.099,-0.289 0.246,-0.292 0.986,-0.711 0.576,-0.602 0.051,-0.195 0.313,-0.292 0.251,-0.32 1.175,-0.916 0.235,-0.379 0.139,-0.425 0.017,-0.03 0.101,-0.018 0.144,0.064 0.015,0.318 -0.053,0.3 -0.006,0.318 -0.021,0.172 0.109,0.141 0.186,0.061 0.081,-0.007 0.048,-0.071 z m -0.046,1.283 0.017,-0.133 -0.029,-0.069 -0.12,-0.009 -0.05,0.115 -0.017,0.165 0.083,0.014 0.116,-0.083 z m -5.096,2.438 -0.025,0.06 -0.079,-0.005 -0.198,-0.054 -0.064,-0.086 0.124,-0.103 0.055,-0.005 0.079,0.108 0.108,0.085 z m -3.181,0.564 -0.208,0.017 -0.188,-0.116 0.397,-0.155 0.107,-0.07 0.116,-0.143 0.093,0.123 -0.103,0.193 -0.073,0.083 -0.141,0.068 z m -2.008,-0.091 -0.047,0.022 -0.05,-0.165 0.003,-0.052 0.129,-0.075 0.079,0.135 -0.114,0.135 z m 3.679,0.34 10e-4,0.104 -0.285,-0.03 -0.076,0.054 -0.234,-0.03 -0.229,-0.075 0.155,-0.125 0.404,-0.147 0.168,0.134 0.096,0.115 z"
                  title="United Arab Emirates"
@@ -197,10 +311,224 @@
                  title="Yemen"
                  id="Yemen"  fill="#c0c0c0" stroke="#000" class="asia"/>
             </svg>
+        <div id="tooltip"></div>
+    </div>
+    <div class="controls">
+      <label for="svgWidth">Map Width: </label>
+      <input type="range" id="svgWidth" min="50" max="99" value="50" oninput="updateSvgWidth(this.value)">
+      <span id="widthValue">50%</span>
+  </div>
+    <div id="countries-container"></div>
+    <canvas id="confettiCanvas"></canvas>
+    <footer>
+        <div class="flexbox-footer"><a href="index.html">
+        <img src="Logos/asia.webp" alt="Footer Image"></a>
+        <div class="footer-info">
+            <div class="footer-social">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+              </div></div>
+            
+            </div>
+    </footer>
+    <script>
+      function enableCountryTooltip() {
+          const tooltip = document.createElement("div");
+          tooltip.id = "tooltip";
+          document.body.appendChild(tooltip);
+      
+          // Tooltip styling
+          Object.assign(tooltip.style, {
+              position: "absolute",
+              background: "black",
+              color: "white",
+              padding: "8px 12px",
+              borderRadius: "5px",
+              fontSize: "14px",
+              display: "none",
+              pointerEvents: "none",
+              opacity: "0",  // Start with hidden opacity
+              transform: "scale(0.8)",  // Start with a smaller scale
+              transition: "opacity 0.3s ease, transform 0.3s ease",  // Smooth transition for both opacity and scale
+          });
+      
+          let tooltipTimer = null; // Timer to delay tooltip display
+      
+          function showTooltip(e, path) {
+              const name = path.getAttribute("title");
+              if (!name) return;
+      
+              tooltipTimer = setTimeout(() => {
+                  tooltip.textContent = name;
+                  tooltip.style.left = `${e.pageX + 10}px`;
+                  tooltip.style.top = `${e.pageY + 10}px`;
+      
+                  // Smoothly show the tooltip
+                  tooltip.style.display = "block";
+                  tooltip.style.opacity = "1";  // Fade in
+                  tooltip.style.transform = "scale(1)";  // Scale up
+              }, 300); // 300ms delay before showing the tooltip
+          }
+      
+          function hideTooltip() {
+              clearTimeout(tooltipTimer); // Clear any active timer
+      
+              // Smoothly hide the tooltip
+              tooltip.style.opacity = "0";  // Fade out
+              tooltip.style.transform = "scale(0.8)";  // Scale down
+      
+              setTimeout(() => tooltip.style.display = "none", 300);  // Hide completely after transition
+          }
+      
+          document.querySelectorAll("svg path").forEach(path => {
+              path.addEventListener("mousemove", (e) => showTooltip(e, path));
+              path.addEventListener("mouseleave", hideTooltip);
+              path.addEventListener("touchstart", (e) => showTooltip(e.touches[0], path));
+              path.addEventListener("touchend", hideTooltip);
+          });
+      }
+      
+      function disableCountryTooltip() {
+          const tooltip = document.getElementById("tooltip");
+          if (tooltip) tooltip.remove();
+      
+          document.querySelectorAll("svg path").forEach(path => {
+              path.replaceWith(path.cloneNode(true)); // Removes all event listeners
+          });
+      }
+      
+      </script>
+    <script>
+      function updateSvgWidth(value) {
+        const svg = document.getElementById("map");
+        svg.style.width = value + "%";
+        document.getElementById("widthValue").textContent = value + "%";
+    }
 
-<script>
-let svg = document.querySelector("svg");
-let bbox = svg.getBBox();
-console.log(bbox.x, bbox.y, bbox.width, bbox.height);
+    // Set the initial value for the SVG width when the page loads
+    window.onload = function() {
+        const initialValue = document.getElementById("svgWidth").value;
+        updateSvgWidth(initialValue);
+    }
+      const svg = document.getElementById("map");
+      let viewBox = { x: 546.9347534179688, y: 276.2897033691406, width: 337.23895263671875, height: 217.23269653320312 };
+      let lastDistance = null;
+      let minZoom = 40;
+      let maxZoom = 1400;
+      let isPanning = false;
+      let startX, startY;
+      let zoomedIn = false;
+      let resetTimeout;
 
-</script>
+      function animateViewBox(targetViewBox, duration = 1000) {
+          const startX = viewBox.x, startY = viewBox.y, startWidth = viewBox.width, startHeight = viewBox.height;
+          const diffX = targetViewBox.x - startX;
+          const diffY = targetViewBox.y - startY;
+          const diffWidth = targetViewBox.width - startWidth;
+          const diffHeight = targetViewBox.height - startHeight;
+          
+          let startTime;
+          function step(timestamp) {
+              if (!startTime) startTime = timestamp;
+              const progress = Math.min((timestamp - startTime) / duration, 1);
+              viewBox.x = startX + diffX * progress;
+              viewBox.y = startY + diffY * progress;
+              viewBox.width = startWidth + diffWidth * progress;
+              viewBox.height = startHeight + diffHeight * progress;
+              svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+              if (progress < 1) {
+                  requestAnimationFrame(step);
+              } else {
+                  zoomedIn = false;
+              }
+          }
+          requestAnimationFrame(step);
+      }
+
+      function resetViewBoxSmooth() {
+          animateViewBox({ x: 546.9347534179688, y: 276.2897033691406, width: 337.23895263671875, height: 217.23269653320312 });
+      }
+
+      function startResetTimer() {
+          clearTimeout(resetTimeout);
+          resetTimeout = setTimeout(resetViewBoxSmooth, 7000);
+      }
+
+      function getDistance(touches) {
+          let dx = touches[0].clientX - touches[1].clientX;
+          let dy = touches[0].clientY - touches[1].clientY;
+          return Math.sqrt(dx * dx + dy * dy);
+      }
+
+      function getMidPoint(touches) {
+          return {
+              x: (touches[0].clientX + touches[1].clientX) / 2,
+              y: (touches[0].clientY + touches[1].clientY) / 2
+          };
+      }
+
+      svg.addEventListener("touchmove", (event) => {
+          if (event.touches.length === 2) {
+              event.preventDefault();
+              let distance = getDistance(event.touches);
+              let midPoint = getMidPoint(event.touches);
+
+              if (lastDistance) {
+                  let scaleFactor = lastDistance / distance;
+                  let newWidth = viewBox.width * scaleFactor;
+                  let newHeight = viewBox.height * scaleFactor;
+
+                  if (newWidth < minZoom) newWidth = minZoom;
+                  if (newWidth > maxZoom) newWidth = maxZoom;
+                  newHeight = (newWidth / viewBox.width) * viewBox.height;
+
+                  let svgRect = svg.getBoundingClientRect();
+                  let midX = viewBox.x + ((midPoint.x - svgRect.left) / svgRect.width) * viewBox.width;
+                  let midY = viewBox.y + ((midPoint.y - svgRect.top) / svgRect.height) * viewBox.height;
+
+                  viewBox.x = midX - ((midX - viewBox.x) * (newWidth / viewBox.width));
+                  viewBox.y = midY - ((midY - viewBox.y) * (newHeight / viewBox.height));
+                  viewBox.width = newWidth;
+                  viewBox.height = newHeight;
+
+                  zoomedIn = newWidth < maxZoom;
+                  svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+                  startResetTimer();
+              }
+              lastDistance = distance;
+          } else if (event.touches.length === 1 && zoomedIn) {
+              event.preventDefault();
+              if (!isPanning) {
+                  isPanning = true;
+                  startX = event.touches[0].clientX;
+                  startY = event.touches[0].clientY;
+              } else {
+                  let dx = (startX - event.touches[0].clientX) * (viewBox.width / svg.clientWidth);
+                  let dy = (startY - event.touches[0].clientY) * (viewBox.height / svg.clientHeight);
+                  viewBox.x += dx;
+                  viewBox.y += dy;
+                  svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+                  startX = event.touches[0].clientX;
+                  startY = event.touches[0].clientY;
+                  startResetTimer();
+              }
+          }
+      });
+
+      svg.addEventListener("touchend", () => {
+          lastDistance = null;
+          isPanning = false;
+          startResetTimer();
+      });
+  </script>
+    <script src="asia.js"></script>
+<script src="transition.js"></script>
+
+</body>
+</html>
+

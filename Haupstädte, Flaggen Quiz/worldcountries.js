@@ -249,11 +249,32 @@ const countryMappings = {
     "Zimbabwe": ["Simbabwe"]
 }
 ;
-
 function normalizeCountryName(country) {
-    const lowerCaseCountry = country.toLowerCase();
+    const normalizedCountry = country
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "") // Remove accents
+        .replace(/[-\s]+/g, " ") // Replace hyphens and multiple spaces with a single space
+        .trim()
+        .toLowerCase();
+
     for (const [standardName, aliases] of Object.entries(countryMappings)) {
-        if (aliases.map(alias => alias.toLowerCase()).includes(lowerCaseCountry) || standardName.toLowerCase() === lowerCaseCountry) {
+        const normalizedStandard = standardName
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[-\s]+/g, " ")
+            .trim()
+            .toLowerCase();
+
+        const normalizedAliases = aliases.map(alias =>
+            alias
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[-\s]+/g, " ")
+                .trim()
+                .toLowerCase()
+        );
+
+        if (normalizedAliases.includes(normalizedCountry) || normalizedStandard === normalizedCountry) {
             return standardName;
         }
     }
