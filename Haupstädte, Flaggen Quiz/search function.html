@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Enhanced Multi-Tag Search with Dropdowns & Deduplication</title>
+  <style>
+    /* All sections are visible by default */
+    section {
+      display: block;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+    }
+    /* Navbar search styling */
+    #searchContainer {
+      position: relative;
+      width: 250px;
+      margin-bottom: 20px;
+    }
+    #searchInput {
+      width: 100%;
+      box-sizing: border-box;
+      padding-right: 25px;
+    }
+    #clearSearch {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      display: none;
+    }
+    /* Suggestions dropdown styling */
+    #suggestions {
+      border: 1px solid #ccc;
+      max-height: 120px;
+      overflow-y: auto;
+      position: absolute;
+      background: #fff;
+      width: 100%;
+      z-index: 100;
+    }
+    .suggestion-item {
+      padding: 5px;
+      cursor: pointer;
+    }
+    .suggestion-item:hover {
+      background-color: #f0f0f0;
+    }
+    /* Example dropdown container styling */
+    .dropdown {
+      border: 1px solid #aaa;
+      padding: 5px;
+      margin: 10px 0;
+      background: #f9f9f9;
+      /* By default, dropdowns are visible.
+         If your implementation hides them, remove this rule
+         and rely on the search to open them. */
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar with search functionality -->
+  <nav>
+    <div id="searchContainer">
+      <input type="text" id="searchInput" placeholder="Search tags..." autocomplete="off">
+      <button id="clearSearch">&times;</button>
+      <div id="suggestions"></div>
+    </div>
+  </nav>
+  
+  <!-- Main content: sections in various containers -->
+  <main>
+    <!-- Regular section -->
+    <section data-id="section1" data-tags="world, map, geography">
+      <h2>World Map Section</h2>
+      <p>Information about world maps.</p>
+    </section>
+    
+    <!-- Dropdown container with duplicate sections -->
+    <div class="dropdown">
+      <section data-id="section2" data-tags="travel, guide, adventure">
+        <h2>Travel Guide Section</h2>
+        <p>All about travel guides and adventures.</p>
+      </section>
+      <!-- Duplicate of Travel Guide Section (same data-id) -->
+      <section data-id="section2" data-tags="travel, guide, adventure">
+        <h2>Travel Guide Section Duplicate</h2>
+        <p>This duplicate should not show if the original is already visible.</p>
+      </section>
+    </div>
+    
+    <!-- Another dropdown container -->
+    <div class="dropdown">
+      <section data-id="section3" data-tags="tech, innovation, gadgets">
+        <h2>Tech Section</h2>
+        <p>Latest on technology and innovation.</p>
+      </section>
+    </div>
+    
+    <!-- Regular section outside dropdown -->
+    <section data-id="section4" data-tags="café, coffee, beverage">
+      <h2>Café Section</h2>
+      <p>Information on cafés and coffee.</p>
+    </section>
+    
+    <!-- Duplicate of Café Section (same data-id) -->
+    <section data-id="section4" data-tags="café, coffee, beverage">
+      <h2>Café Section Duplicate</h2>
+      <p>This duplicate should not show if the original is already visible.</p>
+    </section>
+  </main>
+  
+  <script>
+    // Utility: Normalize strings by removing accents and converting to lowercase.
+    function normalizeStr(str) {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+    
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsBox = document.getElementById('suggestions');
+    const clearButton = document.getElementById('clearSearch');
+    const sections = Array.from(document.querySelectorAll('section'));
+    
+    // Build a set of all unique normalized tags from sections.
+    let tagsSet = new Set();
+    sections.forEach(section => {
+      const tags = section.getAttribute('data-tags');
+      if (tags) {
+        tags.split(',').map(t => t.trim()).forEach(tag => {
+          tagsSet.add(normalizeStr(tag));
+        });
+      }
+    });
+    const allTags = Array.from(tagsSet);
+    
+    // Display suggestions based on the current input.
+    function displaySuggestions(value) {
+      suggestionsBox.innerHTML = '';
+      if (!value) return;
+      const normalizedValue = normalizeStr(value);
+      const filteredTags = allTags.filter(tag => tag.includes(normalizedValue));
+      filteredTags.forEach(tag => {
+        const div = document.createElement('div');
+        div.textContent = tag;
+        div.classList.add('suggestion-item');
+        div.addEventListener('click', () => {
+          searchInput.value = tag;
+          performSearch(tag);
+          suggestionsBox.innerHTML = '';
+        });
+        suggestionsBox.appendChild(div);
+      });
+    }
+    
+    // Enhanced search function:
+    // - Handles multi-term queries (with or without spaces)
+    // - Deduplicates sections using their data-id (or fallback to textContent)
+    // - Ensures sections inside dropdowns are also shown
+    function performSearch(query) {
+      const normalizedQuery = normalizeStr(query.trim());
+      if (!normalizedQuery) {
+        // Show all sections and any dropdown containers.
+        sections.forEach(section => section.style.display = 'block');
+        document.querySelectorAll('.dropdown').forEach(drop => {
+          drop.style.display = 'block';
+        });
+        return;
+      }
+      
+      const queryTerms = normalizedQuery.split(/\s+/);
+      const shownIds = new Set();
+      
+      sections.forEach(section => {
+        const tagsAttr = section.getAttribute('data-tags');
+        if (tagsAttr) {
+          const tagList = tagsAttr.split(',').map(t => normalizeStr(t.trim()));
+          // Check if all query terms are found in the tags (or in the concatenated tags)
+          const multiMatch = queryTerms.every(term => tagList.some(tag => tag.includes(term))) ||
+                             tagList.join('').includes(normalizedQuery);
+          
+          const sectionId = section.getAttribute('data-id') || section.textContent;
+          if (multiMatch && !shownIds.has(sectionId)) {
+            section.style.display = 'block';
+            shownIds.add(sectionId);
+            // If the section is inside a dropdown, make sure the dropdown is visible.
+            let parent = section.parentElement;
+            while (parent) {
+              if (parent.classList && parent.classList.contains('dropdown')) {
+                parent.style.display = 'block';
+                break;
+              }
+              parent = parent.parentElement;
+            }
+          } else {
+            section.style.display = 'none';
+          }
+        } else {
+          section.style.display = 'none';
+        }
+      });
+    }
+    
+    // Clear the search input, suggestions, and restore all sections.
+    function clearSearch() {
+      searchInput.value = '';
+      suggestionsBox.innerHTML = '';
+      sections.forEach(section => section.style.display = 'block');
+      document.querySelectorAll('.dropdown').forEach(drop => {
+        drop.style.display = 'block';
+      });
+      clearButton.style.display = 'none';
+    }
+    
+    // Event listeners.
+    searchInput.addEventListener('input', (e) => {
+      const value = e.target.value;
+      displaySuggestions(value);
+      if (value) {
+        clearButton.style.display = 'block';
+      } else {
+        clearButton.style.display = 'none';
+        sections.forEach(section => section.style.display = 'block');
+        document.querySelectorAll('.dropdown').forEach(drop => {
+          drop.style.display = 'block';
+        });
+      }
+    });
+    
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        performSearch(e.target.value);
+        suggestionsBox.innerHTML = '';
+      }
+    });
+    
+    clearButton.addEventListener('click', clearSearch);
+  </script>
+</body>
+</html>

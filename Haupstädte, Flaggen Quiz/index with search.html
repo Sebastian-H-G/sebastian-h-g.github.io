@@ -27,7 +27,65 @@
 <link rel="apple-touch-icon" sizes="114x114" href="Logos/Geography-114x114.webp">
 <link rel="apple-touch-icon" sizes="152x152" href="Logos/Geography-152x152.webp">
 <link rel="apple-touch-icon" sizes="180x180" href="Logos/Geography-180x180.webp">
+<style>    /* Styling for the search area */
+    #searchContainer {
+      position: relative;
+      width: 200px;
+    }
+    #searchInput {
+      width: 100%;
+      box-sizing: border-box;
+      padding-right: 25px;
+    }
+    #clearSearch {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      display: none;
+    }
+    /* Suggestions dropdown styling */
+    #suggestions {
+      border: 1px solid #ccc;
+      max-height: 120px;
+      overflow-y: auto;
+      position: absolute;
+      background: #fff;
+      width: 100%;
+      z-index: 100;
+    }
+    .suggestion-item {
+      padding: 5px;
+      cursor: pointer;
+    }
+    .suggestion-item:hover {
+      background-color: #f0f0f0;
+    }
+    .dropdown {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    /* When "open", the dropdown expands to show its content */
+    /* Force dropdown to open when it contains a matching section */
+.dropdown.open {
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+}
 
+/* Ensure the matching section is displayed */
+.force-show {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+    </style>
 </head>
 <body class="page-exit">
 
@@ -39,105 +97,27 @@
 	 <h1 class="wave-text">Welcome to the Geography Quiz!</h1>
 
     <nav>
-        
+        <div id="searchContainer">
+            <input type="text" id="searchInput" placeholder="Search..." autocomplete="off">
+            <button id="clearSearch">&times;</button>
+            <div id="suggestions"></div>
+          </div>
         <ul>
             <li><a href="#capital-quiz"><i class="fas fa-city"></i> Capital Quiz</a></li>
             <li><a href="#flag-quiz"><i class="fas fa-flag"></i> Flag Quiz</a></li>
-            <li><a href="#map-quiz"><i class="fas fa-map"></i> Map Quiz</a></li>
             <li><a href="#worldcountries"><i class="fas fa-globe"></i>World Countries</a></li> 
-
-            <li><a href="#river-quiz"><i class="fas fa-water"></i> River Quiz</a></li>
+            <li><a href="#cities"><i class="fas fa-city"></i> Cities</a></li>
 			</ul><ul>
-            <li><a href="#moutain-quiz"><i class="fas fa-mountain"></i>Mountain</a></li>
 			<li><a href="#population-quiz"><i class="fas fa-users"></i>Population</a></li>
-			<li><a href="#deserts-and-forests"><i class="fas fa-sun"></i>Deserts &<i style="margin-left: 10px;" class="fas fa-tree"></i>
- Forests</a></li>
- <li><a href="#cities"><i class="fas fa-city"></i> Cities</a></li>
+            <li><a href="#germany"><div class="flag-de"></div>
+                Germany</a></li>
+                 <li><a href="#mexico"><div class="flag-mx"></div>Mexico</a></li>
+                 <li><a href="#usa"><i class="fas fa-flag-usa"></i>USA</a></li>
+                 <li><a href="#memory-quiz"><i class="fas fa-brain"></i> Memory</a></li>
  </ul>
- <ul>
- <li><a href="#countries-shape"><i class="fas fa-globe"></i>Country Shape</a></li> 
- <li><a href="#germany"><div class="flag-de"></div>
-Germany</a></li>
- <li><a href="#mexico"><div class="flag-mx"></div>Mexico</a></li>
- <li><a href="#usa"><i class="fas fa-flag-usa"></i>USA</a></li>
- 
- <li><a href="#memory-quiz"><i class="fas fa-brain"></i> Memory</a></li>
-        </ul>
     </nav>
 </header>
 
-<!-- Swiper Container -->
-<div class="swiper-container">
-    <div class="swiper-wrapper">
-        <div class="swiper-slide">
-            <img src="Bilder/slide1.webp" alt="Optimized" loading="lazy" >
-            <div class="slide-text">
-                <h2>Discover the World</h2>
-                <p>Explore our geography quizzes and test your knowledge.</p>
-            </div>
-        </div>
-        <div class="swiper-slide">
-            <img src="Bilder/capital slide.webp" alt="Optimized" loading="lazy" >
-            <div class="slide-text">
-                <h2>Learn About Capitals</h2>
-                <p>Challenge yourself with our capital city quiz.</p>
-            </div>
-        </div>
-        <div class="swiper-slide">
-            <img src="Bilder/flag slide.webp" alt="Optimized" loading="lazy" >
-            <div class="slide-text">
-                <h2>Flags of the World</h2>
-                <p>See how many flags you can identify.</p>
-            </div>
-        </div>
-				<div class="swiper-slide">
-            <img src="Bilder/map slide.webp" alt="Optimized" loading="lazy" >
-            <div class="slide-text">
-                <h2>Navigate with Precision</h2>
-                <p>Test your ability to locate countries, cities, and landmarks on a map.</p>
-            </div>
-        </div>
-		<div class="swiper-slide">
-            <img src="Bilder/river slide.jpeg" alt="Optimized" loading="lazy" >
-            <div class="slide-text">
-                <h2>Flow Through Knowledge</h2>
-                <p>Can you identify the countries through which famous rivers flow?</p>
-            </div>
-        </div>
-		<div class="swiper-slide">
-            <img src="Bilder/Mountain.JPEG" alt="Optimized" loading="lazy" >
-            <div class="slide-text">
-                <h2>Conquer the Mountain of Questions!</h2>
-                <p>Ready to scale new heights? Test your knowledge of the world's tallest peaks, famous ranges, and mountain facts.</p>
-            </div>
-        </div>
-		<div class="swiper-slide">
-            <img src="Bilder/population.JPEG" alt="Optimized" loading="lazy" >
-            <div class="slide-text">
-                <h2>Guess the Numbers: The Ultimate Population Quiz!</h2>
-                <p>Think you know the world's population stats? Dive into our quiz and test your knowledge!</p>
-            </div>
-        </div>
-		<div class="swiper-slide">
-            <img src="Bilder/slide 2.JPEG" alt="Optimized" loading="lazy" >
-            <div class="slide-text">
-                <h2>Desert Secrets & Forest Wonders</h2>
-                <p>A Quiz That Takes You From Sun-Baked Deserts to Verdant Forests - Test Your Expertise!</p>
-            </div>
-        </div>
-		<div class="swiper-slide">
-            <img src="Bilder/memory slide.webp" alt="Optimized" loading="lazy" >
-            <div class="slide-text">
-                <h2>Geography Meets Memory</h2>
-                <p>Engage your brain with geography-based memory games and quizzes.</p>
-            </div>
-        </div>
-    </div>
-    <!-- Add Pagination and Navigation -->
-    <div class="swiper-pagination"></div>
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
-</div>
 
 <main>
     <!-- Quiz Sections -->
@@ -146,7 +126,7 @@ Germany</a></li>
         Favorites
         <i class="fa-solid fa-star" id="section-symbol"></i>
      </section>
-    <section id="capital-quiz" class="quiz-section" data-aos="fade-up">
+    <section id="capital-quiz" class="quiz-section" data-tags="Capital, World, Capitals, Hauptstädte, Hauptstadt" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -157,7 +137,7 @@ Germany</a></li>
         <a href="All_Capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 
-    <section id="flag-quiz" class="quiz-section" data-aos="fade-up">
+    <section id="flag-quiz" class="quiz-section" data-tags="Flag, World, Flags, Flaggen" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Flag.webp" alt="Optimized" class="quiz-logo"  loading="lazy">
             <div>
@@ -167,7 +147,7 @@ Germany</a></li>
         </div>
         <a href="All_Flags.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="worldcountries" class="quiz-section" data-aos="fade-up">
+    <section id="worldcountries" class="quiz-section" data-tags="World, Countries, World Countries, Welt Länder, Länder der Welt, Welt, Länder" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/worldcountries2.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -177,7 +157,7 @@ Germany</a></li>
         </div>
         <a href="worldcountries.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="africa" class="quiz-section" data-aos="fade-up">
+    <section id="africa" class="quiz-section" data-tags="africa, countries, africa countries, continent, Länder, Kontinent" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -187,7 +167,7 @@ Germany</a></li>
         </div>
         <a href="africa.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="asia" class="quiz-section" data-aos="fade-up">
+    <section id="asia" class="quiz-section" data-tags="asia, countries, aisa countries, continent, länder, Kontinent" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -197,7 +177,7 @@ Germany</a></li>
         </div>
         <a href="asia.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="europe" class="quiz-section" data-aos="fade-up">
+    <section id="europe" class="quiz-section" data-tags="europe, countries, europe countries, continent länder, Kontinent" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -207,7 +187,7 @@ Germany</a></li>
         </div>
         <a href="europe.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="south-america" class="quiz-section" data-aos="fade-up">
+    <section id="south-america" class="quiz-section" data-tags="south-america, south america, southamerica, südamerika, süd amerika, countries, south america countries, continent, südamerika länder, länder, Kontinent" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -217,7 +197,7 @@ Germany</a></li>
         </div>
         <a href="southamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="north-america" class="quiz-section" data-aos="fade-up">
+    <section id="north-america" class="quiz-section" data-tags="northamerica, north-america, countries, nordamerika, north amerika, nord amerika, north america countries, nord amerika länder, länder, nordamerika länder" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/namerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -227,7 +207,7 @@ Germany</a></li>
         </div>
         <a href="northamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-<section id="germany" class="quiz-section" data-aos="fade-up">
+<section id="germany" class="quiz-section" data-tags="Deutschland, germany, bundesländer, states" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/Germany.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -237,7 +217,7 @@ Germany</a></li>
     </div>
     <a href="Germany.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-<section id="mexico" class="quiz-section" data-aos="fade-up">
+<section id="mexico" class="quiz-section" data-tags="mexico, mexiko, states, estados" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/Mexico.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -247,7 +227,7 @@ Germany</a></li>
     </div>
     <a href="mexico.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-<section id="usa" class="quiz-section" data-aos="fade-up">
+<section id="usa" class="quiz-section" data-tags="us, usa, vereinigte staaten, state, us states, usa bundesländer" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/USA.JPEG" alt="Optimized" class="quiz-logo">
         <div>
@@ -258,7 +238,7 @@ Germany</a></li>
     <a href="us.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
 
-	<section id="memory-quiz" class="quiz-section" data-aos="fade-up">
+	<section id="memory-quiz" class="quiz-section" data-tags="memory, game, games" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Memory.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -280,79 +260,80 @@ Germany</a></li>
 
 
 
-    <section style="background-color: rgb(61, 184, 143);" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+    <section style="background-color: rgb(61, 184, 143);" class="quiz-section-main" 
+    data-aos="fade-up" onclick="toggleQuizSections(event)">
         <i class="fa-solid fa-globe" style="margin-right: 10px;"></i>
         Continents Quizzes
         <i class="fa-solid fa-chevron-down toggle-arrow"></i>
     </section>
-    <div id="quiz-sections-countries" class="hidden">
-     <section id="worldcountries" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/worldcountries2.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Countries of the World</h2>
-                <p>How many countries can you name? As you answer, the map will be filled in.</p>
+    <div id="quiz-sections-countries" class="dropdown" class="hidden">
+        <section id="worldcountries" class="quiz-section" data-tags="World, Countries, World Countries, Welt Länder, Länder der Welt, Welt, Länder" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/worldcountries2.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Countries of the World</h2>
+                    <p>How many countries can you name? As you answer, the map will be filled in.</p>
+                </div>
             </div>
-        </div>
-        <a href="worldcountries.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="africa" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Countries of Africa</h2>
-                <p>How many countries can you name? As you answer, the map will be filled in.</p>
+            <a href="worldcountries.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="africa" class="quiz-section" data-tags="africa, countries, africa countries, continent, Länder, Kontinent" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Countries of Africa</h2>
+                    <p>How many countries can you name? As you answer, the map will be filled in.</p>
+                </div>
             </div>
-        </div>
-        <a href="africa.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="europe" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Countries of Europe</h2>
-                <p>How many countries can you name? As you answer, the map will be filled in.</p>
+            <a href="africa.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="asia" class="quiz-section" data-tags="asia, countries, aisa countries, continent, länder, Kontinent" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Countries of Asia</h2>
+                    <p>How many countries can you name? As you answer, the map will be filled in.</p>
+                </div>
             </div>
-        </div>
-        <a href="europe.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="asia" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Countries of Asia</h2>
-                <p>How many countries can you name? As you answer, the map will be filled in.</p>
+            <a href="asia.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="europe" class="quiz-section" data-tags="europe, countries, europe countries, continent länder, Kontinent" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Countries of Europe</h2>
+                    <p>How many countries can you name? As you answer, the map will be filled in.</p>
+                </div>
             </div>
-        </div>
-        <a href="asia.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="south-america" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Countries of South America</h2>
-                <p>How many countries can you name? As you answer, the map will be filled in.</p>
+            <a href="europe.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="south-america" class="quiz-section" data-tags="south-america, south america, southamerica, südamerika, süd amerika, countries, south america countries, continent, südamerika länder, länder, Kontinent" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Countries of South America</h2>
+                    <p>How many countries can you name? As you answer, the map will be filled in.</p>
+                </div>
             </div>
-        </div>
-        <a href="southamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="north-america" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/namerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Countries of North America</h2>
-                <p>How many countries can you name? As you answer, the map will be filled in.</p>
+            <a href="southamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="north-america" class="quiz-section" data-tags="northamerica, north-america, countries, nordamerika, north amerika, nord amerika, north america countries, nord amerika länder, länder, nordamerika länder" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/namerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Countries of North America</h2>
+                    <p>How many countries can you name? As you answer, the map will be filled in.</p>
+                </div>
             </div>
-        </div>
-        <a href="northamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
+            <a href="northamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
     </div>
 
     <section style="background-color: purple;" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
         Capital Quizzes
         <i class="fa-solid fa-chevron-down toggle-arrow"></i>
     </section>
-    <div id="quiz-sections-capitals" class="hidden">    <section id="capital-quiz" class="quiz-section" data-aos="fade-up">
+    <div id="quiz-sections-capitals" class="dropdown" class="hidden">    <section id="capital-quiz" class="quiz-section" data-tags="Capital, World, Capitals, Hauptstädte, Hauptstadt" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -362,7 +343,7 @@ Germany</a></li>
         </div>
         <a href="All_Capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="germany" class="quiz-section" data-aos="fade-up">
+    <section id="germany" class="quiz-section" data-tags="germany, states, capitals, capital, state, deutschland, haupstädte, deutschland hauptstädte, bundesländer, bundesländer haupstädte" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/de-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -372,7 +353,7 @@ Germany</a></li>
         </div>
         <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="mexico" class="quiz-section" data-aos="fade-up">
+    <section id="mexico" class="quiz-section" data-tags="mexico, mexiko, estados, states, state, estado, capitals, hauptstädte, bundesländer, capitales" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/mx-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -382,7 +363,7 @@ Germany</a></li>
         </div>
         <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="usa" class="quiz-section" data-aos="fade-up">
+    <section id="usa" class="quiz-section" data-tags="us, usa, vereinigte staaten, states, capital, state, capitals, haupstädte, bundesländer" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/us-capitals.webp" alt="Optimized" class="quiz-logo">
             <div>
@@ -404,18 +385,18 @@ Germany</a></li>
         USA Quizzes
         <i class="fa-solid fa-chevron-down toggle-arrow"></i>
     </section>
-    <div id="quiz-sections-usa" class="hidden">
-    <section id="usa" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/USA.JPEG" alt="Optimized" class="quiz-logo">
-            <div>
-                <h2>USA States</h2>
-                <p>Stars, Stripes, and Smarts: Are You a USA Expert? Put Your Knowledge to the Test and Ace This Quiz!</p>
+    <div id="quiz-sections-usa" class="dropdown" class="hidden">
+        <section id="usa" class="quiz-section" data-tags="us, usa, vereinigte staaten, us states, usa bundesländer" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/USA.JPEG" alt="Optimized" class="quiz-logo">
+                <div>
+                    <h2>USA States</h2>
+                    <p>Stars, Stripes, and Smarts: Are You a USA Expert? Put Your Knowledge to the Test and Ace This Quiz!</p>
+                </div>
             </div>
-        </div>
-        <a href="us.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="usa" class="quiz-section" data-aos="fade-up">
+            <a href="us.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+    <section id="usa" class="quiz-section" data-tags="us, usa, vereinigte staaten, states, capital, state, capitals, haupstädte, bundesländer" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/us-capitals.webp" alt="Optimized" class="quiz-logo">
             <div>
@@ -440,8 +421,8 @@ Germany</a></li>
 </section>
 
 
-    <div id="quiz-sections-mexico" class="hidden">
-        <section id="mexico" class="quiz-section" data-aos="fade-up">
+    <div id="quiz-sections-mexico" class="dropdown" class="hidden">
+        <section id="mexico" class="quiz-section" data-tags="mexico, mexiko, states, estados" data-aos="fade-up">
             <div class="quiz-content">
                 <img src="Logos/Mexico.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
                 <div>
@@ -451,7 +432,7 @@ Germany</a></li>
             </div>
             <a href="mexico.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
         </section>
-        <section id="mexico" class="quiz-section" data-aos="fade-up">
+        <section id="mexico" class="quiz-section" data-tags="mexico, mexiko, estados, states, state, estado, capitals, hauptstädte, bundesländer, capitales" data-aos="fade-up">
             <div class="quiz-content">
                 <img src="Logos/mx-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
                 <div>
@@ -469,8 +450,8 @@ Germany</a></li>
     <i class="fa-solid fa-chevron-down toggle-arrow"></i>
 </section>
 
-<div id="quiz-sections-germany" class="hidden">
-    <section id="germany" class="quiz-section" data-aos="fade-up">
+<div id="quiz-sections-germany" class="dropdown" class="hidden">
+    <section id="germany" class="quiz-section" data-tags="Deutschland, germany, bundesländer, states" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Germany.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -480,8 +461,7 @@ Germany</a></li>
         </div>
         <a href="Germany.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-
-    <section id="germany-capitals" class="quiz-section" data-aos="fade-up">
+    <section id="germany" class="quiz-section" data-tags="germany, states, capitals, capital, state, deutschland, haupstädte, deutschland hauptstädte, bundesländer, bundesländer haupstädte" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/de-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -494,36 +474,41 @@ Germany</a></li>
 </div>
 
 
+
+
+
+
+
     <section class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
         All Quizzes
         <i class="fa-solid fa-chevron-down toggle-arrow"></i>
     </section>
 
 
-    <div id="quiz-sections-all" class="hidden">
-     <section id="capital-quiz" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Capital Quiz</h2>
-                <p>Test your knowledge of world capitals.</p>
+    <div id="quiz-sections-all" class="dropdown" class="hidden">
+        <section id="capital-quiz" class="quiz-section" data-tags="Capital, World, Capitals, Hauptstädte, Hauptstadt" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Capital Quiz</h2>
+                    <p>Test your knowledge of world capitals.</p>
+                </div>
             </div>
-        </div>
-        <a href="All_Capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-
-    <section id="flag-quiz" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/Flag.webp" alt="Optimized" class="quiz-logo"  loading="lazy">
-            <div>
-                <h2>Flag Quiz</h2>
-                <p>Identify the flags of different countries.</p>
+            <a href="All_Capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+    
+        <section id="flag-quiz" class="quiz-section" data-tags="Flag, World, Flags, Flaggen" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/Flag.webp" alt="Optimized" class="quiz-logo"  loading="lazy">
+                <div>
+                    <h2>Flag Quiz</h2>
+                    <p>Identify the flags of different countries.</p>
+                </div>
             </div>
-        </div>
-        <a href="All_Flags.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
+            <a href="All_Flags.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
 
-    <section id="map-quiz" class="quiz-section" data-aos="fade-up">
+    <section id="map-quiz" class="quiz-section" data-tags="map, world, welt, karte, world map, welt karte" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Map.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -533,7 +518,7 @@ Germany</a></li>
         </div>
         <a href="Map_Quiz.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="worldcountries" class="quiz-section" data-aos="fade-up">
+    <section id="worldcountries" class="quiz-section" data-tags="World, Countries, World Countries, Welt Länder, Länder der Welt, Welt, Länder" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/worldcountries2.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -543,7 +528,7 @@ Germany</a></li>
         </div>
         <a href="worldcountries.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="africa" class="quiz-section" data-aos="fade-up">
+    <section id="africa" class="quiz-section" data-tags="africa, countries, africa countries, continent, Länder, Kontinent" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -553,17 +538,7 @@ Germany</a></li>
         </div>
         <a href="africa.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="europe" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Countries of Europe</h2>
-                <p>How many countries can you name? As you answer, the map will be filled in.</p>
-            </div>
-        </div>
-        <a href="europe.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="asia" class="quiz-section" data-aos="fade-up">
+    <section id="asia" class="quiz-section" data-tags="asia, countries, aisa countries, continent, länder, Kontinent" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -573,7 +548,17 @@ Germany</a></li>
         </div>
         <a href="asia.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="south-america" class="quiz-section" data-aos="fade-up">
+    <section id="europe" class="quiz-section" data-tags="europe, countries, europe countries, continent länder, Kontinent" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Countries of Europe</h2>
+                <p>How many countries can you name? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="europe.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="south-america" class="quiz-section" data-tags="south-america, south america, southamerica, südamerika, süd amerika, countries, south america countries, continent, südamerika länder, länder, Kontinent" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -583,7 +568,7 @@ Germany</a></li>
         </div>
         <a href="southamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="norht-america" class="quiz-section" data-aos="fade-up">
+    <section id="north-america" class="quiz-section" data-tags="northamerica, north-america, countries, nordamerika, north amerika, nord amerika, north america countries, nord amerika länder, länder, nordamerika länder" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/namerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -593,7 +578,8 @@ Germany</a></li>
         </div>
         <a href="northamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="river-quiz" class="quiz-section" data-aos="fade-up">
+	
+    <section id="river-quiz" class="quiz-section" data-tags="river, Flüsse, Fluss, rivers" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/River.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -603,7 +589,7 @@ Germany</a></li>
         </div>
         <a href="River.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-	<section id="moutain-quiz" class="quiz-section" data-aos="fade-up">
+	<section id="moutain-quiz" class="quiz-section" data-tags="mountain, berge, mountains, berg" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Mountain.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -613,7 +599,7 @@ Germany</a></li>
         </div>
         <a href="Mountain_Quiz.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-	<section id="population-quiz" class="quiz-section" data-aos="fade-up">
+	<section id="population-quiz" class="quiz-section" data-tags="population, bevölkerung" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Population.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -623,7 +609,7 @@ Germany</a></li>
         </div>
       <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-	<section id="deserts-and-forests" class="quiz-section" data-aos="fade-up">
+	<section id="deserts-and-forests" class="quiz-section" data-tags="deserts, forests, deserts and forests, deserts, forests, wüsten und wälder, wald, wüste, wüsten, wälder" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/Desert&Forest.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -633,7 +619,7 @@ Germany</a></li>
     </div>
     <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-<section id="cities" class="quiz-section" data-aos="fade-up">
+<section id="cities" class="quiz-section" data-tags="cities, städte, stadt, city" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/Cities.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -643,7 +629,7 @@ Germany</a></li>
     </div>
     <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section> 
-<section id="countries-shape" class="quiz-section" data-aos="fade-up">
+<section id="countries-shape" class="quiz-section" data-tags="shape, countries, country, countries shape" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/shape.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -653,18 +639,17 @@ Germany</a></li>
     </div>
     <a href="shape-quiz.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section> 
-<section id="germany" class="quiz-section" data-aos="fade-up">
+<section id="germany" class="quiz-section" data-tags="Deutschland, germany, bundesländer, states" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/Germany.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
-            <h2>Deutschland Bundesländer
-            </h2>
+            <h2>Deutschland Bundesländer</h2>
             <p>Wissen ist Macht: Stell dich dem Deutschland-Quiz und beweis es!</p>
         </div> 
     </div>
     <a href="Germany.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-<section id="germany" class="quiz-section" data-aos="fade-up">
+<section id="germany" class="quiz-section" data-tags="germany, states, capitals, capital, state, deutschland, haupstädte, deutschland hauptstädte, bundesländer, bundesländer haupstädte" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/de-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -674,7 +659,7 @@ Germany</a></li>
     </div>
     <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-<section id="mexico" class="quiz-section" data-aos="fade-up">
+<section id="mexico" class="quiz-section" data-tags="mexico, mexiko, states, estados" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/Mexico.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -684,7 +669,7 @@ Germany</a></li>
     </div>
     <a href="mexico.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-<section id="mexico" class="quiz-section" data-aos="fade-up">
+<section id="mexico" class="quiz-section" data-tags="mexico, mexiko, estados, states, state, estado, capitals, hauptstädte, bundesländer, capitales" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/mx-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -694,7 +679,7 @@ Germany</a></li>
     </div>
     <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-<section id="usa" class="quiz-section" data-aos="fade-up">
+<section id="usa" class="quiz-section" data-tags="us, usa, vereinigte staaten, us states, usa bundesländer" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/USA.JPEG" alt="Optimized" class="quiz-logo">
         <div>
@@ -704,7 +689,7 @@ Germany</a></li>
     </div>
     <a href="us.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-<section id="usa" class="quiz-section" data-aos="fade-up">
+<section id="usa" class="quiz-section" data-tags="us, usa, vereinigte staaten, states, capital, state, capitals, haupstädte, bundesländer" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/us-capitals.webp" alt="Optimized" class="quiz-logo">
         <div>
@@ -714,16 +699,16 @@ Germany</a></li>
     </div>
     <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-	<section id="memory-quiz" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/Memory.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Memory</h2>
-                <p>Test your memory with geography-based challenges.</p>
-            </div>
+<section id="memory-quiz" class="quiz-section" data-tags="memory, game, games" data-aos="fade-up">
+    <div class="quiz-content">
+        <img src="Logos/Memory.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+        <div>
+            <h2>Memory</h2>
+            <p>Test your memory with geography-based challenges.</p>
         </div>
-        <a href="Memory.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
+    </div>
+    <a href="Memory.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+</section>
 </div>
 </main>
 
@@ -748,9 +733,148 @@ Germany</a></li>
       </div>
     </div>
   </div>
-</footer>
+</footer><script>
+    // Utility: Normalize strings by removing accents and converting to lowercase.
+    function normalizeStr(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
 
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsBox = document.getElementById('suggestions');
+    const clearButton = document.getElementById('clearSearch');
+    const sections = Array.from(document.querySelectorAll('section'));
+    const dropdowns = document.querySelectorAll('.dropdown');
 
+    // 🔹 STEP 1: Assign a unique `data-id` to sections if missing
+    sections.forEach((section, index) => {
+        if (!section.hasAttribute('data-id')) {
+            section.setAttribute('data-id', `section-${index}`);
+        }
+    });
+
+    // Collect all unique normalized tags from sections.
+    let tagsSet = new Set();
+    sections.forEach(section => {
+        const tags = section.getAttribute('data-tags');
+        if (tags) {
+            tags.split(',').map(t => t.trim()).forEach(tag => {
+                tagsSet.add(normalizeStr(tag));
+            });
+        }
+    });
+    const allTags = Array.from(tagsSet);
+
+    // Display suggestions based on current input.
+    function displaySuggestions(value) {
+        suggestionsBox.innerHTML = '';
+        if (!value) return;
+        const normalizedValue = normalizeStr(value);
+        const filteredTags = allTags.filter(tag => tag.includes(normalizedValue));
+        filteredTags.forEach(tag => {
+            const div = document.createElement('div');
+            div.textContent = tag;
+            div.classList.add('suggestion-item');
+            div.addEventListener('click', () => {
+                searchInput.value = tag;
+                performSearch(tag);
+                suggestionsBox.innerHTML = '';
+            });
+            suggestionsBox.appendChild(div);
+        });
+    }
+
+    // 🔹 STEP 2: Perform Search (Remove Duplicates!)
+    function performSearch(query) {
+        const normalizedQuery = normalizeStr(query.trim());
+        if (!normalizedQuery) {
+            // Reset: Show all sections & close dropdowns
+            sections.forEach(section => {
+                section.style.display = 'block';
+                section.classList.remove('force-show');
+            });
+            dropdowns.forEach(dropdown => dropdown.classList.remove('open'));
+            return;
+        }
+
+        const queryTerms = normalizedQuery.split(/\s+/);
+        const shownIds = new Set(); // Prevent duplicates
+
+        sections.forEach(section => {
+            const tagsAttr = section.getAttribute('data-tags');
+            if (tagsAttr) {
+                const tagList = tagsAttr.split(',').map(t => normalizeStr(t.trim()));
+
+                // Multi-term matching logic
+                const multiMatch = queryTerms.every(term => tagList.some(tag => tag.includes(term))) ||
+                                    tagList.join('').includes(normalizedQuery);
+
+                const sectionId = section.getAttribute('data-id');
+
+                if (multiMatch) {
+                    // 🔥 STEP 3: Only Show First Occurrence of Each `data-id`
+                    if (!shownIds.has(sectionId)) {
+                        section.style.display = 'block';
+                        section.classList.add('force-show');
+                        shownIds.add(sectionId); // ✅ Prevents duplicate showing
+
+                        // 🔹 STEP 4: Ensure Parent Dropdowns Are Opened
+                        let parent = section.parentElement;
+                        while (parent) {
+                            if (parent.classList.contains('dropdown')) {
+                                parent.classList.add('open'); // Expand dropdown
+                                parent.style.maxHeight = 'none';
+                                parent.style.overflow = 'visible';
+                                break;
+                            }
+                            parent = parent.parentElement;
+                        }
+                    } else {
+                        section.style.display = 'none'; // ✅ Hide Duplicates!
+                    }
+                } else {
+                    section.style.display = 'none';
+                }
+            } else {
+                section.style.display = 'none';
+            }
+        });
+    }
+
+    // **Clear Search**
+    function clearSearch() {
+        searchInput.value = '';
+        suggestionsBox.innerHTML = '';
+        sections.forEach(section => {
+            section.style.display = 'block';
+            section.classList.remove('force-show');
+        });
+        dropdowns.forEach(dropdown => dropdown.classList.remove('open'));
+        clearButton.style.display = 'none';
+    }
+
+    // **Event Listeners**
+    searchInput.addEventListener('input', (e) => {
+        const value = e.target.value;
+        displaySuggestions(value);
+        if (value) {
+            clearButton.style.display = 'block';
+        } else {
+            clearButton.style.display = 'none';
+            clearSearch();
+        }
+    });
+
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            performSearch(e.target.value);
+            suggestionsBox.innerHTML = '';
+        }
+    });
+
+    clearButton.addEventListener('click', clearSearch);
+</script>
+
+</script>
 <script>
 function toggleQuizSections(event) {
     const section = event.currentTarget;
