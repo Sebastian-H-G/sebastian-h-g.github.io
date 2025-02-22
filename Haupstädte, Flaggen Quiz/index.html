@@ -27,7 +27,148 @@
 <link rel="apple-touch-icon" sizes="114x114" href="Logos/Geography-114x114.webp">
 <link rel="apple-touch-icon" sizes="152x152" href="Logos/Geography-152x152.webp">
 <link rel="apple-touch-icon" sizes="180x180" href="Logos/Geography-180x180.webp">
+<style>
+/* Styling for the search area */
+.containerSearch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
 
+#searchContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 40%;
+    max-width: 400px;
+}
+
+#searchInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 40px 12px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background-color: #fff;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 0 #d0d0d0;
+}
+
+/* Placeholder text color */
+#searchInput::placeholder {
+    color: black;
+    opacity: 0.7;
+}
+
+/* Focus effect */
+#searchInput:focus {
+    outline: none;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 0 #d0d0d0;
+}
+
+/* Clear button */
+#clearSearch {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: #666;
+    display: none;
+    transition: color 0.2s ease, transform 0.2s ease-in-out;
+}
+
+/* Hover effect on clear button */
+#clearSearch:hover {
+    color: red;
+    cursor: pointer;
+
+}
+
+/* Suggestions dropdown styling */
+#suggestions {
+        border: 1px solid #ccc;
+        max-height: 120px;
+        overflow-y: scroll;
+        position: absolute;
+        background: #fff;
+        margin-top: 5px;
+        border-radius: 12px;
+        width: 100%;
+        z-index: 100;
+        top: 100%;
+        left: 0;
+        overflow: hidden;
+        color: black;
+        display: none; /* Initially hidden */
+    }
+    .suggestion-item {
+        padding: 5px;
+        cursor: pointer;
+    }
+    
+    .dropdown {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+/* When "open", the dropdown expands to show its content */
+.dropdown.open {
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+}
+
+    /* Ensure the matching section is displayed */
+    .force-show {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    /* Ensure the footer is always visible */
+    footer {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    .no-results-message {
+    padding: 10px;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    border-radius: 7px;
+    margin: 2% 20% 0 20%;
+    background-color: red;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    display: none; /* Initially hidden */
+}
+
+.did-you-mean-message {
+    text-align: center;
+    padding: 20px;
+    background-color: rgb(80, 172, 195);
+    padding: 10px;
+    border-radius: 7px;
+    margin: 2% 20% 0 20%;
+    color: white;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 20px;
+    font-weight: bold;
+    display: none; /* Initially hidden */
+}
+</style>
 </head>
 <body class="page-exit">
 
@@ -39,23 +180,21 @@
 	 <h1 class="wave-text">Welcome to the Geography Quiz!</h1>
 
     <nav>
+        <div class="containerSearch">
+            
+            <div id="searchContainer">
+                <input type="text" id="searchInput" placeholder="Search for a Quiz..." autocomplete="on">
+                <button id="clearSearch">&times;</button>
+                <div id="suggestions"></div>
+              </div>
+        </div>
         
         <ul>
             <li><a href="#capital-quiz"><i class="fas fa-city"></i> Capital Quiz</a></li>
             <li><a href="#flag-quiz"><i class="fas fa-flag"></i> Flag Quiz</a></li>
-            <li><a href="#map-quiz"><i class="fas fa-map"></i> Map Quiz</a></li>
             <li><a href="#worldcountries"><i class="fas fa-globe"></i>World Countries</a></li> 
 
-            <li><a href="#river-quiz"><i class="fas fa-water"></i> River Quiz</a></li>
-			</ul><ul>
-            <li><a href="#moutain-quiz"><i class="fas fa-mountain"></i>Mountain</a></li>
-			<li><a href="#population-quiz"><i class="fas fa-users"></i>Population</a></li>
-			<li><a href="#deserts-and-forests"><i class="fas fa-sun"></i>Deserts &<i style="margin-left: 10px;" class="fas fa-tree"></i>
- Forests</a></li>
- <li><a href="#cities"><i class="fas fa-city"></i> Cities</a></li>
- </ul>
- <ul>
- <li><a href="#countries-shape"><i class="fas fa-globe"></i>Country Shape</a></li> 
+			</ul> <ul>
  <li><a href="#germany"><div class="flag-de"></div>
 Germany</a></li>
  <li><a href="#mexico"><div class="flag-mx"></div>Mexico</a></li>
@@ -65,6 +204,8 @@ Germany</a></li>
         </ul>
     </nav>
 </header>
+
+
 
 <!-- Swiper Container -->
 <div class="swiper-container">
@@ -139,6 +280,8 @@ Germany</a></li>
     <div class="swiper-button-prev"></div>
 </div>
 
+
+
 <main>
     <!-- Quiz Sections -->
      <section class="quiz-section-main" data-aos="fade-up">
@@ -146,7 +289,7 @@ Germany</a></li>
         Favorites
         <i class="fa-solid fa-star" id="section-symbol"></i>
      </section>
-    <section id="capital-quiz" class="quiz-section" data-aos="fade-up">
+    <section id="capital-quiz" class="quiz-section" data-tags="capital, world capitals, capital" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -157,7 +300,7 @@ Germany</a></li>
         <a href="All_Capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 
-    <section id="flag-quiz" class="quiz-section" data-aos="fade-up">
+    <section id="flag-quiz" class="quiz-section" data-tags="flag, world flags, flags" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Flag.webp" alt="Optimized" class="quiz-logo"  loading="lazy">
             <div>
@@ -167,7 +310,7 @@ Germany</a></li>
         </div>
         <a href="All_Flags.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="worldcountries" class="quiz-section" data-aos="fade-up">
+    <section id="worldcountries" class="quiz-section" data-tags="world countries, world, countries" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/worldcountries2.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -177,7 +320,7 @@ Germany</a></li>
         </div>
         <a href="worldcountries.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="africa" class="quiz-section" data-aos="fade-up">
+    <section id="africa" class="quiz-section" data-tags="africa, africa countries, countries" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -187,7 +330,7 @@ Germany</a></li>
         </div>
         <a href="africa.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="asia" class="quiz-section" data-aos="fade-up">
+    <section id="asia" class="quiz-section" data-tags="asia, asia countries, countries" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -197,7 +340,7 @@ Germany</a></li>
         </div>
         <a href="asia.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="europe" class="quiz-section" data-aos="fade-up">
+    <section id="europe" class="quiz-section" data-tags="europe, europe countries, countries" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -207,7 +350,7 @@ Germany</a></li>
         </div>
         <a href="europe.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="south-america" class="quiz-section" data-aos="fade-up">
+    <section id="south-america" class="quiz-section" data-tags="south america, south america countries, countries" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -217,7 +360,7 @@ Germany</a></li>
         </div>
         <a href="southamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="north-america" class="quiz-section" data-aos="fade-up">
+    <section id="north-america" class="quiz-section" data-tags="north america, north america countries, countries" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/namerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -227,7 +370,7 @@ Germany</a></li>
         </div>
         <a href="northamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-<section id="germany" class="quiz-section" data-aos="fade-up">
+<section id="germany" class="quiz-section" data-tags="germany, states, germany states, bundesländer, deutschland bundesländer, deutschland " data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/Germany.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -237,7 +380,7 @@ Germany</a></li>
     </div>
     <a href="Germany.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-<section id="mexico" class="quiz-section" data-aos="fade-up">
+<section id="mexico" class="quiz-section" data-tags="mexico, mexiko, mexico states, states, estados" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/Mexico.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -247,7 +390,7 @@ Germany</a></li>
     </div>
     <a href="mexico.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-<section id="usa" class="quiz-section" data-aos="fade-up">
+<section id="usa" class="quiz-section" data-tags="us, usa, us states, states, united states" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/USA.JPEG" alt="Optimized" class="quiz-logo">
         <div>
@@ -258,7 +401,7 @@ Germany</a></li>
     <a href="us.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
 
-	<section id="memory-quiz" class="quiz-section" data-aos="fade-up">
+	<section id="memory-quiz" class="quiz-section" data-tags="game, memory, games" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Memory.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -362,7 +505,7 @@ Germany</a></li>
         </div>
         <a href="All_Capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="germany" class="quiz-section" data-aos="fade-up">
+    <section id="germany" class="quiz-section" data-tags="germany, deutschland, bundesländer hauptstädte, states capitals, capital, germany states capitals" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/de-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -372,7 +515,7 @@ Germany</a></li>
         </div>
         <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="mexico" class="quiz-section" data-aos="fade-up">
+    <section id="mexico" class="quiz-section" data-tags="mexico, states capitals, capitales estados, capitals de estodo de mexico" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/mx-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -382,7 +525,7 @@ Germany</a></li>
         </div>
         <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="usa" class="quiz-section" data-aos="fade-up">
+    <section id="usa" class="quiz-section" data-tags="us, usa, us states capitals, capitals" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/us-capitals.webp" alt="Optimized" class="quiz-logo">
             <div>
@@ -514,7 +657,7 @@ Germany</a></li>
 
     <section id="flag-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="Logos/Flag.webp" alt="Optimized" class="quiz-logo"  loading="lazy">
+            <img src="Logos/Flag.webp" alt="Optimized" data-tags="flag, world flags" class="quiz-logo"  loading="lazy">
             <div>
                 <h2>Flag Quiz</h2>
                 <p>Identify the flags of different countries.</p>
@@ -523,7 +666,7 @@ Germany</a></li>
         <a href="All_Flags.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 
-    <section id="map-quiz" class="quiz-section" data-aos="fade-up">
+    <section id="map-quiz" class="quiz-section" data-tags="map, map quiz, karte, world, countries, world countries" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Map.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -593,7 +736,7 @@ Germany</a></li>
         </div>
         <a href="northamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="river-quiz" class="quiz-section" data-aos="fade-up">
+    <section id="river-quiz" class="quiz-section" data-tags="river, river quiz" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/River.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -603,7 +746,7 @@ Germany</a></li>
         </div>
         <a href="River.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-	<section id="moutain-quiz" class="quiz-section" data-aos="fade-up">
+	<section id="moutain-quiz" class="quiz-section" data-tags="mountain, mountains" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Mountain.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -613,7 +756,7 @@ Germany</a></li>
         </div>
         <a href="Mountain_Quiz.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-	<section id="population-quiz" class="quiz-section" data-aos="fade-up">
+	<section id="population-quiz" class="quiz-section" data-tags="population, population quiz" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Population.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -623,7 +766,7 @@ Germany</a></li>
         </div>
       <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-	<section id="deserts-and-forests" class="quiz-section" data-aos="fade-up">
+	<section id="deserts-and-forests" class="quiz-section" data-tags="desert, forest, deserts and forests" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/Desert&Forest.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -633,7 +776,7 @@ Germany</a></li>
     </div>
     <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section>
-<section id="cities" class="quiz-section" data-aos="fade-up">
+<section id="cities" class="quiz-section" data-tags="cities, städte, city" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/Cities.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -643,7 +786,7 @@ Germany</a></li>
     </div>
     <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
 </section> 
-<section id="countries-shape" class="quiz-section" data-aos="fade-up">
+<section id="countries-shape" class="quiz-section" data-tags="shape, countries shape, countries" data-aos="fade-up">
     <div class="quiz-content">
         <img src="Logos/shape.JPEG" alt="Optimized" class="quiz-logo" loading="lazy">
         <div>
@@ -725,54 +868,277 @@ Germany</a></li>
         <a href="Memory.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 </div>
+
 </main>
-
+<div id="message">
+    <div id="noResultsMessage" class="no-results-message" style="display: none;">No results found.</div>
+    <div id="didYouMeanMessage" class="did-you-mean-message" style="display: none;"><u>Did you mean:</u></div>
+</div>
 <footer class="footer" data-aos="fade-up">
-  <div class="footer-container">
-    <div class="footer-logo">
-      <a href="../index.html"><img src="Logos/Geography.webp" alt="Optimized"></a>
-    </div>
-    <div class="footer-info">
-      <div class="footer-social">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-        <a href="Terms and Privacy.html" class="halved-shield">
-            <i class="fas fa-shield fa-shield-left"></i>
-            <i class="fas fa-shield fa-shield-right"></i>
-          </a>
+    <div class="footer-container">
+      <div class="footer-logo">
+        <a href="../index.html"><img src="Logos/Geography.webp" alt="Optimized"></a>
       </div>
-      <div class="footer-copyright">
-        <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+      <div class="footer-info">
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="Terms and Privacy.html" class="halved-shield">
+              <i class="fas fa-shield fa-shield-left"></i>
+              <i class="fas fa-shield fa-shield-right"></i>
+            </a>
+        </div>
+        <div class="footer-copyright">
+          <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+        </div>
       </div>
     </div>
-  </div>
-</footer>
-
-
-<script>
-function toggleQuizSections(event) {
-    const section = event.currentTarget;
-    const quizSection = section.nextElementSibling;
-    const arrow = section.querySelector('.toggle-arrow');
-
-    if (quizSection) {
-        quizSection.classList.toggle('hidden');
-        arrow.classList.toggle('rotated');
-
-        // Store state in localStorage
-        if (quizSection.classList.contains('hidden')) {
-            localStorage.setItem('quizSectionOpen', 'false');
-        } else {
-            localStorage.setItem('quizSectionOpen', 'true');
+  </footer>
+  <script>
+    function toggleQuizSections(event) {
+        const section = event.currentTarget;
+        const quizSection = section.nextElementSibling;
+        const arrow = section.querySelector('.toggle-arrow');
+    
+        if (quizSection) {
+            quizSection.classList.toggle('hidden');
+            arrow.classList.toggle('rotated');
+    
+            // Store state in localStorage
+            if (quizSection.classList.contains('hidden')) {
+                localStorage.setItem('quizSectionOpen', 'false');
+            } else {
+                localStorage.setItem('quizSectionOpen', 'true');
+            }
         }
     }
+    </script>
+  <script>
+    // Utility: Normalize strings by removing accents, converting to lowercase, and removing special characters and extra whitespace.
+    function normalizeStr(str) {
+        return str.normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "") // Remove accents
+                  .replace(/[^a-z0-9\s]/gi, '') // Remove special characters
+                  .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
+                  .trim() // Remove leading and trailing whitespace
+                  .toLowerCase(); // Convert to lowercase
+    }
+
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsBox = document.getElementById('suggestions');
+    const clearButton = document.getElementById('clearSearch');
+    const sections = Array.from(document.querySelectorAll('section'));
+    const swiper = document.querySelector('.swiper-container');
+    const dropdowns = document.querySelectorAll('.quiz-section-main');
+    const footer = document.querySelector('footer');
+    const noResultsMessage = document.getElementById('noResultsMessage');
+    const didYouMeanMessage = document.getElementById('didYouMeanMessage');
+
+    // 🔹 STEP 1: Assign a unique `data-id` to sections if missing
+    sections.forEach((section, index) => {
+        if (!section.hasAttribute('data-id')) {
+            section.setAttribute('data-id', `section-${index}`);
+        }
+    });
+
+    // Collect all unique normalized tags from sections.
+    let tagsSet = new Set();
+    sections.forEach(section => {
+        const tags = section.getAttribute('data-tags');
+        if (tags) {
+            tags.split(',').map(t => t.trim()).forEach(tag => {
+                tagsSet.add(normalizeStr(tag));
+            });
+        }
+    });
+    const allTags = Array.from(tagsSet);
+
+    // Display suggestions based on current input.
+    function displaySuggestions(value) {
+        suggestionsBox.innerHTML = '';
+        noResultsMessage.style.display = 'none';
+        didYouMeanMessage.style.display = 'none';
+        suggestionsBox.classList.remove('no-hover'); // Remove no-hover class
+        if (!value) {
+            suggestionsBox.style.display = 'none';
+            return;
+        }
+        const normalizedValue = normalizeStr(value);
+        const filteredTags = allTags.filter(tag => tag.includes(normalizedValue));
+        filteredTags.forEach(tag => {
+            const div = document.createElement('div');
+            div.textContent = tag;
+            div.classList.add('suggestion-item');
+            div.addEventListener('click', () => {
+                searchInput.value = tag;
+                performSearch(tag);
+                suggestionsBox.innerHTML = '';
+                suggestionsBox.style.display = 'none';
+            });
+            suggestionsBox.appendChild(div);
+        });
+        suggestionsBox.style.display = filteredTags.length ? 'block' : 'none';
+    }
+
+    // 🔹 STEP 2: Perform Search (Remove Duplicates!)
+    function performSearch(query) {
+        const normalizedQuery = normalizeStr(query.trim());
+        if (!normalizedQuery) {
+            // Reset: Show all sections & close dropdowns
+            sections.forEach(section => {
+                section.style.display = 'block';
+                section.classList.remove('force-show');
+                section.setAttribute('data-aos', 'fade-up'); // Add AOS attribute back
+            });
+            dropdowns.forEach(dropdown => {
+                const quizSection = dropdown.nextElementSibling;
+                const arrow = dropdown.querySelector('.toggle-arrow');
+                if (quizSection && !quizSection.classList.contains('hidden')) {
+                    quizSection.classList.add('hidden');
+                    arrow.classList.remove('rotated');
+                }
+            });
+            footer.style.display = 'block'; // Ensure footer is visible
+            return;
+        }
+
+        const queryTerms = normalizedQuery.split(/\s+/);
+        const shownIds = new Set(); // Prevent duplicates
+        let found = false;
+
+        sections.forEach(section => {
+            const tagsAttr = section.getAttribute('data-tags');
+            if (tagsAttr) {
+                const tagList = tagsAttr.split(',').map(t => normalizeStr(t.trim()));
+
+                // Multi-term matching logic
+                const multiMatch = queryTerms.every(term => tagList.some(tag => tag.includes(term))) ||
+                                    tagList.join('').includes(normalizedQuery);
+
+                const sectionId = section.getAttribute('data-id');
+
+                if (multiMatch) {
+                    found = true;
+                    // 🔥 STEP 3: Only Show First Occurrence of Each `data-id`
+                    if (!shownIds.has(sectionId)) {
+                        section.style.display = 'block';
+                        section.classList.add('force-show');
+                        section.removeAttribute('data-aos'); // Remove AOS attribute
+                        shownIds.add(sectionId); // ✅ Prevents duplicate showing
+
+                        // 🔹 STEP 4: Ensure Parent Dropdowns Are Opened
+                        let parent = section.parentElement;
+                        while (parent) {
+                            if (parent.classList.contains('dropdown')) {
+                                parent.classList.add('open'); // Expand dropdown
+                                parent.style.maxHeight = 'none';
+                                parent.style.overflow = 'visible';
+                                break;
+                            }
+                            if (parent.classList.contains('hidden')) {
+                                parent.classList.remove('hidden'); // Ensure hidden sections are visible
+                            }
+                            parent = parent.parentElement;
+                        }
+                    } else {
+                        section.style.display = 'none'; // ✅ Hide Duplicates!
+                    }
+                } else {
+                    section.style.display = 'none';
+                }
+            } else {
+                section.style.display = 'none';
+            }
+        });
+
+        // Display message if no results found
+        if (!found) {
+            noResultsMessage.style.display = 'block'; // Show "No results found" message
+
+            // Suggest similar tags
+            const similarTags = allTags.filter(tag => tag.startsWith(normalizedQuery.slice(0, 3)));
+            if (similarTags.length > 0) {
+                didYouMeanMessage.style.display = 'block'; // Show "Did you mean" message
+                didYouMeanMessage.innerHTML = 'Did you mean:'; // Clear previous suggestions
+                suggestionsBox.classList.add('no-hover'); // Add no-hover class
+
+                similarTags.forEach(tag => {
+                    const div = document.createElement('div');
+                    div.textContent = tag;
+                    div.classList.add('suggestion-item');
+                    div.addEventListener('click', () => {
+                        searchInput.value = tag;
+                        performSearch(tag);
+                        suggestionsBox.innerHTML = '';
+                        suggestionsBox.style.display = 'none';
+                    });
+                    didYouMeanMessage.appendChild(div);
+                });
+            }
+            suggestionsBox.style.display = 'block';
+        } else {
+            suggestionsBox.style.display = 'none';
+        }
+
+        // Ensure footer is visible
+        footer.style.display = 'block';
+    }
+
+    function clearSearch() {
+    searchInput.value = '';
+    suggestionsBox.innerHTML = '';
+    swiper.style.display = 'block';
+    suggestionsBox.style.display = 'none';
+    noResultsMessage.style.display = 'none';
+    didYouMeanMessage.style.display = 'none';
+    suggestionsBox.classList.remove('no-hover'); // Remove no-hover class
+
+    sections.forEach(section => {
+        section.style.display = 'block';
+        section.classList.remove('force-show');
+        section.setAttribute('data-aos', 'fade-up'); // Add AOS attribute back
+    });
+
+    dropdowns.forEach(dropdown => {
+        const quizSection = dropdown.nextElementSibling;
+        const arrow = dropdown.querySelector('.toggle-arrow');
+        if (quizSection && !quizSection.classList.contains('hidden')) {
+            // Use the toggleQuizSections function to close the dropdown
+            toggleQuizSections({ currentTarget: dropdown });
+        }
+    });
+
+    clearButton.style.display = 'none';
+    footer.style.display = 'block'; // Ensure footer is visible
 }
 
+    // **Event Listeners**
+    searchInput.addEventListener('input', (e) => {
+        const value = e.target.value;
+        displaySuggestions(value);
+        if (value) {
+            clearButton.style.display = 'block';
+        } else {
+            clearButton.style.display = 'none';
+            clearSearch();
+        }
+    });
 
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            performSearch(e.target.value);
+            suggestionsBox.innerHTML = '';
+            suggestionsBox.style.display = 'none';
+            swiper.style.display = 'none';
+        }
+    });
+
+    clearButton.addEventListener('click', clearSearch);
 </script>
 <script src="transitions.js" defer></script>
+
 <script>
 // Select all buttons with the class "quiz-link"
 const buttons = document.querySelectorAll(".quiz-link");

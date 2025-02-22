@@ -138,14 +138,13 @@ header h1 {
 .wave-text span:nth-child(30) { animation-delay: 2.9s; }
 /* Add more delays if you have more letters */
 
-
 nav ul {
     list-style: none;
     display: flex;
     justify-content: center;
     gap: 50px;
 	font-weight: bold;
-    margin-top: 25px;
+    margin-top: 20px;
     padding: 0;
 }
 
@@ -309,12 +308,13 @@ margin-top: 10px;	/* Ensure pagination stays above the background */
 /* Quiz Section Styles */
 .quiz-section-main {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center!important;
+    align-items: center!important;
     flex-direction: row;
     margin: 35px 5%;
     padding: 30px;
     border-radius: 15px;
+    text-align: center!important;
     box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
     background-color: rgb(211, 140, 40);
     color: white;
@@ -380,11 +380,13 @@ height: auto;
 .footer {
   background: linear-gradient(135deg, #0d47a1, #42a5f5); /* Blue gradient */
   color: #fff;
+  display: block!important;
+  text-align: center;
   padding: 30px 0;
   position: relative;
   overflow: hidden;
   display: flex;
-  margin-top: 70px;
+  margin-top: 50px;
   justify-content: center;
 }
 
