@@ -1025,6 +1025,7 @@ Germany</a></li>
                     if (!shownIds.has(sectionId)) {
                         section.style.display = 'block';
                         section.classList.add('force-show');
+			swiper.style.display = 'none';
                         section.removeAttribute('data-aos'); // Remove AOS attribute
                         shownIds.add(sectionId); // ✅ Prevents duplicate showing
 
