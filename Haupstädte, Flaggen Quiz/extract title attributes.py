@@ -21,4 +21,4 @@ def extract_titles(filename):
         print("No titles found.")
 
 # Example usage
-extract_titles(r"C:\Users\sebas\OneDrive\Documents\GitHub\Sebastian-H-G.github.io\sebastian-h-g.github.io\Haupstädte, Flaggen Quiz\SVG Maps\southamerica.html")
+extract_titles(r"C:\Users\sebas\OneDrive\Documents\GitHub\Sebastian-H-G.github.io\sebastian-h-g.github.io\Haupstädte, Flaggen Quiz\SVG Maps\196 world map.html")

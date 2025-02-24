@@ -31,7 +31,6 @@ const countryMappings =
     "North Korea": ["Democratic People's Republic of Korea", "North Korea", "Nordkorea", "Demokratische Volksrepublik Korea"],
     "Oman": ["Oman", "Oman"],
     "Pakistan": ["Pakistan", "Pakistan"],
-    "Palestine": ["State of Palestine", "Palestinian Territories", "Palestine", "Staat Palästina", "Palästinensische Gebiete", "Palästina"],
     "Philippines": ["Philippines", "Philippinen"],
     "Qatar": ["Qatar", "Katar"],
     "Russia": ["Russian Federation", "Russia", "Russische Föderation", "Russland"],
@@ -86,7 +85,7 @@ function normalizeCountryName(country) {
 }
 
 const countries = [
-   "Afghanistan", "Armenia", "Azerbaijan", "Bahrain", "Bangladesh", "Bhutan", "Brunei", "Cambodia", "China", "Cyprus", "Georgia", "India", "Indonesia", "Iran", "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan", "Kuwait", "Kyrgyzstan", "Laos", "Lebanon", "Malaysia", "Maldives", "Mongolia", "Myanmar", "Nepal", "North Korea", "Oman", "Pakistan", "Palestine", "Philippines", "Qatar", "Russia", "Saudi Arabia", "Singapore", "South Korea", "Sri Lanka", "Syria", "Taiwan", "Tajikistan", "Thailand", "Timor-Leste", "Turkey", "Turkmenistan", "United Arab Emirates", "Uzbekistan", "Vietnam", "Yemen"
+   "Afghanistan", "Armenia", "Azerbaijan", "Bahrain", "Bangladesh", "Bhutan", "Brunei", "Cambodia", "China", "Cyprus", "Georgia", "India", "Indonesia", "Iran", "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan", "Kuwait", "Kyrgyzstan", "Laos", "Lebanon", "Malaysia", "Maldives", "Mongolia", "Myanmar", "Nepal", "North Korea", "Oman", "Pakistan", "Philippines", "Qatar", "Russia", "Saudi Arabia", "Singapore", "South Korea", "Sri Lanka", "Syria", "Taiwan", "Tajikistan", "Thailand", "Timor-Leste", "Turkey", "Turkmenistan", "United Arab Emirates", "Uzbekistan", "Vietnam", "Yemen"
 ];
 
 

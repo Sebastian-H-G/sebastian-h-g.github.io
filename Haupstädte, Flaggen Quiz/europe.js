@@ -42,7 +42,6 @@ const countryMappings = {
         "Spain": ["Spanien"],
         "Sweden": ["Schweden"],
         "Switzerland": ["Schweiz"],
-        "Turkey": ["Türkei"],
         "Ukraine": ["Ukraine"],
         "United Kingdom": ["Vereinigtes Königreich", "UK"],
         "Vatican City": ["Vatikanstadt"]
@@ -81,7 +80,7 @@ function normalizeCountryName(country) {
     return country;
 }
 const countries = [
-    "Andorra", "Albania", "Austria", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus", "Czechia", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kosovo", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "North Macedonia", "Norway", "Russia", "Poland", "Portugal", "Romania", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", "Switzerland", "Turkey", "Ukraine", "United Kingdom", "Vatican City",   
+    "Andorra", "Albania", "Austria", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus", "Czechia", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kosovo", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "North Macedonia", "Norway", "Russia", "Poland", "Portugal", "Romania", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom", "Vatican City",   
 ];
 
 function displayCountriesTable() {
@@ -103,7 +102,7 @@ function displayCountriesTable() {
 
 const correctCountries = [];
 let score = 0;
-let timeRemaining = 6 * 60;
+let timeRemaining = 5 * 60;
 
 const countryInput = document.getElementById('countryInput');
 const scoreBoard = document.getElementById('scoreBoard');
@@ -120,7 +119,7 @@ function checkCountry(countryName) {
         const originalCountryName = countries.find(c => c.toLowerCase() === normalizedCountryName.toLowerCase());
         correctCountries.push(originalCountryName);
         score++;
-        scoreBoard.textContent = `Score: ${score} / 47`;
+        scoreBoard.textContent = `Score: ${score} / 46`;
         document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
             path.classList.add('correct');
         });

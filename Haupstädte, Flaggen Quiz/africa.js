@@ -5,7 +5,7 @@ const countryMappings = {
     "Botswana": ["Botswana"],
     "Burkina Faso": ["Burkina Faso"],
     "Burundi": ["Burundi"],
-    "Cabo Verde": ["Kap Verde"],
+    "Cabo Verde": ["Kap Verde", "Cape Verde"],
     "Cameroon": ["Kamerun"],
     "Central African Republic": ["Zentralafrikanische Republik"],
     "Chad": ["Tschad"],
@@ -39,7 +39,6 @@ const countryMappings = {
     "Nigeria": ["Nigeria"],
     "Republic of the Congo": ["Republik Kongo", "Kongo", "Congo"],
     "Rwanda": ["Ruanda"],
-    "Reunion": ["Réunion"],
     "Sao Tome Principe": ["São Tomé und Príncipe", "Sao Tome and Principe"],
     "Senegal": ["Senegal"],
     "Seychelles": ["Seychellen"],
@@ -52,7 +51,6 @@ const countryMappings = {
     "Togo": ["Togo"],
     "Tunisia": ["Tunesien"],
     "Uganda": ["Uganda"],
-    "Western Sahara": ["Westsahara"],
     "Zambia": ["Sambia"],
     "Zimbabwe": ["Simbabwe"]  
 }
@@ -91,7 +89,7 @@ function normalizeCountryName(country) {
 }
 
 const countries = [
-"Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros", "Democratic Republic of the Congo", "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Ivory Coast", "Kenya", "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Republic of the Congo", "Rwanda", "Reunion", "Sao Tome Principe", "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Western Sahara", "Zambia", "Zimbabwe" 
+"Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros", "Democratic Republic of the Congo", "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Ivory Coast", "Kenya", "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Republic of the Congo", "Rwanda", "Sao Tome Principe", "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe" 
 ];
 
 
@@ -131,7 +129,7 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
     const originalCountryName = countries.find(c => c.toLowerCase() === normalizedCountryName.toLowerCase());
     correctCountries.push(originalCountryName);
     score++;
-    scoreBoard.textContent = `Score: ${score} / 53`;
+    scoreBoard.textContent = `Score: ${score} / 54`;
     document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
         path.classList.add('correct');
     });
