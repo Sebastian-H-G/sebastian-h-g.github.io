@@ -498,7 +498,12 @@
     </svg>
  </div>
     
- <script>
+ <div class="controls">
+    <label for="svgWidth">Map Width: </label>
+    <input type="range" id="svgWidth" min="50" max="100" value="90" oninput="updateSvgWidth(this.value)">
+    <span id="widthValue">90%</span>
+</div>
+<script>
     const capitals = {
         "Alabama": "Montgomery",
         "Alaska": "Juneau",
@@ -551,7 +556,21 @@
         "Wisconsin": "Madison",
         "Wyoming": "Cheyenne"
     };
-    document.getElementById('capitalInput').addEventListener('input', checkCapital);
+
+    function updateSvgWidth(value) {
+            const svg = document.getElementById("usMap");
+            svg.style.width = value + "%";
+            document.getElementById("widthValue").textContent = value + "%";
+        }
+      document.addEventListener("DOMContentLoaded", function() {
+    const svg = document.querySelector("#map"); // Select SVG inside the world map
+    if (!svg) {
+        console.error("SVG not found inside #svgMap");
+        return;
+    }
+      });
+
+document.getElementById('capitalInput').addEventListener('input', checkCapital);
 
 let score = 0;
 let timer = 300; // 5 minutes in seconds

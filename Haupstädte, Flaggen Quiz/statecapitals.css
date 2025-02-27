@@ -5,7 +5,20 @@ svg {
 .hidden {
     display: none;
 }
-
+#mapContainer {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    max-width: 1300px;
+    margin: 0 auto 50px auto;
+    padding: 0;
+    background: lightblue;
+    height: auto;
+    border: 2px solid #aaa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
 #resultsTableContainer {
     margin: 20px;
 }
@@ -30,4 +43,56 @@ svg {
 }
 #resultsTable td:nth-child(2n) {
     border-right: 3px solid #000; /* Thicker right border for every second column */
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Adds space between elements */
+  background: #85add4; /* Light background for better contrast */
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+  margin: 15px auto;
+}
+
+.controls label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.controls input[type="range"] {
+  appearance: none;
+  width: 150px;
+  height: 6px;
+  background: #00ffea;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 2px solid #00ffea;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.controls input[type="range"]:hover {
+  background: #11cdbd;
+}
+
+#widthValue {
+  font-weight: bold;
+  font-size: 14px;
+  color: #00ffea;
+  padding-left: 5px;
 }
