@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>US States Capitals Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="statecapitals.css">
 </head>
 <body>
     <h1>US States Capitals Quiz</h1>
-    <div>
-        <span id="score">Score: 0 / 50</span>
+    <div id="quizContainer">
+        <div  class="outScoreBoard"><span id="score">Score: 0 / 50</span></div> 
+        <input type="text" id="capitalInput" placeholder="Enter state capital">
         <span id="timer">5:00</span>
-        <button id="pauseButton">Pause</button>
-        <button id="giveUpButton">Give Up</button>
+        <button id="pauseButton"></button>
     </div>
-    <input type="text" id="capitalInput" placeholder="Enter state capital">
+    <button id="giveUpButton">Give Up</button>
+    <div id="message" style="display: none; font-size: 20px; margin: 0 auto 20px auto; font-weight: 900;"></div>
     <div id="mapContainer">
     <svg id="usMap" xmlns="http://www.w3.org/2000/svg"  viewBox="-101.3389 -2.8407 2761.3389 1605.3362">
         <!-- Example SVG structure -->
@@ -500,9 +502,27 @@
     
  <div class="controls">
     <label for="svgWidth">Map Width: </label>
-    <input type="range" id="svgWidth" min="50" max="100" value="90" oninput="updateSvgWidth(this.value)">
-    <span id="widthValue">90%</span>
+    <input type="range" id="svgWidth" min="50" max="100" value="100" oninput="updateSvgWidth(this.value)">
+    <span id="widthValue">100%</span>
 </div>
+<canvas id="confettiCanvas"></canvas>
+<div id="resultsTableContainer" style="display: none;"></div>
+<footer>
+    <div class="flexbox-footer"><a href="index.html">
+    <img src="Logos/us-capitals.webp" alt="Footer Image"></a>
+    <div class="footer-info">
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copyright">
+            <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+          </div></div>
+        
+        </div>
+</footer>
 <script>
     const capitals = {
         "Alabama": "Montgomery",
@@ -557,32 +577,156 @@
         "Wyoming": "Cheyenne"
     };
 
+    document.addEventListener("DOMContentLoaded", function() {
+        const initialWidth = document.getElementById("svgWidth").value;
+        updateSvgWidth(initialWidth);
+    });
+
     function updateSvgWidth(value) {
-            const svg = document.getElementById("usMap");
-            svg.style.width = value + "%";
-            document.getElementById("widthValue").textContent = value + "%";
-        }
-      document.addEventListener("DOMContentLoaded", function() {
-    const svg = document.querySelector("#map"); // Select SVG inside the world map
-    if (!svg) {
-        console.error("SVG not found inside #svgMap");
-        return;
+        const svg = document.getElementById("usMap");
+        svg.style.width = value + "%";
+        document.getElementById("widthValue").textContent = value + "%";
     }
-      });
 
-document.getElementById('capitalInput').addEventListener('input', checkCapital);
+    document.addEventListener("DOMContentLoaded", function() {
+        const svg = document.querySelector("#usMap"); // Select SVG inside the world map
+        if (!svg) {
+            console.error("SVG not found");
+            return;
+        }
 
-let score = 0;
-let timer = 300; // 5 minutes in seconds
-let pauses = 0;
-const maxPauses = 2;
-let timerInterval;
-let isPaused = false;
-const guessedCapitals = new Set();
+        let viewBox = { x: -101.3389, y: -2.8407, width: 2761.3389, height: 1605.3362 };
+        let lastDistance = null;
+        let minZoom = 50;
+        let maxZoom = 3000;
+        let isPanning = false;
+        let startX, startY;
+        let zoomedIn = false;
+        let resetTimeout;
 
-document.getElementById('pauseButton').addEventListener('click', togglePause);
-document.getElementById('giveUpButton').addEventListener('click', giveUp);
+        function animateViewBox(targetViewBox, duration = 1000) {
+            const startX = viewBox.x, startY = viewBox.y, startWidth = viewBox.width, startHeight = viewBox.height;
+            const diffX = targetViewBox.x - startX;
+            const diffY = targetViewBox.y - startY;
+            const diffWidth = targetViewBox.width - startWidth;
+            const diffHeight = targetViewBox.height - startHeight;
 
+            let startTime;
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                viewBox.x = startX + diffX * progress;
+                viewBox.y = startY + diffY * progress;
+                viewBox.width = startWidth + diffWidth * progress;
+                viewBox.height = startHeight + diffHeight * progress;
+                svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    zoomedIn = false;
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        function resetViewBoxSmooth() {
+            animateViewBox({ x: -101.3389, y: -2.8407, width: 2761.3389, height: 1605.3362 });
+        }
+
+        function startResetTimer() {
+            clearTimeout(resetTimeout);
+            resetTimeout = setTimeout(resetViewBoxSmooth, 7000);
+        }
+
+        function getDistance(touches) {
+            let dx = touches[0].clientX - touches[1].clientX;
+            let dy = touches[0].clientY - touches[1].clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        function getMidPoint(touches) {
+            return {
+                x: (touches[0].clientX + touches[1].clientX) / 2,
+                y: (touches[0].clientY + touches[1].clientY) / 2
+            };
+        }
+
+        svg.addEventListener("touchmove", (event) => {
+            if (event.touches.length === 2) {
+                event.preventDefault();
+                let distance = getDistance(event.touches);
+                let midPoint = getMidPoint(event.touches);
+
+                if (lastDistance) {
+                    let scaleFactor = lastDistance / distance;
+                    let newWidth = viewBox.width * scaleFactor;
+                    let newHeight = viewBox.height * scaleFactor;
+
+                    if (newWidth < minZoom) newWidth = minZoom;
+                    if (newWidth > maxZoom) newWidth = maxZoom;
+                    newHeight = (newWidth / viewBox.width) * viewBox.height;
+
+                    let svgRect = svg.getBoundingClientRect();
+                    let midX = viewBox.x + ((midPoint.x - svgRect.left) / svgRect.width) * viewBox.width;
+                    let midY = viewBox.y + ((midPoint.y - svgRect.top) / svgRect.height) * viewBox.height;
+
+                    viewBox.x = midX - ((midX - viewBox.x) * (newWidth / viewBox.width));
+                    viewBox.y = midY - ((midY - viewBox.y) * (newHeight / viewBox.height));
+                    viewBox.width = newWidth;
+                    viewBox.height = newHeight;
+
+                    zoomedIn = newWidth < maxZoom;
+                    svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+                    startResetTimer();
+                }
+                lastDistance = distance;
+            } else if (event.touches.length === 1 && zoomedIn) {
+                event.preventDefault();
+                if (!isPanning) {
+                    isPanning = true;
+                    startX = event.touches[0].clientX;
+                    startY = event.touches[0].clientY;
+                } else {
+                    let dx = (startX - event.touches[0].clientX) * (viewBox.width / svg.clientWidth);
+                    let dy = (startY - event.touches[0].clientY) * (viewBox.height / svg.clientHeight);
+                    viewBox.x += dx;
+                    viewBox.y += dy;
+                    svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+                    startX = event.touches[0].clientX;
+                    startY = event.touches[0].clientY;
+                    startResetTimer();
+                }
+            }
+        });
+
+        svg.addEventListener("touchend", () => {
+            lastDistance = null;
+            isPanning = false;
+            startResetTimer();
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const pauseButton = document.getElementById('pauseButton');
+        pauseButton.classList.add('pause'); // Set initial state to pause
+
+        // Other initialization code...
+        startTimer();
+    });
+
+    document.getElementById('capitalInput').addEventListener('input', checkCapital);
+
+    let score = 0;
+    let timer = 300; // 5 minutes in seconds
+    let pauses = 0;
+    const maxPauses = 2;
+    let timerInterval;
+    let isPaused = false;
+    const guessedCapitals = new Set();
+    const message = document.getElementById('message');
+    document.getElementById('pauseButton').addEventListener('click', togglePause);
+    document.getElementById('giveUpButton').addEventListener('click', giveUp);
+// Ensure this function is called when the timer runs out
 function startTimer() {
     timerInterval = setInterval(() => {
         if (!isPaused) {
@@ -590,35 +734,52 @@ function startTimer() {
             updateTimerDisplay();
             if (timer <= 0) {
                 clearInterval(timerInterval);
-                alert('Time is up! Your score is ' + score);
+                message.style.display = 'block';
+                togglePause(); // Pause the game
+                message.textContent = 'Time is up! Your score is ' + score;
                 markUnansweredStates();
                 displayResultsTable();
+                endGame(); // Call endGame to stop the timer and disable interactions
             }
         }
     }, 1000);
 }
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timer / 60);
+        const seconds = timer % 60;
+        document.getElementById('timer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
 
-function updateTimerDisplay() {
-    const minutes = Math.floor(timer / 60);
-    const seconds = timer % 60;
-    document.getElementById('timer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-}
-
-function togglePause() {
-    if (isPaused) {
-        isPaused = false;
-        document.getElementById('pauseButton').textContent = 'Pause';
-    } else {
-        if (pauses < maxPauses) {
+    function togglePause() {
+        const pauseButton = document.getElementById('pauseButton');
+        if (!isPaused && pauses < maxPauses) {
             isPaused = true;
             pauses++;
-            document.getElementById('pauseButton').textContent = 'Resume';
-        } else {
-            alert('You have used all your pauses.');
+            pauseButton.classList.remove('pause');
+            pauseButton.classList.add('play');
+            document.getElementById('capitalInput').disabled = true;
+            document.getElementById('mapContainer').style.display = 'none'; // Disable map interaction
+            document.querySelector('.controls').style.display = 'none'; // Hide the map controls
+            message.style.display = 'block';
+            message.style.color = 'blue';
+            message.textContent = `Game is Paused! Pauses left: ${maxPauses - pauses}`;
+        } else if (isPaused) {
+            isPaused = false;
+            pauseButton.classList.remove('play');
+            pauseButton.classList.add('pause');
+            document.getElementById('capitalInput').disabled = false;
+            document.getElementById('mapContainer').style.display = 'block'; // Enable map interaction
+            document.querySelector('.controls').style.display = 'block'; // Show the map controls
+            message.style.display = 'none'; // Hide the message
+        }
+
+        if (!isPaused && pauses >= maxPauses) {
+            pauseButton.disabled = true;
+            pauseButton.style.display = 'none';
         }
     }
-}
 
+// Ensure this function is called when all capitals are found
 function checkCapital() {
     const input = document.getElementById('capitalInput').value.trim();
     console.log(`Input: ${input}`);
@@ -667,8 +828,14 @@ function checkCapital() {
 
             if (score === Object.keys(capitals).length) {
                 clearInterval(timerInterval);
-                alert('Congratulations! You have guessed all the capitals.');
+                message.style.display = 'block';
+                togglePause(); // Pause the game
+                message.style.color = 'green';
+                createConfetti(); // Call the confetti animation function
+                message.textContent = `Congratulations! 🎉 You named all capitals in ${300 - timer} seconds.`;
+                message.classList.add('congrats-animation');
                 displayResultsTable();
+                endGame(); // Call endGame to stop the timer and disable interactions
             }
 
             break; // Exit the loop once a match is found
@@ -676,9 +843,49 @@ function checkCapital() {
     }
 }
 
-function markUnansweredStates() {
-    for (const state of Object.keys(capitals)) {
-        if (!guessedCapitals.has(capitals[state])) {
+    function markUnansweredStates() {
+        for (const state of Object.keys(capitals)) {
+            if (!guessedCapitals.has(capitals[state])) {
+                const statePaths = document.querySelectorAll(`path[id="${state}"]`);
+                if (statePaths.length > 0) {
+                    statePaths.forEach(path => {
+                        if (path.style.fill !== 'green') {
+                            path.style.fill = 'red';
+                        }
+                    });
+                } else {
+                    console.error(`State paths not found: ${state}`);
+                }
+            }
+        }
+        displayResultsTable();
+    }
+
+    function giveUp() {
+        clearInterval(timerInterval);
+        revealAllAnswers();
+        togglePause();
+        mapContainer.style.display = 'block';
+        pauseButton.disabled = true;
+        document.querySelector('.controls').style.display = 'block';
+        pauseButton.style.display = 'none';
+        message.style.display = 'block';
+        message.style.color = 'red';
+        message.textContent = `You gave up! You named ${score} capitals.`;
+        document.getElementById('giveUpButton').textContent = 'Restart';
+        document.getElementById('giveUpButton').removeEventListener('click', giveUp);
+        document.getElementById('giveUpButton').addEventListener('click', restart);
+    }
+
+    function revealAllAnswers() {
+        for (const [state, capital] of Object.entries(capitals)) {
+            const stateElements = document.querySelectorAll(`[id="${state}Name"]`);
+            if (stateElements.length > 0) {
+                stateElements.forEach(element => {
+                    element.classList.remove('hidden');
+                });
+            }
+
             const statePaths = document.querySelectorAll(`path[id="${state}"]`);
             if (statePaths.length > 0) {
                 statePaths.forEach(path => {
@@ -686,60 +893,30 @@ function markUnansweredStates() {
                         path.style.fill = 'red';
                     }
                 });
-            } else {
-                console.error(`State paths not found: ${state}`);
+            }
+
+            const capitalId = capital.replace(/\s+/g, '');
+            const capitalElements = document.querySelectorAll(`[id*="${capitalId}Name"]`);
+            if (capitalElements.length > 0) {
+                capitalElements.forEach(element => {
+                    element.classList.remove('hidden');
+                });
             }
         }
+        displayResultsTable();
     }
-    displayResultsTable();
-}
 
-function giveUp() {
-    clearInterval(timerInterval);
-    revealAllAnswers();
-    document.getElementById('giveUpButton').textContent = 'Restart';
-    document.getElementById('giveUpButton').removeEventListener('click', giveUp);
-    document.getElementById('giveUpButton').addEventListener('click', restart);
-}
+    function displayResultsTable() {
+    const tableContainer = document.getElementById('resultsTableContainer');
+    tableContainer.style.display = 'block';
+    tableContainer.innerHTML = ''; // Clear any existing content
 
-function revealAllAnswers() {
-    for (const [state, capital] of Object.entries(capitals)) {
-        const stateElements = document.querySelectorAll(`[id="${state}Name"]`);
-        if (stateElements.length > 0) {
-            stateElements.forEach(element => {
-                element.classList.remove('hidden');
-            });
-        }
-
-        const statePaths = document.querySelectorAll(`path[id="${state}"]`);
-        if (statePaths.length > 0) {
-            statePaths.forEach(path => {
-                if (path.style.fill !== 'green') {
-                    path.style.fill = 'red';
-                }
-            });
-        }
-
-        const capitalId = capital.replace(/\s+/g, '');
-        const capitalElements = document.querySelectorAll(`[id*="${capitalId}Name"]`);
-        if (capitalElements.length > 0) {
-            capitalElements.forEach(element => {
-                element.classList.remove('hidden');
-            });
-        }
-    }
-    displayResultsTable();
-}
-
-function displayResultsTable() {
-    const tableContainer = document.createElement('div');
-    tableContainer.id = 'resultsTableContainer';
     const table = document.createElement('table');
     table.id = 'resultsTable';
 
     // Create header row
     const headerRow = document.createElement('tr');
-    for (let i = 0; i < 5; i++) { // Adjust the number of columns as needed
+    for (let i = 0; i < 3; i++) { // Adjust the number of columns as needed
         const stateHeader = document.createElement('th');
         stateHeader.textContent = 'State';
         const capitalHeader = document.createElement('th');
@@ -749,7 +926,7 @@ function displayResultsTable() {
     }
     table.appendChild(headerRow);
 
-    const statesPerRow = 5; // Number of states per row
+    const statesPerRow = 3; // Number of states per row
     let row;
 
     Object.entries(capitals).forEach(([state, capital], index) => {
@@ -777,14 +954,64 @@ function displayResultsTable() {
     });
 
     tableContainer.appendChild(table);
-    document.body.appendChild(tableContainer);
+}
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'x') {
+        isPaused = !isPaused; // Toggle the isPaused variable
+        const pauseButton = document.getElementById('pauseButton');
+        pauseButton.disabled = true;
+        if (isPaused) {
+            clearInterval(timerInterval);
+        } else {
+            startTimer();
+        }
+    }
+});
+// Confetti animation function
+function createConfetti() {
+const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+
+function createPiece() {
+    const piece = document.createElement('div');
+    piece.classList.add('confetti');
+    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.width = Math.random() * 20 + 'px';
+    piece.style.height = Math.random() * 20 + 'px';
+    piece.style.left = (Math.random() * window.innerWidth) + 'px';
+    piece.style.top = '-20px';
+    piece.style.animationDuration = '2s'; // Set animation duration to 3 seconds
+    document.body.appendChild(piece);
+    piece.addEventListener('animationend', function() {
+        piece.parentNode.removeChild(piece);
+    });
 }
 
-function restart() {
-    location.reload();
-}
+// Adjust the number of confetti pieces
+const totalPieces = 800;
+const interval = 5; // milliseconds
 
-startTimer();
+let i = 0;
+let intervalId = setInterval(function() {
+    createPiece();
+    i++;
+    if (i >= totalPieces) {
+        clearInterval(intervalId);
+    }
+}, interval);
+}
+    function endGame() {
+        clearInterval(timerInterval); // Stop the timer
+        document.getElementById('capitalInput').disabled = true;
+        document.getElementById('mapContainer').style.display = 'none'; // Disable map interaction
+        document.querySelector('.controls').style.display = 'none'; // Hide the map controls
+        document.getElementById('pauseButton').disabled = true;
+        document.getElementById('pauseButton').style.display = 'none';
+    }   
+    function restart() {
+        location.reload();
+    }
+
+    startTimer();
 </script>
 </body>
 </html>

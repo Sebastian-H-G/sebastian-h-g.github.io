@@ -41,6 +41,7 @@ h1 {
   padding: 10px;
   border: 2px solid rgb(126, 154, 163);
   width: 300px;
+  text-align: center;
   border-radius: 7px;
   font-size: 16px;
 }

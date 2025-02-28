@@ -235,6 +235,7 @@ function togglePause() {
         pauseButton.classList.remove('pause');
         pauseButton.classList.add('play');
         countryInput.disabled = true;
+        document.querySelector('.controls').style.display = 'none';
         document.getElementById('map-container').style.display = 'none'; // Disable map interaction
         document.getElementById('pauseMessage').style.display = 'block';
         document.getElementById('pauseMessage').textContent = `Game is Paused! Pauses left: ${maxPauses - pauseCount}`;

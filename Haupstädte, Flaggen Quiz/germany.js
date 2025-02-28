@@ -228,6 +228,7 @@ function togglePause() {
         countryInput.disabled = true;
         document.getElementById('map-container').style.display = 'none'; // Disable map interaction
         document.getElementById('pauseMessage').style.display = 'block';
+        document.querySelector('.controls').style.display = 'none';
         document.getElementById('pauseMessage').textContent = `Das Spiel ist pausiert! Verbleibende Pausen: ${maxPauses - pauseCount}`;
     } else if (isPaused) {
         isPaused = false;
