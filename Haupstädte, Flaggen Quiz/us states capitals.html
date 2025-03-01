@@ -505,7 +505,7 @@
     <input type="range" id="svgWidth" min="50" max="100" value="100" oninput="updateSvgWidth(this.value)">
     <span id="widthValue">100%</span>
 </div>
-<canvas id="confettiCanvas"></canvas>
+
 <div id="resultsTableContainer" style="display: none;"></div>
 <footer>
     <div class="flexbox-footer"><a href="index.html">
@@ -761,7 +761,6 @@ function startTimer() {
             document.getElementById('mapContainer').style.display = 'none'; // Disable map interaction
             document.querySelector('.controls').style.display = 'none'; // Hide the map controls
             message.style.display = 'block';
-            message.style.color = 'blue';
             message.textContent = `Game is Paused! Pauses left: ${maxPauses - pauses}`;
         } else if (isPaused) {
             isPaused = false;
@@ -830,10 +829,7 @@ function checkCapital() {
                 clearInterval(timerInterval);
                 message.style.display = 'block';
                 togglePause(); // Pause the game
-                message.style.color = 'green';
-                createConfetti(); // Call the confetti animation function
                 message.textContent = `Congratulations! 🎉 You named all capitals in ${300 - timer} seconds.`;
-                message.classList.add('congrats-animation');
                 displayResultsTable();
                 endGame(); // Call endGame to stop the timer and disable interactions
             }
@@ -867,10 +863,7 @@ function checkCapital() {
         togglePause();
         mapContainer.style.display = 'block';
         pauseButton.disabled = true;
-        document.querySelector('.controls').style.display = 'block';
         pauseButton.style.display = 'none';
-        message.style.display = 'block';
-        message.style.color = 'red';
         message.textContent = `You gave up! You named ${score} capitals.`;
         document.getElementById('giveUpButton').textContent = 'Restart';
         document.getElementById('giveUpButton').removeEventListener('click', giveUp);
@@ -907,98 +900,54 @@ function checkCapital() {
     }
 
     function displayResultsTable() {
-    const tableContainer = document.getElementById('resultsTableContainer');
-    tableContainer.style.display = 'block';
-    tableContainer.innerHTML = ''; // Clear any existing content
+        const tableContainer = document.getElementById('resultsTableContainer');
+        tableContainer.style.display = 'block';
+        tableContainer.id = 'resultsTableContainer';
+        const table = document.createElement('table');
+        table.id = 'resultsTable';
 
-    const table = document.createElement('table');
-    table.id = 'resultsTable';
-
-    // Create header row
-    const headerRow = document.createElement('tr');
-    for (let i = 0; i < 3; i++) { // Adjust the number of columns as needed
-        const stateHeader = document.createElement('th');
-        stateHeader.textContent = 'State';
-        const capitalHeader = document.createElement('th');
-        capitalHeader.textContent = 'Capital';
-        headerRow.appendChild(stateHeader);
-        headerRow.appendChild(capitalHeader);
-    }
-    table.appendChild(headerRow);
-
-    const statesPerRow = 3; // Number of states per row
-    let row;
-
-    Object.entries(capitals).forEach(([state, capital], index) => {
-        if (index % statesPerRow === 0) {
-            row = document.createElement('tr');
-            table.appendChild(row);
+        // Create header row
+        const headerRow = document.createElement('tr');
+        for (let i = 0; i < 5; i++) { // Adjust the number of columns as needed
+            const stateHeader = document.createElement('th');
+            stateHeader.textContent = 'State';
+            const capitalHeader = document.createElement('th');
+            capitalHeader.textContent = 'Capital';
+            headerRow.appendChild(stateHeader);
+            headerRow.appendChild(capitalHeader);
         }
+        table.appendChild(headerRow);
 
-        const stateCell = document.createElement('td');
-        stateCell.textContent = state;
-        const capitalCell = document.createElement('td');
-        capitalCell.textContent = capital;
+        const statesPerRow = 5; // Number of states per row
+        let row;
 
-        const statePaths = document.querySelectorAll(`path[id="${state}"]`);
-        if (statePaths.length > 0 && statePaths[0].style.fill === 'green') {
-            stateCell.style.color = 'green';
-            capitalCell.style.color = 'green';
-        } else {
-            stateCell.style.color = 'red';
-            capitalCell.style.color = 'red';
-        }
+        Object.entries(capitals).forEach(([state, capital], index) => {
+            if (index % statesPerRow === 0) {
+                row = document.createElement('tr');
+                table.appendChild(row);
+            }
 
-        row.appendChild(stateCell);
-        row.appendChild(capitalCell);
-    });
+            const stateCell = document.createElement('td');
+            stateCell.textContent = state;
+            const capitalCell = document.createElement('td');
+            capitalCell.textContent = capital;
 
-    tableContainer.appendChild(table);
-}
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'x') {
-        isPaused = !isPaused; // Toggle the isPaused variable
-        const pauseButton = document.getElementById('pauseButton');
-        pauseButton.disabled = true;
-        if (isPaused) {
-            clearInterval(timerInterval);
-        } else {
-            startTimer();
-        }
+            const statePaths = document.querySelectorAll(`path[id="${state}"]`);
+            if (statePaths.length > 0 && statePaths[0].style.fill === 'green') {
+                stateCell.style.color = 'green';
+                capitalCell.style.color = 'green';
+            } else {
+                stateCell.style.color = 'red';
+                capitalCell.style.color = 'red';
+            }
+
+            row.appendChild(stateCell);
+            row.appendChild(capitalCell);
+        });
+
+        tableContainer.appendChild(table);
+        document.body.appendChild(tableContainer);
     }
-});
-// Confetti animation function
-function createConfetti() {
-const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
-
-function createPiece() {
-    const piece = document.createElement('div');
-    piece.classList.add('confetti');
-    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    piece.style.width = Math.random() * 20 + 'px';
-    piece.style.height = Math.random() * 20 + 'px';
-    piece.style.left = (Math.random() * window.innerWidth) + 'px';
-    piece.style.top = '-20px';
-    piece.style.animationDuration = '2s'; // Set animation duration to 3 seconds
-    document.body.appendChild(piece);
-    piece.addEventListener('animationend', function() {
-        piece.parentNode.removeChild(piece);
-    });
-}
-
-// Adjust the number of confetti pieces
-const totalPieces = 800;
-const interval = 5; // milliseconds
-
-let i = 0;
-let intervalId = setInterval(function() {
-    createPiece();
-    i++;
-    if (i >= totalPieces) {
-        clearInterval(intervalId);
-    }
-}, interval);
-}
     function endGame() {
         clearInterval(timerInterval); // Stop the timer
         document.getElementById('capitalInput').disabled = true;
