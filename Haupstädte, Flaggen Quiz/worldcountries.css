@@ -78,6 +78,9 @@ svg path {
   stroke-width: 0.5!important;
   fill: #FFF990!important;
 }
+svg {
+  background: lightblue!important;
+}
 .correct {
   fill: green!important;
 }
