@@ -18,7 +18,7 @@ const capitals = {
     "brussels": "Belgium",
     "belmopan": "Belize",
     "cotonou": "Benin",
-    "porto-novo": "Benin",
+    "porto novo": "Benin",
     "thimphu": "Bhutan",
     "la paz": "Bolivia",
     "sucre": "Bolivia",
@@ -73,7 +73,7 @@ const capitals = {
     "conakry": "Guinea",
     "bissau": "Guinea-Bissau",
     "georgetown": "Guyana",
-    "port-au-prince": "Haiti",
+    "port au prince": "Haiti",
     "tegucigalpa": "Honduras",
     "budapest": "Hungary",
     "reykjavik": "Iceland",
@@ -116,7 +116,7 @@ const capitals = {
     "chisinau": "Moldova",
     "monaco": "Monaco",
     "ulaanbaatar": "Mongolia",
-    "podgorica": "Montenegro",
+    "podgorcia": "Montenegro",
     "rabat": "Morocco",
     "maputo": "Mozambique",
     "naypyidaw": "Myanmar",
@@ -196,6 +196,7 @@ const capitals = {
     "vatican city": "Vatican City",
     "caracas": "Venezuela",
     "hanoi": "Vietnam",
+    "sanaa": "Yemen",
     "lusaka": "Zambia",
     "harare": "Zimbabwe"
   };
@@ -224,7 +225,7 @@ const capitals = {
     "brüssel": "brussels",
     "belmopan": "belmopan",
     "cotonou": "cotonou",
-    "porto-novo": "porto-novo",
+    "porto-novo": "porto novo",
     "thimphu": "thimphu",
     "la paz": "la paz",
     "sucre": "sucre",
@@ -274,12 +275,12 @@ const capitals = {
     "berlin": "berlin",
     "accra": "accra",
     "athen": "athens",
-    "st george's": "st. george's",
+    "st. george's": "st. george's",
     "guatemala-stadt": "guatemala city",
     "conakry": "conakry",
     "bissau": "bissau",
     "georgetown": "georgetown",
-    "port-au-prince": "port-au-prince",
+    "port-au-prince": "port au prince",
     "tegucigalpa": "tegucigalpa",
     "budapest": "budapest",
     "reykjavík": "reykjavik",
@@ -322,7 +323,7 @@ const capitals = {
     "chisinau": "chisinau",
     "monaco": "monaco",
     "ulan bator": "ulaanbaatar",
-    "podgorica": "podgorica",
+    "podgorcia": "podgorcia",
     "rabat": "rabat",
     "maputo": "maputo",
     "naypyidaw": "naypyidaw",
@@ -408,7 +409,7 @@ const capitals = {
 
 const countryToCapitals = {
     "south africa": ["pretoria", "cape town", "bloemfontein"],
-    "benin": ["cotonou", "porto-novo"],
+    "benin": ["cotonou", "porto novo"],
     "bolivia": ["la paz", "sucre"],
     // ...other countries with multiple capitals...
 };
@@ -444,8 +445,8 @@ function normalizeCountryName(name) {
     return name
         .normalize("NFD") // Normalize to NFD Unicode form
         .replace(/[\u0300-\u036f]/g, "") // Remove accents
-        .replace(/[-\s]+/g, " ") // Replace hyphens and multiple spaces with a single space
-        .replace(/[^\w\s]/g, "") // Remove non-alphanumeric characters
+        .replace(/[-\s]+/g, " ") // Replace multiple spaces with a single space
+        .replace(/[^\w\s.'-]/g, "") // Remove non-alphanumeric characters except hyphens, dots, and apostrophes
         .trim() // Trim leading and trailing spaces
         .toLowerCase(); // Convert to lowercase
 }
@@ -454,7 +455,7 @@ function normalizeCountryName(name) {
 function createTables() {
     const continentCapitals = {
         africa: ["Algiers", "Luanda", "Porto-Novo or Cotonou", "Gaborone", "Ouagadougou", "Bujumbura", "Yaoundé", "Praia", "Bangui", "N'Djamena", "Moroni", "Kinshasa", "Djibouti", "Cairo", "Malabo", "Asmara", "Mbabane", "Addis Ababa", "Libreville", "Banjul", "Accra", "Conakry", "Bissau", "Yamoussoukro", "Nairobi", "Maseru", "Monrovia", "Tripoli", "Antananarivo", "Lilongwe", "Bamako", "Nouakchott", "Port Louis", "Rabat", "Maputo", "Windhoek", "Niamey", "Abuja", "Brazzaville", "Kigali", "São Tomé", "Dakar", "Victoria", "Freetown", "Mogadishu", "Pretoria, Cape Town or Bloemfontein", "Juba", "Khartoum", "Dodoma", "Lomé", "Tunis", "Kampala", "Lusaka", "Harare"],
-        asia: ["Kabul", "Yerevan", "Baku", "Manama", "Dhaka", "Thimphu", "Bandar Seri Begawan", "Phnom Penh", "Beijing", "Nicosia", "Dili", "Tbilisi", "New Delhi", "Jakarta", "Tehran", "Baghdad", "Jerusalem", "Tokyo", "Amman", "Nur-Sultan", "Kuwait City", "Bishkek", "Vientiane", "Beirut", "Kuala Lumpur", "Malé", "Ulaanbaatar", "Naypyidaw", "Kathmandu", "Pyongyang", "Muscat", "Islamabad", "Manila", "Doha", "Riyadh", "Singapore", "Seoul", "Colombo", "Damascus", "Taipei", "Dushanbe", "Bangkok", "Ankara", "Ashgabat", "Abu Dhabi", "Tashkent", "Hanoi", "Sana'a"],
+        asia: ["Kabul", "Yerevan", "Baku", "Manama", "Dhaka", "Thimphu", "Bandar Seri Begawan", "Phnom Penh", "Beijing", "Nicosia", "Dili", "Tbilisi", "New Delhi", "Jakarta", "Tehran", "Baghdad", "Jerusalem", "Tokyo", "Amman", "Nur-Sultan", "Kuwait City", "Bishkek", "Vientiane", "Beirut", "Kuala Lumpur", "Malé", "Ulaanbaatar", "Naypyidaw", "Kathmandu", "Pyongyang", "Muscat", "Islamabad", "Manila", "Doha", "Riyadh", "Singapore", "Seoul", "Colombo", "Damascus", "Taipei", "Dushanbe", "Bangkok", "Ankara", "Ashgabat", "Abu Dhabi", "Tashkent", "Hanoi", "Sanaa"],
         europe: ["Tirana", "Andorra la Vella", "Vienna", "Minsk", "Brussels", "Sarajevo", "Sofia", "Zagreb", "Prague", "Copenhagen", "Tallinn", "Helsinki", "Paris", "Berlin", "Athens", "Budapest", "Reykjavik", "Dublin", "Rome", "Pristina", "Riga", "Vaduz", "Vilnius", "Luxembourg", "Valletta", "Chișinău", "Monaco", "Podgorica", "Amsterdam", "Skopje", "Oslo", "Warsaw", "Lisbon", "Bucharest", "Moscow", "San Marino", "Belgrade", "Bratislava", "Ljubljana", "Madrid", "Stockholm", "Bern", "Kyiv", "London", "Vatican City"],
         northAmerica: ["Saint John's", "Nassau", "Bridgetown", "Belmopan", "Ottawa", "San José", "Havana", "Roseau", "Santo Domingo", "San Salvador", "St. George's", "Guatemala City", "Port-au-Prince", "Tegucigalpa", "Kingston", "Mexico City", "Managua", "Panama City", "Basseterre", "Castries", "Kingstown", "Port of Spain", "Washington, D.C."],
         southAmerica: ["Buenos Aires", "Sucre or La Paz", "Brasília", "Santiago", "Bogotá", "Quito", "Georgetown", "Asunción", "Lima", "Paramaribo", "Montevideo", "Caracas"],
@@ -549,19 +550,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let isPaused = false;
 
     function endGame() {
-        countries.forEach(country => {
-            const normalizedCountryName = normalizeCountryName(country);
-            if (!correctCountries.map(c => normalizeCountryName(c)).includes(normalizedCountryName)) {
-                const originalCountryName = countries.find(c => normalizeCountryName(c) === normalizedCountryName);
-                document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(element => {
-                    element.classList.add('not-guessed');
+        Object.keys(capitals).forEach(capital => {
+            const normalizedCapitalName = normalizeCountryName(capital);
+            if (!correctCountries.includes(normalizedCapitalName)) {
+                document.querySelectorAll(`[title="${normalizedCapitalName}"]`).forEach(circle => {
+                    circle.classList.add('not-guessed');
                 });
             }
         });
     }
-
     function checkAllStatesGuessed() {
-        return correctCountries.length === countries.length;
+        return correctCountries.length === Object.keys(capitals).length;
     }
 
     function startCountdown() {
@@ -703,7 +702,7 @@ document.addEventListener('DOMContentLoaded', () => {
         countryInput.disabled = true; // Disable the input field
         showTables();
         enableCountryTooltip();
-        endGame();
+        endGame(); // Ensure endGame is called here
     }
 
     function restartGame() {
@@ -716,4 +715,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startCountdown();
 });
-startCountdown();

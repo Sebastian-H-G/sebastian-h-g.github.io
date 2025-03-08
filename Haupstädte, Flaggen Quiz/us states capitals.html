@@ -547,7 +547,7 @@
         "Maryland": "Annapolis",
         "Massachusetts": "Boston",
         "Michigan": "Lansing",
-        "Minnesota": "Saint Paul",
+        "Minnesota": "St. Paul",
         "Mississippi": "Jackson",
         "Missouri": "Jefferson City",
         "Montana": "Helena",
@@ -736,7 +736,7 @@ function startTimer() {
                 clearInterval(timerInterval);
                 message.style.display = 'block';
                 togglePause(); // Pause the game
-                message.textContent = 'Time is up! Your score is ' + score;
+                message.textContent = 'Time is up! You named' + score + ' US capitals.';
                 markUnansweredStates();
                 displayResultsTable();
                 endGame(); // Call endGame to stop the timer and disable interactions
@@ -900,54 +900,53 @@ function checkCapital() {
     }
 
     function displayResultsTable() {
-        const tableContainer = document.getElementById('resultsTableContainer');
-        tableContainer.style.display = 'block';
-        tableContainer.id = 'resultsTableContainer';
-        const table = document.createElement('table');
-        table.id = 'resultsTable';
+    const tableContainer = document.getElementById('resultsTableContainer');
+    tableContainer.style.display = 'block';
+    tableContainer.innerHTML = ''; // Clear any existing content
+    const table = document.createElement('table');
+    table.id = 'resultsTable';
 
-        // Create header row
-        const headerRow = document.createElement('tr');
-        for (let i = 0; i < 5; i++) { // Adjust the number of columns as needed
-            const stateHeader = document.createElement('th');
-            stateHeader.textContent = 'State';
-            const capitalHeader = document.createElement('th');
-            capitalHeader.textContent = 'Capital';
-            headerRow.appendChild(stateHeader);
-            headerRow.appendChild(capitalHeader);
-        }
-        table.appendChild(headerRow);
-
-        const statesPerRow = 5; // Number of states per row
-        let row;
-
-        Object.entries(capitals).forEach(([state, capital], index) => {
-            if (index % statesPerRow === 0) {
-                row = document.createElement('tr');
-                table.appendChild(row);
-            }
-
-            const stateCell = document.createElement('td');
-            stateCell.textContent = state;
-            const capitalCell = document.createElement('td');
-            capitalCell.textContent = capital;
-
-            const statePaths = document.querySelectorAll(`path[id="${state}"]`);
-            if (statePaths.length > 0 && statePaths[0].style.fill === 'green') {
-                stateCell.style.color = 'green';
-                capitalCell.style.color = 'green';
-            } else {
-                stateCell.style.color = 'red';
-                capitalCell.style.color = 'red';
-            }
-
-            row.appendChild(stateCell);
-            row.appendChild(capitalCell);
-        });
-
-        tableContainer.appendChild(table);
-        document.body.appendChild(tableContainer);
+    // Create header row
+    const headerRow = document.createElement('tr');
+    for (let i = 0; i < 5; i++) { // Adjust the number of columns as needed
+        const stateHeader = document.createElement('th');
+        stateHeader.textContent = 'State';
+        const capitalHeader = document.createElement('th');
+        capitalHeader.textContent = 'Capital';
+        headerRow.appendChild(stateHeader);
+        headerRow.appendChild(capitalHeader);
     }
+    table.appendChild(headerRow);
+
+    const statesPerRow = 5; // Number of states per row
+    let row;
+
+    Object.entries(capitals).forEach(([state, capital], index) => {
+        if (index % statesPerRow === 0) {
+            row = document.createElement('tr');
+            table.appendChild(row);
+        }
+
+        const stateCell = document.createElement('td');
+        stateCell.textContent = state;
+        const capitalCell = document.createElement('td');
+        capitalCell.textContent = capital;
+
+        const statePaths = document.querySelectorAll(`path[id="${state}"]`);
+        if (statePaths.length > 0 && statePaths[0].style.fill === 'green') {
+            stateCell.style.color = 'green';
+            capitalCell.style.color = 'green';
+        } else {
+            stateCell.style.color = 'red';
+            capitalCell.style.color = 'red';
+        }
+
+        row.appendChild(stateCell);
+        row.appendChild(capitalCell);
+    });
+
+    tableContainer.appendChild(table);
+}
     function endGame() {
         clearInterval(timerInterval); // Stop the timer
         document.getElementById('capitalInput').disabled = true;
