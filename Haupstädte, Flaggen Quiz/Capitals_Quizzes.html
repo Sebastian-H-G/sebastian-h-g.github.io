@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="theme-color">
+    <title>Capital Quizzes</title>
+    <!-- Include Swiper's CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+	<link rel="stylesheet" href="styles.css">
+<style>
+/* Styling for the search area */
+.containerSearch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+#searchContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 40%;
+    max-width: 400px;
+}
+
+#searchInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 40px 12px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background-color: #fff;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 0 #d0d0d0;
+}
+
+/* Placeholder text color */
+#searchInput::placeholder {
+    color: black;
+    opacity: 0.7;
+}
+
+/* Focus effect */
+#searchInput:focus {
+    outline: none;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 0 #d0d0d0;
+}
+
+/* Clear button */
+#clearSearch {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: #666;
+    display: none;
+    transition: color 0.2s ease, transform 0.2s ease-in-out;
+}
+
+/* Hover effect on clear button */
+#clearSearch:hover {
+    color: red;
+    cursor: pointer;
+
+}
+
+/* Suggestions dropdown styling */
+#suggestions {
+        border: 1px solid #ccc;
+        max-height: 120px;
+        overflow-y: scroll;
+        position: absolute;
+        background: #fff;
+        margin-top: 5px;
+        border-radius: 12px;
+        width: 100%;
+        z-index: 100;
+        top: 100%;
+        left: 0;
+        overflow: hidden;
+        color: black;
+        display: none; /* Initially hidden */
+    }
+    .suggestion-item {
+        padding: 5px;
+        cursor: pointer;
+    }
+    
+    .dropdown {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+/* When "open", the dropdown expands to show its content */
+.dropdown.open {
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+}
+
+    /* Ensure the matching section is displayed */
+    .force-show {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    /* Ensure the footer is always visible */
+    footer {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    .no-results-message {
+    padding: 10px;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    border-radius: 7px;
+    margin: 2% 20% 0 20%;
+    background-color: red;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    display: none; /* Initially hidden */
+}
+
+.did-you-mean-message {
+    text-align: center;
+    padding: 20px;
+    background-color: rgb(80, 172, 195);
+    padding: 10px;
+    border-radius: 7px;
+    margin: 2% 20% 0 20%;
+    color: white;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 20px;
+    font-weight: bold;
+    display: none; /* Initially hidden */
+}
+</style>
+</head>
+<body class="page-exit">
+
+<header>
+    <div class="logo">
+        <img src="Logos/Capital.webp" alt="Optimized" loading="lazy">
+    </div>
+	
+	 <h1 class="wave-text">All Capital Quizzes</h1>
+
+    <nav>
+        <div class="containerSearch">
+            
+            <div id="searchContainer">
+                <input type="text" id="searchInput" placeholder="The serach function currently doesn't work" autocomplete="on">
+                <button id="clearSearch">&times;</button>
+                <div id="suggestions"></div>
+              </div>
+        </div>
+        
+        <ul>
+            <li><a href="#continents" onclick="openSection(event, 'continents')"><i class="fas fa-city"></i>Continents</a></li>
+            <li><a href="#countries" onclick="openSection(event, 'countries')"><i class="fas fa-flag"></i>Countries</a></li>
+            <li><a href="#other" onclick="openSection(event, 'other')"><i class="fas fa-globe"></i>Other</a></li> 
+	</ul>
+    </nav>
+</header>
+
+
+<main>
+    <!-- Quiz Sections -->
+     <section class="quiz-section-main" data-aos="fade-up">
+        <i class="fa-solid fa-star" id="section-symbol"></i>
+        Favorites
+        <i class="fa-solid fa-star" id="section-symbol"></i>
+     </section>
+    <section id="capital-quiz" class="quiz-section" data-tags="capital, world capitals, capital" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capital Quiz</h2>
+                <p>Test your knowledge of world capitals.</p>
+            </div>
+        </div>
+        <a href="Capitals_Quizzes.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="capital-quiz" class="quiz-section" data-tags="capital, map, world capitals, capitals map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capital Map Quiz</h2>
+                <p>How many capitals can you name? As you answer, the map will fill.</p>
+            </div>
+        </div>
+        <a href="capitals_map.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="capital-quiz" class="quiz-section" data-tags="capital, map, click, world capitals, capitals map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capital Map Click Quiz</h2>
+                <p>Click on the capitals you’re asked to find on the map and see how fast you can go!</p>
+            </div>
+        </div>
+        <a href="capital_click_map.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+
+
+
+    <section style="background-color: rgb(61, 184, 143);" id="continents" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+        <i class="fa-solid fa-globe" style="margin-right: 10px;"></i>
+        Continent Quizzes
+        <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+    </section>
+    <div id="quiz-sections-countries" class="hidden">
+        <section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 0 auto;" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+            <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+            Africa
+            <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+        </section>
+        <div id="quiz-sections-countries" class="hidden">
+            <section id="africa1" class="quiz-section" data-tags="africa, map, africa map" data-aos="fade-up">
+                <div class="quiz-content">
+                    <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
+                    <div>
+                        <h2>Capitals Africa Map Quiz</h2>
+                        <p>How many capitals can you name? As you answer, the map will be filled in.</p>
+                    </div>
+                </div>
+                <a href="africa_capital.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+            </section>
+            <section id="africa2" class="quiz-section" data-tags="africa, map, africa map" data-aos="fade-up">
+                <div class="quiz-content">
+                    <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
+                    <div>
+                        <h2>Capitals Africa Map Click Quiz</h2>
+                        <p>How many capitals do you know? As you answer, the map will be filled in.</p>
+                    </div>
+                </div>
+                <a href="africa_capital.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+            </section>
+            <section id="africa3" class="quiz-section" data-tags="africa, map, africa map" data-aos="fade-up">
+                <div class="quiz-content">
+                    <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
+                    <div>
+                        <h2>Capitals Africa</h2>
+                        <p>Do you know all the capital of Africa?</p>
+                    </div>
+                </div>
+                <a href="africa_capital.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+            </section>
+    </div>
+    <section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 20px auto;" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+        <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+        Asia
+        <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+    </section>
+    <div id="quiz-sections-countries" class="hidden">
+        <section id="asia1" class="quiz-section" data-tags="asia, map, asia map" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Capitals Asia Map Quiz</h2>
+                    <p>How many capitals can you name? As you answer, the map will be filled in.</p>
+                </div>
+            </div>
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="asia2" class="quiz-section" data-tags="asia, map, asia map" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Capitals Asia Map Click Quiz</h2>
+                    <p>How many capitals do you know? As you answer, the map will be filled in.</p>
+                </div>
+            </div>
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="asia3" class="quiz-section" data-tags="asia, map, asia map" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Capitals Asia</h2>
+                    <p>Do you know all the capital of Asia?</p>
+                </div>
+            </div>
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+</div>
+<section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 20px auto;" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+    <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+    Europe
+    <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+</section>
+<div id="quiz-sections-countries" class="hidden">
+    <section id="eruope1" class="quiz-section" data-tags="europe, map, europe map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals Europe Map Quiz</h2>
+                <p>How many capitals can you name? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="europe2" class="quiz-section" data-tags="europe, map, europe map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals Europe Map Click Quiz</h2>
+                <p>How many capitals do you know? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="europe3" class="quiz-section" data-tags="europe, map, europe map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals Europe</h2>
+                <p>Do you know all the capital of Europe?</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+</div>
+<section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 20px auto;" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+    <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+    North America
+    <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+</section>
+<div id="quiz-sections-countries" class="hidden">
+    <section id="north america1" class="quiz-section" data-tags="north america, map, north america map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/namerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals Norht America Map Quiz</h2>
+                <p>How many capitals can you name? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="north america2" class="quiz-section" data-tags="north america, map, north america map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/namerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals North America Map Click Quiz</h2>
+                <p>How many capitals do you know? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="north america3" class="quiz-section" data-tags="north america, map, north america map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/namerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals North Ameria</h2>
+                <p>Do you know all the capital of North America?</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+</div>
+<section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 20px auto;" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+    <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+    South America
+    <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+</section>
+<div id="quiz-sections-countries" class="hidden">
+    <section id="south america1" class="quiz-section" data-tags="south america, map, south america map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals South America Map Quiz</h2>
+                <p>How many capitals can you name? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="south america2" class="quiz-section" data-tags="south america, map, south america map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals South America Map Click Quiz</h2>
+                <p>How many capitals do you know? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="south america3" class="quiz-section" data-tags="south america, map, south america map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals South America</h2>
+                <p>Do you know all the capital of South America?</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+</div>
+<section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 20px auto;" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+    <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+    Oceania
+    <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+</section>
+<div id="quiz-sections-countries" class="hidden">
+    <section id="oceania1" class="quiz-section" data-tags="oceania, map, oceania map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/oceania.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals Oceania Map Quiz</h2>
+                <p>How many capitals can you name? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="oceania2" class="quiz-section" data-tags="oceania, map, oceania map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/oceania.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals Oceania Map Click Quiz</h2>
+                <p>How many capitals do you know? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="oceania3" class="quiz-section" data-tags="oceania, map, oceania map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/oceania.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals Oceania</h2>
+                <p>Do you know all the capital of Oceania?</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+</div>
+    </div>
+
+    <section style="background-color: purple;" id="countries" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+        Countries States Capital Quizzes
+        <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+    </section>
+    <div id="quiz-sections-capitals" class="hidden">   
+        <section id="germany" class="quiz-section" data-tags="germany, deutschland, bundesländer hauptstädte, states capitals, capital, germany states capitals" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/de-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Deutschland Bundesländer Hauptstädte</h2>
+                    <p>Wissen ist Macht: Stell dich dem Deutschland-Quiz und beweis es!</p>
+                </div> 
+            </div>
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="mexico" class="quiz-section" data-tags="mexico, states capitals, capitales estados, capitals de estodo de mexico" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/mx-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Capitales de los Estaods de México </h2>
+                    <p>¡Más allá del sombrero y el tequila! ¿Cuánto sabes de México? Pon a prueba tu pasión por México con nuestro quiz.</p>
+                </div>
+            </div>
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="usa" class="quiz-section" data-tags="us, usa, us states capitals, capitals" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/us-capitals.webp" alt="Optimized" class="quiz-logo">
+                <div>
+                    <h2>USA States Capitals</h2>
+                    <p>Stars, Stripes, and Smarts: Are You a USA Expert? Put Your Knowledge to the Test and Ace This Quiz!</p>
+                </div>
+            </div>
+            <a href="us states capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+</div>
+
+    <div id="quiz-sections-usa" class="hidden">
+    
+    <section id="usa" class="quiz-section" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/us-capitals.webp" alt="Optimized" class="quiz-logo">
+            <div>
+                <h2>USA States Capitals</h2>
+                <p>Stars, Stripes, and Smarts: Are You a USA Expert? Put Your Knowledge to the Test and Ace This Quiz!</p>
+            </div>
+        </div>
+        <a href="us states capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+</div>
+    <div id="quiz-sections-mexico" class="hidden">
+       
+        <section id="mexico" class="quiz-section" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/mx-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Capitales de los Estaods de México </h2>
+                    <p>¡Más allá del sombrero y el tequila! ¿Cuánto sabes de México? Pon a prueba tu pasión por México con nuestro quiz.</p>
+                </div>
+            </div>
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+    </div>
+
+    <section style="background: red;"  
+  class="quiz-section-main" data-aos="fade-up" id="other" onclick="toggleQuizSections(event)">
+    Other Capital Quizzes
+    <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+</section>
+
+<div id="quiz-sections-germany" class="hidden">
+    
+    <section id="memory-quiz" class="quiz-section" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/Memory.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Memory</h2>
+                <p>Test your memory with geography-based challenges.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+</div>
+
+</main>
+<div id="message">
+    <div id="noResultsMessage" class="no-results-message" style="display: none;">No results found.</div>
+    <div id="didYouMeanMessage" class="did-you-mean-message" style="display: none;"><u>Did you mean:</u></div>
+</div>
+<footer class="footer" data-aos="fade-up">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <a href="index.html"><img src="Logos/Capital.webp" alt="Optimized"></a>
+      </div>
+      <div class="footer-info">
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="Terms and Privacy.html" class="halved-shield">
+              <i class="fas fa-shield fa-shield-left"></i>
+              <i class="fas fa-shield fa-shield-right"></i>
+            </a>
+        </div>
+        <div class="footer-copyright">
+          <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleQuizSections(event) {
+        const section = event.currentTarget;
+        const quizSection = section.nextElementSibling;
+        const arrow = section.querySelector('.toggle-arrow');
+    
+        if (quizSection) {
+            quizSection.classList.toggle('hidden');
+            arrow.classList.toggle('rotated');
+    
+            // Store state in localStorage
+            const sectionId = section.getAttribute('id');
+            if (quizSection.classList.contains('hidden')) {
+                localStorage.setItem(`${sectionId}Open`, 'false');
+            } else {
+                localStorage.setItem(`${sectionId}Open`, 'true');
+            }
+    
+            // Handle nested sections
+            const nestedSections = quizSection.querySelectorAll('.quiz-section-main');
+            nestedSections.forEach(nestedSection => {
+                const nestedQuizSection = nestedSection.nextElementSibling;
+                const nestedArrow = nestedSection.querySelector('.toggle-arrow');
+                if (nestedQuizSection && !nestedQuizSection.classList.contains('hidden')) {
+                    nestedQuizSection.classList.add('hidden');
+                    nestedArrow.classList.remove('rotated');
+                    const nestedSectionId = nestedSection.getAttribute('id');
+                    localStorage.setItem(`${nestedSectionId}Open`, 'false');
+                }
+            });
+        }
+    }
+    
+    function openSection(event, sectionId) {
+        event.preventDefault();
+        const section = document.getElementById(sectionId);
+        if (section) {
+            const quizSection = section.nextElementSibling;
+            const arrow = section.querySelector('.toggle-arrow');
+            if (quizSection && quizSection.classList.contains('hidden')) {
+                quizSection.classList.remove('hidden');
+                arrow.classList.add('rotated');
+            }
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        // Restore the state of sections from localStorage
+        const sections = document.querySelectorAll('.quiz-section-main');
+        sections.forEach(section => {
+            const sectionId = section.getAttribute('id');
+            const isOpen = localStorage.getItem(`${sectionId}Open`) === 'true';
+            const quizSection = section.nextElementSibling;
+            const arrow = section.querySelector('.toggle-arrow');
+            if (isOpen && quizSection) {
+                quizSection.classList.remove('hidden');
+                arrow.classList.add('rotated');
+            }
+        });
+    });
+    </script>
+    
+    <script>
+        // Utility: Normalize strings by removing accents, converting to lowercase, and removing special characters and extra whitespace.
+        function normalizeStr(str) {
+            return str.normalize("NFD")
+                      .replace(/[\u0300-\u036f]/g, "") // Remove accents
+                      .replace(/[^a-z0-9\s]/gi, '') // Remove special characters
+                      .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
+                      .trim() // Remove leading and trailing whitespace
+                      .toLowerCase(); // Convert to lowercase
+        }
+    
+        const searchInput = document.getElementById('searchInput');
+        const suggestionsBox = document.getElementById('suggestions');
+        const clearButton = document.getElementById('clearSearch');
+        const sections = Array.from(document.querySelectorAll('section'));
+        const swiper = document.querySelector('.swiper-container');
+        const dropdowns = document.querySelectorAll('.quiz-section-main');
+        const footer = document.querySelector('footer');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        const didYouMeanMessage = document.getElementById('didYouMeanMessage');
+    
+        // 🔹 STEP 1: Assign a unique `data-id` to sections if missing
+        sections.forEach((section, index) => {
+            if (!section.hasAttribute('data-id')) {
+                section.setAttribute('data-id', `section-${index}`);
+            }
+        });
+    
+        // Collect all unique normalized tags from sections.
+        let tagsSet = new Set();
+        sections.forEach(section => {
+            const tags = section.getAttribute('data-tags');
+            if (tags) {
+                tags.split(',').map(t => t.trim()).forEach(tag => {
+                    tagsSet.add(normalizeStr(tag));
+                });
+            }
+        });
+        const allTags = Array.from(tagsSet);
+    
+        // Display suggestions based on current input.
+        function displaySuggestions(value) {
+            suggestionsBox.innerHTML = '';
+            noResultsMessage.style.display = 'none';
+            didYouMeanMessage.style.display = 'none';
+            suggestionsBox.classList.remove('no-hover'); // Remove no-hover class
+            if (!value) {
+                suggestionsBox.style.display = 'none';
+                return;
+            }
+            const normalizedValue = normalizeStr(value);
+            const filteredTags = allTags.filter(tag => tag.includes(normalizedValue));
+            filteredTags.forEach(tag => {
+                const div = document.createElement('div');
+                div.textContent = tag;
+                div.classList.add('suggestion-item');
+                div.addEventListener('click', () => {
+                    searchInput.value = tag;
+                    performSearch(tag);
+                    suggestionsBox.innerHTML = '';
+                    suggestionsBox.style.display = 'none';
+                });
+                suggestionsBox.appendChild(div);
+            });
+            suggestionsBox.style.display = filteredTags.length ? 'block' : 'none';
+        }
+    
+        // 🔹 STEP 2: Perform Search (Remove Duplicates!)
+        function performSearch(query) {
+            const normalizedQuery = normalizeStr(query.trim());
+            if (!normalizedQuery) {
+                // Reset: Show all sections & close dropdowns
+                sections.forEach(section => {
+                    section.style.display = 'block';
+                    section.classList.remove('force-show');
+                    section.setAttribute('data-aos', 'fade-up'); // Add AOS attribute back
+                });
+                dropdowns.forEach(dropdown => {
+                    const quizSection = dropdown.nextElementSibling;
+                    const arrow = dropdown.querySelector('.toggle-arrow');
+                    if (quizSection && !quizSection.classList.contains('hidden')) {
+                        quizSection.classList.add('hidden');
+                        arrow.classList.remove('rotated');
+                    }
+                });
+                footer.style.display = 'block'; // Ensure footer is visible
+                return;
+            }
+    
+            const queryTerms = normalizedQuery.split(/\s+/);
+            const shownIds = new Set(); // Prevent duplicates
+            let found = false;
+    
+            sections.forEach(section => {
+                const tagsAttr = section.getAttribute('data-tags');
+                if (tagsAttr) {
+                    const tagList = tagsAttr.split(',').map(t => normalizeStr(t.trim()));
+    
+                    // Multi-term matching logic
+                    const multiMatch = queryTerms.every(term => tagList.some(tag => tag.includes(term))) ||
+                                        tagList.join('').includes(normalizedQuery);
+    
+                    const sectionId = section.getAttribute('data-id');
+    
+                    if (multiMatch) {
+                        found = true;
+                        // 🔥 STEP 3: Only Show First Occurrence of Each `data-id`
+                        if (!shownIds.has(sectionId)) {
+                            section.style.display = 'block';
+                            section.classList.add('force-show');
+                            swiper.style.display = 'none';
+                            section.removeAttribute('data-aos'); // Remove AOS attribute
+                            shownIds.add(sectionId); // ✅ Prevents duplicate showing
+    
+                            // 🔹 STEP 4: Ensure Parent Dropdowns Are Opened
+                            let parent = section.parentElement;
+                            while (parent) {
+                                if (parent.classList.contains('dropdown')) {
+                                    parent.classList.add('open'); // Expand dropdown
+                                    parent.style.maxHeight = 'none';
+                                    parent.style.overflow = 'visible';
+                                    break;
+                                }
+                                if (parent.classList.contains('hidden')) {
+                                    parent.classList.remove('hidden'); // Ensure hidden sections are visible
+                                }
+                                parent = parent.parentElement;
+                            }
+                        } else {
+                            section.style.display = 'none'; // ✅ Hide Duplicates!
+                        }
+                    } else {
+                        section.style.display = 'none';
+                    }
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+    
+            // Display message if no results found
+            if (!found) {
+                noResultsMessage.style.display = 'block'; // Show "No results found" message
+    
+                // Suggest similar tags
+                const similarTags = allTags.filter(tag => tag.startsWith(normalizedQuery.slice(0, 3)));
+                if (similarTags.length > 0) {
+                    didYouMeanMessage.style.display = 'block'; // Show "Did you mean" message
+                    didYouMeanMessage.innerHTML = 'Did you mean:'; // Clear previous suggestions
+                    suggestionsBox.classList.add('no-hover'); // Add no-hover class
+    
+                    similarTags.forEach(tag => {
+                        const div = document.createElement('div');
+                        div.textContent = tag;
+                        div.classList.add('suggestion-item');
+                        div.addEventListener('click', () => {
+                            searchInput.value = tag;
+                            performSearch(tag);
+                            suggestionsBox.innerHTML = '';
+                            suggestionsBox.style.display = 'none';
+                        });
+                        didYouMeanMessage.appendChild(div);
+                    });
+                }
+                suggestionsBox.style.display = 'block';
+            } else {
+                suggestionsBox.style.display = 'none';
+            }
+    
+            // Ensure footer is visible
+            footer.style.display = 'block';
+        }
+    
+        function clearSearch() {
+            searchInput.value = '';
+            suggestionsBox.innerHTML = '';
+            swiper.style.display = 'block';
+            suggestionsBox.style.display = 'none';
+            noResultsMessage.style.display = 'none';
+            didYouMeanMessage.style.display = 'none';
+            suggestionsBox.classList.remove('no-hover'); // Remove no-hover class
+    
+            sections.forEach(section => {
+                section.style.display = 'block';
+                section.classList.remove('force-show');
+                section.setAttribute('data-aos', 'fade-up'); // Add AOS attribute back
+            });
+    
+            dropdowns.forEach(dropdown => {
+                const quizSection = dropdown.nextElementSibling;
+                const arrow = dropdown.querySelector('.toggle-arrow');
+                if (quizSection && !quizSection.classList.contains('hidden')) {
+                    // Use the toggleQuizSections function to close the dropdown
+                    toggleQuizSections({ currentTarget: dropdown });
+                }
+            });
+    
+            clearButton.style.display = 'none';
+            footer.style.display = 'block'; // Ensure footer is visible
+        }
+    
+        // **Event Listeners**
+        searchInput.addEventListener('input', (e) => {
+            const value = e.target.value;
+            displaySuggestions(value);
+            if (value) {
+                clearButton.style.display = 'block';
+            } else {
+                clearButton.style.display = 'none';
+                clearSearch();
+            }
+        });
+    
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                performSearch(e.target.value);
+                suggestionsBox.innerHTML = '';
+                suggestionsBox.style.display = 'none';
+                swiper.style.display = 'none';
+            }
+        });
+    
+        clearButton.addEventListener('click', clearSearch);
+    </script>
+
+<script src="transitions.js" defer></script>
+
+<script>
+// Select all buttons with the class "quiz-link"
+const buttons = document.querySelectorAll(".quiz-link");
+
+buttons.forEach(button => {
+  // Handle touchstart
+  button.addEventListener("touchstart", () => {
+    button.classList.add("active");  // Add the active class (button pressed down)
+    setTimeout(() => {
+      button.classList.remove("active");  // Automatically remove the class after a short delay
+    }, 100);  // Adjust this time as needed
+  });
+
+  // Handle mousedown (for desktops)
+  button.addEventListener("mousedown", () => {
+    button.classList.add("active");  // Add the active class (button pressed down)
+    setTimeout(() => {
+      button.classList.remove("active");  // Automatically remove the class after a short delay
+    }, 100);  // Adjust this time as needed
+  });
+});
+
+  
+document.addEventListener("DOMContentLoaded", () => {
+    // Wave Animation
+    const waveText = document.querySelector('.wave-text');
+    if (waveText) {
+        // Split text into characters, preserving spaces
+        const text = waveText.textContent;
+        waveText.innerHTML = text.split('').map((letter, index) => 
+            letter === ' ' ? '&nbsp;' : `<span style="animation-delay: ${index * 0.1}s">${letter}</span>`
+        ).join('');
+    }
+
+    // Smooth Scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const target = document.querySelector(this.getAttribute('href'));
+            const offset = 40; // Adjust this value as per your header height
+
+            window.scrollTo({
+                top: target.offsetTop - offset,
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Initialize Swiper
+    const swiper = new Swiper('.swiper-container', {
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
+        effect: 'fade',
+        fadeEffect: {
+            crossFade: true,
+        },
+    });
+
+    // Initialize AOS
+    AOS.init({
+        duration: 800, // Duration of the animation in milliseconds
+        once: false,   // Whether animation should happen only once - while scrolling down
+    });
+});
+
+</script>
+<script data-goatcounter="https://petershaw.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>

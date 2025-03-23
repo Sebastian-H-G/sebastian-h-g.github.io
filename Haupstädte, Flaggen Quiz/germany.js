@@ -8,7 +8,7 @@ const countryMappings = {
     "Hessen": ["Hessen"],
     "Mecklenburg-Vorpommern": ["Mecklenburg-Vorpommern"],
     "Niedersachsen": ["Niedersachsen"],
-    "Nordrhein-Westfalen": ["Nordrhein-Westfalen"],
+    "Nordrhein-Westfalen": ["Nordrhein-Westfalen", "NRW"],
     "Rheinland-Pfalz": ["Rheinland-Pfalz"],
     "Saarland": ["Saarland"],
     "Sachsen": ["Sachsen"],

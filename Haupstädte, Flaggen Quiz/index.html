@@ -193,13 +193,10 @@
             <li><a href="#capital-quiz"><i class="fas fa-city"></i> Capital Quiz</a></li>
             <li><a href="#flag-quiz"><i class="fas fa-flag"></i> Flag Quiz</a></li>
             <li><a href="#worldcountries"><i class="fas fa-globe"></i>World Countries</a></li> 
-
-			</ul> <ul>
- <li><a href="#germany"><div class="flag-de"></div>
-Germany</a></li>
- <li><a href="#mexico"><div class="flag-mx"></div>Mexico</a></li>
- <li><a href="#usa"><i class="fas fa-flag-usa"></i>USA</a></li>
- 
+	</ul> <ul>
+ <li><a href="#desection" onclick="openSection(event, 'desection')"><div class="flag-de"></div>Germany</a></li>
+ <li><a href="#mexsection" onclick="openSection(event, 'mexsection')"><div class="flag-mx"></div>Mexico</a></li>
+ <li><a href="#usasection" onclick="openSection(event, 'usasection')"><i class="fas fa-flag-usa"></i>USA</a></li> 
  <li><a href="#memory-quiz"><i class="fas fa-brain"></i> Memory</a></li>
         </ul>
     </nav>
@@ -294,20 +291,10 @@ Germany</a></li>
             <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
                 <h2>Capital Quiz</h2>
-                <p>Test your knowledge of world capitals.</p>
+                <p>Here you can find all sorts of capital quizzes</p>
             </div>
         </div>
-        <a href="All_Capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="capital-quiz" class="quiz-section" data-tags="capital, map, world capitals, capitals map" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Capital Map Quiz</h2>
-                <p>How many capitals can you name? As you answer, the map will fill.</p>
-            </div>
-        </div>
-        <a href="capitals_map.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        <a href="Capitals_Quizzes.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
     <section id="flag-quiz" class="quiz-section" data-tags="flag, world flags, flags" data-aos="fade-up">
         <div class="quiz-content">
@@ -520,79 +507,13 @@ Germany</a></li>
     </section>
     </div>
 
-    <section style="background-color: purple;" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
-        Capital Quizzes
-        <i class="fa-solid fa-chevron-down toggle-arrow"></i>
-    </section>
-    <div id="quiz-sections-capitals" class="hidden">    <section id="capital-quiz" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Capital Quiz</h2>
-                <p>Test your knowledge of world capitals.</p>
-            </div>
-        </div>
-        <a href="All_Capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="capital-quiz" class="quiz-section" data-tags="capital, map, click, world capitals, capitals map" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Capital Map Click Quiz</h2>
-                <p>Click on the capitals you’re asked to find on the map and see how fast you can go!</p>
-            </div>
-        </div>
-        <a href="capital_click_map.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="capital-quiz" class="quiz-section" data-tags="capital, map, world capitals, capitals map" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/Capital.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Capital Map Quiz</h2>
-                <p>How many capitals can you name? As you answer, the map will fill.</p>
-            </div>
-        </div>
-        <a href="capitals_map.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="germany" class="quiz-section" data-tags="germany, deutschland, bundesländer hauptstädte, states capitals, capital, germany states capitals" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/de-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Deutschland Bundesländer Hauptstädte</h2>
-                <p>Wissen ist Macht: Stell dich dem Deutschland-Quiz und beweis es!</p>
-            </div> 
-        </div>
-        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="mexico" class="quiz-section" data-tags="mexico, states capitals, capitales estados, capitals de estodo de mexico" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/mx-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Capitales de los Estaods de México </h2>
-                <p>¡Más allá del sombrero y el tequila! ¿Cuánto sabes de México? Pon a prueba tu pasión por México con nuestro quiz.</p>
-            </div>
-        </div>
-        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="usa" class="quiz-section" data-tags="us, usa, us states capitals, capitals" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/us-capitals.webp" alt="Optimized" class="quiz-logo">
-            <div>
-                <h2>USA States Capitals</h2>
-                <p>Stars, Stripes, and Smarts: Are You a USA Expert? Put Your Knowledge to the Test and Ace This Quiz!</p>
-            </div>
-        </div>
-        <a href="us states capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-</div>
-
     <section  style="
   background: url('https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg') no-repeat center center;
   background-size: 100% auto;
   background-position: fill;
   color: white;
   text-align: center;
-  "  class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+  "  class="quiz-section-main" data-aos="fade-up" id="usasection" onclick="toggleQuizSections(event) ">
         USA Quizzes
         <i class="fa-solid fa-chevron-down toggle-arrow"></i>
     </section>
@@ -626,7 +547,7 @@ Germany</a></li>
   color: black;
   text-align: center;
   padding: 20px;
-" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+" class="quiz-section-main" id="mexsection" data-aos="fade-up" onclick="toggleQuizSections(event)">
     Mexico Quizzes
     <i class="fa-solid fa-chevron-down toggle-arrow"></i>
 </section>
@@ -656,7 +577,7 @@ Germany</a></li>
     </div>
 
     <section style="background: linear-gradient(to bottom, black 33.33%, red 33.33%, red 66.66%, gold 66.66%);"  
-  class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+  class="quiz-section-main" data-aos="fade-up" id="desection" onclick="toggleQuizSections(event)">
     Germany Quizzes
     <i class="fa-solid fa-chevron-down toggle-arrow"></i>
 </section>
@@ -973,6 +894,23 @@ Germany</a></li>
             }
         }
     }
+function openSection(event, sectionId) {
+    event.preventDefault();
+    console.log('openSection called with sectionId:', sectionId); // Debug log
+    const section = document.getElementById(sectionId);
+    console.log('section:', section); // Debug log
+    if (section) {
+        const quizSection = section.nextElementSibling;
+        console.log('quizSection:', quizSection); // Debug log
+        const arrow = section.querySelector('.toggle-arrow');
+        console.log('arrow:', arrow); // Debug log
+        if (quizSection && quizSection.classList.contains('hidden')) {
+            quizSection.classList.remove('hidden');
+            arrow.classList.add('rotated');
+        }
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
+}
     </script>
   <script>
     // Utility: Normalize strings by removing accents, converting to lowercase, and removing special characters and extra whitespace.

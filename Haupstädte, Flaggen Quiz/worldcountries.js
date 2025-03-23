@@ -14,7 +14,7 @@ const countryMappings = {
     "Aruba": ["Aruba"],
     "Aland Islands": ["Ålandinseln"],
     "Azerbaijan": ["Aserbaidschan"],
-    "Bosnia and Herzegovina": ["Bosnien und Herzegowina"],
+    "Bosnia and Herzegovina": ["Bosnien und Herzegowina", "Bosnien Herzegowina", "Bosnia Herzegovina" ],
     "Barbados": ["Barbados"],
     "Bangladesh": ["Bangladesch"],
     "Belgium": ["Belgien"],
