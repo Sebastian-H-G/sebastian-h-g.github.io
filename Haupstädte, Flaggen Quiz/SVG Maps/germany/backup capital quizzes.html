@@ -14,19 +14,6 @@
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 	<link rel="stylesheet" href="styles.css">
-	
-	<link rel="icon" href="Logos/Geography.ico" type="image/x-icon">
-<link rel="icon" href="Logos/Geography-16x16.webp" sizes="16x16" type="image/webp">
-<link rel="icon" href="Logos/Geography-32x32.webp" sizes="32x32" type="image/webp">
-<link rel="icon" href="Logos/Geography-48x48.webp" sizes="48x48" type="image/webp">
-
-<!-- Apple Touch Icons -->
-<link rel="apple-touch-icon" href="Logos/Geography.webp">
-<link rel="apple-touch-icon" sizes="57x57" href="Logos/Geography-57x57.webp">
-<link rel="apple-touch-icon" sizes="72x72" href="Logos/Geography-72x72.webp">
-<link rel="apple-touch-icon" sizes="114x114" href="Logos/Geography-114x114.webp">
-<link rel="apple-touch-icon" sizes="152x152" href="Logos/Geography-152x152.webp">
-<link rel="apple-touch-icon" sizes="180x180" href="Logos/Geography-180x180.webp">
 <style>
 /* Styling for the search area */
 .containerSearch {
@@ -177,13 +164,13 @@
         <img src="Logos/Capital.webp" alt="Optimized" loading="lazy">
     </div>
 	
-	 <h1 class="wave-text">Capital Quizzes</h1>
+	 <h1 class="wave-text">All Capital Quizzes</h1>
 
     <nav>
         <div class="containerSearch">
             
             <div id="searchContainer">
-                <input type="text" id="searchInput" placeholder="Search for a Capital Quiz..." autocomplete="on">
+                <input type="text" id="searchInput" placeholder="Search for a capital quiz..." autocomplete="on">
                 <button id="clearSearch">&times;</button>
                 <div id="suggestions"></div>
               </div>
@@ -193,7 +180,7 @@
             <li><a href="#continents" onclick="openSection(event, 'continents')"><i class="fas fa-city"></i>Continents</a></li>
             <li><a href="#countries" onclick="openSection(event, 'countries')"><i class="fas fa-flag"></i>Countries</a></li>
             <li><a href="#other" onclick="openSection(event, 'other')"><i class="fas fa-globe"></i>Other</a></li> 
-	    </ul> 
+	</ul>
     </nav>
 </header>
 
@@ -238,133 +225,278 @@
 
 
 
-    <section style="background-color: rgb(61, 184, 143);" class="quiz-section-main" id="continents" data-aos="fade-up" onclick="toggleQuizSections(event)">
+    <section style="background-color: rgb(61, 184, 143);" id="continents" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
         <i class="fa-solid fa-globe" style="margin-right: 10px;"></i>
-        Continents
+        Continent Quizzes
         <i class="fa-solid fa-chevron-down toggle-arrow"></i>
     </section>
-    <div id="quiz-sections-capitals" class="hidden">
-    <section id="africa" class="quiz-section" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Capitals of Africa</h2>
-                <p>How many capitals can you name? As you answer, the map will be filled in.</p>
-            </div>
-        </div>
-        <a href="africa.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    <div id="quiz-sections-countries" class="hidden">
+        <section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 0 auto;" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+            <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+            Africa
+        </section>
+            <section id="africa1" class="quiz-section" data-tags="africa, map, africa map" data-aos="fade-up">
+                <div class="quiz-content">
+                    <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
+                    <div>
+                        <h2>Capitals Africa Map Quiz</h2>
+                        <p>How many capitals can you name? As you answer, the map will be filled in.</p>
+                    </div>
+                </div>
+                <a href="africa_capital.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+            </section>
+            <section id="africa2" class="quiz-section" data-tags="africa, map, africa map" data-aos="fade-up">
+                <div class="quiz-content">
+                    <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
+                    <div>
+                        <h2>Capitals Africa Map Click Quiz</h2>
+                        <p>How many capitals do you know? As you answer, the map will be filled in.</p>
+                    </div>
+                </div>
+                <a href="africa_capital.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+            </section>
+            <section id="africa3" class="quiz-section" data-tags="africa, map, africa map" data-aos="fade-up">
+                <div class="quiz-content">
+                    <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
+                    <div>
+                        <h2>Capitals Africa</h2>
+                        <p>Do you know all the capital of Africa?</p>
+                    </div>
+                </div>
+                <a href="africa_capital.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+            </section>
+    <section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 20px auto;" class="quiz-section-main" data-aos="fade-up" >
+        <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+        Asia
     </section>
-    <section id="europe" class="quiz-section" data-aos="fade-up">
+        <section id="asia1" class="quiz-section" data-tags="asia, map, asia map" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Capitals Asia Map Quiz</h2>
+                    <p>How many capitals can you name? As you answer, the map will be filled in.</p>
+                </div>
+            </div>
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="asia2" class="quiz-section" data-tags="asia, map, asia map" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Capitals Asia Map Click Quiz</h2>
+                    <p>How many capitals do you know? As you answer, the map will be filled in.</p>
+                </div>
+            </div>
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="asia3" class="quiz-section" data-tags="asia, map, asia map" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Capitals Asia</h2>
+                    <p>Do you know all the capital of Asia?</p>
+                </div>
+            </div>
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+<section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 20px auto;" class="quiz-section-main" data-aos="fade-up">
+    <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+    Europe
+</section>
+    <section id="eruope1" class="quiz-section" data-tags="europe, map, europe map" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
-                <h2>Capitals of Europe</h2>
+                <h2>Capitals Europe Map Quiz</h2>
                 <p>How many capitals can you name? As you answer, the map will be filled in.</p>
             </div>
         </div>
-        <a href="europe.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="asia" class="quiz-section" data-aos="fade-up">
+    <section id="europe2" class="quiz-section" data-tags="europe, map, europe map" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="Logos/asia.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
-                <h2>Capitals of Asia</h2>
-                <p>How many capitals can you name? As you answer, the map will be filled in.</p>
+                <h2>Capitals Europe Map Click Quiz</h2>
+                <p>How many capitals do you know? As you answer, the map will be filled in.</p>
             </div>
         </div>
-        <a href="asia.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="south-america" class="quiz-section" data-aos="fade-up">
+    <section id="europe3" class="quiz-section" data-tags="europe, map, europe map" data-aos="fade-up">
         <div class="quiz-content">
-            <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <img src="Logos/europe.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
-                <h2>Capitals of South America</h2>
-                <p>How many capitals can you name? As you answer, the map will be filled in.</p>
+                <h2>Capitals Europe</h2>
+                <p>Do you know all the capital of Europe?</p>
             </div>
         </div>
-        <a href="southamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="north-america" class="quiz-section" data-aos="fade-up">
+<section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 20px auto;" class="quiz-section-main" data-aos="fade-up" >
+    <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+    North America
+</section>
+    <section id="north america1" class="quiz-section" data-tags="north america, map, north america map" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/namerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
-                <h2>Capitals of North America</h2>
+                <h2>Capitals Norht America Map Quiz</h2>
                 <p>How many capitals can you name? As you answer, the map will be filled in.</p>
             </div>
         </div>
-        <a href="northamerica.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="oceania" class="quiz-section" data-aos="fade-up">
+    <section id="north america2" class="quiz-section" data-tags="north america, map, north america map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/namerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals North America Map Click Quiz</h2>
+                <p>How many capitals do you know? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="north america3" class="quiz-section" data-tags="north america, map, north america map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/namerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals North Ameria</h2>
+                <p>Do you know all the capital of North America?</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+<section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 20px auto;" class="quiz-section-main" data-aos="fade-up" >
+    <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+    South America
+</section>
+    <section id="south america1" class="quiz-section" data-tags="south america, map, south america map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals South America Map Quiz</h2>
+                <p>How many capitals can you name? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="south america2" class="quiz-section" data-tags="south america, map, south america map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals South America Map Click Quiz</h2>
+                <p>How many capitals do you know? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="south america3" class="quiz-section" data-tags="south america, map, south america map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/samerica.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals South America</h2>
+                <p>Do you know all the capital of South America?</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+<section style="background-color: rgb(61, 184, 143); padding: 10px; width: 50%; margin: 20px auto;" class="quiz-section-main" data-aos="fade-up">
+    <i class="fa-solid fa-globe" style="margin-right: 20px;"></i>
+    Oceania
+</section>
+    <section id="oceania1" class="quiz-section" data-tags="oceania, map, oceania map" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/oceania.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
-                <h2>Capitals of Oceania</h2>
+                <h2>Capitals Oceania Map Quiz</h2>
                 <p>How many capitals can you name? As you answer, the map will be filled in.</p>
             </div>
         </div>
-        <a href="oceania.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="oceania2" class="quiz-section" data-tags="oceania, map, oceania map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/oceania.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals Oceania Map Click Quiz</h2>
+                <p>How many capitals do you know? As you answer, the map will be filled in.</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
+    <section id="oceania3" class="quiz-section" data-tags="oceania, map, oceania map" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/oceania.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>Capitals Oceania</h2>
+                <p>Do you know all the capital of Oceania?</p>
+            </div>
+        </div>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
     </div>
 
-
-
-
-
-
-    <section  style="
-  background: red;
-  "  class="quiz-section-main" data-aos="fade-up" id="countries" onclick="toggleQuizSections(event)">
-        Countries
+    <section style="background-color: purple;" id="countries" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+        Countries States Capital Quizzes
         <i class="fa-solid fa-chevron-down toggle-arrow"></i>
     </section>
-    <div id="quiz-sections-usa" class="hidden">
-    
-    <section id="usa" class="quiz-section" data-tags="us, usa, us states capitals, capitals" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/us-capitals.webp" alt="Optimized" class="quiz-logo">
-            <div>
-                <h2>USA States Capitals</h2>
-                <p>Stars, Stripes, and Smarts: Are You a USA Expert? Put Your Knowledge to the Test and Ace This Quiz!</p>
+    <div id="quiz-sections-capitals" class="hidden">   
+        <section id="germany" class="quiz-section" data-tags="germany, deutschland, bundesländer hauptstädte, states capitals, capital, germany states capitals" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/de-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Deutschland Bundesländer Hauptstädte</h2>
+                    <p>Wissen ist Macht: Stell dich dem Deutschland-Quiz und beweis es!</p>
+                </div> 
             </div>
-        </div>
-        <a href="us states capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="mexico" class="quiz-section" data-tags="mexico, states capitals, capitales estados, capitales de los estados de mexico" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/mx-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Capitales de los Estaods de México </h2>
-                <p>¡Más allá del sombrero y el tequila! ¿Cuánto sabes de México? Pon a prueba tu pasión por México con nuestro quiz.</p>
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="mexico" class="quiz-section" data-tags="mexico, states capitals, capitales estados, capitales de los estados de mexico" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/mx-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Capitales de los Estaods de México </h2>
+                    <p>¡Más allá del sombrero y el tequila! ¿Cuánto sabes de México? Pon a prueba tu pasión por México con nuestro quiz.</p>
+                </div>
             </div>
-        </div>
-        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-    <section id="germany" class="quiz-section" data-tags="germany, deutschland, bundesländer hauptstädte, states capitals, capital, germany states capitals" data-aos="fade-up">
-        <div class="quiz-content">
-            <img src="Logos/de-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
-            <div>
-                <h2>Deutschland Bundesländer Hauptstädte</h2>
-                <p>Wissen ist Macht: Stell dich dem Deutschland-Quiz und beweis es!</p>
-            </div> 
-        </div>
-        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-    </section>
-
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+        <section id="usa" class="quiz-section" data-tags="us, usa, us states capitals, capitals" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/us-capitals.webp" alt="Optimized" class="quiz-logo">
+                <div>
+                    <h2>USA States Capitals</h2>
+                    <p>Stars, Stripes, and Smarts: Are You a USA Expert? Put Your Knowledge to the Test and Ace This Quiz!</p>
+                </div>
+            </div>
+            <a href="us states capitals.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
 </div>
 
+    <div id="quiz-sections-mexico" class="hidden">
+       
+        <section id="mexico" class="quiz-section" data-aos="fade-up">
+            <div class="quiz-content">
+                <img src="Logos/mx-capitals.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+                <div>
+                    <h2>Capitales de los Estaods de México </h2>
+                    <p>¡Más allá del sombrero y el tequila! ¿Cuánto sabes de México? Pon a prueba tu pasión por México con nuestro quiz.</p>
+                </div>
+            </div>
+            <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
+    </div>
 
-   
+    <section style="background: red;"  
+  class="quiz-section-main" data-aos="fade-up" id="other" onclick="toggleQuizSections(event)">
+    Other Capital Quizzes
+    <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+</section>
 
-
-    <section class="quiz-section-main" data-aos="fade-up" id="other" onclick="toggleQuizSections(event)">
-       Other
-        <i class="fa-solid fa-chevron-down toggle-arrow"></i>
-    </section>
-
-
-    <div id="quiz-sections-all" class="hidden">
+<div id="quiz-sections-germany" class="hidden">
     
-	<section id="memory-quiz" class="quiz-section" data-aos="fade-up">
+    <section id="memory-quiz" class="quiz-section" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/Memory.webp" alt="Optimized" class="quiz-logo" loading="lazy">
             <div>
@@ -372,7 +504,7 @@
                 <p>Test your memory with geography-based challenges.</p>
             </div>
         </div>
-        <a href="Memory.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        <a href="inprogress.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
 </div>
 
@@ -384,7 +516,7 @@
 <footer class="footer" data-aos="fade-up">
     <div class="footer-container">
       <div class="footer-logo">
-        <a href="../index.html"><img src="Logos/Capital.webp" alt="Optimized"></a>
+        <a href="index.html"><img src="Logos/Capital.webp" alt="Optimized"></a>
       </div>
       <div class="footer-info">
         <div class="footer-social">
@@ -403,6 +535,7 @@
       </div>
     </div>
   </footer>
+
   <script>
     function toggleQuizSections(event) {
         const section = event.currentTarget;
@@ -421,7 +554,7 @@
             }
         }
     }
-    function openSection(event, sectionId) {
+function openSection(event, sectionId) {
     event.preventDefault();
     console.log('openSection called with sectionId:', sectionId); // Debug log
     const section = document.getElementById(sectionId);
@@ -454,6 +587,7 @@
     const suggestionsBox = document.getElementById('suggestions');
     const clearButton = document.getElementById('clearSearch');
     const sections = Array.from(document.querySelectorAll('section'));
+    const swiper = document.querySelector('.swiper-container');
     const dropdowns = document.querySelectorAll('.quiz-section-main');
     const footer = document.querySelector('footer');
     const noResultsMessage = document.getElementById('noResultsMessage');
@@ -548,6 +682,7 @@
                     if (!shownIds.has(sectionId)) {
                         section.style.display = 'block';
                         section.classList.add('force-show');
+			swiper.style.display = 'none';
                         section.removeAttribute('data-aos'); // Remove AOS attribute
                         shownIds.add(sectionId); // ✅ Prevents duplicate showing
 
@@ -612,6 +747,7 @@
     function clearSearch() {
     searchInput.value = '';
     suggestionsBox.innerHTML = '';
+    swiper.style.display = 'block';
     suggestionsBox.style.display = 'none';
     noResultsMessage.style.display = 'none';
     didYouMeanMessage.style.display = 'none';
@@ -653,6 +789,7 @@
             performSearch(e.target.value);
             suggestionsBox.innerHTML = '';
             suggestionsBox.style.display = 'none';
+            swiper.style.display = 'none';
         }
     });
 
@@ -707,6 +844,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 behavior: 'smooth'
             });
         });
+    });
+
+    // Initialize Swiper
+    const swiper = new Swiper('.swiper-container', {
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
+        effect: 'fade',
+        fadeEffect: {
+            crossFade: true,
+        },
     });
 
     // Initialize AOS
