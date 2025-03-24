@@ -195,10 +195,10 @@
             <li><a href="#worldcountries"><i class="fas fa-globe"></i>World Countries</a></li> 
 
 			</ul> <ul>
- <li><a href="#germany"><div class="flag-de"></div>
+ <li><a href="#ger-section" onclick="openSection(event, 'ger-section')"><div class="flag-de"></div>
 Germany</a></li>
- <li><a href="#mexico"><div class="flag-mx"></div>Mexico</a></li>
- <li><a href="#usa"><i class="fas fa-flag-usa"></i>USA</a></li>
+ <li><a href="#mex-section" onclick="openSection(event, 'mex-section')"><div class="flag-mx"></div>Mexico</a></li>
+ <li><a href="#us-section" onclick="openSection(event, 'us-section')"><i class="fas fa-flag-usa"></i>USA</a></li>
  
  <li><a href="#memory-quiz"><i class="fas fa-brain"></i> Memory</a></li>
         </ul>
@@ -319,6 +319,16 @@ Germany</a></li>
         </div>
         <a href="worldcountries.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
+    <section id="worldcountries_by_border" class="quiz-section" data-tags="world countries, borders, border, 90 seconds, map, world, countries" data-aos="fade-up">
+        <div class="quiz-content">
+            <img src="Logos/worldcountries2.webp" alt="Optimized" class="quiz-logo" loading="lazy">
+            <div>
+                <h2>World Countries by Borders</h2>
+                <p>When you guess a country, all the countries it borders will also be completed. Can you fill in the world map in just 90 seconds?</p>
+            </div>
+        </div>
+        <a href="worldcountries.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+    </section>
     <section id="africa" class="quiz-section" data-tags="africa, map, africa countries, countries" data-aos="fade-up">
         <div class="quiz-content">
             <img src="Logos/africa.png" alt="Optimized" class="quiz-logo" loading="lazy">
@@ -432,7 +442,7 @@ Germany</a></li>
 
 
 
-    <section style="background-color: rgb(61, 184, 143);" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+    <section style="background-color: rgb(61, 184, 143);" id="continent-section" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
         <i class="fa-solid fa-globe" style="margin-right: 10px;"></i>
         Continents Quizzes
         <i class="fa-solid fa-chevron-down toggle-arrow"></i>
@@ -518,7 +528,7 @@ Germany</a></li>
   background-position: fill;
   color: white;
   text-align: center;
-  "  class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+  "  class="quiz-section-main" data-aos="fade-up" id="us-section" onclick="toggleQuizSections(event)">
         USA Quizzes
         <i class="fa-solid fa-chevron-down toggle-arrow"></i>
     </section>
@@ -552,7 +562,7 @@ Germany</a></li>
   color: black;
   text-align: center;
   padding: 20px;
-" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+" class="quiz-section-main" id="mex-section" data-aos="fade-up" onclick="toggleQuizSections(event)">
     Mexico Quizzes
     <i class="fa-solid fa-chevron-down toggle-arrow"></i>
 </section>
@@ -582,7 +592,7 @@ Germany</a></li>
     </div>
 
     <section style="background: linear-gradient(to bottom, black 33.33%, red 33.33%, red 66.66%, gold 66.66%);"  
-  class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+  class="quiz-section-main" id="ger-section" data-aos="fade-up" onclick="toggleQuizSections(event)">
     Germany Quizzes
     <i class="fa-solid fa-chevron-down toggle-arrow"></i>
 </section>
@@ -612,7 +622,7 @@ Germany</a></li>
 </div>
 
 
-    <section class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
+    <section id="all-section" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
         All Quizzes
         <i class="fa-solid fa-chevron-down toggle-arrow"></i>
     </section>
@@ -899,6 +909,23 @@ Germany</a></li>
             }
         }
     }
+    function openSection(event, sectionId) {
+    event.preventDefault();
+    console.log('openSection called with sectionId:', sectionId); // Debug log
+    const section = document.getElementById(sectionId);
+    console.log('section:', section); // Debug log
+    if (section) {
+        const quizSection = section.nextElementSibling;
+        console.log('quizSection:', quizSection); // Debug log
+        const arrow = section.querySelector('.toggle-arrow');
+        console.log('arrow:', arrow); // Debug log
+        if (quizSection && quizSection.classList.contains('hidden')) {
+            quizSection.classList.remove('hidden');
+            arrow.classList.add('rotated');
+        }
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
+}   
     </script>
   <script>
     // Utility: Normalize strings by removing accents, converting to lowercase, and removing special characters and extra whitespace.

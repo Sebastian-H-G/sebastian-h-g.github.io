@@ -92,7 +92,12 @@ svg {
 .not-guessed {
   fill: red!important;
 }
-
+.grey {
+  fill: grey!important;
+}
+.oceania {
+  fill: grey!important;
+}
   /* General styles for the map container */
   #map-container {
     width: 90%;
@@ -179,6 +184,27 @@ svg {
   transition: all 0.2s ease-in-out;
 }
 
+#easy-btn {
+  width: 100px; /* Slightly wider to accommodate text */
+  height: 40px;
+  position: absolute;
+  right: 0;
+  margin: 5px 15px 15px 15px;
+  user-select: none;
+  top: 60px;
+  background-color: #68e068; /* Red theme */
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  box-shadow:  0 5px 0 #479447; /* Simulates "pressed" effect */
+  text-align: center;
+  line-height: 40px; /* Centers text vertically */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
 
 #resize {
   width: 100px; /* Slightly wider to accommodate text */
@@ -228,6 +254,11 @@ svg {
 
 #giveUpButton:active {
   box-shadow: 0 3px 0 #a72a2a; /* Simulates "pressed" effect */
+  transform: scale(0.98); /* Slightly shrinks */
+}
+
+#easy-btn:active {
+  box-shadow: 0 3px 0 #479447; /* Simulates "pressed" effect */
   transform: scale(0.98); /* Slightly shrinks */
 }
 
