@@ -240,8 +240,8 @@ const countries = [
 
 function createTables() {
     const continents = {
-        africa: ["Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cameroon", "Central African Republic", "Chad", "Democratic Republic of the Congo", "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Ivory Coast", "Kenya", "Lesotho", "Liberia", "Libya", "Malawi", "Mali", "Mauritania", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Republic of the Congo", "Rwanda", "São Tomé and Príncipe", "Senegal", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe"],
-        asia: ["Afghanistan", "Armenia", "Azerbaijan", "Bangladesh", "Bhutan", "Brunei", "Cambodia", "China",  "Timor - Leste", "Georgia", "India", "Indonesia", "Iran", "Iraq", "Israel", "Jordan", "Kazakhstan", "Kuwait", "Kyrgyzstan", "Laos", "Lebanon", "Malaysia", "Mongolia", "Myanmar", "Nepal", "North Korea", "Oman", "Pakistan", "Qatar", "Saudi Arabia", "South Korea", "Syria", "Tajikistan", "Thailand", "Turkey", "Turkmenistan", "United Arab Emirates", "Uzbekistan", "Vietnam", "Yemen"],
+        africa: ["Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cameroon", "Central African Republic", "Chad", "Democratic Republic of the Congo", "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Ivory Coast", "Kenya", "Lesotho", "Liberia", "Libya", "Malawi", "Mali", "Mauritania", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Republic of the Congo", "Rwanda", "Senegal", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe"],
+        asia: ["Afghanistan", "Armenia", "Azerbaijan", "Bangladesh", "Bhutan", "Brunei", "Cambodia", "China",  "Timor-Leste", "Georgia", "India", "Indonesia", "Iran", "Iraq", "Israel", "Jordan", "Kazakhstan", "Kuwait", "Kyrgyzstan", "Laos", "Lebanon", "Malaysia", "Mongolia", "Myanmar", "Nepal", "North Korea", "Oman", "Pakistan", "Qatar", "Saudi Arabia", "South Korea", "Syria", "Tajikistan", "Thailand", "Turkey", "Turkmenistan", "United Arab Emirates", "Uzbekistan", "Vietnam", "Yemen"],
         europe: ["Albania", "Andorra", "Austria", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Ireland", "Italy", "Kosovo", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Moldova", "Monaco", "Montenegro", "Netherlands", "Macedonia", "Norway", "Poland", "Portugal", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom", "Vatican City"],
         northAmerica: [ "Belize", "Canada", "Costa Rica", "Dominican Republic", "El Salvador", "Guatemala", "Haiti", "Honduras", "Mexico", "Nicaragua", "Panama", "United States"],
         southAmerica: ["Argentina", "Bolivia", "Brazil", "Chile", "Colombia", "Ecuador", "Guyana", "Paraguay", "Peru", "Suriname", "Uruguay", "Venezuela"],
@@ -268,13 +268,18 @@ function createTables() {
             const cell = document.createElement('td');
             cell.textContent = country;
             const normalizedCountry = normalizeCountryName(country);
-            if (!correctCountries.includes(normalizedCountry)) {
+        
+            // Check if the country is in the correctCountriesSet
+            if (!correctCountriesSet.has(country)) {
                 cell.classList.add('missed');
+            } else {
+                cell.classList.add('correct'); // Mark guessed countries as 'correct'
             }
+        
             row.appendChild(cell);
             table.appendChild(row);
         });
-
+        
         container.appendChild(table);
     });
 
@@ -286,22 +291,26 @@ function createTables() {
         const caption = document.createElement('caption');
         caption.textContent = continent;
         table.appendChild(caption);
-
+    
         countries.sort().forEach(country => {
             const row = document.createElement('tr');
             const cell = document.createElement('td');
             cell.textContent = country;
             const normalizedCountry = normalizeCountryName(country);
-            if (!correctCountries.includes(normalizedCountry)) {
+    
+            // Check if the country is in the correctCountriesSet
+            if (!correctCountriesSet.has(country)) {
                 cell.classList.add('missed');
+            } else {
+                cell.classList.add('correct'); // Mark guessed countries as 'correct'
             }
+    
             row.appendChild(cell);
             table.appendChild(row);
         });
-
+    
         container.appendChild(table);
     });
-
     document.body.appendChild(container);
     const footer = document.querySelector('footer');
     document.body.insertBefore(container, footer);
@@ -328,13 +337,13 @@ countryInput.addEventListener('input', (e) => {
 // Add a mapping of countries to their neighboring countries
 const neighboringCountries = {
     // Europa (41 Länder)
-    "Albania": ["Montenegro", "Kosovo", "North Macedonia", "Greece"],
+    "Albania": ["Montenegro", "Kosovo", "Macedonia", "Greece"],
     "Andorra": ["France", "Spain"],
     "Austria": ["Germany", "Czech Republic", "Slovakia", "Hungary", "Slovenia", "Italy", "Switzerland", "Liechtenstein"],
     "Belarus": ["Latvia", "Lithuania", "Poland", "Russia", "Ukraine"],
     "Belgium": ["France", "Luxembourg", "Germany", "Netherlands"],
     "Bosnia and Herzegovina": ["Croatia", "Serbia", "Montenegro"],
-    "Bulgaria": ["Romania", "Serbia", "North Macedonia", "Greece", "Turkey"],
+    "Bulgaria": ["Romania", "Serbia", "Macedonia", "Greece", "Turkey"],
     "Croatia": ["Slovenia", "Hungary", "Serbia", "Bosnia and Herzegovina", "Montenegro"],
     "Czech Republic": ["Germany", "Poland", "Slovakia", "Austria"],
     "Denmark": ["Germany"],
@@ -342,11 +351,11 @@ const neighboringCountries = {
     "Finland": ["Sweden", "Norway", "Russia"],
     "France": ["Belgium", "Luxembourg", "Germany", "Switzerland", "Italy", "Monaco", "Spain", "Andorra"],
     "Germany": ["Denmark", "Poland", "Czech Republic", "Austria", "Switzerland", "France", "Luxembourg", "Belgium", "Netherlands"],
-    "Greece": ["Albania", "North Macedonia", "Bulgaria", "Turkey"],
+    "Greece": ["Albania", "Macedonia", "Bulgaria", "Turkey"],
     "Hungary": ["Austria", "Slovakia", "Ukraine", "Romania", "Serbia", "Croatia", "Slovenia"],
     "Ireland": ["United Kingdom"],
     "Italy": ["France", "Switzerland", "Austria", "Slovenia", "San Marino", "Vatican City"],
-    "Kosovo": ["Serbia", "Montenegro", "Albania", "North Macedonia"],
+    "Kosovo": ["Serbia", "Montenegro", "Albania", "Macedonia"],
     "Latvia": ["Estonia", "Lithuania", "Russia", "Belarus"],
     "Liechtenstein": ["Switzerland", "Austria"],
     "Lithuania": ["Latvia", "Belarus", "Poland", "Russia"],
@@ -355,14 +364,14 @@ const neighboringCountries = {
     "Monaco": ["France"],
     "Montenegro": ["Croatia", "Bosnia and Herzegovina", "Serbia", "Kosovo", "Albania"],
     "Netherlands": ["Belgium", "Germany"],
-    "North Macedonia": ["Kosovo", "Serbia", "Bulgaria", "Greece", "Albania"],
+    "Macedonia": ["Kosovo", "Serbia", "Bulgaria", "Greece", "Albania"],
     "Norway": ["Sweden", "Finland", "Russia"],
     "Poland": ["Germany", "Czech Republic", "Slovakia", "Ukraine", "Belarus", "Lithuania", "Russia"],
     "Portugal": ["Spain"],
     "Romania": ["Ukraine", "Moldova", "Bulgaria", "Serbia", "Hungary"],
     "Russia": ["Norway", "Finland", "Estonia", "Latvia", "Lithuania", "Poland", "Belarus", "Ukraine", "Georgia", "Azerbaijan", "Kazakhstan", "China", "Mongolia", "North Korea"],
     "San Marino": ["Italy"],
-    "Serbia": ["Hungary", "Romania", "Bulgaria", "North Macedonia", "Kosovo", "Montenegro", "Bosnia and Herzegovina", "Croatia"],
+    "Serbia": ["Hungary", "Romania", "Bulgaria", "Macedonia", "Kosovo", "Montenegro", "Bosnia and Herzegovina", "Croatia"],
     "Slovakia": ["Czech Republic", "Poland", "Ukraine", "Hungary", "Austria"],
     "Slovenia": ["Italy", "Austria", "Hungary", "Croatia"],
     "Spain": ["Portugal", "France", "Andorra"],
@@ -407,7 +416,7 @@ const neighboringCountries = {
     "Syria": ["Turkey", "Iraq", "Jordan", "Israel", "Lebanon"],
     "Tajikistan": ["Afghanistan", "Uzbekistan", "Kyrgyzstan", "China"],
     "Thailand": ["Myanmar", "Laos", "Cambodia", "Malaysia"],
-    "Turkey": ["Greece", "Bulgaria", "Georgia", "Armenia", "Iran", "Iraq", "Syria"],
+    "Turkey": ["Greece", "Bulgaria", "Georgia", "Armenia", "Iran", "Iraq", "Syria", "Azerbaijan"],
     "Turkmenistan": ["Kazakhstan", "Uzbekistan", "Afghanistan", "Iran"],
     "United Arab Emirates": ["Oman", "Saudi Arabia"],
     "Uzbekistan": ["Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Afghanistan"],
@@ -584,9 +593,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function endGame() {
         countries.forEach(country => {
             const normalizedCountryName = normalizeCountryName(country);
-            if (!correctCountries.map(c => normalizeCountryName(c)).includes(normalizedCountryName)) {
-                const originalCountryName = countries.find(c => normalizeCountryName(c) === normalizedCountryName);
-                document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(element => {
+    
+            // Check if the country is in the correctCountriesSet
+            if (correctCountriesSet.has(country)) {
+                // Mark guessed countries as 'correct'
+                document.querySelectorAll(`[title="${country}"]`).forEach(element => {
+                    element.classList.add('correct');
+                });
+            } else {
+                // Mark unguessed countries as 'not-guessed'
+                document.querySelectorAll(`[title="${country}"]`).forEach(element => {
                     element.classList.add('not-guessed');
                 });
             }
@@ -746,4 +762,5 @@ location.reload();
     startCountdown();
 });
 startCountdown();
+
 

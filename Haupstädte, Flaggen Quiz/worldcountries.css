@@ -92,12 +92,7 @@ svg {
 .not-guessed {
   fill: red!important;
 }
-.grey {
-  fill: grey!important;
-}
-.oceania {
-  fill: grey!important;
-}
+
   /* General styles for the map container */
   #map-container {
     width: 90%;
