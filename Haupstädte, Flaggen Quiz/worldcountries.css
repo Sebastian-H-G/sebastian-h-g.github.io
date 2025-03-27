@@ -88,9 +88,11 @@ svg {
 }
 .correct {
   fill: green!important;
+  opacity: 1!important;
 }
 .not-guessed {
   fill: red!important;
+  opacity: 1!important;
 }
 
   /* General styles for the map container */
