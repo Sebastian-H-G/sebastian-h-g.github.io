@@ -1,63 +1,53 @@
-import re
-
-def extract_paths_from_text(input_filename, titles, output_filename):
-    # Read the entire file as text.
-    with open(input_filename, 'r', encoding='utf-8') as f:
-        content = f.read()
-    
-    # Regex to find <path> elements.
-    path_pattern = re.compile(r'<path\b.*?(?:/?>|>.*?</path>)', re.DOTALL | re.IGNORECASE)
-    matches = path_pattern.findall(content)
-    
-    selected_paths = []
-    no_title_count = 0
-    found_titles = set()
-    
-    # Process each matched <path> element.
-    for match in matches:
-        title_match = re.search(r'title\s*=\s*"([^"]+)"', match, re.IGNORECASE)
-        if title_match:
-            title_value = title_match.group(1)
-            # If the title is one of the ones we want, add it.
-            if title_value in titles:
-                selected_paths.append(match)
-                found_titles.add(title_value)
-        else:
-            no_title_count += 1
-    
-    # Report if any <path> elements were encountered without a title attribute.
-    if no_title_count > 0:
-        print(f"Encountered {no_title_count} <path> element(s) without a title attribute.")
-    
-    # Identify and report titles that were not found.
-    missing_titles = [t for t in titles if t not in found_titles]
-    if missing_titles:
-        print("The following title(s) were not found in any <path> element:")
-        for t in missing_titles:
-            print(f" - {t}")
-    
-    if not selected_paths:
-        print("No paths found with the specified title(s).")
+def wrap_paths_in_g(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+    except Exception as e:
+        print(f"Error reading file: {e}")
         return
+    
+    new_lines = []
+    path_buffer = ""
+    inside_path = False
 
-    # Write the extracted paths into a new SVG file, wrapped in a minimal SVG container.
-    svg_header = '<?xml version="1.0" encoding="UTF-8"?>\n' \
-                 '<svg xmlns="http://www.w3.org/2000/svg">\n'
-    svg_footer = '</svg>\n'
-    
-    with open(output_filename, 'w', encoding='utf-8') as f:
-        f.write(svg_header)
-        for path in selected_paths:
-            f.write(path + "\n")
-        f.write(svg_footer)
-    
-    print(f"Extracted {len(selected_paths)} path(s) to {output_filename}")
+    for line in lines:
+        stripped = line.strip()
+        # Accumulate lines for a single <path> tag if the tag is multiline
+        if "<path" in stripped:
+            inside_path = True
+            path_buffer += stripped
+        elif inside_path and "</path>" in stripped:
+            path_buffer += stripped
+            # Now, process the accumulated <path> tag
+            id_start = path_buffer.find('id="')
+            if id_start != -1:
+                id_end = path_buffer.find('"', id_start + 4)
+                if id_end != -1:
+                    path_id = path_buffer[id_start + 4:id_end]
+                    new_lines.append(f'<g id="{path_id}">')
+                    new_lines.append(path_buffer)
+                    new_lines.append('</g>')
+                    print(f"Wrapped path with id: {path_id}")
+                else:
+                    print(f"Malformed id attribute in line: {path_buffer.strip()}")
+                    new_lines.append(path_buffer)
+            else:
+                print(f"No id found in path: {path_buffer.strip()}")
+                new_lines.append(path_buffer)
+            inside_path = False
+            path_buffer = ""
+        else:
+            if not inside_path:
+                new_lines.append(line.rstrip())
+
+    new_svg_content = "\n".join(new_lines) + "\n"
+    try:
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(new_svg_content)
+        print("SVG paths wrapped successfully.")
+    except Exception as e:
+        print(f"Error writing file: {e}")
 
 if __name__ == "__main__":
-    input_filename = input("Enter the input text file containing the SVG: ")
-    titles_input = input("Enter comma-separated titles to extract: ")
-    # Split the input and remove extra whitespace.
-    titles = [t.strip() for t in titles_input.split(",") if t.strip()]
-    output_filename = input("Enter the output file name: ")
-
-    extract_paths_from_text(input_filename, titles, output_filename)
+    file_path = input("Enter the SVG file path: ")
+    wrap_paths_in_g(file_path)
