@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
   box-sizing: border-box; 
@@ -39,7 +40,7 @@ body {
 }   
 h1 {
   font-size: 2.5rem;
-  margin: 30px auto;
+  margin: 20px auto 20px auto;
   padding: 10px;
   text-align: center;
   color: #333;
@@ -109,12 +110,10 @@ svg path.visible {
   padding: 15px;
   margin: 0 0 0 0 ;
   background-color: aquamarine;
-  border-radius: 10px;
+  border-radius: 7px;
   font-size: 20px;
   font-weight: bold;
-  position: absolute;
-  top: 0;
-  left: 0;
+  box-shadow: 0 5px 0 rgba(4, 121, 82, 0.526);
   margin: 20px;
   display: inline-block;
   text-align: center;
@@ -123,10 +122,90 @@ svg path.visible {
   font-size: 18px;
   margin: 20px 0;
 }
+
+.continents {
+	background-color:#9EE0F0;
+font-weight: bold;
+font-size: 16px;
+margin: 20px auto;
+display: inline-block; 
+box-shadow: 0 5px 0 #7EB9D9;
+border-radius: 7px;	
+	padding: 15px;
+}
+#continent-select {
+	padding: 5px;
+	border-radius: 9px;
+	border: none;
+	color: black;
+	font-weight: bold;
+	background-color: #ABC2A7;
+	box-shadow: 0 5px 0 #8A9B81;
+	outline: none;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#continent:focus {
+	outline: none;
+}
+#continent:active {
+	transform: scale(0.98);
+	transform: translateY(5px);
+	box-shadow: 0 3px 0 #8A9B81;
+	outline: none;
+}
+footer {
+  text-align: center;
+  padding: 20px;
+	width: 100vw;
+  background-color: rgb(205, 90, 90);
+
+  position: relative;
+	margin-top: 50px;
+  bottom: 0;
+	left: 0;
+}
+.flexbox-footer img:hover {
+	transform: scale(1.05);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.flexbox-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flexbox-footer img {
+  margin-right: 20px;
+  width: 150px;
+  height: 150px;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+}
+.footer-info {
+  display: flex;
+  color: white;
+  flex-direction: column;
+  align-items: center;
+}
+.footer-social a {
+  margin: 0 10px;
+  color: white;
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
     </style>
 </head>
 <body>
-    <h1>Guess the Country</h1>
+    <h1>Guess the Country by its shape</h1>
     <div id="quiz-container">
         <svg
     id="map"
@@ -179,7 +258,7 @@ svg path.visible {
        <path
             d="m 611.21475,334.1134 0.258,0.217 0.447,0.588 0.637,0.954 0.156,0.27 0.103,0.312 0.089,0.377 0.146,0.333 0.646,0.837 0.279,0.309 0.455,0.398 0.162,0.089 0.212,0.025 0.391,10e-4 0.36,0.156 0.178,0.109 0.184,0.158 0.165,0.183 0.166,0.486 -0.625,-0.16 -0.63,0.025 -0.355,0.104 -0.346,0.143 -0.331,0.201 -0.207,0.391 -0.174,0.902 -0.255,0.841 0.009,0.388 0.111,0.373 -0.013,0.176 -0.116,0.075 -0.146,0.158 -0.195,0.766 -0.097,0.153 -0.125,0.095 -0.034,-0.09 0.008,-0.201 -0.275,-0.177 -0.145,0.199 -0.101,0.421 -0.201,0.441 -0.01,0.084 0.05,1.359 -0.08,-0.006 -0.575,0.138 -0.12,-0.044 -0.492,-0.626 -0.102,-0.069 -0.212,-0.028 -0.125,-0.103 -0.101,-0.168 -0.058,-0.125 -0.509,-0.34 -0.075,-0.125 -0.011,-0.11 0.075,-0.099 0.086,-0.083 0.249,-0.085 0.29,-0.073 0.093,-0.053 0.047,-0.091 -0.003,-0.146 -0.047,-0.144 -0.417,-0.261 -0.046,-0.113 -0.013,-0.138 0.023,-0.145 0.065,-0.113 0.34,-0.154 0.182,-0.16 -0.113,-0.178 -0.367,-0.407 -0.436,-0.448 -0.291,-0.004 -0.335,0.132 -0.536,0.382 -0.296,0.163 -0.387,0.27 -0.421,0.3 -0.345,0.318 -0.215,0.263 -0.382,0.114 -0.195,0.22 -0.641,0.658 -0.18,-0.008 -0.011,-0.327 0.009,-0.259 -0.041,-0.149 -0.208,-0.205 -0.003,-0.088 0.056,-0.055 0.159,0.033 0.205,-0.012 0.098,-0.081 -0.219,-0.27 -0.195,-0.181 -0.165,-0.122 -0.037,-0.073 0,-0.052 0.035,-0.062 0.282,-0.149 0.028,-0.137 -0.019,-0.153 -0.448,-0.226 -0.335,0.083 -0.301,-0.254 -0.193,-0.196 -0.241,-0.211 -0.215,-0.116 -0.207,-0.265 -0.359,-0.273 -0.23,-0.078 0.003,-0.042 0.042,-0.05 0.096,-0.042 0.64,0.011 0.078,-0.049 0.04,-0.118 0.087,-0.174 0.102,-0.256 -0.008,-0.216 -0.643,-0.349 -0.466,-0.322 -0.323,-0.424 -0.219,-0.389 0.008,-0.131 0.063,-0.124 0.5,-0.359 0.034,-0.093 -0.011,-0.063 -0.179,-0.184 -0.224,-0.19 -0.07,-0.14 -0.141,-0.071 -0.268,-0.005 -0.47,-0.234 -0.1,-0.023 -0.022,-0.046 0.023,-0.047 0.335,-0.095 -0.005,-0.078 -0.102,-0.103 -0.189,-0.075 -0.174,-0.187 -0.06,-0.168 0.605,-0.492 0.179,-0.099 0.396,0.091 0.823,0.327 -0.056,0.181 0.083,0.102 0.189,0.138 0.363,0.14 0.307,0.072 0.155,-0.062 0.236,-0.052 0.307,0.162 0.283,0.205 0.141,0.083 0.076,0.025 0.215,-0.068 0.258,-0.264 0.102,-0.319 0.028,-0.154 -0.15,-0.212 -0.31,-0.23 -0.347,-0.202 -0.223,-0.179 -0.143,-0.353 -0.144,-0.039 -0.036,-0.046 -0.024,-0.121 0.006,-0.168 0.049,-0.13 0.141,-0.056 0.142,-0.02 0.128,-0.124 0.161,-0.243 0.068,-0.135 0.302,0.077 0.041,0.218 0.054,0.046 0.125,-0.026 0.208,-0.091 0.166,0.07 0.214,0.259 0.295,0.273 0.16,0.184 0.063,0.126 0.151,0.123 0.221,0.144 0.176,0.226 0.157,0.524 0.159,0.121 0.569,0.199 0.2,0.041 0.559,0.07 0.197,-0.05 0.288,-0.451 0.259,-0.465 0.242,-0.097 0.437,-0.225 0.262,-0.213 0.11,-0.23 0.247,-0.434 0.153,-0.243 z m -8.477,4.567 0.028,-0.122 -0.079,-0.055 -0.083,-0.003 -0.072,0.061 0,0.152 0.1,0.027 0.106,-0.06 z m -1.484,-1.519 -0.061,0.042 -0.093,-0.042 -0.028,-0.094 0.007,-0.099 0.092,-0.023 0.075,0.028 0.021,0.089 -0.013,0.099 z m 3.061,7.839 -0.541,-0.108 -0.973,-0.233 -0.268,-0.12 -0.253,-0.323 -0.151,-0.156 -0.223,-0.2 -0.184,-0.076 -0.139,-0.14 -0.079,-0.207 -0.117,-0.186 -0.2,-0.219 -0.455,-0.745 -0.059,-0.078 -0.095,-0.124 -0.042,-0.069 0.277,-0.057 0.461,-0.167 0.126,0.081 0.135,0.169 0.068,0.145 0.012,0.268 0.055,0.043 0.225,-0.09 0.101,0.108 0.173,0.129 0.3,0.128 0.432,-0.201 0.215,-0.052 0.177,0.004 0.096,0.063 0.034,0.208 -0.035,0.257 -0.05,0.141 0.091,0.102 0.354,0.247 0.147,0.137 -0.071,0.237 0.264,0.579 0.089,0.225 0.103,0.28 z"
             title="Azerbaijan"
-            id="Azerbaijan"  fill="#c0c0c0" stroke="#000" class="europe"/>
+            id="Azerbaijan"  fill="#c0c0c0" stroke="#000" class="asia"/>
        <path
             d="m 522.37775,320.8624 0.58,0.416 0.239,0.062 0.135,-0.057 0.183,0.026 0.408,0.122 0.093,0.051 0.123,-0.009 0.301,-0.162 0.103,0.02 0.344,0.318 0.173,0.004 0.208,-0.137 0.134,-0.119 0.396,0.089 0.226,-0.054 0.188,-0.005 0.204,0.054 0.186,0.074 0.181,0.064 0.489,0.033 0.234,0.202 0.094,0.195 0.002,0.119 0.023,0.127 0.134,0.125 0.295,0.071 0.185,-0.015 0.098,-0.009 0.251,-0.112 0.296,-0.058 0.212,0.067 0.101,0.065 0.023,0.089 -0.063,0.307 -0.119,0.33 -0.193,0.343 -0.202,0.323 -0.052,0.17 -0.015,0.272 -0.025,0.213 0.028,0.116 0.066,0.109 0.223,0.086 0.302,0.214 0.256,0.278 0.329,0.315 0.102,0.117 0,0.126 -0.096,0.093 -0.281,0.036 -0.292,-0.028 -0.112,-0.032 -0.105,0.038 -0.065,0.072 0.035,0.085 0.299,0.382 0.349,0.547 0.019,0.235 -0.042,0.184 -0.081,0.128 -0.144,-0.022 -0.111,-0.1 -0.167,0.007 -0.13,0.028 -0.169,0.198 -0.084,-0.009 -0.145,0.03 -0.091,0.039 -0.145,-0.058 -0.153,-0.038 -0.066,0.061 -0.029,0.116 0.094,0.209 0.177,0.327 -0.028,0.25 -0.135,0.027 -0.124,-0.208 -0.109,-0.034 -0.125,0.008 -0.286,0.241 -0.211,0.203 -0.048,0.141 -0.076,0.154 -0.023,0.112 0.005,0.371 -0.379,0.059 -0.079,0.055 -0.046,0.112 0.031,0.475 0.031,0.255 0.217,0.392 0.008,0.124 -0.031,0.082 -0.155,0.155 -0.073,0.056 -0.049,0.018 -0.252,-0.102 -0.12,-0.049 -0.505,-0.346 -0.223,-0.193 -0.353,-0.252 -0.217,-0.144 -0.11,-0.218 -0.174,-0.05 -0.204,0.07 -0.231,-0.158 0.164,-0.081 0.04,-0.078 -0.021,-0.102 -0.072,-0.138 -0.624,-0.598 -0.307,-0.41 -0.049,-0.147 -0.005,-0.392 -0.072,-0.094 -0.459,-0.179 -0.512,-0.511 -0.53,-0.503 -0.072,-0.14 -0.272,-0.381 -0.333,-0.347 -0.265,-0.222 -0.217,-0.252 -0.241,-0.354 -0.125,-0.535 -0.111,-0.476 -0.075,-0.185 -0.153,-0.066 -0.474,-0.567 -0.403,-0.33 0.004,-0.357 0.066,-0.597 0.075,-0.679 0.097,-0.095 0.184,-0.051 0.21,0.019 0.183,0.085 0.362,0.465 0.207,0.181 0.175,0.07 0.201,-0.196 0.248,-0.411 0.217,-0.217 0.73,0.079 z"
             title="Bosnia and Herzegovina"
@@ -933,12 +1012,40 @@ svg path.visible {
             title="Denmark"
             id="Denmark"  fill="#c0c0c0" stroke="#000" class="north-america"/>
         </svg>
-        <div class="feedback" id="feedback"></div>
-        <div class="options"><div id="options"></div></div>
         
-        <div class="outScoreBoard">Score: <span id="score">0</span></div>
+        <div class="options"><div id="options"></div></div>
+        <!-- Add a select dropdown for continent selection -->
+        <div class="feedback" id="feedback"></div>
+<div class="continents">
+    <label for="continent-select">Choose a continent:</label>
+    <select id="continent-select">
+        <option value="all">Whole World</option>
+        <option value="africa">Africa</option>
+        <option value="asia">Asia</option>
+        <option value="north-america">North America</option>
+        <option value="south-america">South America</option>
+        <option value="europe">Europe</option>
+        <option value="oceania">Oceania</option>
+    </select>
+</div><div class="outScoreBoard">Score: <span id="score">0</span></div>
     </div>
-
+    <canvas id="confettiCanvas"></canvas>
+    <footer>
+      <div class="flexbox-footer"><a href="index.html">
+      <img src="Logos/shape.JPEG" alt="Footer Image"></a>
+      <div class="footer-info">
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+          <div class="footer-copyright">
+              <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+            </div></div>
+          
+          </div>
+  </footer>
     <script>
         const countries = [
  "Albania", "Andorra", "Austria", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kosovo", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "Macedonia", "Norway", "Poland", "Portugal", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom", "Vatican City", "Afghanistan", "Armenia", "Azerbaijan", "Bahrain", "Bangladesh", "Bhutan", "Brunei", "Cambodia", "China", "Cyprus", "Timor-Leste", "Georgia", "India", "Indonesia", "Iran", "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan", "Kuwait", "Kyrgyzstan", "Laos", "Lebanon", "Malaysia", "Maldives", "Mongolia", "Myanmar", "Nepal", "North Korea", "Oman", "Pakistan", "Philippines", "Qatar", "Saudi Arabia", "Singapore", "South Korea", "Sri Lanka", "Syria", "Taiwan", "Tajikistan", "Thailand", "Turkey", "Turkmenistan", "United Arab Emirates", "Uzbekistan", "Vietnam", "Yemen", "Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cameroon", "Cape Verde", "Central African Republic", "Chad", "Comoros", "Democratic Republic of the Congo", "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Ivory Coast", "Kenya", "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Republic of the Congo", "Rwanda", "Sao Tome and Principe", "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe", "Antigua and Barbuda", "Bahamas", "Barbados", "Belize", "Canada", "Costa Rica", "Cuba", "Dominica", "Dominican Republic", "El Salvador", "Grenada", "Guatemala", "Haiti", "Honduras", "Jamaica", "Mexico", "Nicaragua", "Panama", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Trinidad and Tobago", "United States", "Argentina", "Bolivia", "Brazil", "Chile", "Colombia", "Ecuador", "Guyana", "Paraguay", "Peru", "Suriname", "Uruguay", "Venezuela", "Australia", "Federated States of Micronesia", "Fiji", "Kiribati", "Marshall Islands", "Nauru", "New Zealand", "Palau", "Papua New Guinea", "Samoa", "Solomon Islands", "Tonga", "Tuvalu", "Vanuatu"   
@@ -952,9 +1059,32 @@ svg path.visible {
         const feedback = document.getElementById("feedback");
         const scoreSpan = document.getElementById("score");
     
-        function getRandomCountry() {
-            return countries[Math.floor(Math.random() * countries.length)];
-        }
+// Add a variable to store the filtered list of countries
+let filteredCountries = [...countries];
+
+// Add an event listener to the continent select dropdown
+const continentSelect = document.getElementById("continent-select");
+continentSelect.addEventListener("change", () => {
+    const selectedContinent = continentSelect.value;
+
+    // Filter countries based on the selected continent
+    if (selectedContinent === "all") {
+        filteredCountries = [...countries];
+    } else {
+        filteredCountries = countries.filter(country => {
+            const countryPath = document.getElementById(country);
+            return countryPath && countryPath.classList.contains(selectedContinent);
+        });
+    }
+
+    // Restart the quiz with the filtered countries
+    setupQuiz();
+});
+
+// Update the getRandomCountry function to use filteredCountries
+function getRandomCountry() {
+    return filteredCountries[Math.floor(Math.random() * filteredCountries.length)];
+}
     
         function generateOptions(correctCountry) {
             const options = new Set([correctCountry]);
@@ -991,21 +1121,29 @@ svg path.visible {
     }
 }
     
-        function setupQuiz() {
-            currentCountry = getRandomCountry();
-            displayCountry(currentCountry);
-    
-            const options = generateOptions(currentCountry);
-            optionsDiv.innerHTML = "";
-            options.forEach(option => {
-                const button = document.createElement("button");
-                button.textContent = option;
-                button.addEventListener("click", () => checkAnswer(option));
-                optionsDiv.appendChild(button);
-            });
-    
-            feedback.textContent = "";
-        }
+// Update the setupQuiz function to handle cases where no countries are available
+function setupQuiz() {
+    if (filteredCountries.length === 0) {
+        feedback.textContent = "No countries available for the selected continent.";
+        feedback.style.color = "red";
+        optionsDiv.innerHTML = "";
+        return;
+    }
+
+    currentCountry = getRandomCountry();
+    displayCountry(currentCountry);
+
+    const options = generateOptions(currentCountry);
+    optionsDiv.innerHTML = "";
+    options.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.addEventListener("click", () => checkAnswer(option));
+        optionsDiv.appendChild(button);
+    });
+
+    feedback.textContent = "";
+}
     
         function checkAnswer(selectedCountry) {
             if (selectedCountry === currentCountry) {
