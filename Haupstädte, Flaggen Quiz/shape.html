@@ -1145,22 +1145,32 @@ function setupQuiz() {
     feedback.textContent = "";
 }
     
-        function checkAnswer(selectedCountry) {
-            if (selectedCountry === currentCountry) {
-                feedback.textContent = "Correct!";
-                feedback.style.color = "green";
-                document.getElementById(currentCountry).style.fill = "green"; // Change color to green on correct answer
-                score++;
-            } else {
-                feedback.textContent = `Wrong! The correct answer was ${currentCountry}.`;
-                document.getElementById(currentCountry).style.fill = "red";
-                feedback.style.color = "red";
-            }
-            scoreSpan.textContent = score;
-    
-            // Wait 2 seconds before showing the next question
-            setTimeout(setupQuiz, 2000);
+function checkAnswer(selectedCountry) {
+    const countryPath = document.getElementById(currentCountry);
+
+    if (selectedCountry === currentCountry) {
+        feedback.textContent = "Correct!";
+        feedback.style.color = "green";
+        countryPath.style.fill = "green"; // Turn green for correct answer
+        score++;
+    } else {
+        feedback.textContent = `Wrong! The correct answer was ${currentCountry}.`;
+        feedback.style.color = "red";
+        countryPath.style.fill = "red"; // Turn red for incorrect answer
+    }
+
+    scoreSpan.textContent = score;
+
+    // Reset the color back to original after 3 seconds
+    setTimeout(() => {
+        if (countryPath) {
+            countryPath.style.fill = "#c0c0c0"; // Reset to original color
         }
+    }, 3000);
+
+    // Wait 2 seconds before showing the next question
+    setTimeout(setupQuiz, 2000);
+}
     
         // Initialize the quiz
         setupQuiz();

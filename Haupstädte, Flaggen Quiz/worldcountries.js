@@ -247,8 +247,7 @@ const countryMappings = {
     "South Africa": ["Südafrika"],
     "Zambia": ["Sambia"],
     "Zimbabwe": ["Simbabwe"]
-}
-;
+};
 function normalizeCountryName(country) {
     const normalizedCountry = country
         .normalize("NFD")

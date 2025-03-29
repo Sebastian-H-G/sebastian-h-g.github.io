@@ -1,7 +1,7 @@
 const countryMappings = 
 {
     "Australia": ["Australien"],
-    "Federated States of Micronesia": ["Föderierte Staaten von Mikronesien"],
+    "Federated States of Micronesia": ["Föderierte Staaten von Mikronesien", "Micornesia", "Mikronesien"],
     "Fiji": ["Fidschi"],
     "Kiribati": ["Kiribati"],
     "Marshall Islands": ["Marshallinseln"],
