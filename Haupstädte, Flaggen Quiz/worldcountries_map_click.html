@@ -1466,6 +1466,7 @@ function nextQuestion() {
     question.textContent = `Quiz completed! You've answered ${correctAnswersCount} out of ${totalCountries} correctly!`;
     feedback.textContent = "Congratulations! 🎉👏🙂";
     answerInput.style.display = "none";
+    giveUpButton.style.display = "none"; // Hide the give-up button
     optionsContainer.style.display = "none";
     console.log("Quiz completed!"); // Debugging log
 }
@@ -1515,7 +1516,7 @@ answerInput.addEventListener("input", () => {
     console.log("Correct Answer:", currentCorrectAnswer); // Debugging log
 
     if (currentCorrectAnswer && isCorrectAnswer(userAnswer, currentCorrectAnswer)) {
-        feedback.textContent = "Correct!";
+        feedback.textContent = "Correct! 🎉👏🙂";
         correctAnswersCount++;
         feedback.style.color = "white";
 
