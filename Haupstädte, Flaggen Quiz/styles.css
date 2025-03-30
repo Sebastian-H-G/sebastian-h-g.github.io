@@ -546,6 +546,9 @@ nav ul li a i{
     font-size: 1.7rem;
 	margin-top: 10px;
 }
+#searchInput {
+  padding: 12px 65px 12px 20px;
+}
 .slide-text {
 	padding: 18px;
 	height: 80px;

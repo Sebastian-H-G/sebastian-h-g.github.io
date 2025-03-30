@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>World Map Quiz</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,6 +52,7 @@ h1 {
         svg {
             width: 100vw;
             height: 84vh;
+            user-select: none;
             background: lightblue;
         }
         svg path {
@@ -80,8 +82,9 @@ h1 {
             position: fixed;
             bottom: 20px;
             right: 20px;
+            font-size: 20px;
             padding: 20px;
-            width: 30vw;
+            width: 40vw;
             border-radius: 8px;
             background-color: rgb(50, 160, 114);
             color: white;
@@ -95,17 +98,14 @@ h1 {
         #answer {
             padding: 10px 25px;
             border-radius: 5px;
-          
             border: 1px solid #ccc;
-            font-size: 16px;
             display: inline-block;
         }
 #give-up {
   background-color: #e06b68; /* Red theme */
   border-radius: 10px;
- 
+  font-size:20px;
   font-family: Arial, sans-serif;
-  font-size: 14px;
   font-weight: bold;
   padding: 0 15px;
   border: none;
@@ -115,8 +115,16 @@ h1 {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
+#answer {
+     font-size: 20px;
+}
+#question {
+     font-size: 20px;
+     font-weight: bold;
+}
 #score {
 padding: 10px 15px;
+font-size: 20px;
   margin: 0 0 0 0 ;
   background-color: aquamarine;
   border-radius: 10px;
@@ -129,7 +137,7 @@ padding: 10px 15px;
 #selection {
      background-color:#9EE0F0;
 font-weight: bold;
-font-size: 16px;
+font-size: 15px;
 margin: 20px auto;
 display: inline-block; 
 border-radius: 7px;	
@@ -139,6 +147,7 @@ border-radius: 7px;
 	padding: 5px;
 	border-radius: 9px;
 	border: none;
+     font-size: 15px;
 	color: black;
 	font-weight: bold;
 	background-color: #ABC2A7;
@@ -146,10 +155,11 @@ border-radius: 7px;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+
         #feedback {
             margin-top: 10px;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
         }
 .go-back {
   display: flex;
@@ -157,7 +167,7 @@ border-radius: 7px;
   display: inline-block;
   align-items: center;
   gap: 10px;
-  font-size: 16px;
+  font-size: 15px;
   background: #ff9800;
   padding:19px;
   border-radius: 8px;
@@ -172,9 +182,6 @@ border-radius: 7px;
   transition: color 0.3s ease;
 }
 
-#question {
-     font-size: 20px;
-}
 #options {
     display: flex;
     flex-wrap: wrap;
@@ -190,7 +197,7 @@ border-radius: 7px;
     padding: 15px;
 	font-weight: bold;
     margin: 7px;
-	font-size: 15px;
+	font-size: 20px;
     cursor: pointer;
     flex: 1 1 calc(50% - 40px);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -199,6 +206,24 @@ border-radius: 7px;
 #options button:active {
 	transform: translateY(4px) scale(0.98);
 	box-shadow: 0 3px 0 #D98A1D;
+}
+
+
+@media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
+
+     #quiz-container {
+            margin-top: 20px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 20px;
+            width: 45vw;
+            border-radius: 8px;
+            background-color: rgb(50, 160, 114);
+            color: white;
+            font-weight: bold;
+        }
+
 }
     </style>
 </head>
@@ -1558,7 +1583,16 @@ giveUpButton.addEventListener("click", () => {
     }
 });
 
-function highlightCountry(countryName) {
+     let isPanning = false;
+     let startX, startY;
+     let viewBox = [0.3497447967529297, 0.0513098120689392, 1008.5283203125, 651.7911987304688]; // Default viewBox values
+     const minZoom = 100; // Minimum zoom level
+     const maxZoom = 2000; // Maximum zoom level
+     
+     const svg = document.getElementById("world-map");
+     
+     // Update the highlightCountry function
+     function highlightCountry(countryName) {
     console.log("Highlighting country:", countryName); // Debugging log
 
     // Remove highlight from all countries
@@ -1569,86 +1603,187 @@ function highlightCountry(countryName) {
     if (country) {
         country.classList.add("highlight");
 
-        // Zoom in on the highlighted country
+        // Get the bounding box of the new country
         const bbox = country.getBBox();
         const padding = 20; // Add some padding around the country
-        const viewBox = `${bbox.x - padding} ${bbox.y - padding} ${bbox.width + 2 * padding} ${bbox.height + 2 * padding}`;
-        map.setAttribute("viewBox", viewBox);
+        const targetViewBox = [
+            bbox.x - padding,
+            bbox.y - padding,
+            bbox.width + 2 * padding,
+            bbox.height + 2 * padding
+        ];
+
+        // Animate the transition from the current viewBox to the target viewBox
+        animateViewBox(viewBox, targetViewBox, 1000); // 1000ms duration
     } else {
         console.log("Country not found in the map:", countryName); // Debugging log
     }
 }
 
+// Function to animate the transition between two viewBoxes
+function animateViewBox(startViewBox, endViewBox, duration) {
+    const startTime = performance.now();
+
+    function step(currentTime) {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1); // Ensure progress doesn't exceed 1
+
+        // Interpolate each component of the viewBox
+        viewBox[0] = startViewBox[0] + (endViewBox[0] - startViewBox[0]) * progress;
+        viewBox[1] = startViewBox[1] + (endViewBox[1] - startViewBox[1]) * progress;
+        viewBox[2] = startViewBox[2] + (endViewBox[2] - startViewBox[2]) * progress;
+        viewBox[3] = startViewBox[3] + (endViewBox[3] - startViewBox[3]) * progress;
+
+        // Update the SVG viewBox
+        svg.setAttribute("viewBox", viewBox.join(" "));
+
+        if (progress < 1) {
+            requestAnimationFrame(step); // Continue the animation
+        }
+    }
+
+    requestAnimationFrame(step); // Start the animation
+}
+     
+     // Disable default browser zoom (Ctrl + Scroll or Pinch-to-Zoom)
+document.addEventListener("wheel", (e) => {
+    if (e.ctrlKey) {
+        e.preventDefault(); // Prevent browser zoom when Ctrl is pressed
+    }
+}, { passive: false });
+
+document.addEventListener("gesturestart", (e) => {
+    e.preventDefault(); // Prevent pinch-to-zoom on touch devices
+}, { passive: false });
+
+document.addEventListener("gesturechange", (e) => {
+    e.preventDefault(); // Prevent pinch-to-zoom on touch devices
+}, { passive: false });
+
+document.addEventListener("gestureend", (e) => {
+    e.preventDefault(); // Prevent pinch-to-zoom on touch devices
+}, { passive: false });
+
+     // Add event listeners for zooming and panning
+     svg.addEventListener("wheel", (e) => {
+         e.preventDefault();
+     
+         const zoomSensitivity = 0.1; // Adjust zoom sensitivity
+         const zoomFactor = e.deltaY > 0 ? 1 + zoomSensitivity : 1 - zoomSensitivity;
+     
+         // Calculate new width and height based on zoom factor
+         const newWidth = Math.max(minZoom, Math.min(maxZoom, viewBox[2] * zoomFactor));
+         const newHeight = (newWidth / viewBox[2]) * viewBox[3];
+     
+         // Calculate the new x and y to keep the zoom centered
+         const mouseX = e.offsetX / svg.clientWidth * viewBox[2] + viewBox[0];
+         const mouseY = e.offsetY / svg.clientHeight * viewBox[3] + viewBox[1];
+     
+         viewBox[0] = mouseX - (mouseX - viewBox[0]) * (newWidth / viewBox[2]);
+         viewBox[1] = mouseY - (mouseY - viewBox[1]) * (newHeight / viewBox[3]);
+         viewBox[2] = newWidth;
+         viewBox[3] = newHeight;
+     
+         // Update the viewBox
+         svg.setAttribute("viewBox", viewBox.join(" "));
+     });
+     
+     svg.addEventListener("mousedown", (e) => {
+         isPanning = true;
+         startX = e.clientX;
+         startY = e.clientY;
+     });
+     
+     svg.addEventListener("mousemove", (e) => {
+         if (!isPanning) return;
+     
+         const dx = (e.clientX - startX) * (viewBox[2] / svg.clientWidth);
+         const dy = (e.clientY - startY) * (viewBox[3] / svg.clientHeight);
+     
+         viewBox[0] -= dx;
+         viewBox[1] -= dy;
+     
+         startX = e.clientX;
+         startY = e.clientY;
+     
+         // Update the viewBox
+         svg.setAttribute("viewBox", viewBox.join(" "));
+     });
+     
+     svg.addEventListener("mouseup", () => {
+         isPanning = false;
+     });
+     
+     svg.addEventListener("mouseleave", () => {
+         isPanning = false;
+     });
+     
+     // Add touch support for zooming and panning
+     let initialTouchDistance = null;
+     let initialViewBox = [...viewBox];
+     
+     svg.addEventListener("touchstart", (e) => {
+         if (e.touches.length === 1) {
+             // Single touch for panning
+             isPanning = true;
+             startX = e.touches[0].clientX;
+             startY = e.touches[0].clientY;
+         } else if (e.touches.length === 2) {
+             // Two-finger touch for zooming
+             isPanning = false;
+             initialTouchDistance = Math.hypot(
+                 e.touches[0].clientX - e.touches[1].clientX,
+                 e.touches[0].clientY - e.touches[1].clientY
+             );
+             initialViewBox = [...viewBox];
+         }
+     });
+     
+     svg.addEventListener("touchmove", (e) => {
+         if (isPanning && e.touches.length === 1) {
+             // Handle panning
+             const dx = (e.touches[0].clientX - startX) * (viewBox[2] / svg.clientWidth);
+             const dy = (e.touches[0].clientY - startY) * (viewBox[3] / svg.clientHeight);
+     
+             viewBox[0] -= dx;
+             viewBox[1] -= dy;
+     
+             startX = e.touches[0].clientX;
+             startY = e.touches[0].clientY;
+     
+             // Update the viewBox
+             svg.setAttribute("viewBox", viewBox.join(" "));
+         } else if (e.touches.length === 2) {
+             // Handle zooming
+             const currentTouchDistance = Math.hypot(
+                 e.touches[0].clientX - e.touches[1].clientX,
+                 e.touches[0].clientY - e.touches[1].clientY
+             );
+             const zoomFactor = currentTouchDistance / initialTouchDistance;
+     
+             const newWidth = Math.max(minZoom, Math.min(maxZoom, initialViewBox[2] / zoomFactor));
+             const newHeight = (newWidth / initialViewBox[2]) * initialViewBox[3];
+     
+             viewBox[0] = initialViewBox[0] + (initialViewBox[2] - newWidth) / 2;
+             viewBox[1] = initialViewBox[1] + (initialViewBox[3] - newHeight) / 2;
+             viewBox[2] = newWidth;
+             viewBox[3] = newHeight;
+     
+             // Update the viewBox
+             svg.setAttribute("viewBox", viewBox.join(" "));
+         }
+     });
+     
+     svg.addEventListener("touchend", () => {
+         isPanning = false;
+         initialTouchDistance = null;
+     });
+
+
+
 // Initialize the quiz
 setMode(modeSelect.value);
 nextQuestion();
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-<script>
-            document.addEventListener("DOMContentLoaded", function () {
-    const svg = document.getElementById("world-map");
-    let viewBox = svg.getAttribute("viewBox").split(" ").map(Number);
-    let initialScale = 1;
-    let currentScale = 1;
-
-    // Define overall zoom limits
-    const minZoom = 50; // Minimum width of the viewBox (max zoom-out)
-    const maxZoom = 1050; // Maximum width of the viewBox (max zoom-in)
-
-    // Initialize Hammer.js
-    const hammer = new Hammer(svg);
-
-    // Enable pinch gestures
-    hammer.get("pinch").set({ enable: true });
-
-    // Handle pinch start
-    hammer.on("pinchstart", () => {
-        initialScale = currentScale;
-    });
-
-    // Handle pinch zoom
-    hammer.on("pinch", (e) => {
-        // Reduce zoom sensitivity by scaling down the pinch scale
-        const zoomSensitivity = 0.2; // Lower value = less sensitive
-        const adjustedScale = 1 + (e.scale - 1) * zoomSensitivity;
-
-        currentScale = initialScale * adjustedScale;
-
-        // Calculate new width and height based on the scale
-        let newWidth = viewBox[2] / currentScale;
-        let newHeight = viewBox[3] / currentScale;
-
-        // Enforce min/max zoom limits
-        if (newWidth < minZoom) newWidth = minZoom;
-        if (newWidth > maxZoom) newWidth = maxZoom;
-
-        // Adjust height proportionally
-        newHeight = (newWidth / viewBox[2]) * viewBox[3];
-
-        // Calculate the new x and y to keep the zoom centered
-        const midX = viewBox[0] + viewBox[2] / 2;
-        const midY = viewBox[1] + viewBox[3] / 2;
-
-        viewBox[0] = midX - newWidth / 2;
-        viewBox[1] = midY - newHeight / 2;
-        viewBox[2] = newWidth;
-        viewBox[3] = newHeight;
-
-        // Update the viewBox
-        svg.setAttribute("viewBox", `${viewBox[0]} ${viewBox[1]} ${viewBox[2]} ${viewBox[3]}`);
-    });
-
-    // Handle pinch end
-    hammer.on("pinchend", () => {
-        // Update the viewBox after pinch ends
-        viewBox = svg.getAttribute("viewBox").split(" ").map(Number);
-    });
-
-    // Handle double-tap to reset zoom
-    hammer.on("doubletap", () => {
-        currentScale = 1; // Reset to default scale
-        svg.setAttribute("viewBox", "0 0 1000 650"); // Reset to the original viewBox
-    });
-});</script>   
+     </script>
 </body>
 </html>
