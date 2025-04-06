@@ -28,14 +28,14 @@
       perspective: 70000px;
     }
     h1 {
-      font-size: 2.5em;
+      font-size: 3.5em;
       margin: 0 auto;
       color: #003c4e; /* Dark blue color */
     }
     .wrapper {
       position: relative;
-      width: 360px; /* 24 * 15px */
-      height: 180px; /* 15 * 24/2 */
+      width: 500px; /* 24 * 15px */
+      height: 250px; /* 15 * 24/2 */
       transform: rotateY(20deg) skew(5deg);
       transform-style: preserve-3d;
       background-image: url("https://flags.fmcdn.net/data/flags/w580/in.png");
@@ -47,8 +47,8 @@
       content: "";
       display: block;
       position: absolute;
-      width: 7.5px;
-      height: 400px;
+      width: 10px;
+      height: 520px;
       background: gold;
       left: 7px;
     }
@@ -61,13 +61,13 @@
       transform-origin: 0 0;
       background-repeat: no-repeat;
       background-size: 360px 100%;
-      transform: translateZ(0.0001px) rotateY(3.1176470588deg);
+      transform: translateZ(0.000000001px) rotateY(3.1176470588deg);
       background-image: inherit;
     }
     /* Animation for slices */
     @keyframes w {
       to {
-        transform: translateZ(0.0001px) rotateY(-7.1176470588deg);
+        transform: translateZ(0.000000001px) rotateY(-7.1176470588deg);
       }
     }
     .wrapper.grey {
@@ -80,7 +80,7 @@
     color: #fff;
     border: none;
     border-radius: 5px;
-    padding: 15px;
+    padding: 20px;
 	font-weight: bold;
     margin: 7px;
 	font-size: 20px;
@@ -127,17 +127,18 @@
 }
 
 #input-container input {
-  padding: 20px;
-  font-size: 16px;
+  padding: 20px 30px;
+  font-size: 20px;
+  text-align: center;
   font-weight: bold;
   border-radius: 6px;
   border: 1px solid #ccc;
-  margin-bottom: 10px;
+  margin-left: 75px;
 }
 
 #give-up-button {
   padding: 20px 15px;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
   color:white;
   font-family: 'Montserrat', sans-serif;
@@ -156,11 +157,11 @@
      width: 100vw;
      font-weight: bold;
      font-family: 'Montserrat', sans-serif;
-     margin: 1.5% auto;
+     margin: 2% auto;
 }
 
 #difficulty-container {
-    padding: 15px;
+    padding: 20px;
     margin: 0 7%;
     display: flex;
     align-items: center;
@@ -177,7 +178,7 @@
     border: 1px solid #ccc;
 }
 #game-mode-container {
-    padding: 15px;
+    padding: 20px;
     margin: 0 7%;
     display: flex;
     align-items: center;
@@ -1845,7 +1846,7 @@ let currentQuestion = 0;
     const continentSelect = document.getElementById('continent-select');
     let filteredCountries = countries; // Default to all countries
     let currentGameMode = 'multiple-choice'; // Default game mode
-    let totalCountries = 4; // Total number of countries
+    let totalCountries = 194; // Total number of countries
     
 const giveUpButton = document.getElementById('give-up-button');
 let currentSegment = 0; // Track the current segment being updated
