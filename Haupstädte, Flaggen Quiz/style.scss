@@ -1,0 +1,77 @@
+// inspired by https://codepen.io/YusukeNakaya/pen/qPEZYg
+$flag: "in";							 					//click change flag
+$n: 24;												 					//slices count
+$width: 15px; 											//slice width
+$height: $width * $n/2;  // 2:1 ratio
+
+*,*::before{
+		margin: 0;
+		padding: 0;
+		box-sizing: inherit;
+}
+html{
+		height: 100%;
+		box-sizing: border-box;
+			:hover{
+		 	cursor: pointer;
+		 }
+}
+body {
+		height: 100%;
+  background: #ECEFF1; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 700px;
+	 overflow: hidden;
+}  
+
+.wrapper {
+  position: relative;
+  width: $n * $width;
+  height: $height; 
+		transform: rotateY(20deg) skew(5deg);
+		transform-style: preserve-3d;
+		background-image: url("https://flags.fmcdn.net/data/flags/w580/#{$flag}.png");
+		background-size: 0;// hide image
+		background-position:-200% -200%;// hide image
+
+		// flag stick
+			&::before{
+				content: "";
+				display: block;
+				position: absolute;
+				width: $width/2;
+				height: $height * 2;
+				background: gold;
+				left:  ($width - 1px)/2
+			}
+}
+
+ .s{
+    position: absolute;
+				transform-style: preserve-3d;
+    left: $width - 1px;// -1px hides vertical lines
+    width: $width;
+    height: 100%;
+    transform-origin: 0 0;  
+				background-repeat: no-repeat;
+				background-size: $n*$width 100%;
+				transform: translateZ(0.0001px) rotateY(#{$n/1.7}deg); 
+			//translateZ triggers GPU accelaration for smooth animations
+				background-image: inherit;
+  }
+
+	@for $i from 1 through $n {
+				.s#{$i} {
+						background-position-x: #{-$i*$width};
+					// short w name and 1s better than 1000ms , waver for minimal css code compilation
+						animation: w 1s #{$i * .08}s ease-in-out infinite alternate;
+				}
+	}
+
+@keyframes w {
+  to{
+    transform: translateZ(0.0001px) rotateY(#{-$n/1.7}deg);
+  }
+}

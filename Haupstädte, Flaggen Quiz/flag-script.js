@@ -5,26 +5,41 @@ let correctAnswerIndex = null;
 let currentOptions = [];
 let selectedContinent = "all";
 
-// Fetch flag data from API
 async function fetchFlags(continent) {
     let url = "https://restcountries.com/v3.1/all";
-    const response = await fetch(url);
-    const countries = await response.json();
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const countries = await response.json();
 
-    // Filter countries by selected continent
-    if (continent !== "all") {
-        return countries.filter(country => {
-            if (continent === "north america") {
-                return country.subregion === "Northern America";
-            } else if (continent === "south america") {
-                return country.subregion === "South America";
-            }
-            return country.region.toLowerCase() === continent;
-        });
+        // Normalize continent string
+        continent = continent.toLowerCase();
+
+        // Filter
+        if (continent !== "all") {
+            return countries.filter(country => {
+                if (!country.region) return false; // Skip if no region
+                if (continent === "north america") {
+                    return country.subregion === "Northern America";
+                } else if (continent === "south america") {
+                    return country.subregion === "South America";
+                } else {
+                    return country.region.toLowerCase() === continent;
+                }
+            });
+        }
+
+        return countries;
+    } catch (error) {
+        console.error("Failed to fetch flags:", error);
+        console.log(countries)
+        alert("Failed to fetch flag data. Please try again later.");
+        return [];
     }
-
-    return countries;
 }
+
 
 // Start quiz
 async function startQuiz() {

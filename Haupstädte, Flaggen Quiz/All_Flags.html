@@ -1,77 +1,2260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <title>Flag Quiz Game</title>
-    <link rel="stylesheet" href="flag-styles.css">
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Dynamic Flag Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+<style>
+    /* Provided Flag Animation Styles (exactly as given) */
+    *, *::before {
+      margin: 0;
+      padding: 0;
+      box-sizing: inherit;
+    }
+    html {
+      height: 100%;
+      box-sizing: border-box;
+    }
+    body {
+      background: #ECEFF1;
+      display: flex;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+      justify-content: center;
+      overflow-x: hidden;
+      align-items: center;
+      perspective: 70000px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin: 0 auto;
+      color: #003c4e; /* Dark blue color */
+    }
+    .wrapper {
+      position: relative;
+      width: 360px; /* 24 * 15px */
+      height: 180px; /* 15 * 24/2 */
+      transform: rotateY(20deg) skew(5deg);
+      transform-style: preserve-3d;
+      background-image: url("https://flags.fmcdn.net/data/flags/w580/in.png");
+      background-size: 0; /* hide background */
+      background-position: -200% -200%;
+      z-index: -11;
+    }
+    .wrapper::before {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 7.5px;
+      height: 400px;
+      background: gold;
+      left: 7px;
+    }
+    .s {
+      position: absolute;
+      transform-style: preserve-3d;
+      left: 14px; /* 15px - 1px */
+      width: 15px;
+      height: 100%;
+      transform-origin: 0 0;
+      background-repeat: no-repeat;
+      background-size: 360px 100%;
+      transform: translateZ(0.0001px) rotateY(3.1176470588deg);
+      background-image: inherit;
+    }
+    /* Animation for slices */
+    @keyframes w {
+      to {
+        transform: translateZ(0.0001px) rotateY(-7.1176470588deg);
+      }
+    }
+    .wrapper.grey {
+        filter: grayscale(100%);
+    }
+
+#options-container button {
+    background-color: #F2A216;
+  box-shadow: 0 7px 0 #D98A1D; /* A darker shade of #F2A216 */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 15px;
+	font-weight: bold;
+    margin: 7px;
+	font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    #options-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-left: 60px;
+      gap: 10px;
+      margin-top: 30px;
+    }
 
 
+    #options-container button:active {
+	transform: translateY(4px) scale(0.98);
+	box-shadow: 0 3px 0 #D98A1D;
+}
+#country-input.correct {
+    border: 2px solid green;
+    background-color: #d4edda;
+  }
 
+  #country-input.incorrect {
+    border: 2px solid red;
+    background-color: #f8d7da;
+  }
+  #country-input:focus {
+    outline: none;
+  }
+
+#input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  z-index: 11;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 40px;;
+}
+
+#input-container input {
+  padding: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+#give-up-button {
+  padding: 20px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  color:white;
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 6px;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  background-color: red;
+  transition: background-color 0.3s;
+}
+
+.three-wrapper {
+    display: flex;
+     flex-direction: row;
+     justify-content: center;
+     align-items: center;
+     width: 100vw;
+     font-weight: bold;
+     font-family: 'Montserrat', sans-serif;
+     margin: 1.5% auto;
+}
+
+#difficulty-container {
+    padding: 15px;
+    margin: 0 7%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: green;
+    border-radius: 7px;
+    color: white;
+}
+#difficulty-container select{
+    padding: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+#game-mode-container {
+    padding: 15px;
+    margin: 0 7%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: aqua;
+    border-radius: 7px;
+}
+#game-mode-container select{
+    padding: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+#retry-button {
+    padding: 15px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    color:white;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 6px;
+    font-weight: bold;
+    border:none;
+    background-color: #dc16f2;
+    box-shadow: 0 5px 0 #b30bb0; /* A darker shade of #dc16f2 */
+    transition: background-color 0.3s;
+}
+#retry-button:active {
+    outline: none;
+    transform: translateY(5px) scale(0.98);
+    box-shadow: 0 2px 0 #dc16f2;
+  }
+#filter-container {
+    padding: 20px;
+    width: fit-content;
+    font-size: 16px;
+    margin: 5% auto 0 auto;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    background-color: rgb(219, 212, 18);
+    border-radius: 6px;
+    color: black;
+    z-index: 1;
+}
+#filter-container select{
+    padding: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-left: 16px;
+}
+#progress-container {
+  display: flex;
+  width: 70%;
+  height: 30px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  margin: 50px auto 20px auto;
+  overflow: hidden;
+}
+.progress-segment {
+  flex: 1; /* Each segment takes an equal part of the bar */
+  height: 100%;
+  background-color: #e0e0e0; /* Default background */
+  border-right: 0px solid #fff; /* Add a small gap between segments */
+  transition: background-color 0.3s;
+}
+
+.progress-segment:last-child {
+  border-right: none; /* Remove the border for the last segment */
+}
+
+.progress-segment.green {
+  background-color: green;
+}
+
+.progress-segment.red {
+  background-color: red;
+}
+  #congrats-message {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #4caf50;
+    display: none;
+  }
+
+  
+.footer {
+  background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+bottom: 0;
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
+  </style>
 </head>
-<body class="page-exit">
-<canvas id="confettiCanvas"></canvas>
-    <div class="container">
-	<div class="padding-container">
-        <header>
-            <h1>Flag Quiz</h1>
-            <div class="scoreboard">
-                <p class="score">Score: <span id="score">0</span></p>
-                <p class="highscore">High Score: <span id="highscore">0</span></p>
-            </div>
-        </header>
+<body>
+   
+<div class="three-wrapper">
 
-        <div class="quiz-container">
-            <h2 id="question">Which country does this flag belong to?</h2>
-            <div id="flag-container">
-                <img id="flag-img" src="" alt="Country Flag" class="flag-image">
-            </div>
-            <div class="options">
-                <button class="option" onclick="checkAnswer(0)">Option 1</button>
-                <button class="option" onclick="checkAnswer(1)">Option 2</button>
-                <button class="option" onclick="checkAnswer(2)">Option 3</button>
-                <button class="option" onclick="checkAnswer(3)">Option 4</button>
-            </div>
-            <p id="message"></p>
-        </div>
+    
+    <div id="difficulty-container">
+        <label for="difficulty-select">Select Difficulty:</label>
+        <select id="difficulty-select">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+          <option value="extreme">Extreme</option>
+        </select>
+      </div>
 
-        <div class="controls">
-            <label for="continent-select">Select Continent:</label>
-            <select id="continent-select" onchange="startQuiz()">
-                <option value="all">All</option>
-                <option value="africa">Africa</option>
-                <option value="europe">Europe</option>
-                <option value="asia">Asia</option>
-                <option value="north america">North America</option>
-                <option value="south america">South America</option>
-                <option value="oceania">Oceania</option>
-            </select>
-        </div>
-		</div>
-<footer class="footer" data-aos="fade-up">
-  <div class="footer-container">
-    <div class="footer-logo">
-      <a href="index.html"><img src="Logos/Flag.webp" alt="Company Logo"></a>
-    </div>
-    <div class="footer-info">
-      <div class="footer-social">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-      </div>
-      <div class="footer-copyright">
-        <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
-      </div>
-    </div>
+      <h1>Flag Quiz</h1>
+  <!-- Add a game mode selection dropdown -->
+  <div id="game-mode-container">
+    <label for="game-mode-select">Select Game Mode:</label>
+    <select id="game-mode-select">
+      <option value="multiple-choice">Multiple Choice</option>
+      <option value="input">Input</option>
+    </select>
   </div>
-</footer>
-    </div>
-<script src="transition.js"></script>
 
-    <script src="flag-script.js"></script>
+</div>
+  <!-- Quiz Container: Flag Animation and Options -->
+  <div id="quiz-container">
+    <div class="wrapper" id="flag-wrapper"></div>
+    <div id="options-container"></div>
+    <div id="input-container" style="display: none;">
+        <input type="text" id="country-input" placeholder="Enter country name" />
+        <button id="give-up-button">Give Up</button>
+      </div>
+      <div id="filter-container">
+        <label for="continent-select">Select Continent:</label>
+        <select id="continent-select">
+          <option value="all">All</option>
+          <option value="africa">Africa</option>
+          <option value="asia">Asia</option>
+          <option value="europe">Europe</option>
+          <option value="oceania">Oceania</option>
+          <option value="south america">South America</option>
+          <option value="north america">North America</option>
+        </select>
+      </div>
+  </div>
+  <div id="congrats-message" style="display: none;"></div>
+<div id="retry-container" style="display: none; margin-top: 20px;">
+  <button id="retry-button">Retry</button>
+</div>
+  <div id="progress-container">
+
+  </div>
+  <footer class="footer" data-aos="fade-up">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <a href="index.html"><img src="Logos/Flag.webp" alt="Company Logo"></a>
+      </div>
+      <div class="footer-info">
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copyright">
+          <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+          <a style="color: white; text-decoration: none;" href="Old_All_Flags.html">Try out the old Flag Quiz</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // --- Flag Animation Code (exactly as provided) ---
+    const wrapper = document.getElementById('flag-wrapper');
+    const n = 24;
+    let elem = '';
+    for (let i = 0; i < n; i++) {
+      elem += `<div class="s s${i}">`;
+    }
+    elem += '</div>'.repeat(n);
+    wrapper.innerHTML = elem;
+    const styleSheet = document.createElement("style");
+    let styles = '';
+    for (let i = 1; i <= n; i++) {
+      styles += `
+        .s${i} {
+          background-position-x: -${i * 15}px;
+          animation: w 1s ${i * 0.08}s ease-in-out infinite alternate;
+        }
+      `;
+    }
+    styleSheet.innerHTML = styles;
+    document.head.appendChild(styleSheet);
+
+    // --- Dynamic Quiz Data and Logic ---
+    // List of country objects (extend with more countries and flags as needed)
+    
+    const countryMappings = {   
+    "Andorra": ["Andorra"],
+    "United Arab Emirates": ["Vereinigte Arabische Emirate"],
+    "Afghanistan": ["Afghanistan"],
+    "Anguilla": ["Anguilla"],
+    "Albania": ["Albanien"],
+    "Armenia": ["Armenien"],
+    "Angola": ["Angola"],
+    "Argentina": ["Argentinien"],
+    "Austria": ["Österreich"],
+    "Antigua and Barbuda": ["Antigua und Barbuda"],
+    "Aruba": ["Aruba"],
+    "Aland Islands": ["Ålandinseln"],
+    "Azerbaijan": ["Aserbaidschan"],
+    "Bosnia and Herzegovina": ["Bosnien und Herzegowina", "Bosnien Herzegowina", "Bosnia Herzegovina" ],
+    "Bangladesh": ["Bangladesch"],
+    "Belgium": ["Belgien"],
+    "Burkina Faso": ["Burkina Faso"],
+    "Bulgaria": ["Bulgarien"],
+    "Burundi": ["Burundi"],
+    "Benin": ["Benin"],
+    "Brunei": ["Brunei"],
+    "Bolivia": ["Bolivien"],
+    "Bermuda": ["Bermuda"],
+    "Brazil": ["Brasilien"],
+    "Bhutan": ["Bhutan"],
+    "Bouvet Island": ["Bouvetinsel"],
+    "Botswana": ["Botsuana"],
+    "Belarus": ["Belarus"],
+    "Belize": ["Belize"],
+    "Canada": ["Kanada"],
+    "Democratic Republic of the Congo": ["Demokratische Republik Kongo", "DR Kongo", "DR Congo"],
+    "Central African Republic": ["Zentralafrikanische Republik"],
+    "Republic of the Congo": ["Republik Kongo", "Kongo", "Congo"],
+    "Switzerland": ["Schweiz"],
+    "Ivory Coast": ["Elfenbeinküste", "Ivory Coast", "Côte d'Ivoire", "Elfenbeinkueste"],
+    "Cook Islands": ["Cookinseln"],
+    "Chile": ["Chile"],
+    "Cameroon": ["Kamerun"],
+    "Cabo Verde": ["Kap Verde", "Cape Verde"],
+    "China": ["China"],
+    "Colombia": ["Kolumbien"],
+    "Costa Rica": ["Costa Rica"],
+    "Curaçao": ["Curaçao"],
+    "Christmas Island": ["Weihnachtsinsel"],
+    "Czech Republic": ["Tschechische Republik", "Tschechien", "Chech Republic", "Czechia"],
+    "Germany": ["Deutschland"],
+    "Djibouti": ["Dschibuti"],
+    "Denmark": ["Dänemark"],
+    "Micronesia": ["Mikronesien"],
+    "Dominican Republic": ["Dominikanische Republik"],
+    "Algeria": ["Algerien"],
+    "Ecuador": ["Ecuador"],
+    "Trinidad and Tobago": ["Trinidad und Tobago"],
+    "Egypt": ["Ägypten"],
+    "Estonia": ["Estland"],
+    "Western Sahara": ["Westsahara"],
+    "Eritrea": ["Eritrea"],
+    "Spain": ["Spanien"],
+    "Ethiopia": ["Äthiopien"],
+    "Finland": ["Finnland"],
+    "Falkland Islands": ["Falklandinseln"],
+    "Faroe Islands": ["Färöer"],
+    "Seychelles": ["Seychellen"],
+    "France": ["Frankreich"],
+    "Gabon": ["Gabun"],
+    "United Kingdom": ["Vereinigtes Königreich", "UK", "Großbritannien"],
+    "Georgia": ["Georgien"],
+    "French Guiana": ["Französisch-Guayana", "French-Guiana", "Französisch Guayana"],
+    "Guernsey": ["Guernsey"],
+    "Ghana": ["Ghana"],
+    "Gibraltar": ["Gibraltar"],
+    "Greenland": ["Grönland",],
+    "Gambia": ["Gambia"],
+    "Guinea": ["Guinea"],
+    "Glorioso Islands": ["Glorieuses-Inseln", "Glorieuses Inseln"],
+    "Guadeloupe": ["Guadeloupe"],
+    "Equatorial Guinea": ["Äquatorialguinea"],
+    "Greece": ["Griechenland"],
+    "South Georgia and South Sandwich Islands": ["Südgeorgien und die Südlichen Sandwichinseln"],
+    "Guatemala": ["Guatemala"],
+    "Guam": ["Guam"],
+    "Guinea-Bissau": ["Guinea-Bissau", "Guinea Bissau"],
+    "Guyana": ["Guyana"],
+    "Hong Kong": ["Hongkong"],
+    "Heard Island and McDonald Islands": ["Heard und McDonaldinseln"],
+    "Honduras": ["Honduras"],
+    "Croatia": ["Kroatien"],
+    "Haiti": ["Haiti"],
+    "Hungary": ["Ungarn"],
+    "Indonesia": ["Indonesien"],
+    "Ireland": ["Irland"],
+    "Israel": ["Israel"],
+    "Isle of Man": ["Isle of Man"],
+    "India": ["Indien"],
+    "British Indian Ocean Territory": ["Britisches Territorium im Indischen Ozean"],
+    "Iraq": ["Irak"],
+    "Iran": ["Iran"],
+    "Italy": ["Italien"],
+    "Jersey": ["Jersey"],
+    "Jordan": ["Jordanien"],
+    "Kenya": ["Kenia"],
+    "Kyrgyzstan": ["Kirgisistan"],
+    "Cambodia": ["Kambodscha"],
+    "North Korea": ["Nordkorea", "Nord Korea"],
+    "South Korea": ["Südkorea", "Süd Korea"],
+    "Kosovo": ["Kosovo"],
+    "Kuwait": ["Kuwait"],
+    "Cayman Islands": ["Kaimaninseln"],
+    "Kazakhstan": ["Kasachstan"],
+    "Laos": ["Laos"],
+    "Lebanon": ["Libanon"],
+    "Liechtenstein": ["Liechtenstein"],
+    "Liberia": ["Liberia"],
+    "Lesotho": ["Lesotho"],
+    "Lithuania": ["Litauen"],
+    "Saint Lucia": ["St. Lucia", "St Lucia", "Sankt Lucia"],
+    "Saint Vincent and the Grenadines": ["St. Vincent und die Grenadinen", "St Vincent und die Grenadinen", "Sankt Vincent und die Grenadinen"],
+    "Luxembourg": ["Luxemburg"],
+    "Saint Kitts and Nevis": ["St. Kitts und Nevis", "St Kitts und Nevis", "Sankt Kitts und Nevis"],
+    "Latvia": ["Lettland"],
+    "Libya": ["Libyen"],
+    "Morocco": ["Marokko"],
+    "Monaco": ["Monaco"],
+    "Moldova": ["Moldawien"],
+    "Montenegro": ["Montenegro"],
+    "Macedonia": ["Nordmazedonien", "Mazedonien", "Northmazedonia", "North Mazedonia", "Nord Mazedonien"],
+    "Mali": ["Mali"],
+    "Macau": ["Macau"],
+    "Myanmar": ["Myanmar"],
+    "Mongolia": ["Mongolei"],
+    "Northern Mariana Islands": ["Nördliche Marianen"],
+    "Martinique": ["Martinique"],
+    "Mauritania": ["Mauretanien"],
+    "Montserrat": ["Montserrat"],
+    "Malawi": ["Malawi"],
+    "Mexico": ["Mexiko"],
+    "Marshall Islands": ["Marshallinseln", "Marshall Inseln"],
+    "Malaysia": ["Malaysia"],
+    "Mozambique": ["Mosambik"],
+    "Namibia": ["Namibia"],
+    "New Caledonia": ["Neukaledonien"],
+    "Niger": ["Niger"],
+    "Norfolk Island": ["Norfolkinsel"],
+    "Nigeria": ["Nigeria"],
+    "Nicaragua": ["Nicaragua"],
+    "Netherlands": ["Niederlande"],
+    "Norway": ["Norwegen"],
+    "Nepal": ["Nepal"],
+    "Niue": ["Niue"],
+    "Sao Tome and Principe": ["São Tomé und Príncipe", "Sao Tome und Principe"],
+    "Oman": ["Oman"],
+    "Panama": ["Panama"],
+    "Peru": ["Peru"],
+    "French Polynesia": ["Französisch-Polynesien", "Französisch Polynesien"],
+    "Papua New Guinea": ["Papua-Neuguinea", "Papua Neuguinea"],
+    "Pakistan": ["Pakistan"],
+    "Poland": ["Polen"],
+    "Pitcairn Islands": ["Pitcairninseln"],
+    "Puerto Rico": ["Puerto Rico"],
+    "Palestinian": ["Palästinensische Gebiete", "Palästina", "Palestina"],
+    "Portugal": ["Portugal"],
+    "Paraguay": ["Paraguay"],
+    "Qatar": ["Katar"],
+    "Reunion": ["Réunion"],
+    "Romania": ["Rumänien"],
+    "Serbia": ["Serbien"],
+    "Russia": ["Russland"],
+    "Rwanda": ["Ruanda"],
+    "Saudi Arabia": ["Saudi-Arabien", "Saudi Arabien"],
+    "Sudan": ["Sudan"],
+    "Sweden": ["Schweden"],
+    "Slovenia": ["Slowenien"],
+    "Svalbard and Jan Mayen (Spitzenbergen)": ["Spitzenbergen und Jan Mayen", "Spitzenbergen", "Svalbard"],
+    "Slovakia": ["Slowakei"],
+    "Sierra Leone": ["Sierra Leone"],
+    "San Marino": ["San Marino"],
+    "Senegal": ["Senegal"],
+    "Somalia": ["Somalia"],
+    "Suriname": ["Suriname"],
+    "South Sudan": ["Südsudan"],
+    "El Salvador": ["El Salvador"],
+    "Syria": ["Syrien"],
+    "Eswatini": ["Swaziland"],
+    "Turks and Caicos Islands": ["Turks- und Caicosinseln", "Turks und Caicosinseln", "Turksinsel und Caicosinsel"],
+    "Chad": ["Tschad"],
+    "French Southern and Antarctic Lands": ["Französische Süd- und Antarktisgebiete", "Französische Süd und Antarktisgebiete"],
+    "Togo": ["Togo"],
+    "Thailand": ["Thailand"],
+    "Tajikistan": ["Tadschikistan"],
+    "Tokelau": ["Tokelau"],
+    "Timor-Leste": ["Osttimor", "Timor Leste", "East Timor", "Timor"],
+    "Turkmenistan": ["Turkmenistan"],
+    "Tunisia": ["Tunesien"],
+    "Turkey": ["Türkei"],
+    "Tanzania": ["Tansania"],
+    "Ukraine": ["Ukraine"],
+    "Uganda": ["Uganda"],
+    "United States": ["Vereinigte Staaten", "USA", "Vereinigte Staaten von Amerika", "US"],
+    "Uruguay": ["Uruguay"],
+    "Uzbekistan": ["Usbekistan"],
+    "Vatican City": ["Vatikanstadt"],
+    "Venezuela": ["Venezuela"],
+    "British Virgin Islands": ["Britische Jungferninseln"],
+    "US Virgin Islands": ["Amerikanische Jungferninseln"],
+    "Vietnam": ["Vietnam"],
+    "Wallis and Futuna": ["Wallis und Futuna"],
+    "Yemen": ["Jemen"],
+    "Mayotte": ["Mayotte"],
+    "South Africa": ["Südafrika"],
+    "Zambia": ["Sambia"],
+    "Zimbabwe": ["Simbabwe"]
+};
+    const countries = [
+  {
+    "name": "Afghanistan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/af.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Albania",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/al.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Algeria",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/dz.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Andorra",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ad.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Angola",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ao.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Antigua and Barbuda",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ag.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Argentina",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ar.png",
+    "continent": "South america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Armenia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/am.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Australia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/au.png",
+    "continent": "Oceania",
+    "prominence": "big"
+  },
+  {
+    "name": "Austria",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/at.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Azerbaijan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/az.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Bahamas",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bs.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Bahrain",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bh.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Bangladesh",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bd.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Barbados",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bb.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Belarus",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/by.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Belgium",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/be.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Belize",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bz.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Benin",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bj.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Bhutan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bt.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Bolivia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bo.png",
+    "continent": "South america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Bosnia and Herzegovina",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ba.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Botswana",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bw.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Brazil",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/br.png",
+    "continent": "South america",
+    "prominence": "big"
+  },
+  {
+    "name": "Brunei",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bn.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Bulgaria",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bg.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Burkina Faso",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bf.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Burundi",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/bi.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Ivory Coast",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ci.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Cabo Verde",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/cv.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Cambodia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/kh.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Cameroon",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/cm.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Canada",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ca.png",
+    "continent": "North america",
+    "prominence": "big"
+  },
+  {
+    "name": "Central African Republic",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/cf.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Chad",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/td.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Chile",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/cl.png",
+    "continent": "South america",
+    "prominence": "medium"
+  },
+  {
+    "name": "China",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/cn.png",
+    "continent": "Asia",
+    "prominence": "big"
+  },
+  {
+    "name": "Colombia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/co.png",
+    "continent": "South america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Comoros",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/km.png",
+    "continent": "Africa",
+    "prominence": "small"
+  },
+  {
+    "name": "Republic of the Congo",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/cg.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Costa Rica",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/cr.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Croatia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/hr.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Cuba",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/cu.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Cyprus",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/cy.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Czech Republic",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/cz.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Democratic Republic of the Congo",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/cd.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Denmark",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/dk.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Djibouti",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/dj.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Dominica",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/dm.png",
+    "continent": "North america",
+    "prominence": "small"
+  },
+  {
+    "name": "Dominican Republic",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/do.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Ecuador",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ec.png",
+    "continent": "South america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Egypt",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/eg.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "El Salvador",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sv.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Equatorial Guinea",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/gq.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Eritrea",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/er.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Estonia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ee.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Eswatini",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sz.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Ethiopia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/et.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Fiji",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/fj.png",
+    "continent": "Oceania",
+    "prominence": "medium"
+  },
+  {
+    "name": "Finland",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/fi.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "France",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/fr.png",
+    "continent": "Europe",
+    "prominence": "big"
+  },
+  {
+    "name": "Gabon",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ga.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Gambia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/gm.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Georgia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ge.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Germany",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/de.png",
+    "continent": "Europe",
+    "prominence": "big"
+  },
+  {
+    "name": "Ghana",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/gh.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Greece",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/gr.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Grenada",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/gd.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Guatemala",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/gt.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Guinea",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/gn.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Guinea-Bissau",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/gw.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Guyana",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/gy.png",
+    "continent": "South america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Haiti",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ht.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Vatican City",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/va.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Honduras",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/hn.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Hungary",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/hu.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Iceland",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/is.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "India",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/in.png",
+    "continent": "Asia",
+    "prominence": "big"
+  },
+  {
+    "name": "Indonesia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/id.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Iran",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ir.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Iraq",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/iq.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Ireland",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ie.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Israel",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/il.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Italy",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/it.png",
+    "continent": "Europe",
+    "prominence": "big"
+  },
+  {
+    "name": "Jamaica",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/jm.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Japan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/jp.png",
+    "continent": "Asia",
+    "prominence": "big"
+  },
+  {
+    "name": "Jordan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/jo.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Kazakhstan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/kz.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Kenya",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ke.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Kiribati",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ki.png",
+    "continent": "Oceania",
+    "prominence": "small"
+  },
+  {
+    "name": "Kuwait",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/kw.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Kyrgyzstan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/kg.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Laos",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/la.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Latvia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/lv.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Lebanon",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/lb.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Lesotho",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ls.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Liberia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/lr.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Libya",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ly.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Liechtenstein",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/li.png",
+    "continent": "Europe",
+    "prominence": "small"
+  },
+  {
+    "name": "Lithuania",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/lt.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Luxembourg",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/lu.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Madagascar",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mg.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Malawi",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mw.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Malaysia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/my.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Maldives",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mv.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Mali",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ml.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Malta",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mt.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Marshall Islands",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mh.png",
+    "continent": "Oceania",
+    "prominence": "small"
+  },
+  {
+    "name": "Mauritania",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mr.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Mauritius",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mu.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Mexico",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mx.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Micronesia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/fm.png",
+    "continent": "Oceania",
+    "prominence": "small"
+  },
+  {
+    "name": "Moldova",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/md.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Monaco",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mc.png",
+    "continent": "Europe",
+    "prominence": "small"
+  },
+  {
+    "name": "Mongolia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mn.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Montenegro",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/me.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Morocco",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ma.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Mozambique",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mz.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Myanmar",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mm.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Namibia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/na.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Nauru",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/nr.png",
+    "continent": "Oceania",
+    "prominence": "small"
+  },
+  {
+    "name": "Nepal",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/np.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Netherlands",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/nl.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "New Zealand",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/nz.png",
+    "continent": "Oceania",
+    "prominence": "medium"
+  },
+  {
+    "name": "Nicaragua",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ni.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Niger",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ne.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Nigeria",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ng.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "North Korea",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/kp.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Macedonia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/mk.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Norway",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/no.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Oman",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/om.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Pakistan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/pk.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Palau",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/pw.png",
+    "continent": "Oceania",
+    "prominence": "small"
+  },
+  {
+    "name": "Palestine",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ps.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Panama",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/pa.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Papua New Guinea",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/pg.png",
+    "continent": "Oceania",
+    "prominence": "medium"
+  },
+  {
+    "name": "Paraguay",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/py.png",
+    "continent": "South america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Peru",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/pe.png",
+    "continent": "South america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Philippines",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ph.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Poland",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/pl.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Portugal",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/pt.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Qatar",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/qa.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Romania",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ro.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Russia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ru.png",
+    "continent": "Europe",
+    "prominence": "big"
+  },
+  {
+    "name": "Rwanda",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/rw.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Saint Kitts and Nevis",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/kn.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Saint Lucia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/lc.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Saint Vincent and the Grenadines",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/vc.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Samoa",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ws.png",
+    "continent": "Oceania",
+    "prominence": "small"
+  },
+  {
+    "name": "San Marino",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sm.png",
+    "continent": "Europe",
+    "prominence": "small"
+  },
+  {
+    "name": "Sao Tome and Principe",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/st.png",
+    "continent": "Africa",
+    "prominence": "small"
+  },
+  {
+    "name": "Saudi Arabia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sa.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Senegal",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sn.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Serbia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/rs.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Seychelles",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sc.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Sierra Leone",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sl.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Singapore",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sg.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Slovakia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sk.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Slovenia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/si.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Solomon Islands",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sb.png",
+    "continent": "Oceania",
+    "prominence": "medium"
+  },
+  {
+    "name": "Somalia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/so.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "South Africa",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/za.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "South Korea",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/kr.png",
+    "continent": "Asia",
+    "prominence": "big"
+  },
+  {
+    "name": "South Sudan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ss.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Spain",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/es.png",
+    "continent": "Europe",
+    "prominence": "big"
+  },
+  {
+    "name": "Sri Lanka",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/lk.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Sudan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sd.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Suriname",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sr.png",
+    "continent": "South america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Sweden",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/se.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Switzerland",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ch.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "Syria",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/sy.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Tajikistan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/tj.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Tanzania",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/tz.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Thailand",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/th.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Timor-Leste",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/tl.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Togo",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/tg.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Tonga",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/to.png",
+    "continent": "Oceania",
+    "prominence": "small"
+  },
+  {
+    "name": "Trinidad and Tobago",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/tt.png",
+    "continent": "North america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Tunisia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/tn.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Turkey",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/tr.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Turkmenistan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/tm.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Tuvalu",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/tv.png",
+    "continent": "Oceania",
+    "prominence": "small"
+  },
+  {
+    "name": "Uganda",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ug.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Ukraine",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ua.png",
+    "continent": "Europe",
+    "prominence": "medium"
+  },
+  {
+    "name": "United Arab Emirates",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ae.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "United Kingdom",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/gb.png",
+    "continent": "Europe",
+    "prominence": "big"
+  },
+  {
+    "name": "United States",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/us.png",
+    "continent": "North america",
+    "prominence": "big"
+  },
+  {
+    "name": "Uruguay",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/uy.png",
+    "continent": "South america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Uzbekistan",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/uz.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Vanuatu",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/vu.png",
+    "continent": "Oceania",
+    "prominence": "small"
+  },
+  {
+    "name": "Venezuela",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ve.png",
+    "continent": "South america",
+    "prominence": "medium"
+  },
+  {
+    "name": "Vietnam",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/vn.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Yemen",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/ye.png",
+    "continent": "Asia",
+    "prominence": "medium"
+  },
+  {
+    "name": "Zambia",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/zm.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  },
+  {
+    "name": "Zimbabwe",
+    "flagUrl": "https://flags.fmcdn.net/data/flags/w580/zw.png",
+    "continent": "Africa",
+    "prominence": "medium"
+  }
+];
+let currentQuestion = 0;
+    let totalQuestions = 194;
+    const optionsContainer = document.getElementById('options-container');
+    const continentSelect = document.getElementById('continent-select');
+    let filteredCountries = countries; // Default to all countries
+    let currentGameMode = 'multiple-choice'; // Default game mode
+    let totalCountries = 4; // Total number of countries
+    
+const giveUpButton = document.getElementById('give-up-button');
+let currentSegment = 0; // Track the current segment being updated
+
+// Update the game mode based on the selection
+const gameModeSelect = document.getElementById('game-mode-select');
+const inputContainer = document.getElementById('input-container');
+const countryInput = document.getElementById('country-input');
+const submitAnswerButton = document.getElementById('submit-answer');
+  let askedCountries = []; // Track asked countries
+  let correctCount = 0; // Count of correct answers
+  let incorrectCount = 0; // Count of incorrect answers
+
+  const progressBar = document.getElementById('progress-bar');
+  const congratsMessage = document.getElementById('congrats-message');
+
+  const difficultySelect = document.getElementById('difficulty-select');
+let currentDifficulty = 'easy'; // Default difficulty
+
+let difficultyChangedOnce = false; // Flag to track if the confirmation dialog has been shown
+
+difficultySelect.addEventListener('change', () => {
+  const selectedDifficulty = difficultySelect.value; // Store the newly selected difficulty
+
+  if (selectedDifficulty !== currentDifficulty) {
+    if (!difficultyChangedOnce) {
+      // Show the confirmation dialog only once
+      const confirmChange = confirm(
+        '⚠️ You are changing the difficulty! All progress will be lost. 🗑️\nDo you want to continue?'
+      );
+
+      if (confirmChange) {
+        difficultyChangedOnce = true; // Set the flag to true
+        currentDifficulty = selectedDifficulty; // Update the current difficulty
+        currentQuestion = 0; // Reset the quiz
+        currentSegment = 0; // Reset the current segment
+        askedCountries = []; // Reset the asked countries
+        initializeProgressBar(); // Reset the progress bar
+        updateDifficultyContainerColor(selectedDifficulty); // Update the background color
+        loadQuestion(); // Reload the first question with the new difficulty
+      } else {
+        // User canceled
+        difficultySelect.value = currentDifficulty; // Revert to the previous difficulty
+      }
+    } else {
+      // If the confirmation dialog has already been shown, just update the difficulty
+      currentDifficulty = selectedDifficulty;
+      currentQuestion = 0; // Reset the quiz
+      askedCountries = []; // Reset the asked countries
+      currentSegment = 0; // Reset the current segment
+      initializeProgressBar(); // Reset the progress bar
+      updateDifficultyContainerColor(selectedDifficulty); // Update the background color
+      loadQuestion(); // Reload the first question with the new difficulty
+    }
+  }
+});
+
+// Function to update the background color of the #difficulty-container
+function updateDifficultyContainerColor(difficulty) {
+  const difficultyContainer = document.getElementById('difficulty-container');
+  switch (difficulty) {
+    case 'easy':
+      difficultyContainer.style.backgroundColor = 'green';
+      break;
+    case 'medium':
+      difficultyContainer.style.backgroundColor = 'yellow';
+      difficultyContainer.style.color = 'black'; // Change text color to black for better visibility
+      break;
+    case 'hard':
+      difficultyContainer.style.backgroundColor = 'orange';
+      break;
+    case 'extreme':
+      difficultyContainer.style.backgroundColor = 'red';
+      break;
+    default:
+      difficultyContainer.style.backgroundColor = 'transparent'; // Default color
+  }
+}
+
+gameModeSelect.addEventListener('change', () => {
+  currentGameMode = gameModeSelect.value;
+
+  const difficultySelect = document.getElementById('difficulty-select');
+  const mediumOption = difficultySelect.querySelector('option[value="medium"]');
+
+  if (currentGameMode === 'multiple-choice') {
+    // Add medium option if it is not already present
+    if (!mediumOption) {
+      const newMediumOption = document.createElement('option');
+      newMediumOption.value = 'medium';
+      newMediumOption.textContent = 'Medium';
+      difficultySelect.appendChild(newMediumOption);
+    }
+    optionsContainer.style.display = 'flex';
+    inputContainer.style.display = 'none';
+  } else if (currentGameMode === 'input') {
+    // Remove medium option
+    if (mediumOption) difficultySelect.removeChild(mediumOption);
+
+    optionsContainer.style.display = 'none';
+    inputContainer.style.display = 'block';
+  }
+
+  currentQuestion = 0; // Reset the quiz
+  loadQuestion(); // Reload the first question
+});
+
+    // Utility function to shuffle an array
+    function shuffleArray(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    // Generate a random quiz question without duplicates
+ 
+// Generate a random quiz question without duplicates
+function generateQuestion() {
+  const remainingCountries = filteredCountries.filter(
+    (country) => !askedCountries.includes(country.name)
+  );
+
+  if (remainingCountries.length === 0) {
+    congratsMessage.style.display = 'block';
+    return null; // No more questions
+  }
+
+  // Shuffle the remaining countries
+  const shuffledCountries = shuffleArray(remainingCountries);
+
+  let correctCountry;
+
+  // Select a flag based on the current difficulty
+  if (currentDifficulty === 'easy' || currentDifficulty === 'medium') {
+    // Prioritize prominence: big -> medium -> small
+    correctCountry =
+      shuffledCountries.find((country) => country.prominence === 'big') ||
+      shuffledCountries.find((country) => country.prominence === 'medium') ||
+      shuffledCountries.find((country) => country.prominence === 'small');
+  } else {
+    // For hard, extreme, or any unknown difficulty: pick random
+    correctCountry =
+      shuffledCountries[Math.floor(Math.random() * shuffledCountries.length)];
+  }
+
+  askedCountries.push(correctCountry.name); // Mark this country as asked
+
+  let otherCountries = filteredCountries.filter(
+    (country) => country.name !== correctCountry.name
+  );
+
+  // Restrict options to the same continent for "medium" and "hard" modes
+  if (currentDifficulty === 'medium' || currentDifficulty === 'hard') {
+    otherCountries = otherCountries.filter(
+      (country) => country.continent === correctCountry.continent
+    );
+  }
+
+  // Generate incorrect options
+  const incorrectOptions = shuffleArray(otherCountries).slice(0, 3);
+  const options = shuffleArray([correctCountry, ...incorrectOptions]);
+
+  // Add or remove the "grey" class for extreme mode
+  const slices = document.querySelectorAll('.wrapper');
+  slices.forEach((slice) => {
+    if (currentDifficulty === 'extreme') {
+      slice.classList.add('grey');
+    } else {
+      slice.classList.remove('grey');
+    }
+  });
+
+  return {
+    flagUrl: correctCountry.flagUrl,
+    correct: correctCountry.name,
+    options: options.map((country) => country.name),
+  };
+}
+
+// Function to normalize country names (removes accents, hyphens, spaces, etc.)
+function normalizeCountryName(name) {
+  return name
+    .normalize('NFD') // Normalize to decompose accents
+    .replace(/[\u0300-\u036f]/g, '') // Remove accents
+    .replace(/[-\s']/g, '') // Remove hyphens, spaces, and apostrophes
+    .toLowerCase(); // Convert to lowercase
+}
+
+// Updated input validation
+countryInput.addEventListener('input', () => {
+  const userAnswer = normalizeCountryName(countryInput.value.trim());
+
+  // Get the correct country name and its variations
+  const validAnswers = countryMappings[currentCorrectAnswer]
+    ? [currentCorrectAnswer, ...countryMappings[currentCorrectAnswer]]
+    : [currentCorrectAnswer]; // Include the normal country name
+
+  // Normalize all valid answers
+  const normalizedValidAnswers = validAnswers.map(normalizeCountryName);
+
+  // Check if the normalized user input matches any normalized valid answer
+  const isCorrect = normalizedValidAnswers.includes(userAnswer);
+
+  if (isCorrect) {
+    countryInput.classList.add('correct');
+    countryInput.classList.remove('incorrect');
+    correctCount++;
+    updateProgressBar(true); // Update progress bar for correct answer
+
+    // Remove the "grey" class from all slices
+    const slices = document.querySelectorAll('.wrapper');
+    slices.forEach((slice) => slice.classList.remove('grey'));
+
+    setTimeout(() => {
+      currentQuestion++;
+      loadQuestion();
+    }, 1000); // Load the next question after 1 second
+  } else {
+    countryInput.classList.remove('correct');
+  }
+});
+
+let giveUpCount = 0; // Counter for "Give Up" button clicks
+
+giveUpButton.addEventListener('click', () => {
+  giveUpCount++; // Increment the counter
+  console.log(`Give Up button clicked ${giveUpCount} times`); // Log the count (optional)
+
+  incorrectCount++;
+  updateProgressBar(false); // Update progress bar for incorrect answer
+  countryInput.value = currentCorrectAnswer; // Display the correct answer in the input field
+
+  // Remove the "grey" class from all slices
+  const slices = document.querySelectorAll('.wrapper');
+  slices.forEach((slice) => slice.classList.remove('grey'));
+
+  countryInput.classList.add('incorrect'); // Highlight the input as incorrect
+
+  setTimeout(() => {
+    currentQuestion++;
+    loadQuestion(); // Load the next question after a short delay
+  }, 2000); // Delay to allow the user to see the correct answer
+});
+
+
+// Load a question
+function loadQuestion() {
+  if (currentQuestion >= totalQuestions || askedCountries.length === filteredCountries.length) {
+    congratsMessage.style.display = 'block';
+    return;
+  }
+
+  const question = generateQuestion();
+  if (!question) return; // No more questions
+
+  wrapper.style.backgroundImage = `url("${question.flagUrl}")`;
+
+  if (currentGameMode === 'multiple-choice') {
+    optionsContainer.innerHTML = '';
+    question.options.forEach((option) => {
+      const btn = document.createElement('button');
+      btn.textContent = option;
+      btn.addEventListener('click', () =>
+        handleOptionClick(btn, question.correct)
+      );
+      optionsContainer.appendChild(btn);
+    });
+  } else if (currentGameMode === 'input') {
+    countryInput.value = ''; // Clear the input field
+    countryInput.classList.remove('correct', 'incorrect'); // Reset input styles
+    currentCorrectAnswer = question.correct; // Store the correct answer for validation
+  }
+}
+function initializeProgressBar() {
+  const progressContainer = document.getElementById('progress-container');
+  progressContainer.innerHTML = ''; // Clear any existing segments
+
+  // Dynamically create segments based on the length of the filteredCountries array
+  const totalSegments = filteredCountries.length;
+
+  for (let i = 0; i < totalSegments; i++) {
+    const segment = document.createElement('div');
+    segment.classList.add('progress-segment');
+    progressContainer.appendChild(segment);
+  }
+}
+
+// Update the progress bar for correct or incorrect answers
+function updateProgressBar(isCorrect) {
+  const segments = document.querySelectorAll('.progress-segment');
+  if (currentSegment < totalCountries) {
+    if (isCorrect) {
+      segments[currentSegment].classList.add('green');
+    } else {
+      segments[currentSegment].classList.add('red');
+    }
+    currentSegment++; // Move to the next segment
+  }
+
+  // Check if all countries have been answered
+  if (currentSegment === totalCountries) {
+    const congratsMessage = document.getElementById('congrats-message');
+    congratsMessage.style.display = 'block';
+    congratsMessage.textContent = `Congratulations! You answered ${correctCount} out of ${totalCountries} questions correctly!`;
+
+    const retryContainer = document.getElementById('retry-container');
+    retryContainer.style.display = 'block'; // Show the retry button
+  }
+}
+
+document.getElementById('retry-button').addEventListener('click', () => {
+  // Reset variables
+  currentQuestion = 0;
+  correctCount = 0;
+  incorrectCount = 0;
+  currentSegment = 0;
+  askedCountries = [];
+  difficultyChangedOnce = false; // Reset the difficulty change flag
+  currentCorrectAnswer = ''; // Clear the current correct answer
+
+  // Reset progress bar
+  initializeProgressBar();
+
+  // Hide the congratulations message and retry button
+  document.getElementById('congrats-message').style.display = 'none';
+  document.getElementById('retry-container').style.display = 'none';
+
+  // Reset input field and styles (for input mode)
+  countryInput.value = '';
+  countryInput.classList.remove('correct', 'incorrect');
+
+  // Reload the first question
+  loadQuestion();
+});
+
+  let currentCorrectAnswer = ''; // Variable to store the correct answer for input mode
+
+// Handle option click: mark selection and load next question after 2 seconds
+function handleOptionClick(button, correctAnswer) {
+  const buttons = document.querySelectorAll('#options-container button');
+  buttons.forEach(btn => btn.disabled = true); // Disable all buttons after selection
+
+  if (button.textContent === correctAnswer) {
+    button.style.backgroundColor = 'green';
+    button.style. boxShadow = '0 5px 0 #006400'; // Add shadow effect
+    correctCount++;
+    updateProgressBar(true); // Update progress bar for correct answer
+
+    // Remove the "grey" class from all slices
+    const slices = document.querySelectorAll('.wrapper');
+    slices.forEach((slice) => slice.classList.remove('grey'));
+  } else {
+    button.style.backgroundColor = 'red';
+    button.style. boxShadow = '0 5px 0 #8B0000'; // Add shadow effect
+    // Remove the "grey" class from all slices
+    const slices = document.querySelectorAll('.wrapper');
+    slices.forEach((slice) => slice.classList.remove('grey'));
+    buttons.forEach(btn => {
+      if (btn.textContent === correctAnswer) {
+        btn.style.backgroundColor = 'green'; // Highlight the correct answer
+        btn.style. boxShadow = '0 5px 0 #006400'; // Add shadow effect
+      }
+    });
+    incorrectCount++;
+    updateProgressBar(false); // Update progress bar for incorrect answer
+  }
+
+  currentQuestion++;
+  setTimeout(loadQuestion, 2000); // Load the next question after 2 seconds
+}
+    // Handle input submission
+    function handleInputSubmit(correctAnswer) {
+      const userAnswer = countryInput.value.trim();
+      if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+        alert('Correct!');
+      } else {
+        alert(`Wrong! The correct answer was ${correctAnswer}.`);
+      }
+      currentQuestion++;
+      loadQuestion();
+    }
+    function filterCountries() {
+  const selectedContinent = continentSelect.value;
+
+  if (selectedContinent === 'all') {
+    filteredCountries = countries; // Show all countries
+  } else {
+    filteredCountries = countries.filter(
+      (country) => country.continent.toLowerCase() === selectedContinent.toLowerCase()
+    );
+  }
+
+  // Update totalQuestions and totalCountries based on the filtered list
+  totalQuestions = filteredCountries.length;
+  totalCountries = filteredCountries.length;
+
+  // Reset the quiz
+  currentQuestion = 0;
+  askedCountries = []; // Clear the list of asked countries
+  currentSegment = 0; // Reset the progress bar
+  initializeProgressBar(); // Reinitialize the progress bar
+  loadQuestion(); // Load the first question with the new filter
+}
+    // Add event listener to the continent select dropdown
+    continentSelect.addEventListener('change', filterCountries);
+
+    // Start the quiz by loading the first question
+    loadQuestion();
+    // Initialize the progress bar when the page loads
+initializeProgressBar();
+  </script>
+
 </body>
 </html>

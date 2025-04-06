@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flag Animation</title>
+  <style>
+    /* Reset and base styles */
+    *, *::before {
+      margin: 0;
+      padding: 0;
+      box-sizing: inherit;
+    }
+    html {
+      height: 100%;
+      box-sizing: border-box;
+    }
+    body {
+      height: 100%;
+      background: #ECEFF1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 700px;
+      overflow: hidden;
+    }
+    .wrapper {
+      position: relative;
+      width: 360px; /* 24 * 15px */
+      height: 180px; /* 15 * 24/2 */
+      transform: rotateY(20deg) skew(5deg);
+      transform-style: preserve-3d;
+      background-image: url("https://flags.fmcdn.net/data/flags/w580/in.png");
+      background-size: 0; /* hide background */
+      background-position: -200% -200%;
+    }
+    .wrapper::before {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 7.5px;
+      height: 360px;
+      background: gold;
+      left: 7px;
+    }
+    .s {
+      position: absolute;
+      transform-style: preserve-3d;
+      left: 14px; /* 15px - 1px */
+      width: 15px;
+      height: 100%;
+      transform-origin: 0 0;
+      background-repeat: no-repeat;
+      background-size: 360px 100%;
+      transform: translateZ(0.0001px) rotateY(14.1176470588deg); /* 24 / 1.7 ≈ 14.1176 */
+      background-image: inherit;
+    }
+    /* Animation for slices */
+    @keyframes w {
+      to {
+        transform: translateZ(0.0001px) rotateY(-14.1176470588deg);
+      }
+    }
+    /* Individual slice animation delays */
+    /* We'll generate this dynamically later */
+  </style>
+</head>
+<body>
+
+<div class="wrapper" id="flag-wrapper">
+</div>
+
+<script>
+  const wrapper = document.getElementById('flag-wrapper');
+  const n = 24;
+  // Generate the nested slices
+  let elem = '';
+  for (let i = 0; i < n; i++) {
+    elem += `<div class="s s${i}">`;
+  }
+  elem += '</div>'.repeat(n);
+
+  wrapper.innerHTML = elem;
+
+  // Create the animation delays dynamically
+  const styleSheet = document.createElement("style");
+  let styles = '';
+  for (let i = 1; i <= n; i++) {
+    styles += `
+      .s${i} {
+        background-position-x: -${i * 15}px;
+        animation: w 1s ${i * 0.08}s ease-in-out infinite alternate;
+      }
+    `;
+  }
+  styleSheet.innerHTML = styles;
+  document.head.appendChild(styleSheet);
+</script>
+
+</body>
+</html>
