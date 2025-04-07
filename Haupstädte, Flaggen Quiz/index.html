@@ -1262,38 +1262,42 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-      const progressBar = document.getElementById('progress-bar');
-      const progressText = document.getElementById('progress-text');
+  const progressBar = document.getElementById('progress-bar');
+  const progressText = document.getElementById('progress-text');
 
-      // Register the Service Worker
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/service-worker.js').then((registration) => {
-          console.log('Service Worker registered');
-        }).catch((error) => {
-          console.error('Service Worker registration failed:', error);
-        });
+  // Register the Service Worker (ensure it's at the root of your project)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js').then((registration) => {
+      console.log('Service Worker registered');
+    }).catch((error) => {
+      console.error('Service Worker registration failed:', error);
+    });
 
-        // Listen for cache progress messages
-        navigator.serviceWorker.addEventListener('message', (event) => {
-          if (event.data && event.data.type === 'CACHE_PROGRESS') {
-            const { loaded, total } = event.data;
-            const progress = Math.round((loaded / total) * 100);
-            progressBar.style.width = progress + '%';
-            progressText.textContent = progress + '%';
-            
-            if (progress >= 100) {
-              setTimeout(() => {
-                document.getElementById('loader').style.opacity = 0;
-                setTimeout(() => {
-                  document.getElementById('loader').style.display = 'none';
-                  document.getElementById('app').style.display = 'block';
-                }, 300);
-              }, 300);
-            }
-          }
-        });
+    // Listen for cache progress messages from the Service Worker
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'CACHE_PROGRESS') {
+        const { loaded, total } = event.data;
+
+        // Calculate and update progress bar
+        const progress = Math.round((loaded / total) * 100);
+        progressBar.style.width = progress + '%';
+        progressText.textContent = progress + '%';
+
+        // When the cache is fully loaded, hide the loader and show the app
+        if (progress >= 100) {
+          setTimeout(() => {
+            document.getElementById('loader').style.opacity = 0;
+            setTimeout(() => {
+              document.getElementById('loader').style.display = 'none';
+              document.getElementById('app').style.display = 'block';
+            }, 300);  // Delay to ensure opacity transition finishes
+          }, 300);  // Delay before fading out the loader
+        }
       }
     });
+  }
+});
+
 </script>
 <script data-goatcounter="https://petershaw.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
