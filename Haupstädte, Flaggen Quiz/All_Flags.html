@@ -196,7 +196,7 @@
 }
 #difficulty-container select{
     padding: 8px;
-    font-size: 20px;
+    font-size: inherit;
     font-weight: bold;
     border-radius: 6px;
     border: 1px solid #ccc;
@@ -212,7 +212,7 @@
 }
 #game-mode-container select{
     padding: 8px;
-    font-size: 20px;
+    font-size: inherit;
     font-weight: bold;
     border-radius: 6px;
     border: 1px solid #ccc;
@@ -401,6 +401,9 @@
         font-size: 16px;
         padding: 10px;
     }
+    #hide {
+        display: none; /* Hide the "Select" text on smaller screens */
+    }
 
 }
 
@@ -413,7 +416,7 @@
 
     
     <div id="difficulty-container">
-        <label for="difficulty-select">Select Difficulty:</label>
+        <label for="difficulty-select"><span id="hide">Select</span> Difficulty:</label>
         <select id="difficulty-select">
           <option value="easy">Easy</option>
           <option value="medium">Medium</option>
@@ -425,7 +428,7 @@
       <h1>Flag Quiz</h1>
   <!-- Add a game mode selection dropdown -->
   <div id="game-mode-container">
-    <label for="game-mode-select">Select Game Mode:</label>
+    <label for="game-mode-select"><span id="hide">Select</span> Game Mode:</label>
     <select id="game-mode-select">
       <option value="multiple-choice">Multiple Choice</option>
       <option value="input">Input</option>
