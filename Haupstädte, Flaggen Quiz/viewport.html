@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Size Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            text-align: center;
+            background: #f0f0f0;
+        }
+        #size-info {
+            font-size: 24px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="size-info">
+        Loading screen size...
+    </div>
+
+    <script>
+        const sizeInfo = document.getElementById('size-info');
+
+        function updateSize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            sizeInfo.innerHTML = `
+                <strong>Viewport Size:</strong><br>${width}px × ${height}px
+            `;
+        }
+
+        // Update when page loads
+        window.addEventListener('load', updateSize);
+
+        // Update when window resizes
+        window.addEventListener('resize', updateSize);
+    </script>
+
+</body>
+</html>
