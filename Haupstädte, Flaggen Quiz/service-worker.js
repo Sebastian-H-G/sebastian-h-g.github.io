@@ -1,4 +1,4 @@
-const CACHE_NAME = 'geo-quiz-cache-v6'; // 🔥 Updated version (v6)
+const CACHE_NAME = 'geo-quiz-cache-v6';
 const urlsToCache = [
   '/',  
   'index.html',
@@ -67,72 +67,73 @@ const urlsToCache = [
   'offline.html' // Ensure you have an offline fallback page
 ];
 
-// ** Install & Precache Critical Files with PROGRESS **
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
       let loaded = 0;
-
+      const total = urlsToCache.length;
+      
+      // Cache each asset one by one and send progress updates
       for (const url of urlsToCache) {
         try {
           await cache.add(url);
           loaded++;
-          // 📨 Send progress update to all pages
+          // Send a progress update to all clients
           const clients = await self.clients.matchAll();
           clients.forEach(client => {
             client.postMessage({
               type: 'CACHE_PROGRESS',
               loaded,
-              total: urlsToCache.length
+              total
             });
           });
         } catch (err) {
           console.error('Failed to cache', url, err);
         }
       }
+      
+      // After all assets have been processed, send a complete message
+      const clients = await self.clients.matchAll();
+      clients.forEach(client => {
+        client.postMessage({ type: 'CACHE_COMPLETE' });
+      });
     })()
   );
 });
 
-// ** Cleanup Old Caches **
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
-        cacheNames.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))
+        cacheNames.filter((name) => name !== CACHE_NAME)
+          .map((name) => caches.delete(name))
       );
     })
   );
   self.clients.claim();
 });
 
-// ** Fetch & Dynamic Caching for JS, CSS, Images **
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-
-      return fetch(event.request)
-        .then((response) => {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-
-          // Cache JavaScript, CSS, and images dynamically
-          if (['script', 'style', 'image'].includes(event.request.destination)) {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
-          }
-
+      if (cachedResponse) return cachedResponse;
+      
+      return fetch(event.request).then((response) => {
+        if (!response || response.status !== 200 || response.type !== 'basic') {
           return response;
-        })
-        .catch(() => caches.match('offline.html'));
+        }
+        
+        // Dynamically cache JS, CSS, and images
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseClone);
+        });
+        return response;
+      }).catch(() => caches.match('offline.html'));
     })
   );
 });
