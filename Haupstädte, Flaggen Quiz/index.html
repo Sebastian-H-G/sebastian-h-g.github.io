@@ -1224,14 +1224,14 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Service Worker registration failed:', error);
       });
 
+    // Listen for cache progress messages
     navigator.serviceWorker.addEventListener('message', (event) => {
-      console.log('Service Worker message received:', event.data); // Debug log
       if (event.data && event.data.type === 'CACHE_PROGRESS') {
         const { loaded, total } = event.data;
         const progress = Math.round((loaded / total) * 100);
         progressBar.style.width = progress + '%';
         progressText.textContent = progress + '%';
-        console.log(`Progress: ${progress}%`); // Debug log
+
         if (progress >= 100) {
           setTimeout(() => {
             document.getElementById('loader').style.opacity = 0;
@@ -1242,9 +1242,15 @@ document.addEventListener('DOMContentLoaded', () => {
           }, 300);
         }
       }
+
+      // Show alert when all files are cached
+      if (event.data && event.data.type === 'CACHE_COMPLETE') {
+        alert('All resources have been cached!');
+      }
     });
   }
 });
+
 
 </script>
 <script data-goatcounter="https://petershaw.goatcounter.com/count"
