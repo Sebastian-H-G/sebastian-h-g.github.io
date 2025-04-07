@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Test your knowledge of world flags with our interactive quiz!">
 
   <title>Flag Quiz</title>
@@ -30,6 +30,7 @@
       overflow-x: hidden;
       align-items: center;
       perspective: 70000px;
+
     }
     h1 {
       font-size: 4em;
@@ -644,6 +645,7 @@
     "Kosovo": ["Kosovo"],
     "Kuwait": ["Kuwait"],
     "Cayman Islands": ["Kaimaninseln"],
+    "Cyprus": ["Zypern"],
     "Kazakhstan": ["Kasachstan"],
     "Laos": ["Laos"],
     "Lebanon": ["Libanon"],
@@ -724,6 +726,7 @@
     "French Southern and Antarctic Lands": ["Französische Süd- und Antarktisgebiete", "Französische Süd und Antarktisgebiete"],
     "Togo": ["Togo"],
     "Thailand": ["Thailand"],
+    "Philippines": ["Philippinen"],
     "Tajikistan": ["Tadschikistan"],
     "Tokelau": ["Tokelau"],
     "Timor-Leste": ["Osttimor", "Timor Leste", "East Timor", "Timor"],
@@ -2156,6 +2159,7 @@ giveUpButton.addEventListener('click', () => {
   incorrectCount++;
   updateProgressBar(false); // Update progress bar for incorrect answer
   countryInput.value = currentCorrectAnswer; // Display the correct answer in the input field
+  
 
   // Remove the "grey" class from all slices
   const slices = document.querySelectorAll('.wrapper');
@@ -2166,10 +2170,18 @@ giveUpButton.addEventListener('click', () => {
   setTimeout(() => {
     currentQuestion++;
     loadQuestion(); // Load the next question after a short delay
+    countryInput.focus(); // Focus the input field again
   }, 2000); // Delay to allow the user to see the correct answer
 });
 
-
+document.addEventListener('keydown', (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key === 'g') {
+    if (currentGameMode === 'input') { // Only trigger in input mode
+      event.preventDefault(); // Prevent default browser behavior
+      giveUpButton.click(); // Simulate a click on the "Give Up" button
+    }
+  }
+});
 // Load a question
 function loadQuestion() {
   if (currentQuestion >= totalQuestions || askedCountries.length === filteredCountries.length) {
