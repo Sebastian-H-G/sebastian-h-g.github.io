@@ -1211,8 +1211,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </script>
 <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const progressBar = document.getElementById('progress-bar');
+  const progressText = document.getElementById('progress-text');
+
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/Haupst%C3%A4dte,%20Flaggen%20Quiz/service-worker.js') 
+    navigator.serviceWorker.register('/Haupst%C3%A4dte,%20Flaggen%20Quiz/service-worker.js')
       .then(() => {
         console.log('Service Worker registered');
       })
@@ -1220,20 +1224,27 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error('Service Worker registration failed:', error);
       });
 
-    // Listen for messages from the service worker
     navigator.serviceWorker.addEventListener('message', (event) => {
-      if (event.data) {
-        if (event.data.type === 'CACHE_PROGRESS') {
-          const { loaded, total } = event.data;
-          const progress = Math.round((loaded / total) * 100);
-          console.log(`Caching progress: ${progress}% (${loaded} of ${total})`);
-        } else if (event.data.type === 'CACHE_COMPLETE') {
-          console.log('Caching complete.');
-          alert('All assets have been downloaded and cached!');
+      console.log('Service Worker message received:', event.data); // Debug log
+      if (event.data && event.data.type === 'CACHE_PROGRESS') {
+        const { loaded, total } = event.data;
+        const progress = Math.round((loaded / total) * 100);
+        progressBar.style.width = progress + '%';
+        progressText.textContent = progress + '%';
+        console.log(`Progress: ${progress}%`); // Debug log
+        if (progress >= 100) {
+          setTimeout(() => {
+            document.getElementById('loader').style.opacity = 0;
+            setTimeout(() => {
+              document.getElementById('loader').style.display = 'none';
+              document.getElementById('app').style.display = 'block';
+            }, 300);
+          }, 300);
         }
       }
     });
   }
+});
 
 </script>
 <script data-goatcounter="https://petershaw.goatcounter.com/count"

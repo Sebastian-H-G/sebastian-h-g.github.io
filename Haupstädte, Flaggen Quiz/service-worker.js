@@ -73,35 +73,31 @@ self.addEventListener('install', (event) => {
     (async () => {
       const cache = await caches.open(CACHE_NAME);
       let loaded = 0;
-      const total = urlsToCache.length;
-      
-      // Cache each asset one by one and send progress updates
+
+      console.log('Installing Service Worker and starting caching...'); // Debug log
+
       for (const url of urlsToCache) {
         try {
           await cache.add(url);
           loaded++;
-          // Send a progress update to all clients
+          console.log(`Cached: ${url}`); // Debug log
+          // 📨 Send progress update to all pages
           const clients = await self.clients.matchAll();
           clients.forEach(client => {
             client.postMessage({
               type: 'CACHE_PROGRESS',
               loaded,
-              total
+              total: urlsToCache.length
             });
           });
         } catch (err) {
           console.error('Failed to cache', url, err);
         }
       }
-      
-      // After all assets have been processed, send a complete message
-      const clients = await self.clients.matchAll();
-      clients.forEach(client => {
-        client.postMessage({ type: 'CACHE_COMPLETE' });
-      });
     })()
   );
 });
+
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(

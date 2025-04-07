@@ -2,7 +2,7 @@
   "name": "Geo Quiz",
   "short_name": "GeoQuiz",
   "description": "A fun and educational geography quiz app.",
-  "start_url": "/",
+  "start_url": "https://sebastian-h-g.github.io./Haupst%C3%A4dte,%20Flaggen%20Quiz/index.html",
   "display": "standalone",
   "background_color": "#f0f2f5",
   "theme_color": "#002f5f",
@@ -63,7 +63,7 @@
       "name": "Start Capital Quiz",
       "short_name": "Capital Quiz",
       "description": "Test your knowledge of capital cities 🏢.",
-      "url": "/All_Capitals",
+      "url": "https://sebastian-h-g.github.io./Haupst%C3%A4dte,%20Flaggen%20Quiz/All_Capitals.html",
       "icons": [
         {
           "src": "Logos/Capital-180x180.webp",
@@ -76,7 +76,7 @@
       "name": "Start Flag Quiz",
       "short_name": "Flag Quiz",
       "description": "🏳️ Challenge yourself with flags from around the world.",
-      "url": "/All_Flags",
+      "url": "https://sebastian-h-g.github.io./Haupst%C3%A4dte,%20Flaggen%20Quiz/All_Flags.html",
       "icons": [
         {
           "src": "Logos/Flag-180x180.webp",
@@ -89,7 +89,7 @@
       "name": "Start Map Quiz",
       "short_name": "Map Quiz",
       "description": "Locate countries and cities on a map 🗺️.",
-      "url": "/Map_Quiz",
+      "url": "https://sebastian-h-g.github.io./Haupst%C3%A4dte,%20Flaggen%20Quiz/worldcountries.html",
       "icons": [
         {
           "src": "Logos/Map-180x180.webp",
