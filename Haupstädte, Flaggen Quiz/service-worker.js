@@ -1,20 +1,4 @@
 const CACHE_NAME = 'geo-quiz-cache-v6';
-const baseUrl = 'https://flags.fmcdn.net/data/flags/w580/';  // The base URL for flags
-const flagCodes = [
-  'af', 'al', 'dz', 'ad', 'ao', 'ag', 'ar', 'au', 'at', 'az', 'bs', 'bh', 'bd', 'bb', 'by', 'be', 'bz', 
-  'bj', 'bt', 'bo', 'ba', 'bw', 'br', 'bn', 'bg', 'bf', 'bi', 'kh', 'cm', 'ca', 'cv', 'cf', 'td', 'cl', 'cn', 
-  'co', 'km', 'cg', 'cd', 'ck', 'cr', 'ci', 'hr', 'cu', 'cy', 'cz', 'dk', 'dj', 'dm', 'do', 'ec', 'eg', 'sv', 'gq', 
-  'er', 'ee', 'et', 'fi', 'fr', 'ga', 'gm', 'ge', 'de', 'gh', 'gr', 'gd', 'gt', 'gn', 'gw', 'gy', 'ht', 'va', 'hn', 
-  'hu', 'is', 'in', 'id', 'ir', 'iq', 'ie', 'il', 'it', 'jm', 'jp', 'jo', 'kz', 'ke', 'ki', 'kr', 'kw', 'kg', 'la', 
-  'lv', 'lb', 'ls', 'lr', 'ly', 'li', 'lt', 'lu', 'mk', 'mg', 'mw', 'my', 'mv', 'ml', 'mt', 'mh', 'mr', 'mu', 'mx', 
-  'fm', 'md', 'mc', 'mn', 'me', 'ma', 'mz', 'mm', 'na', 'nr', 'np', 'nl', 'nz', 'ni', 'ne', 'ng', 'nu', 'no', 'om', 
-  'pk', 'pw', 'pa', 'pg', 'py', 'pe', 'ph', 'pl', 'pt', 'qa', 'ro', 'ru', 'rw', 'kn', 'lc', 'vc', 'ws', 'sm', 'st', 
-  'sa', 'sn', 'rs', 'sc', 'sl', 'sg', 'sk', 'si', 'sb', 'so', 'za', 'es', 'lk', 'sd', 'sr', 'sz', 'se', 'ch', 'sy', 
-  'tw', 'tj', 'tz', 'th', 'tl', 'tg', 'to', 'tt', 'tn', 'tr', 'tm', 'tv', 'ug', 'ua', 'ae', 'gb', 'us', 'uy', 'uz', 
-  'vu', 've', 'vn', 'eh', 'ye', 'zm', 'zw'
-];
-
-// Generate URLs for the flag images
 const urlsToCache = [
   '/',  
   'index.html',
@@ -87,6 +71,7 @@ const urlsToCache = [
   'europe.html',
   'north-america.html',
   'south-america.html',
+  'https://flags.fmcdn.net/data/flags/w580/ag.png',
   'oceania.html',
   'oceania.js',
   'africa.js',
@@ -107,13 +92,6 @@ const urlsToCache = [
   'offline.html' // Ensure you have an offline fallback page
 ];
 
-
-// Loop through the flag codes and create URLs to cache
-flagCodes.forEach(code => {
-  urlsToCache.push(`${baseUrl}${code}.png`);
-});
-
-// ** Install & Precache Critical Files with PROGRESS **
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
@@ -125,7 +103,7 @@ self.addEventListener('install', (event) => {
         try {
           await cache.add(url);
           loaded++;
-          // Send progress update to all pages
+          // Send progress to the page
           const clients = await self.clients.matchAll();
           clients.forEach(client => {
             client.postMessage({
@@ -138,11 +116,18 @@ self.addEventListener('install', (event) => {
           console.error('Failed to cache', url, err);
         }
       }
+
+      // Send a final message when caching is complete
+      const clients = await self.clients.matchAll();
+      clients.forEach(client => {
+        client.postMessage({
+          type: 'CACHE_COMPLETE'
+        });
+      });
     })()
   );
 });
 
-// ** Cleanup Old Caches **
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -154,31 +139,25 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// ** Fetch & Dynamic Caching for JS, CSS, Images **
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-
-      return fetch(event.request)
-        .then((response) => {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-
-          // Cache JavaScript, CSS, and images dynamically
-          if (['script', 'style', 'image'].includes(event.request.destination)) {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
-          }
-
+      if (cachedResponse) return cachedResponse;
+      
+      return fetch(event.request).then((response) => {
+        if (!response || response.status !== 200 || response.type !== 'basic') {
           return response;
-        })
-        .catch(() => caches.match('offline.html'));
+        }
+        
+        // Dynamically cache JS, CSS, and images
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseClone);
+        });
+        return response;
+      }).catch(() => caches.match('offline.html'));
     })
   );
 });
