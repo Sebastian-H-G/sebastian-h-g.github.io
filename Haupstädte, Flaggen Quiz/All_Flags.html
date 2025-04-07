@@ -2,10 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dynamic Flag Quiz</title>
+  <title>Flag Quiz</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <script>
+   window.onload = function() {
+  // Force the detection to always return true for iPhone
+  function isRealIPhone() {
+    return true; // Forcefully treat the device as an iPhone for testing
+  }
+  
+  // DOM optimization + Slide + Fade-in
+  function showDiv(div) {
+    div.style.display = 'block';
+    setTimeout(() => {
+      div.style.opacity = '1';
+      div.style.transform = 'translateY(0)';
+    }, 50);
+  }
+  
+  if (isRealIPhone()) {
+    // If it's treated as iPhone
+    const iphoneDiv = document.getElementById('onlyOniPhone');
+    showDiv(iphoneDiv);
+
+    const normalDiv = document.getElementById('notOniPhone');
+    normalDiv.parentNode.removeChild(normalDiv);
+    
+    document.getElementById('quiz-container').classList.add('is-iphone');
+  } else {
+    // If not treated as iPhone (this won't run now)
+    const normalDiv = document.getElementById('notOniPhone');
+    showDiv(normalDiv);
+
+    const iphoneDiv = document.getElementById('onlyOniPhone');
+    iphoneDiv.parentNode.removeChild(iphoneDiv);
+    
+    document.getElementById('quiz-container').classList.remove('is-iphone');
+  }
+};
+  </script>
 <style>
     /* Provided Flag Animation Styles (exactly as given) */
     *, *::before {
@@ -48,7 +85,7 @@
       display: block;
       position: absolute;
       width: 10px;
-      height: 520px;
+      height: 400px;
       background: gold;
       left: 7px;
     }
@@ -92,6 +129,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: center;
       flex-wrap: wrap;
       padding-left: 60px;
       gap: 10px;
@@ -157,7 +195,30 @@
      width: 100vw;
      font-weight: bold;
      font-family: 'Montserrat', sans-serif;
-     margin: 2% auto;
+     margin: 2% auto 5% auto;
+}
+#answer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+}
+#quiz-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    margin: 20px auto 100px auto;
+}
+#quiz-container.is-iphone {
+    flex-direction: column; /* Stack elements vertically on iPhone */
+    align-items: center; /* Center items horizontally */
+    padding: 0; /* Remove padding for iPhone view */
 }
 
 #difficulty-container {
@@ -206,6 +267,7 @@
     box-shadow: 0 5px 0 #b30bb0; /* A darker shade of #dc16f2 */
     transition: background-color 0.3s;
 }
+
 #retry-button:active {
     outline: none;
     transform: translateY(5px) scale(0.98);
@@ -233,11 +295,13 @@
 }
 #progress-container {
   display: flex;
-  width: 70%;
+  width: 100%;
+  align-items: flex-end;
+  margin: 50px 10px 0 10px;
+  bottom: 0; 
   height: 30px;
   background-color: #e0e0e0;
   border-radius: 10px;
-  margin: 50px auto 20px auto;
   overflow: hidden;
 }
 .progress-segment {
@@ -278,9 +342,9 @@
   margin-right: 0;
    left: 0;
   overflow: hidden;
-bottom: 0;
+  bottom: 0;
   display: flex;
-  margin-top: 50px;
+  margin-top: 40px;
   margin-bottom: 0;
   justify-content: center;
 }
@@ -354,11 +418,18 @@ bottom: 0;
   animation: animateBg 8s linear infinite;
   z-index: 0; /* Ensure it's behind the footer content */
 }
+#notOniPhone, #onlyOniPhone {
+      display: none;
+      opacity: 0;
+      transform: translateY(50px); /* start a bit lower */
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
   </style>
 </head>
 <body>
    
-<div class="three-wrapper">
+<div id="notOniPhone">
+  <div class="three-wrapper">
 
     
     <div id="difficulty-container">
@@ -384,32 +455,101 @@ bottom: 0;
 </div>
   <!-- Quiz Container: Flag Animation and Options -->
   <div id="quiz-container">
+
     <div class="wrapper" id="flag-wrapper"></div>
-    <div id="options-container"></div>
-    <div id="input-container" style="display: none;">
-        <input type="text" id="country-input" placeholder="Enter country name" />
-        <button id="give-up-button">Give Up</button>
-      </div>
-      <div id="filter-container">
-        <label for="continent-select">Select Continent:</label>
-        <select id="continent-select">
-          <option value="all">All</option>
-          <option value="africa">Africa</option>
-          <option value="asia">Asia</option>
-          <option value="europe">Europe</option>
-          <option value="oceania">Oceania</option>
-          <option value="south america">South America</option>
-          <option value="north america">North America</option>
-        </select>
-      </div>
+
+    <div id="answer-container">
+      <div id="options-container"></div>
+      <div id="input-container" style="display: none;">
+          <input type="text" id="country-input" placeholder="Enter country name" />
+          <button id="give-up-button">Give Up</button>
+        </div>
+        <div id="filter-container">
+          <label for="continent-select">Select Continent:</label>
+          <select id="continent-select">
+            <option value="all">All</option>
+            <option value="africa">Africa</option>
+            <option value="asia">Asia</option>
+            <option value="europe">Europe</option>
+            <option value="oceania">Oceania</option>
+            <option value="south america">South America</option>
+            <option value="north america">North America</option>
+          </select>
+        </div>
+        <div id="progress-container">
+
+        </div>
+    </div>
+
   </div>
   <div id="congrats-message" style="display: none;"></div>
 <div id="retry-container" style="display: none; margin-top: 20px;">
   <button id="retry-button">Retry</button>
 </div>
-  <div id="progress-container">
+</div>
+
+<div id="onlyOniPhone">
+  <div class="three-wrapper">
+
+    
+    <div id="difficulty-container">
+        <label for="difficulty-select">Select Difficulty:</label>
+        <select id="difficulty-select">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+          <option value="extreme">Extreme</option>
+        </select>
+      </div>
+
+      <h1>Flag Quiz</h1>
+  <!-- Add a game mode selection dropdown -->
+  <div id="game-mode-container">
+    <label for="game-mode-select">Select Game Mode:</label>
+    <select id="game-mode-select">
+      <option value="multiple-choice">Multiple Choice</option>
+      <option value="input">Input</option>
+    </select>
+  </div>
+
+</div>
+  <!-- Quiz Container: Flag Animation and Options -->
+  <div id="quiz-container">
+
+    <div class="wrapper" id="flag-wrapper"></div>
+
+    <div id="answer-container">
+      <div id="options-container"></div>
+      <div id="input-container" style="display: none;">
+          <input type="text" id="country-input" placeholder="Enter country name" />
+          <button id="give-up-button">Give Up</button>
+        </div>
+        <div id="filter-container">
+          <label for="continent-select">Select Continent:</label>
+          <select id="continent-select">
+            <option value="all">All</option>
+            <option value="africa">Africa</option>
+            <option value="asia">Asia</option>
+            <option value="europe">Europe</option>
+            <option value="oceania">Oceania</option>
+            <option value="south america">South America</option>
+            <option value="north america">North America</option>
+          </select>
+        </div>
+        <div id="progress-container">
+
+        </div>
+    </div>
 
   </div>
+  <div id="congrats-message" style="display: none;"></div>
+<div id="retry-container" style="display: none; margin-top: 20px;">
+  <button id="retry-button">Retry</button>
+</div>
+
+</div>
+
+
   <footer class="footer" data-aos="fade-up">
     <div class="footer-container">
       <div class="footer-logo">
