@@ -6,52 +6,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
-  <script>
-window.onload = function() {
-// More precise iPhone detection
-function isRealIPhone() {
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  
-  const isIPhone = /iPhone/.test(ua);
-  const isIPad = /iPad/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  const isIPod = /iPod/.test(ua);
-
-  return isIPhone && !isIPad && !isIPod;
-}
-
-  // DOM optimization + Slide + Fade-in
-  function showDiv(div) {
-    div.style.display = 'block';
-    setTimeout(() => {
-      div.style.opacity = '1';
-      div.style.transform = 'translateY(0)';
-    }, 50);
-  }
-
-  if (isRealIPhone()) {
-    // If it's treated as iPhone
-    const iphoneDiv = document.getElementById('onlyOniPhone');
-    showDiv(iphoneDiv);
-    
-    // Hide the desktop version (don't remove it, just hide it)
-    const normalDiv = document.getElementById('notOniPhone');
-    normalDiv.style.display = 'none';  // Hide the desktop version
-    
-    document.body.classList.add('is-iphone');
-  } else {
-    // If not treated as iPhone (this won't run now)
-    const normalDiv = document.getElementById('notOniPhone');
-    showDiv(normalDiv);
-    
-    // Hide the iPhone version (don't remove it, just hide it)
-    const iphoneDiv = document.getElementById('onlyOniPhone');
-    iphoneDiv.style.display = 'none';  // Hide the iPhone version
-    
-    document.body.classList.remove('is-iphone');
-  }
-};
-</script>
-  </script>
 <style>
     /* Provided Flag Animation Styles (exactly as given) */
     *, *::before {
