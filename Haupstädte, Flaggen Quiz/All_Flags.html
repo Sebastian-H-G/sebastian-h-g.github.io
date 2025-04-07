@@ -376,11 +376,10 @@
   animation: animateBg 8s linear infinite;
   z-index: 0; /* Ensure it's behind the footer content */
 }
-#notOniPhone, #onlyOniPhone {
-      display: none;
-      opacity: 0;
-      transform: translateY(50px); /* start a bit lower */
-      transition: opacity 0.8s ease, transform 0.8s ease;
+
+
+    @media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
+        
     }
   </style>
 </head>
