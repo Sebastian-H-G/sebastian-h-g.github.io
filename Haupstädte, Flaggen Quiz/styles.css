@@ -360,6 +360,9 @@ height: auto;
     display: block;
     margin-top: 20px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
     padding: 10px 20px;
     background-color: #007BFF; /* Change as needed */
     color: white;
@@ -368,6 +371,23 @@ height: auto;
     text-decoration: none;
     transition: transform 0.5s ease, box-shadow 0.3s ease;
     box-shadow: 0 10px 0 #0056b3;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.3;
+  transform: scale(0);
+  animation: ripple-animation 700ms ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(6);
+    opacity: 0;
+  }
 }
 
 /* Active state */

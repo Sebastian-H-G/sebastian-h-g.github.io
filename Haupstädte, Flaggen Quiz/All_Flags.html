@@ -103,12 +103,31 @@
       gap: 10px;
       margin-top: 30px;
     }
-
+    button {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
 
     #options-container button:active {
 	transform: translateY(4px) scale(0.98);
-	box-shadow: 0 3px 0 #D98A1D;
+	box-shadow: 0 4px 0 #D98A1D;
 }
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    transform: scale(0);
+    animation: ripple-animation 600ms linear;
+    pointer-events: none;
+  }
+
+  @keyframes ripple-animation {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
 #country-input.correct {
     border: 2px solid green;
     background-color: #d4edda;
@@ -2297,7 +2316,7 @@ function handleOptionClick(button, correctAnswer) {
     buttons.forEach(btn => {
       if (btn.textContent === correctAnswer) {
         btn.style.backgroundColor = 'green'; // Highlight the correct answer
-        btn.style. boxShadow = '0 5px 0 #006400'; // Add shadow effect
+        btn.style. boxShadow = '0 7px 0 #006400'; // Add shadow effect
       }
     });
     incorrectCount++;
@@ -2348,6 +2367,27 @@ function handleOptionClick(button, correctAnswer) {
     // Initialize the progress bar when the page loads
 initializeProgressBar();
   </script>
+<script>
+  document.addEventListener('click', function(e) {
+    const target = e.target;
+    if (target.tagName.toLowerCase() === 'button') {
+      const rect = target.getBoundingClientRect();
+      const circle = document.createElement('span');
+      circle.classList.add('ripple');
+
+      const size = Math.max(rect.width, rect.height) * 0.5; // smaller ripple
+      circle.style.width = circle.style.height = size + 'px';
+      circle.style.left = (e.clientX - rect.left - size / 2) + 'px';
+      circle.style.top = (e.clientY - rect.top - size / 2) + 'px';
+
+      target.appendChild(circle);
+
+      setTimeout(() => {
+        circle.remove();
+      }, 600); // match the animation time
+    }
+  });
+</script>
 
 </body>
 </html>

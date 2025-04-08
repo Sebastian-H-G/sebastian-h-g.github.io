@@ -153,6 +153,28 @@ border-radius: 7px;
 	box-shadow: 0 3px 0 #8A9B81;
 	outline: none;
 }
+
+button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.3;
+  transform: scale(0);
+  animation: ripple-animation 1s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(6);
+    opacity: 0;
+  }
+}
 footer {
   text-align: center;
   padding: 20px;
@@ -200,6 +222,10 @@ footer {
   text-align: center;
   margin-top: 10px;
   color: rgba(255, 255, 255, 0.8);
+}
+.correct {
+    background-color: #4CAF50; /* Green */
+    color: white;
 }
 #confettiCanvas {
     position: absolute;
@@ -1166,34 +1192,89 @@ function setupQuiz() {
     
 function checkAnswer(selectedCountry) {
     const countryPath = document.getElementById(currentCountry);
+    const buttons = optionsDiv.querySelectorAll("button");
+
+    // Disable all buttons after an answer is clicked
+    buttons.forEach(button => button.disabled = true);
 
     if (selectedCountry === currentCountry) {
-        feedback.textContent = "Correct!";
-        feedback.style.color = "green";
-        countryPath.style.fill = "green"; // Turn green for correct answer
+
+
+        // Highlight the correct button in green
+        buttons.forEach(button => {
+            if (button.textContent === currentCountry) {
+                button.style.backgroundColor = "green";
+                button.style.color = "white";
+                button.style.boxShadow = "0 5px 0 #006400";
+            }
+        });
+
+        countryPath.style.fill = "green"; // Turn the country green for correct answer
         score++;
     } else {
-        feedback.textContent = `Wrong! The correct answer was ${currentCountry}.`;
-        feedback.style.color = "red";
-        countryPath.style.fill = "red"; // Turn red for incorrect answer
+
+
+        // Highlight the selected (wrong) button in red
+        buttons.forEach(button => {
+            if (button.textContent === selectedCountry) {
+                button.style.backgroundColor = "red";
+                button.style.boxShadow = "0 5px 0 #8B0000";
+                button.style.color = "white";
+            }
+            // Highlight the correct button in green
+            if (button.textContent === currentCountry) {
+                button.style.backgroundColor = "green";
+                button.style.boxShadow = "0 5px 0 #006400";
+            }
+        });
+
+        countryPath.style.fill = "red"; // Turn the country red for incorrect answer
     }
 
     scoreSpan.textContent = score;
 
-    // Reset the color back to original after 3 seconds
+    // Wait 2 seconds before showing the next question
     setTimeout(() => {
+        // Reset button colors and enable them
+        buttons.forEach(button => {
+            button.style.backgroundColor = "";
+            button.style.color = "";
+            button.disabled = false;
+        });
+
+        // Reset the country color back to original
         if (countryPath) {
             countryPath.style.fill = "#c0c0c0"; // Reset to original color
         }
-    }, 3000);
 
-    // Wait 2 seconds before showing the next question
-    setTimeout(setupQuiz, 2000);
+        setupQuiz(); // Load the next question
+    }, 2000);
 }
     
         // Initialize the quiz
         setupQuiz();
     </script>
-    
+    <script>
+     document.addEventListener('click', function(e) {
+       const target = e.target.closest('button');
+       if (!target) return;
+   
+       const rect = target.getBoundingClientRect();
+       const circle = document.createElement('span');
+       circle.classList.add('ripple');
+   
+       const size = Math.max(rect.width, rect.height) * 0.6; // adjustable size
+       circle.style.width = circle.style.height = size + 'px';
+       circle.style.left = (e.clientX - rect.left - size / 2) + 'px';
+       circle.style.top = (e.clientY - rect.top - size / 2) + 'px';
+   
+       target.appendChild(circle);
+   
+       setTimeout(() => {
+         circle.remove();
+       }, 1000); // match animation time
+     });
+   </script>
+   
 </body>
 </html>

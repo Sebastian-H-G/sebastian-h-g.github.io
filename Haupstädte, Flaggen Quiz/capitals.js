@@ -5,17 +5,6 @@ let score = 0;
 let highscore = localStorage.getItem('highscore') || 0;
 document.getElementById('highscore').innerText = highscore;
 
-const map = L.map('map').setView([20, 0], 2);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
-
-let currentHighlight = null;
-const hintButton = document.getElementById('show-hint');
-
-// Initially hide the map
-map.getContainer().style.display = 'none';
-
 // Fetch country data from the API
 async function fetchCountriesData() {
   try {
@@ -55,9 +44,9 @@ function askQuestion() {
   const countries = getRandomCountries(continent);
   const correctCountry = countries[Math.floor(Math.random() * countries.length)];
 
-  // Set flag for the correct country, only if the mode is "Find Capital by Country"
+  // Set flag for the correct country if the mode is "countryToCapital" or "flagToCapital"
   const flagImg = document.getElementById('flag');
-  if (mode === 'countryToCapital') {
+  if (mode === 'countryToCapital' || mode === 'flagToCapital') {
     flagImg.src = correctCountry.flag;
     flagImg.style.display = 'block';  // Show flag
   } else {
@@ -68,8 +57,11 @@ function askQuestion() {
   options.push(correctCountry);
   options = options.sort(() => 0.5 - Math.random());
 
+  // Set the question text based on the mode
   if (mode === 'capitalToCountry') {
     document.getElementById('question-text').innerText = `Which country has the capital ${correctCountry.capital}?`;
+  } else if (mode === 'flagToCapital') {
+    document.getElementById('question-text').innerText = `What is the capital of this country?`;
   } else {
     document.getElementById('question-text').innerText = `What is the capital of ${correctCountry.name}?`;
   }
@@ -80,31 +72,10 @@ function askQuestion() {
     button.onclick = () => checkAnswer(option, correctCountry);
   });
 
-  // Reset feedback message and hide map on next question
+  // Reset feedback message
   document.getElementById('feedback').innerText = '';
-  map.getContainer().style.display = 'none';
-
-  // Highlight country border
-  highlightCountry(correctCountry);
-
-  // Disable the hint button until a new question is shown
-  hintButton.disabled = false;
 }
 
-function highlightCountry(country) {
-  if (currentHighlight) {
-    map.removeLayer(currentHighlight);
-  }
-
-  currentHighlight = L.circle([country.latlng[0], country.latlng[1]], {
-    color: 'red',
-    fillColor: '#f03',
-    fillOpacity: 0.5,
-    radius: 50000
-  }).addTo(map);
-
-  map.setView([country.latlng[0], country.latlng[1]], 4);
-}
 // Select all buttons with the class "quiz-link"
 const buttons = document.querySelectorAll(".option-button");
 
@@ -227,14 +198,32 @@ function createConfetti() {
 }
 function checkAnswer(selectedOption, correctCountry) {
   const mode = document.getElementById('mode').value;
-  const isCorrect = (mode === 'capitalToCountry' && selectedOption.name === correctCountry.name) ||
-                    (mode === 'countryToCapital' && selectedOption.capital === correctCountry.capital);
+  const isCorrect = 
+    (mode === 'capitalToCountry' && selectedOption.name === correctCountry.name) ||
+    (mode === 'countryToCapital' && selectedOption.capital === correctCountry.capital) ||
+    (mode === 'flagToCapital' && selectedOption.capital === correctCountry.capital);
 
   const feedbackElement = document.getElementById('feedback');
+  const buttons = document.querySelectorAll('.option-button');
+
+  // Highlight the correct and selected buttons
+  buttons.forEach(button => {
+    const buttonText = button.innerText;
+    if (
+      (mode === 'capitalToCountry' && buttonText === correctCountry.name) ||
+      ((mode === 'countryToCapital' || mode === 'flagToCapital') && buttonText === correctCountry.capital)
+    ) {
+      button.classList.add('correct'); // Add green highlight to the correct button
+    } else if (
+      buttonText === 
+      (mode === 'capitalToCountry' ? selectedOption.name : selectedOption.capital)
+    ) {
+      button.classList.add('wrong'); // Add red highlight to the wrong button
+    }
+    button.disabled = true; // Disable all buttons after an answer is selected
+  });
 
   if (isCorrect) {
-    feedbackElement.innerText = "🎉 Correct! 🎉";
-    feedbackElement.className = 'feedback-correct'; // Add correct class
     score++;
     if (score > highscore) {
       highscore = score;
@@ -242,40 +231,24 @@ function checkAnswer(selectedOption, correctCountry) {
       createConfetti();
     }
   } else {
-    feedbackElement.innerHTML = ` Wrong! 😔 The correct answer is: ${mode === 'capitalToCountry' ? correctCountry.name : correctCountry.capital}`;
-    feedbackElement.className = 'feedback-wrong'; // Add wrong class
     score = 0;
   }
 
   document.getElementById('score').innerText = score;
   document.getElementById('highscore').innerText = highscore;
 
-  // Reset map visibility for the next question
-  map.getContainer().style.display = 'none';
-
-  // Disable the hint button after the answer is checked
-  hintButton.disabled = true;
-
   // Hide feedback message after 1 second
   setTimeout(() => {
     feedbackElement.innerText = ''; // Clear the text
     feedbackElement.className = ''; // Remove all classes
-  }, 1000); // 1 second delay
-
-  // Ask the next question after feedback and transition effects
-  setTimeout(askQuestion, 1000); // 1 second total time before the next question
+    buttons.forEach(button => {
+      button.classList.remove('correct', 'wrong'); // Remove highlight classes
+      button.disabled = false; // Re-enable buttons for the next question
+    });
+    askQuestion(); // Ask the next question
+  }, 2000); // 2 second delay
 }
 
-
-
-hintButton.addEventListener('click', () => {
-  const mapContainer = map.getContainer();
-  if (mapContainer.style.display === 'none') {
-    mapContainer.style.display = 'block';
-  } else {
-    mapContainer.style.display = 'none';
-  }
-});
 
 // Add event listeners to reload question on continent or mode change
 document.getElementById('continent').addEventListener('change', askQuestion);

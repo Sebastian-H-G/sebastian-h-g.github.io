@@ -145,6 +145,37 @@ box-shadow: 0 5px 0 #c0a500;
     justify-content: space-around;
 }
 
+button.wrong {
+  background-color: red;
+  box-shadow: 0 5px 0 #8B0000; /* A darker shade of red */
+}
+button.correct {
+  background-color: green;
+  box-shadow: 0 5px 0 #006400; /* A darker shade of green */
+}
+
+button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.3;
+  transform: scale(0);
+  animation: ripple-animation 700ms ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(6);
+    opacity: 0;
+  }
+}
+
 .option-button {
     background-color: #F2A216;
   box-shadow: 0 7px 0 #D98A1D; /* A darker shade of #F2A216 */

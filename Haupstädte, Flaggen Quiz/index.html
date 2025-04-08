@@ -168,6 +168,28 @@
     font-weight: bold;
     display: none; /* Initially hidden */
 }
+button {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: currentColor; /* Ripple takes button text color */
+    opacity: 0.3; /* Start opacity */
+    transform: scale(0);
+    animation: ripple-animation 700ms ease-out;
+    pointer-events: none;
+  }
+
+  @keyframes ripple-animation {
+    to {
+      transform: scale(6); /* bigger spread */
+      opacity: 0;
+    }
+  }
 </style>
 </head>
 <body class="page-exit">
@@ -1249,6 +1271,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+<script>
+    document.addEventListener('click', function(e) {
+      const target = e.target.closest('.quiz-link');
+      if (!target) return; // If not clicking on a quiz-link, do nothing
+  
+      const rect = target.getBoundingClientRect();
+      const circle = document.createElement('span');
+      circle.classList.add('ripple');
+  
+      const size = Math.max(rect.width, rect.height) * 0.6; // smaller ripple
+      circle.style.width = circle.style.height = size + 'px';
+      circle.style.left = (e.clientX - rect.left - size / 2) + 'px';
+      circle.style.top = (e.clientY - rect.top - size / 2) + 'px';
+  
+      target.appendChild(circle);
+  
+      setTimeout(() => {
+        circle.remove();
+      }, 700); // match animation time
+    });
+  </script>
+  
+  
 <script data-goatcounter="https://petershaw.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
