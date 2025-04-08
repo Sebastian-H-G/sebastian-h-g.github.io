@@ -75,7 +75,6 @@ function askQuestion() {
   // Reset feedback message
   document.getElementById('feedback').innerText = '';
 }
-
 // Select all buttons with the class "quiz-link"
 const buttons = document.querySelectorAll(".option-button");
 
