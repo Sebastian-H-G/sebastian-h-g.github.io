@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .difficulty {
+            margin-bottom: 20px;
+        }
+
+        .difficulty button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .difficulty button:hover {
+            background-color: #0056b3;
+        }
+
+        .game-board {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sequence {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-area input {
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .input-area button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .input-area button:hover {
+            background-color: #218838;
+        }
+
+        .give-up {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #dc3545;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .give-up:hover {
+            background-color: #c82333;
+        }
+
+        .result {
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+
+        .timer {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Memory Game</h1>
+    <div class="difficulty">
+        <button onclick="startGame(3)">Easy</button>
+        <button onclick="startGame(5)">Medium</button>
+        <button onclick="startGame(7)">Hard</button>
+    </div>
+    <div class="game-board">
+        <div class="sequence"></div>
+        <div class="timer"></div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Enter the sequence">
+            <button onclick="checkSequence()">Submit</button>
+            <button class="give-up" onclick="giveUp()">Give Up</button>
+        </div>
+        <div class="result"></div>
+    </div>
+
+    <script>
+        let sequence = [];
+        let difficulty = 0;
+        let countdown;
+        let timerInterval;
+
+        function startGame(level) {
+            difficulty = level;
+            sequence = generateSequence(difficulty);
+            document.querySelector('.sequence').textContent = `Memorize this: ${sequence.join(' ')}`;
+            document.querySelector('.game-board').style.display = 'flex';
+            document.querySelector('.result').textContent = '';
+            countdown = 10; // Set countdown time in seconds
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+
+            setTimeout(() => {
+                document.querySelector('.sequence').textContent = 'Enter the sequence below:';
+            }, 3000);
+        }
+
+        function generateSequence(length) {
+            const seq = [];
+            for (let i = 0; i < length; i++) {
+                seq.push(Math.floor(Math.random() * 10));
+            }
+            return seq;
+        }
+
+        function updateTimer() {
+            const timerDiv = document.querySelector('.timer');
+            if (countdown > 0) {
+                timerDiv.textContent = `Time left: ${countdown} seconds`;
+                countdown--;
+            } else {
+                clearInterval(timerInterval);
+                timerDiv.textContent = 'Time is up!';
+                document.querySelector('.result').textContent = 'Time is up! You lost!';
+                document.querySelector('.result').style.color = 'red';
+            }
+        }
+
+        function checkSequence() {
+        clearInterval(timerInterval);
+        const userInput = document.getElementById('userInput').value.trim();
+        const resultDiv = document.querySelector('.result');
+
+        // Validate input: ensure it's a sequence of numbers separated by spaces
+        if (!/^\d+( \d+)*$/.test(userInput)) {
+            resultDiv.textContent = 'Invalid input. Please enter numbers separated by spaces.';
+            resultDiv.style.color = 'red';
+            return;
+        }
+
+        const userSequence = userInput.split(' ').map(Number);
+
+        if (JSON.stringify(userSequence) === JSON.stringify(sequence)) {
+            resultDiv.textContent = 'Correct! Well done!';
+            resultDiv.style.color = 'green';
+        } else {
+            resultDiv.textContent = 'Incorrect. Try again!';
+            resultDiv.style.color = 'red';
+        }
+    }
+
+        function giveUp() {
+            clearInterval(timerInterval);
+            document.querySelector('.result').textContent = `You gave up! The correct sequence was: ${sequence.join(' ')}`;
+            document.querySelector('.result').style.color = 'orange';
+        }
+    </script>
+</body>
+</html>
