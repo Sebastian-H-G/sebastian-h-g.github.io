@@ -10,7 +10,7 @@ overflow-x: hidden;
   background-color: #f5f5dc;
 }
 .quiz-container {
-		  padding: 20px;
+  padding: 20px;
 }
 .heading {
 	font-family: 'Montserrat', sans-serif;
@@ -101,11 +101,11 @@ padding:15px;
 	transition: transform 0.1s ease-in-out;
 }
 #mode:focus{
-	outline: none;
+outline: none;
 }
 #mode:active {
-		transform: translateY(5px);
-		box-shadow: 0 3px 0 #9AAB95;
+	transform: translateY(5px);
+	box-shadow: 0 3px 0 #9AAB95;
 }
 .score, .highscore {
 	font-size: 18px;
