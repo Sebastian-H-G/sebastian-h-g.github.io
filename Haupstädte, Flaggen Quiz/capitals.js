@@ -25,6 +25,7 @@ async function fetchCountriesData() {
   }
 }
 
+
 function getRandomCountries(continent) {
   if (continent === 'all') {
     return countriesData;
@@ -36,6 +37,7 @@ function getRandomCountries(continent) {
     return countriesData.filter(country => country.region === continent);
   }
 }
+
 
 function askQuestion() {
   const continent = document.getElementById('continent').value;
@@ -75,7 +77,6 @@ function askQuestion() {
   // Reset feedback message
   document.getElementById('feedback').innerText = '';
 }
-
 // Select all buttons with the class "quiz-link"
 const buttons = document.querySelectorAll(".option-button");
 

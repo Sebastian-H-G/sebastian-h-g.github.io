@@ -1,3 +1,7 @@
+html {
+	overflow-x: hidden;
+}
+
 body {
 	-webkit-overflow-scrolling: touch;
 	-webkit-user-select: none; /* Prevent text selection */
@@ -5,12 +9,12 @@ body {
   font-family: Arial, sans-serif;
   text-align: center;
   margin: 0;
-      overflow: auto;
-	overflow-x: hidden;
+overflow: auto;
+overflow-x: hidden;
   background-color: #f5f5dc;
 }
 .quiz-container {
-		  padding: 20px;
+  padding: 20px;
 }
 .heading {
 	font-family: 'Montserrat', sans-serif;
@@ -101,11 +105,11 @@ padding:15px;
 	transition: transform 0.1s ease-in-out;
 }
 #mode:focus{
-	outline: none;
+outline: none;
 }
 #mode:active {
-		transform: translateY(5px);
-		box-shadow: 0 3px 0 #9AAB95;
+	transform: translateY(5px);
+	box-shadow: 0 3px 0 #9AAB95;
 }
 .score, .highscore {
 	font-size: 18px;
@@ -128,7 +132,7 @@ box-shadow: 0 5px 0 #c0a500;
   z-index: 100;
 }
 .flag {
-  width: 200px;
+  width: 400px;
   height: auto;
   margin: 10px auto 10px auto;
 }
