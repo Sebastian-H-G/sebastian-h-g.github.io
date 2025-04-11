@@ -50,6 +50,8 @@
             margin: 20px 0;
         }
         .retry {
+            position: relative;
+            overflow: hidden;
             background: #ff9800;
             border: none;
             padding: 15px 30px;
@@ -57,10 +59,9 @@
             font-weight: bold;
             font-size: 20px;
             cursor: pointer;
+            transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
             border-radius: 5px;
-            transition: 0.3s;
             box-shadow: 0 7px 0 #c77803;
-            transition: 0.1s;
         }
         .retry:active {
             transform: translateY(7px);
@@ -69,6 +70,103 @@
         .retry:hover {
             background: #e68900;
         }
+        .ripple {
+        position: absolute;
+        border-radius: 50%;
+        transform: scale(0);
+        animation: ripple-animation 0.8s ease-out; /* Slower animation for better visibility */
+        background: rgba(255, 255, 255, 0.8); /* Increase opacity for better visibility */
+        pointer-events: none;
+    }
+    @keyframes ripple-animation {
+        to {
+            transform: scale(6); /* Larger ripple for more prominence */
+            opacity: 0;
+        }
+    }
+    .play-game {
+        position: relative;
+        overflow: hidden;
+        background: #ff9800;
+        border: none;
+        padding: 10px 15px;
+        color: white;
+        font-weight: bold;
+        font-size: inherit;
+        cursor: pointer;
+        border-radius: 5px;
+        margin: 10px;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    .modal-content {
+        background: white;
+        color: black;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        position: relative;
+    }
+    .modal-content h2 {
+        margin-bottom: 20px;
+    }
+    .modal-content a {
+        display: block;
+        margin: 10px 0;
+        color: #1e3c72;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .modal-content a:hover {
+        text-decoration: underline;
+    }
+    .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+    }
+    .close-modal:hover {
+        color: red;
+    }
+    .play-game-container {
+        display: flex;
+        position: fixed;
+        bottom: 20px;
+        left: -500px; /* Start off-screen */
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        padding: 10px 30px;
+        font-size: 17px;
+        gap: 20px;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        transition: left 1s ease-in-out; /* Smooth transition */
+    }
+    .play-game-container.visible {
+        left: 20px; /* Final position */
+    }
+    .play-game-container p {
+        margin: 0;
+        font-size: inherit;
+        color: #333;
+    }
     </style>
 </head>
 <body>
@@ -77,6 +175,76 @@
         <h1>You're Offline</h1>
         <p class="message">It looks like you lost connection. Check your internet and try again.</p>
         <button class="retry" onclick="location.reload()">Retry</button>
+        <div class="play-game-container">
+        <p class="message">Play a Game while you are waiting...</p>
+        <button class="play-game" id="playGameButton">Play</button>
+        </div>
+        
     </div>
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModalButton">&times;</span>
+            <h2>Choose a Game</h2>
+            <a href="../Game/2048.html">2048</a>
+            <a href="../Game/tower_builder.html">Tower Builder</a>
+            <a href="../Game/tic-tac-toe.html">Tic Tac Toe</a>
+            <a href="../Game/crossy_road.html">Crossy Road</a>
+            <a href="../Game/platform-game-engine.html">Platform Game engine</a>
+            <a href="../Game/Space-Shooter.html">Space-Shooter</a>
+            <a href="../Game/Jump'n Run.html">Jump'n Run</a>
+            <p>Please note that some games can only be played with keyboard.</p>
+        </div>
+    </div>
+    <script>
+        document.querySelector('.retry').addEventListener('click', function (e) {
+            const button = e.currentTarget;
+            const rect = button.getBoundingClientRect();
+            const ripple = document.createElement('span');
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            ripple.className = 'ripple';
+
+            button.appendChild(ripple);
+
+            ripple.addEventListener('animationend', () => {
+                ripple.remove();
+            });
+        });
+    </script>
+    <script>
+        const playGameButton = document.getElementById('playGameButton');
+        const gameModal = document.getElementById('gameModal');
+        const closeModalButton = document.getElementById('closeModalButton');
+    
+        // Open the modal when "Play a Game" button is clicked
+        playGameButton.addEventListener('click', () => {
+            gameModal.style.display = 'flex';
+        });
+    
+        // Close the modal when "X" button is clicked
+        closeModalButton.addEventListener('click', () => {
+            gameModal.style.display = 'none';
+        });
+    
+        // Close the modal when clicking outside the modal content
+        window.addEventListener('click', (e) => {
+            if (e.target === gameModal) {
+                gameModal.style.display = 'none';
+            }
+        });
+    </script>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const playGameContainer = document.querySelector('.play-game-container');
+                playGameContainer.classList.add('visible');
+            }, 1000); // Delay of 2 seconds
+        });
+    </script>
 </body>
 </html>
