@@ -17,6 +17,7 @@ const urlsToCache = [
   'Logos/Geography-32x32.webp',
   'Logos/Geography-48x48.webp',
   'Logos/Geography.webp',
+  'Logos/Geography.jpg',
   'Logos/Geography-57x57.webp',
   'Logos/Geography-72x72.webp',
   'Logos/Geography-114x114.webp',
