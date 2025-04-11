@@ -1,0 +1,21 @@
+{
+  "name": "Space Shooter",
+  "short_name": "Space Shooter",
+  "description": "A thrilling space shooter game.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "black",
+  "theme_color": "black",
+  "icons": [
+    {
+      "src": "Bilder/space_shooter-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "Bilder/space_shooter-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

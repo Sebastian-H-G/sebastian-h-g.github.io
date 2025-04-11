@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spelling Bee Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    #game { display: none; }
+    .letter-box {
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      text-align: center;
+      margin: 5px;
+      border: 2px solid #333;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 50px;
+      border-radius: 8px;
+    }
+    .input-hidden {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .shake {
+      animation: shake 0.5s;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+    }
+    .correct { background-color: #c8f7c5; transition: background-color 0.3s; }
+    .wrong { background-color: #f7c5c5; }
+    #timer { font-size: 24px; margin-bottom: 20px; }
+    #score { font-size: 20px; margin-bottom: 20px; }
+    #found-words {
+      margin-top: 20px;
+      text-align: left;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+<div id="language-select">
+  <h1>Select Language</h1>
+  <button onclick="startGame('en')">English</button>
+  <button onclick="startGame('es')">Spanish</button>
+  <button onclick="startGame('de')">German</button>
+  <button onclick="startGame('fr')">French</button>
+</div>
+
+<div id="game">
+  <div id="timer">Time: 60</div>
+  <div id="score">Score: 0</div>
+
+  <div id="boxes">
+    <div class="letter-box" id="box0"></div>
+    <div class="letter-box" id="box1"></div>
+    <div class="letter-box" id="box2"></div>
+    <div class="letter-box" id="box3"></div>
+    <div class="letter-box" id="box4"></div>
+  </div>
+
+  <input id="hidden-input" class="input-hidden" maxlength="5" autofocus />
+
+  <div id="found-words">
+    <h2>Words Found:</h2>
+    <ul id="found-words-list"></ul>
+  </div>
+</div>
+
+<script>
+// Flag to decide whether to use an online dictionary API for English only.
+const useDictionaryForEnglish = true;
+
+// Fallback local word lists for testing and for languages other than English.
+// Ideally, replace these with more complete word lists (e.g., loaded from external JSON files) for production use.
+const localWords = {
+  en: ["apple", "table", "chair", "plant", "grape", "bread", "stone"],
+  es: ["perro", "gatos", "flore", "mujer", "cielo", "verde", "calor"],
+  de: ["apfel", "tisch", "stuhl", "pflan", "traum", "brot", "stein"],
+  fr: ["pomme", "table", "chaud", "fleur", "ciel", "vert", "pain"]
+};
+
+let selectedLanguage = 'en';
+let score = 0;
+let timeLeft = 60;
+let timerInterval;
+let foundWords = [];
+
+function startGame(lang) {
+  selectedLanguage = lang;
+  document.getElementById('language-select').style.display = 'none';
+  document.getElementById('game').style.display = 'block';
+  document.getElementById('hidden-input').focus();
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  timeLeft--;
+  document.getElementById('timer').textContent = `Time: ${timeLeft}`;
+  if (timeLeft <= 0) {
+    clearInterval(timerInterval);
+    document.getElementById('hidden-input').disabled = true;
+    alert(`Time's up! Your score: ${score}`);
+  }
+}
+
+const input = document.getElementById('hidden-input');
+input.addEventListener('input', handleInput);
+document.body.addEventListener('click', () => input.focus());
+
+function handleInput() {
+  const value = input.value.toLowerCase();
+  // Update the boxes with each letter entered
+  for (let i = 0; i < 5; i++) {
+    document.getElementById(`box${i}`).textContent = value[i] || '';
+  }
+  
+  if (value.length === 5) {
+    if (selectedLanguage === 'en' && useDictionaryForEnglish) {
+      // Validate using the dictionary API (only for English)
+      checkWord(value);
+    } else {
+      // For languages other than English or dictionary turned off,
+      // fallback to checking against the local word list.
+      if (localWords[selectedLanguage].includes(value)) {
+        showCorrect(value);
+      } else {
+        showWrong();
+      }
+    }
+  }
+}
+
+function checkWord(word) {
+  const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+  fetch(url)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Word not found');
+      }
+    })
+    .then(data => { showCorrect(word); })
+    .catch(error => { showWrong(); });
+}
+
+function showCorrect(word) {
+  for (let i = 0; i < 5; i++) {
+    const box = document.getElementById(`box${i}`);
+    box.classList.add('correct');
+  }
+  score++;
+  document.getElementById('score').textContent = `Score: ${score}`;
+  foundWords.push(word);
+  updateFoundWords();
+  setTimeout(clearBoxes, 300);
+}
+
+function showWrong() {
+  for (let i = 0; i < 5; i++) {
+    const box = document.getElementById(`box${i}`);
+    box.classList.add('shake', 'wrong');
+  }
+  setTimeout(clearBoxes, 500);
+}
+
+function clearBoxes() {
+  for (let i = 0; i < 5; i++) {
+    const box = document.getElementById(`box${i}`);
+    box.textContent = '';
+    box.classList.remove('shake', 'correct', 'wrong');
+  }
+  input.value = '';
+  input.focus();
+}
+
+function updateFoundWords() {
+  const ul = document.getElementById('found-words-list');
+  ul.innerHTML = '';
+  foundWords.forEach(word => {
+    const li = document.createElement('li');
+    li.textContent = word;
+    ul.appendChild(li);
+  });
+}
+</script>
+
+</body>
+</html>
