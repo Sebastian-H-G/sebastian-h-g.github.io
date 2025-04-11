@@ -76,7 +76,7 @@ h1, p, .image-container, .progress .btn {
         }
 .progress {
     width: 90%; /* Ensures the progress bar doesn't stretch too far */
-    height: 100px; /* Thicker height for the progress bar container */
+    height: 20px !important; /* Thicker height for the progress bar container */
     background: #ddd;
     border-radius: 6px;
     margin: 20px 0;
@@ -287,7 +287,7 @@ h1, p, .image-container, .progress .btn {
 /* Media Queries for iPad */
 @media only screen and (max-width: 1573) and (min-height: 988) and (max-height: 1061px) and (orientation: portrait) {
  .progress {
-    height: 20px!important;
+    height: 20px;
  }
 }
 
@@ -346,6 +346,9 @@ h1, p, .image-container, .progress .btn {
     .geo {
         width: 50px; /* Adjust size based on parent container */
         height: 50px; /* Or set a height that maintains the aspect ratio */
+    }
+    .progress {
+        height: 19px; /* Adjust height for smaller screens */
     }
 }
 
