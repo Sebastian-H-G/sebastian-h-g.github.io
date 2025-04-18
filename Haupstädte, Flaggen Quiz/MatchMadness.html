@@ -47,31 +47,36 @@
 
     /* 2×5 grid */
     #board {
-      flex: 1;
-      display: grid;
-      margin: 50px;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(5, 1fr);
-      gap: 10px;
-      padding: 20px;
-      background: #fafafa;
-    }
-    .card {
-      background: white;
-      border: 2px solid transparent;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      user-select: none;
-      font-size: 2rem;
-      transition:
-        border-color 0.2s,
-        background 0.2s,
-        opacity 0.4s,
-        transform 0.4s;
-    }
+    flex: 1;
+    display: grid;
+    margin: 50px auto;
+    grid-template-columns: repeat(2, min-content);
+    grid-template-rows: repeat(5, min-content);
+    gap: 20px; /* Increase gap for better spacing */
+    padding: 20px;
+    background: #fafafa;
+    justify-content: center; /* Center the grid horizontally */
+    align-content: center; /* Center the grid vertically */
+  }
+
+  .card {
+    width: 150px; /* Fixed width */
+    height: 100px; /* Fixed height */
+    background: white;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    font-size: 1.5rem; /* Adjust font size */
+    transition:
+      border-color 0.2s,
+      background 0.2s,
+      opacity 0.4s,
+      transform 0.4s;
+  }
     .card.selected {
       border-color: #4285f4;
       background: rgba(66,133,244,0.1);
