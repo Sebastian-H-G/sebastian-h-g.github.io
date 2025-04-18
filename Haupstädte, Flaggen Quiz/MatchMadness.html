@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Match Madness: Countries & Capitals</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* Top bar */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background: #f0f0f0;
+    }
+    #progress-container {
+      flex: 1;
+      height: 10px;
+      background: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      position: relative;
+    }
+    #progress {
+      height: 100%;
+      width: 0%;
+      background: #6aafe6;
+      transition: width 0.3s ease;
+    }
+    .stop {
+      position: absolute; top: -3px;
+      width: 2px; height: 16px;
+      background: #999;
+    }
+    #timer {
+      width: 60px;
+      text-align: right;
+      margin-left: 20px;
+      font-size: 1rem;
+    }
+
+    /* 2×5 grid */
+    #board {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      gap: 10px;
+      padding: 20px;
+      background: #fafafa;
+    }
+    .card {
+      background: white;
+      border: 2px solid transparent;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      font-size: 1rem;
+      transition:
+        border-color 0.2s,
+        background 0.2s,
+        opacity 0.4s,
+        transform 0.4s;
+    }
+    .card.selected {
+      border-color: #4285f4;
+      background: rgba(66,133,244,0.1);
+    }
+    .card.correct {
+      border-color: #34a853;
+      background: rgba(52,168,83,0.1);
+    }
+    .card.wrong {
+      border-color: #ea4335;
+      background: rgba(234,67,53,0.1);
+    }
+    .hidden {
+      opacity: 0;
+      transform: scale(0.8);
+      pointer-events: none;
+    }
+
+    /* Checkpoint overlay */
+    #overlay {
+      position: absolute;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: white;
+      font-size: 1.2rem;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 10;
+    }
+    #overlay.show {
+      visibility: visible;
+      opacity: 1;
+    }
+    #overlay button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div id="progress-container">
+      <div id="progress"></div>
+      <!-- 10% stops -->
+      <div class="stop" style="left:20%;"></div>
+      <div class="stop" style="left:40%;"></div>
+      <div class="stop" style="left:60%;"></div>
+      <div class="stop" style="left:80%;"></div>
+    </div>
+    <div id="timer">00:00</div>
+  </div>
+  <div id="error-message" style="
+  display: none;
+  background: #ffdddd;
+  color: #900;
+  padding: 10px;
+  border: 1px solid #f00;
+  font-weight: bold;
+  margin: 10px auto;
+  max-width: 600px;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+"></div> 
+  <div id="board"></div>
+
+  <div id="overlay">
+    <div id="overlay-text"></div>
+    <button id="continue-btn">Continue</button>
+  </div>
+
+  <script>
+    (function(){
+      const allPairs = [
+  {
+    "id": 1,
+    "country": "France",
+    "capital": "Paris"
+  },
+  {
+    "id": 2,
+    "country": "Germany",
+    "capital": "Berlin"
+  },
+  {
+    "id": 3,
+    "country": "Italy",
+    "capital": "Rome"
+  },
+  {
+    "id": 4,
+    "country": "Spain",
+    "capital": "Madrid"
+  },
+  {
+    "id": 5,
+    "country": "Canada",
+    "capital": "Ottawa"
+  },
+  {
+    "id": 6,
+    "country": "Japan",
+    "capital": "Tokyo"
+  },
+  {
+    "id": 7,
+    "country": "Australia",
+    "capital": "Canberra"
+  },
+  {
+    "id": 8,
+    "country": "Brazil",
+    "capital": "Brasília"
+  },
+  {
+    "id": 9,
+    "country": "Russia",
+    "capital": "Moscow"
+  },
+  {
+    "id": 10,
+    "country": "India",
+    "capital": "New Delhi"
+  },
+  {
+    "id": 11,
+    "country": "Egypt",
+    "capital": "Cairo"
+  },
+  {
+    "id": 12,
+    "country": "Mexico",
+    "capital": "Mexico City"
+  },
+  {
+    "id": 13,
+    "country": "China",
+    "capital": "Beijing"
+  },
+  {
+    "id": 14,
+    "country": "Kenya",
+    "capital": "Nairobi"
+  },
+  {
+    "id": 15,
+    "country": "Sweden",
+    "capital": "Stockholm"
+  },
+  {
+    "id": 16,
+    "country": "Turkey",
+    "capital": "Ankara"
+  },
+  {
+    "id": 17,
+    "country": "Argentina",
+    "capital": "Buenos Aires"
+  },
+  {
+    "id": 18,
+    "country": "Norway",
+    "capital": "Oslo"
+  },
+  {
+    "id": 19,
+    "country": "Thailand",
+    "capital": "Bangkok"
+  },
+  {
+    "id": 20,
+    "country": "Greece",
+    "capital": "Athens"
+  },
+  {
+    "id": 21,
+    "country": "Afghanistan",
+    "capital": "Kabul"
+  },
+  {
+    "id": 22,
+    "country": "Albania",
+    "capital": "Tirana"
+  },
+  {
+    "id": 23,
+    "country": "Algeria",
+    "capital": "Algiers"
+  },
+  {
+    "id": 24,
+    "country": "Andorra",
+    "capital": "Andorra la Vella"
+  },
+  {
+    "id": 25,
+    "country": "Angola",
+    "capital": "Luanda"
+  },
+  {
+    "id": 26,
+    "country": "Antigua and Barbuda",
+    "capital": "Saint John's"
+  },
+  {
+    "id": 27,
+    "country": "Armenia",
+    "capital": "Yerevan"
+  },
+  {
+    "id": 28,
+    "country": "Austria",
+    "capital": "Vienna"
+  },
+  {
+    "id": 29,
+    "country": "Azerbaijan",
+    "capital": "Baku"
+  },
+  {
+    "id": 30,
+    "country": "Bahamas",
+    "capital": "Nassau"
+  },
+  {
+    "id": 31,
+    "country": "Bahrain",
+    "capital": "Manama"
+  },
+  {
+    "id": 32,
+    "country": "Bangladesh",
+    "capital": "Dhaka"
+  },
+  {
+    "id": 33,
+    "country": "Barbados",
+    "capital": "Bridgetown"
+  },
+  {
+    "id": 34,
+    "country": "Belarus",
+    "capital": "Minsk"
+  },
+  {
+    "id": 35,
+    "country": "Belgium",
+    "capital": "Brussels"
+  },
+  {
+    "id": 36,
+    "country": "Belize",
+    "capital": "Belmopan"
+  },
+  {
+    "id": 37,
+    "country": "Benin",
+    "capital": "Porto-Novo"
+  },
+  {
+    "id": 38,
+    "country": "Bhutan",
+    "capital": "Thimphu"
+  },
+  {
+    "id": 39,
+    "country": "Bolivia",
+    "capital": "Sucre"
+  },
+  {
+    "id": 40,
+    "country": "Bosnia and Herzegovina",
+    "capital": "Sarajevo"
+  },
+  {
+    "id": 41,
+    "country": "Botswana",
+    "capital": "Gaborone"
+  },
+  {
+    "id": 42,
+    "country": "Brunei",
+    "capital": "Bandar Seri Begawan"
+  },
+  {
+    "id": 43,
+    "country": "Bulgaria",
+    "capital": "Sofia"
+  },
+  {
+    "id": 44,
+    "country": "Burkina Faso",
+    "capital": "Ouagadougou"
+  },
+  {
+    "id": 45,
+    "country": "Burundi",
+    "capital": "Gitega"
+  }
+];
+    
+      // Validate pairs
+      allPairs.forEach((p, i) => {
+        if (!p.country || !p.capital) {
+          throw new Error(`Missing country or capital at index ${i}`);
+        }
+      });
+    
+      const totalMatches = allPairs.length;
+      const perRound = 5;
+      const checkpoints = [];
+      for (let i = 20; i <= totalMatches; i += 20) checkpoints.push(i);
+    
+      let remaining = shuffle([...allPairs]);
+      let countrySlots = Array(perRound).fill(null);
+      let capitalSlots = Array(perRound).fill(null);
+      let selected = [];
+      let matchedCount = 0;
+      let timestamps = [];
+      let timeSeconds = 0;
+      let timerInterval = null;
+    
+      const board = document.getElementById('board');
+    
+      function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+    
+      function fmtTime(s) {
+        const m = String(Math.floor(s / 60)).padStart(2, '0');
+        return `${m}:${String(s % 60).padStart(2, '0')}`;
+      }
+    
+      function startTimer() {
+        if (timerInterval) return;
+        timerInterval = setInterval(() => {
+          timeSeconds++;
+          document.getElementById('timer').textContent = fmtTime(timeSeconds);
+        }, 1000);
+      }
+    
+      function stopTimer() {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    
+      function updateProgress() {
+        document.getElementById('progress').style.width = `${matchedCount / totalMatches * 100}%`;
+      }
+    
+      function maybeCheckpoint() {
+        if (checkpoints.includes(matchedCount)) {
+          stopTimer();
+          document.getElementById('overlay-text').innerText = `${matchedCount} matches made,\n${totalMatches - matchedCount} to go.`;
+          document.getElementById('overlay').classList.add('show');
+        }
+      }
+    
+      document.getElementById('continue-btn').onclick = () => {
+        document.getElementById('overlay').classList.remove('show');
+        startTimer();
+      };
+    
+      function initGrid() {
+        for (let r = 0; r < perRound; r++) {
+          ['country', 'capital'].forEach(side => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.side = side;
+            card.dataset.row = r;
+            card.addEventListener('click', onCardClick);
+            board.appendChild(card);
+          });
+        }
+      }
+    
+      function setCardContent(card, text, id) {
+        card.textContent = text;
+        card.dataset.id = id;
+        card.classList.remove('hidden', 'correct', 'wrong', 'selected');
+        card.style.pointerEvents = '';
+      }
+    
+      function setCardEmpty(card) {
+        card.textContent = '';
+        delete card.dataset.id;
+        card.classList.add('hidden');
+        card.style.pointerEvents = '';
+      }
+    
+      function dealInitial() {
+        const picks = remaining.splice(0, perRound);
+        const capOrder = shuffle([...picks]);
+        for (let r = 0; r < perRound; r++) {
+          countrySlots[r] = picks[r];
+          capitalSlots[r] = capOrder[r];
+        }
+        Array.from(board.children).forEach(card => {
+          const r = +card.dataset.row;
+          const side = card.dataset.side;
+          if (side === 'country') {
+            setCardContent(card, countrySlots[r].country, countrySlots[r].id);
+          } else {
+            setCardContent(card, capitalSlots[r].capital, capitalSlots[r].id);
+          }
+        });
+        updateProgress();
+      }
+    
+      function onCardClick(e) {
+        const card = e.currentTarget;
+        if (!card.dataset.id) return;
+        startTimer();
+    
+        if (card.classList.contains('selected')) {
+          card.classList.remove('selected');
+          selected = selected.filter(c => c !== card);
+          return;
+        }
+    
+        const sameSide = selected.find(c => c.dataset.side === card.dataset.side);
+        if (sameSide) {
+          sameSide.classList.remove('selected');
+          selected = selected.filter(c => c !== sameSide);
+        }
+    
+        card.classList.add('selected');
+        selected.push(card);
+    
+        if (selected.length === 2 && selected[0].dataset.side !== selected[1].dataset.side) {
+          checkMatch();
+        }
+      }
+    
+      function flashWrong(cards) {
+        cards.forEach(c => {
+          c.classList.add('wrong');
+          setTimeout(() => c.classList.remove('wrong'), 400);
+        });
+      }
+    
+      function clearSelection() {
+        selected.forEach(c => c.classList.remove('selected'));
+        selected = [];
+        // Safety: ensure no card is stuck
+        Array.from(document.querySelectorAll('.card')).forEach(card => {
+          if (!card.classList.contains('correct')) {
+            card.style.pointerEvents = '';
+          }
+        });
+      }
+    
+      function checkMatch() {
+        const [a, b] = selected;
+        if (a.dataset.id === b.dataset.id) {
+          handleCorrect(a, b);
+        } else {
+          flashWrong([a, b]);
+        }
+        clearSelection();
+      }
+    
+      function handleCorrect(a, b) {
+        a.classList.add('correct');
+        b.classList.add('correct');
+        a.style.pointerEvents = 'none';
+        b.style.pointerEvents = 'none';
+    
+        const rowCountry = a.dataset.side === 'country' ? +a.dataset.row : +b.dataset.row;
+        const rowCapital = a.dataset.side === 'capital' ? +a.dataset.row : +b.dataset.row;
+    
+        const now = Date.now();
+        timestamps.push(now);
+        timestamps = timestamps.filter(t => now - t < 2000);
+        const fast = timestamps.length >= 3;
+        const delay = fast ? 100 : 300;
+    
+        const next = remaining.shift();
+        const countryCard = document.querySelector(`.card[data-side="country"][data-row="${rowCountry}"]`);
+        const capitalCard = document.querySelector(`.card[data-side="capital"][data-row="${rowCapital}"]`);
+    
+        if (next) {
+          let slots = [rowCountry, rowCapital];
+          if (fast) shuffle(slots);
+          const slotC = slots[0];
+          const slotK = slots[1];
+          countrySlots[slotC] = next;
+          capitalSlots[slotK] = next;
+    
+          setTimeout(() => {
+            a.classList.remove('correct');
+            b.classList.remove('correct');
+    
+            const newCountry = document.querySelector(`.card[data-side="country"][data-row="${slotC}"]`);
+            const newCapital = document.querySelector(`.card[data-side="capital"][data-row="${slotK}"]`);
+            setCardContent(newCountry, next.country, next.id);
+            setCardContent(newCapital, next.capital, next.id);
+            newCountry.style.pointerEvents = '';
+            newCapital.style.pointerEvents = '';
+          }, delay);
+        } else {
+          setTimeout(() => {
+            a.classList.remove('correct');
+            b.classList.remove('correct');
+            setCardEmpty(a);
+            setCardEmpty(b);
+            a.style.pointerEvents = '';
+            b.style.pointerEvents = '';
+          }, delay);
+        }
+    
+        setTimeout(() => {
+          matchedCount++;
+          updateProgress();
+          maybeCheckpoint();
+        }, delay + 50);
+      }
+    
+      initGrid();
+      dealInitial();
+    })();
+    </script>
+</body>
+</html>
