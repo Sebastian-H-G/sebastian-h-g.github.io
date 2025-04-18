@@ -49,6 +49,7 @@
     #board {
       flex: 1;
       display: grid;
+      margin: 50px;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(5, 1fr);
       gap: 10px;
@@ -64,7 +65,7 @@
       justify-content: center;
       cursor: pointer;
       user-select: none;
-      font-size: 1rem;
+      font-size: 2rem;
       transition:
         border-color 0.2s,
         background 0.2s,
@@ -117,6 +118,11 @@
       border-radius: 4px;
       cursor: pointer;
     }
+    #game-container {
+      margin: 20px;
+      height: 90vh;
+      width: 90vw;
+    }
   </style>
 </head>
 <body>
@@ -145,7 +151,6 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 "></div> 
   <div id="board"></div>
-
   <div id="overlay">
     <div id="overlay-text"></div>
     <button id="continue-btn">Continue</button>
