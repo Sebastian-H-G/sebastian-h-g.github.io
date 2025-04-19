@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flag Coloring Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f7f7f7;
+      color: #333;
+      user-select: none;
+      text-align: center;
+      overflow: auto;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+    #flagContainer {
+      text-align: center;
+      justify-content: center;
+    align-items: center;
+     flex-wrap: wrap;
+      margin: 20px auto;
+      gap:  50px;
+      width: 40%;
+      display: flex;
+    }
+    #show-all {
+      display: none;
+      padding: 5% 5.5%;
+      font-size: 1.5vw;
+      font-weight: bold;
+      background: #a7c774;
+      margin: 20px;
+    }
+    svg {
+      margin: 10px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+    #controls {
+      text-align: center;
+      margin: 20px 0;
+    }
+    #message {
+      text-align: center;
+      font-size: 1.1em;
+      margin: 10px 0;
+    }
+     #progress {
+      text-align: center;
+      font-size: 1.1em;
+      margin: 10px 0;
+    }
+    #give-up-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+#controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.icon-btn {
+  font-size: 1.5rem;
+  background: linear-gradient(145deg, #e0e0e0, #ffffff);
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.icon-btn:active {
+    transform: scale(1); /* Slightly shrinks */
+}
+
+.icon-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.give-up {
+  background: linear-gradient(145deg, #ffe0e0, #fff0f0);
+  box-shadow:
+    0 5px 0 #d8a8a8,            /* darker pinkish tone for depth */
+    0 5px 10px rgba(255, 180, 180, 0.4); /* soft pink glow */
+}
+
+.give-up:active {
+  box-shadow:
+    0 2px 0 #d8a8a8,
+    0 2px 5px rgba(255, 180, 180, 0.2);
+  transform: translateY(3px);
+}
+
+#checkBtn {
+  background: linear-gradient(145deg, #d0ffd0, #f0fff0);
+  box-shadow:
+    0 5px 0 #a2dba2,           /* darker green shadow for "lift" */
+    0 5px 10px rgba(160, 255, 160, 0.4); /* soft green glow for depth */
+}
+#checkBtn:active {
+  box-shadow:
+    0 2px 0 #a2dba2,
+    0 2px 5px rgba(160, 255, 160, 0.2);
+  transform: translateY(3px);
+}
+#nextBtn {
+  background: linear-gradient(145deg, #d0d0ff, #f0f0ff);
+  box-shadow:
+    0 5px 0 #a2a2db,           /* darker blue shadow for "lift" */
+    0 5px 10px rgba(160, 160, 255, 0.4); /* soft blue glow for depth */
+}
+#nextBtn:active {
+  box-shadow:
+    0 2px 0 #a2a2db,
+    0 2px 5px rgba(160, 160, 255, 0.2);
+  transform: translateY(3px);
+}
+#width {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  gap: 10px; /* Adds space between elements */
+  background: #85add4; /* Light background for better contrast */
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+  margin: 25px auto;
+}
+
+#width label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+#width input[type="range"] {
+  appearance: none;
+  width: 150px;
+  height: 6px;
+  background: #00ffea;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#width input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 2px solid #00ffea;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#width input[type="range"]:hover {
+  background: #11cdbd;
+}
+
+#widthValue {
+  font-weight: bold;
+  font-size: 14px;
+  color: #00ffea;
+  padding-left: 5px;
+}
+#confettiCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2000000000;
+}
+
+
+@keyframes confetti-fall {
+    0% {
+      transform: translateY(-20vh) rotateZ(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotateZ(720deg);
+      opacity: 0;
+    }
+  }
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    z-index: 50000000000;
+    background-color: #f00; /* initial color */
+    pointer-events: none;
+    animation: confetti-fall 1s linear forwards;
+  }
+  .flag-item {
+  width: 160px;       /* wrapper width can stay */
+  height: 100px;      /* fixed wrapper height */
+}
+.flag-item svg {
+  width: auto;        /* let SVG scale proportionally */
+  height: 100%;       /* fill the wrapper height */
+}
+
+
+  </style>
+</head>
+<body>
+  <h1>Flag Coloring Quiz</h1>
+  <!-- The country to color will be displayed here -->
+  <h2 id="countryName"></h2>
+  
+  <!-- Container for the current flag (SVG) -->
+  <div id="flagContainer">
+    <!-- All the SVG flags are included in the HTML but are hidden by default.
+         Their id attribute is set to the country name. -->
+    
+    <!-- France -->
+    <svg id="France" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="1" height="2" fill="blue" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="1" y="0" width="1" height="2" fill="white" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="2" y="0" width="1" height="2" fill="red" />
+      </g>
+    </svg>
+    
+    <!-- Italy -->
+    <svg id="Italy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="1" height="2" fill="green" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="1" y="0" width="1" height="2" fill="white" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="2" y="0" width="1" height="2" fill="red" />
+      </g>
+    </svg>
+    
+    <!-- Ireland -->
+    <svg id="Ireland" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="1" height="2" fill="green" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="1" y="0" width="1" height="2" fill="white" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="2" y="0" width="1" height="2" fill="orange" />
+      </g>
+    </svg>
+    
+    <!-- Belgium -->
+    <svg id="Belgium" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="1" height="2" fill="black" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="1" y="0" width="1" height="2" fill="yellow" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="2" y="0" width="1" height="2" fill="red" />
+      </g>
+    </svg>
+    
+    <!-- Germany -->
+    <svg id="Germany" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.666" fill="black" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.666" width="3" height="0.666" fill="red" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="0" y="1.333" width="3" height="0.666" fill="gold" />
+      </g>
+    </svg>
+    
+    <!-- Netherlands -->
+    <svg id="Netherlands" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.666" fill="red" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.666" width="3" height="0.666" fill="white" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="0" y="1.333" width="3" height="0.666" fill="blue" />
+      </g>
+    </svg>
+    
+    <!-- Luxembourg -->
+    <svg id="Luxembourg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.666" fill="#EF3340" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.666" width="3" height="0.666" fill="white" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="0" y="1.333" width="3" height="0.666" fill="#00A3E0" />
+      </g>
+    </svg>
+    
+    <!-- Romania -->
+    <svg id="Romania" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="1" height="2" fill="blue" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="1" y="0" width="1" height="2" fill="yellow" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="2" y="0" width="1" height="2" fill="red" />
+      </g>
+    </svg>
+    
+    <!-- Chad -->
+    <svg id="Chad" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="1" height="2" fill="#002664" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="1" y="0" width="1" height="2" fill="#FECB00" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="2" y="0" width="1" height="2" fill="#C60C30" />
+      </g>
+    </svg>
+    
+    <!-- Mali -->
+    <svg id="Mali" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="1" height="2" fill="green" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="1" y="0" width="1" height="2" fill="yellow" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="2" y="0" width="1" height="2" fill="red" />
+      </g>
+    </svg>
+    
+    <!-- Guinea -->
+    <svg id="Guinea" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="1" height="2" fill="red" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="1" y="0" width="1" height="2" fill="yellow" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="2" y="0" width="1" height="2" fill="green" />
+      </g>
+    </svg>
+    
+    <!-- Lithuania -->
+    <svg id="Lithuania" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.666" fill="yellow" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.666" width="3" height="0.666" fill="green" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="0" y="1.333" width="3" height="0.666" fill="red" />
+      </g>
+    </svg>
+    
+    <!-- Estonia -->
+    <svg id="Estonia" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.666" fill="blue" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.666" width="3" height="0.666" fill="black" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="0" y="1.333" width="3" height="0.666" fill="white" />
+      </g>
+    </svg>
+    
+    <!-- Russia -->
+    <svg id="Russia" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.666" fill="white" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.666" width="3" height="0.666" fill="blue" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="0" y="1.333" width="3" height="0.666" fill="red" />
+      </g>
+    </svg>
+    
+    <!-- Austria -->
+    <svg id="Austria" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.666" fill="red" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.666" width="3" height="0.666" fill="white" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="0" y="1.333" width="3" height="0.666" fill="red" />
+      </g>
+    </svg>
+    
+    <!-- Hungary -->
+    <svg id="Hungary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.666" fill="red" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.666" width="3" height="0.666" fill="white" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="0" y="1.333" width="3" height="0.666" fill="green" />
+      </g>
+    </svg>
+    
+    <!-- Bulgaria -->
+    <svg id="Bulgaria" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.666" fill="white" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.666" width="3" height="0.666" fill="green" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="0" y="1.333" width="3" height="0.666" fill="red" />
+      </g>
+    </svg>
+    
+    <!-- Latvia -->
+    <svg id="Latvia" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.5" fill="maroon" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.5" width="3" height="1" fill="white" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="0" y="1.5" width="3" height="0.5" fill="maroon" />
+      </g>
+    </svg>
+    
+    <!-- Colombia -->
+<!-- Colombia -->
+<svg id="Colombia" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2">
+    <g class="stripe" data-index="0">
+      <rect x="0" y="0"   width="3" height="1"   fill="yellow"/>
+    </g>
+    <g class="stripe" data-index="1">
+      <rect x="0" y="1"   width="3" height="0.5" fill="blue"/>
+    </g>
+    <g class="stripe" data-index="2">
+      <rect x="0" y="1.5" width="3" height="0.5" fill="red"/>
+    </g>
+  </svg>
+    
+    <!-- Armenia -->
+    <svg id="Armenia" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.666" fill="red" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.666" width="3" height="0.666" fill="blue" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="0" y="1.333" width="3" height="0.666" fill="orange" />
+      </g>
+    </svg>
+    
+<!-- Japan -->
+  <svg id="Japan" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+    <g class="stripe" data-index="0">
+      <rect width="3" height="2" fill="white" />
+    </g>
+    <g class="stripe" data-index="1">
+      <circle cx="1.5" cy="1" r="0.5" fill="red" />
+    </g>
+  </svg>
+
+  <!-- Bangladesh -->
+  <svg id="Bangladesh" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+    <g class="stripe" data-index="0">
+      <rect width="3" height="2" fill="green" />
+    </g>
+    <g class="stripe" data-index="1">
+      <circle cx="1.3" cy="1" r="0.5" fill="red" />
+    </g>
+  </svg>
+
+  <!-- Palau -->
+  <svg id="Palau" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+    <g class="stripe" data-index="0">
+      <rect width="3" height="2" fill="#40E0D0" />
+    </g>
+    <g class="stripe" data-index="1">
+      <circle cx="1" cy="1" r="0.5" fill="#FCD116" />
+    </g>
+  </svg>
+    
+    <!-- Indonesia / Monaco -->
+    <svg id="Indonesia" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="1" fill="red" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="1" width="3" height="1" fill="white" />
+      </g>
+    </svg>
+
+        <!-- Indonesia / Monaco -->
+    <svg id="Monaco" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="1" fill="red" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="1" width="3" height="1" fill="white" />
+      </g>
+    </svg>
+    
+    
+    <!-- Poland -->
+    <svg id="Poland" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="1" fill="white" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="1" width="3" height="1" fill="red" />
+      </g>
+    </svg>
+
+    <!-- Ukraine -->
+    <svg id="Ukraine" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="1" fill="blue" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="0" y="1" width="3" height="1" fill="yellow" />
+      </g>
+    </svg>
+
+    <!-- Nigeria -->
+    <svg id="Nigeria" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="1" height="2" fill="green" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="1" y="0" width="1" height="2" fill="white" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="2" y="0" width="1" height="2" fill="green" />
+      </g>
+    </svg>
+
+    <!-- Thailand -->
+    <svg id="Thailand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <!-- Top red stripe -->
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="3" height="0.4" fill="red" />
+      </g>
+      <!-- Upper white stripe -->
+      <g class="stripe" data-index="1">
+        <rect x="0" y="0.4" width="3" height="0.2" fill="white" />
+      </g>
+      <!-- Middle blue stripe -->
+      <g class="stripe" data-index="2">
+        <rect x="0" y="0.6" width="3" height="0.8" fill="blue" />
+      </g>
+      <!-- Lower white stripe -->
+      <g class="stripe" data-index="3">
+        <rect x="0" y="1.4" width="3" height="0.2" fill="white" />
+      </g>
+      <!-- Bottom red stripe -->
+      <g class="stripe" data-index="4">
+        <rect x="0" y="1.6" width="3" height="0.4" fill="red" />
+      </g>
+    </svg>
+
+    <!-- Peru (Civil Flag) -->
+    <svg id="Peru" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+      <g class="stripe" data-index="0">
+        <rect x="0" y="0" width="1" height="2" fill="red" />
+      </g>
+      <g class="stripe" data-index="1">
+        <rect x="1" y="0" width="1" height="2" fill="white" />
+      </g>
+      <g class="stripe" data-index="2">
+        <rect x="2" y="0" width="1" height="2" fill="red" />
+      </g>
+    </svg>
+    
+  </div><!-- end flagContainer -->
+
+    <button id="show-all" onclick="showAllFlags()">Show All Flags</button>
+
+
+  <div id="controls">
+    <button id="checkBtn" class="icon-btn" title="Check Answer">
+        ✅
+      </button>
+    
+      <button id="nextBtn" class="icon-btn" disabled title="Next Question">
+        ⏭️
+      </button>
+    
+      <button id="give-up-button" class="icon-btn give-up" title="Give Up">
+        🚫
+      </button>
+  </div>
+
+  <div id="message"></div>
+  <div id="progress"></div>
+
+  <label id="width" for="widthRange">
+    Flag width:
+    <input
+      type="range"
+      id="widthRange"
+      min="20"
+      max="100"
+      value="40"
+    /> <span id="widthValue">40%</span>
+  </label>
+  <canvas id="confettiCanvas"></canvas>
+  <script>
+
+const widthRange = document.getElementById('widthRange');
+const widthValue = document.getElementById('widthValue');
+const flagContainer = document.getElementById('flagContainer');
+
+// set initial width
+flagContainer.style.width = widthRange.value + '%';
+
+widthRange.addEventListener('input', () => {
+  const w = widthRange.value + '%';
+  flagContainer.style.width = w;
+  widthValue.textContent = w;
+});
+
+
+/*********************************************************************
+ * Data definition: an array that defines each flag by its country name 
+ * and the allowed colors in the correct order.
+ *********************************************************************/
+ const flagsData = [
+  { country: "France", colors: ["blue", "white", "red"], status: null },
+  { country: "Italy", colors: ["green", "white", "red"], status: null },
+  { country: "Ireland", colors: ["green", "white", "orange"], status: null },
+  { country: "Belgium", colors: ["black", "yellow", "red"], status: null },
+  { country: "Germany", colors: ["black", "red", "gold"], status: null },
+  { country: "Netherlands", colors: ["red", "white", "blue"], status: null },
+  { country: "Luxembourg", colors: ["#EF3340", "white", "#00A3E0"], status: null },
+  { country: "Romania", colors: ["blue", "yellow", "red"], status: null },
+  { country: "Chad", colors: ["#002664", "#FECB00", "#C60C30"], status: null },
+  { country: "Mali", colors: ["green", "yellow", "red"], status: null },
+  { country: "Guinea", colors: ["red", "yellow", "green"], status: null },
+  { country: "Lithuania", colors: ["yellow", "green", "red"], status: null },
+  { country: "Estonia", colors: ["blue", "black", "white"], status: null },
+  { country: "Russia", colors: ["white", "blue", "red"], status: null },
+  { country: "Austria", colors: ["red", "white", "red"], status: null },
+  { country: "Hungary", colors: ["red", "white", "green"], status: null },
+  { country: "Bulgaria", colors: ["white", "green", "red"], status: null },
+  { country: "Latvia", colors: ["maroon", "white", "maroon"], status: null },
+  { country: "Colombia", colors: ["yellow", "blue", "red"], status: null },
+  { country: "Armenia", colors: ["red", "blue", "orange"], status: null },
+  { country: "Japan", colors: ["white", "red"], status: null },
+  { country: "Bangladesh", colors: ["green", "red"], status: null },
+  { country: "Palau", colors: ["#40E0D0", "#FCD116"], status: null },
+  { country: "Indonesia", colors: ["red", "white"], status: null },
+  { country: "Poland", colors: ["white", "red"], status: null },
+  { country: "Ukraine", colors: ["blue", "yellow"], status: null },
+  { country: "Nigeria", colors: ["green", "white", "green"], status: null },
+  { country: "Thailand", colors: ["red", "white", "blue", "white", "red"], status: null },
+  { country: "Peru", colors: ["red", "white", "red"], status: null },
+];
+
+
+// Shuffle the flags array using a Fisher-Yates algorithm.
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+shuffleArray(flagsData);
+
+let currentFlagIndex = 0;
+let score = 0;
+// This is the base (grey) color used for uncolored parts.
+const baseColor = "#ccc";
+
+// Reference needed DOM elements.
+const countryNameElem = document.getElementById("countryName");
+const messageElem     = document.getElementById("message");
+const progressElem    = document.getElementById("progress");
+const checkBtn        = document.getElementById("checkBtn");
+const nextBtn         = document.getElementById("nextBtn");
+const giveUpBtn       = document.getElementById("give-up-button");
+const body            = document.body;
+const widthElem       = document.getElementById("width");
+const controlsElem    = document.getElementById("controls");
+const showAllElem     = document.getElementById("show-all");
+
+/*********************************************************************
+ * Function: loadFlag
+ *********************************************************************/
+function loadFlag() {
+  messageElem.textContent = "";
+  // hide all previous
+  flagsData.forEach(f => {
+    const svg = document.getElementById(f.country);
+    if (svg) svg.style.display = "none";
+  });
+
+  const currentFlag = flagsData[currentFlagIndex];
+  countryNameElem.textContent = `Color the flag of ${currentFlag.country}`;
+  countryNameElem.title = `To color the flag of ${currentFlag.country} click on the flag parts.`;  // Add the title attribute
+
+
+  const currentSVG = document.getElementById(currentFlag.country);
+  currentSVG.style.display = "inline-block";
+
+  // set up each stripe
+  currentSVG.querySelectorAll(".stripe").forEach(stripe => {
+    stripe.dataset.cycleIndex = "-1";
+    const shape = stripe.querySelector("rect") || stripe.querySelector("circle");
+    if (shape) shape.setAttribute("fill", baseColor);
+
+    // remove old listener (clone trick)
+    const fresh = stripe.cloneNode(true);
+    stripe.parentNode.replaceChild(fresh, stripe);
+
+    fresh.addEventListener("click", () => {
+      const allowed = currentFlag.colors;
+      let idx = parseInt(fresh.dataset.cycleIndex, 10);
+      let nextIdx;
+      if (allowed.length > 1) {
+        do {
+          nextIdx = Math.floor(Math.random() * allowed.length);
+        } while (nextIdx === idx);
+      } else {
+        nextIdx = 0;
+      }
+      fresh.dataset.cycleIndex = nextIdx;
+      const s = fresh.querySelector("rect") || fresh.querySelector("circle");
+      if (s) s.setAttribute("fill", allowed[nextIdx]);
+    });
+  });
+
+  progressElem.textContent =
+    `Flag ${currentFlagIndex + 1} of ${flagsData.length}. Correct so far: ${score}.`;
+  nextBtn.disabled = true;
+  checkBtn.disabled = false;
+}
+
+/*********************************************************************
+ * Check Button: Compare each stripe’s fill to the correct array.
+ *********************************************************************/
+checkBtn.addEventListener("click", () => {
+  const currentFlag = flagsData[currentFlagIndex];
+  const currentSVG  = document.getElementById(currentFlag.country);
+  const stripes     = currentSVG.querySelectorAll(".stripe");
+  flagsData[currentFlagIndex].status = 'correct';
+  let correctCount = 0;
+  stripes.forEach((stripe, i) => {
+    const shape = stripe.querySelector("rect") || stripe.querySelector("circle");
+    if (!shape) return;
+    if (shape.getAttribute("fill") === currentFlag.colors[i]) {
+      correctCount++;
+    }
+  });
+
+  if (correctCount === stripes.length) {
+    messageElem.textContent = "✅ Correct!";
+    body.style.backgroundColor = "#d4edda"; // light green
+    score++;
+    nextBtn.disabled = false;
+    checkBtn.disabled = true;
+    giveUpBtn.disabled = true;
+  } else if (correctCount > 0) {
+    messageElem.textContent = `Almost! You got ${correctCount}/${stripes.length}.`;
+    body.style.backgroundColor = "#fff3cd"; // light yellow
+  } else {
+    messageElem.textContent = "None correct. Try again.";
+    body.style.backgroundColor = "#f8d7da"; // light red
+  }
+
+  progressElem.textContent =
+    `Flag ${currentFlagIndex + 1} of ${flagsData.length}. Correct so far: ${score}.`;
+});
+
+/*********************************************************************
+ * Next Button: load next or end quiz
+ *********************************************************************/
+ nextBtn.addEventListener("click", () => {
+  if (currentFlagIndex < flagsData.length - 1) {
+    currentFlagIndex++;
+    giveUpBtn.disabled = false;
+    body.style.backgroundColor = "#f7f7f7"; // reset background color
+    loadFlag();
+  } else {
+    countryNameElem.textContent = "Quiz Completed!";
+    createConfetti(); // Call the confetti function
+    messageElem.textContent     = `Final score: ${score}/${flagsData.length}.`;
+    checkBtn.disabled = true;
+    flagContainer.querySelectorAll("svg").forEach(svg => svg.style.display = "none");
+    body.style.backgroundColor = "#d4edda"; // light green
+    widthElem.style.display = "none"; // hide width slider
+    showAllElem.style.display = "inline-block"; // hide show all button
+    controlsElem.style.display = "none"; // hide controls
+    progressElem.textContent = ""; // clear progress message
+    nextBtn.disabled  = true;
+  }
+});
+/*********************************************************************
+ * Show All Flags Button: show all flags in a grid
+ *********************************************************************/
+ function showAllFlags() {
+    flagContainer.style.margin = "20px auto 100px auto";
+    flagContainer.style.width = "100%"; // set width to 100%
+  // pull out all existing <svg> elements
+  const svgs = Array.from(flagContainer.querySelectorAll('svg'));
+  // clear the container
+  flagContainer.innerHTML = '';
+
+  svgs.forEach(svg => {
+    svg.style.display = 'block';  // un‑hide
+
+    // find its status emoji
+    const f = flagsData.find(item => item.country === svg.id);
+    const emoji = f.status === 'correct' ? '✅'
+                : f.status === 'skipped' ? '❌'
+                : '';
+
+    // build wrapper + label
+    const wrapper = document.createElement('div');
+    wrapper.className = 'flag-item';
+
+    const label = document.createElement('div');
+    label.textContent = `${svg.id} ${emoji}`;
+
+    wrapper.appendChild(svg);
+    wrapper.appendChild(label);
+    flagContainer.appendChild(wrapper);
+  });
+
+  countryNameElem.textContent     = "All Flags";
+  showAllElem.style.display       = "none";
+  controlsElem.style.display      = "none";
+  body.style.backgroundColor      = "#f7f7f7";
+}
+
+
+showAllElem.addEventListener("click", showAllFlags);
+
+/*********************************************************************
+ * Give‑Up Button: show correct colors on both rects & circles
+ *********************************************************************/
+giveUpBtn.addEventListener("click", () => {
+  const currentFlag = flagsData[currentFlagIndex];
+  const svg         = document.getElementById(currentFlag.country);
+  svg.querySelectorAll(".stripe").forEach((stripe, i) => {
+    const shape = stripe.querySelector("rect") || stripe.querySelector("circle");
+    if (!shape) return;
+    shape.setAttribute("fill", currentFlag.colors[i]);
+    shape.style.pointerEvents = "none"; // lock it
+  });
+  flagsData[currentFlagIndex].status = 'skipped';
+  messageElem.textContent = `The correct colors for ${currentFlag.country} are now shown.`;
+  checkBtn.disabled = true;
+  body.style.backgroundColor = "#f8d7da"; // light red
+  nextBtn.disabled  = false;
+});
+
+   // Confetti animation function
+   function createConfetti() {
+    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+    body.style.overflow = 'hidden'; // Prevent scrolling during animation
+    function createPiece() {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti');
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = Math.random() * 20 + 'px';
+        piece.style.height = Math.random() * 20 + 'px';
+        piece.style.left = (Math.random() * window.innerWidth) + 'px';
+        piece.style.top = '-20px';
+        piece.style.animationDuration = '2s'; // Set animation duration to 3 seconds
+        document.body.appendChild(piece);
+        piece.addEventListener('animationend', function() {
+            piece.parentNode.removeChild(piece);
+        });
+    }
+
+    // Adjust the number of confetti pieces
+    const totalPieces = 700;
+    const interval = 5; // milliseconds
+
+    let i = 0;
+    let intervalId = setInterval(function() {
+        createPiece();
+        i++;
+        if (i >= totalPieces) {
+            clearInterval(intervalId);
+        }
+    }, interval);
+}
+
+// initialize first flag
+loadFlag();
+
+
+
+  
+
+  </script>    
+
+</body>
+</html>
