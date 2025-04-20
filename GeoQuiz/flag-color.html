@@ -28,14 +28,6 @@
       width: 40%;
       display: flex;
     }
-    #show-all {
-      display: none;
-      padding: 5% 5.5%;
-      font-size: 1.5vw;
-      font-weight: bold;
-      background: #a7c774;
-      margin: 20px;
-    }
     svg {
       margin: 10px;
       width: 100%;
@@ -570,29 +562,30 @@
       </g>
     </svg>
 
-    <!-- Thailand -->
-    <svg id="Thailand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
-      <!-- Top red stripe -->
-      <g class="stripe" data-index="0">
-        <rect x="0" y="0" width="3" height="0.4" fill="red" />
-      </g>
-      <!-- Upper white stripe -->
-      <g class="stripe" data-index="1">
-        <rect x="0" y="0.4" width="3" height="0.2" fill="white" />
-      </g>
-      <!-- Middle blue stripe -->
-      <g class="stripe" data-index="2">
-        <rect x="0" y="0.6" width="3" height="0.8" fill="blue" />
-      </g>
-      <!-- Lower white stripe -->
-      <g class="stripe" data-index="3">
-        <rect x="0" y="1.4" width="3" height="0.2" fill="white" />
-      </g>
-      <!-- Bottom red stripe -->
-      <g class="stripe" data-index="4">
-        <rect x="0" y="1.6" width="3" height="0.4" fill="red" />
-      </g>
-    </svg>
+   <!-- Thailand -->
+<svg id="Thailand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+  <!-- Top red stripe -->
+  <g class="stripe" data-index="0">
+    <rect x="0" y="0" width="3" height="0.4" fill="#A51931" />
+  </g>
+  <!-- Upper white stripe -->
+  <g class="stripe" data-index="1">
+    <rect x="0" y="0.4" width="3" height="0.2" fill="#FFFFFF" />
+  </g>
+  <!-- Middle blue stripe -->
+  <g class="stripe" data-index="2">
+    <rect x="0" y="0.6" width="3" height="0.8" fill="#2D2A4A" />
+  </g>
+  <!-- Lower white stripe -->
+  <g class="stripe" data-index="3">
+    <rect x="0" y="1.4" width="3" height="0.2" fill="#FFFFFF" />
+  </g>
+  <!-- Bottom red stripe -->
+  <g class="stripe" data-index="4">
+    <rect x="0" y="1.6" width="3" height="0.4" fill="#A51931" />
+  </g>
+</svg>
+
 
     <!-- Peru (Civil Flag) -->
     <svg id="Peru" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
@@ -608,9 +601,6 @@
     </svg>
     
   </div><!-- end flagContainer -->
-
-    <button id="show-all" onclick="showAllFlags()">Show All Flags</button>
-
 
   <div id="controls">
     <button id="checkBtn" class="icon-btn" title="Check Answer">
@@ -685,10 +675,11 @@ widthRange.addEventListener('input', () => {
   { country: "Bangladesh", colors: ["green", "red"], status: null },
   { country: "Palau", colors: ["#40E0D0", "#FCD116"], status: null },
   { country: "Indonesia", colors: ["red", "white"], status: null },
+  { country: "Monaco", colors: ["red", "white"], status: null },
   { country: "Poland", colors: ["white", "red"], status: null },
   { country: "Ukraine", colors: ["blue", "yellow"], status: null },
   { country: "Nigeria", colors: ["green", "white", "green"], status: null },
-  { country: "Thailand", colors: ["red", "white", "blue", "white", "red"], status: null },
+  { country: "Thailand", colors: ["#A51931", "#FFFFFF", "#2D2A4A", "#FFFFFF", "#A51931"], status: null },
   { country: "Peru", colors: ["red", "white", "red"], status: null },
 ];
 
@@ -717,7 +708,6 @@ const giveUpBtn       = document.getElementById("give-up-button");
 const body            = document.body;
 const widthElem       = document.getElementById("width");
 const controlsElem    = document.getElementById("controls");
-const showAllElem     = document.getElementById("show-all");
 
 /*********************************************************************
  * Function: loadFlag
@@ -824,24 +814,38 @@ checkBtn.addEventListener("click", () => {
     flagContainer.querySelectorAll("svg").forEach(svg => svg.style.display = "none");
     body.style.backgroundColor = "#d4edda"; // light green
     widthElem.style.display = "none"; // hide width slider
-    showAllElem.style.display = "inline-block"; // hide show all button
     controlsElem.style.display = "none"; // hide controls
     progressElem.textContent = ""; // clear progress message
     nextBtn.disabled  = true;
+    showAllFlags(); // show all flags
   }
 });
 /*********************************************************************
  * Show All Flags Button: show all flags in a grid
  *********************************************************************/
  function showAllFlags() {
-    flagContainer.style.margin = "20px auto 100px auto";
-    flagContainer.style.width = "100%"; // set width to 100%
+  flagContainer.style.margin = "20px auto 100px auto";
+  flagContainer.style.width = "100%"; // set width to 100%
+
   // pull out all existing <svg> elements
   const svgs = Array.from(flagContainer.querySelectorAll('svg'));
+
   // clear the container
   flagContainer.innerHTML = '';
 
-  svgs.forEach(svg => {
+  svgs.forEach(originalSvg => {
+    // Clone the SVG to strip interactivity
+    const svg = originalSvg.cloneNode(true);
+
+    // Remove interactivity from stripes
+    svg.querySelectorAll(".stripe").forEach(stripe => {
+      stripe.removeAttribute("data-cycle-index");
+
+      // Replace with a clean clone to remove listeners
+      const fresh = stripe.cloneNode(true);
+      stripe.parentNode.replaceChild(fresh, stripe);
+    });
+
     svg.style.display = 'block';  // un‑hide
 
     // find its status emoji
@@ -863,13 +867,11 @@ checkBtn.addEventListener("click", () => {
   });
 
   countryNameElem.textContent     = "All Flags";
-  showAllElem.style.display       = "none";
   controlsElem.style.display      = "none";
   body.style.backgroundColor      = "#f7f7f7";
 }
 
 
-showAllElem.addEventListener("click", showAllFlags);
 
 /*********************************************************************
  * Give‑Up Button: show correct colors on both rects & circles
@@ -890,10 +892,14 @@ giveUpBtn.addEventListener("click", () => {
   nextBtn.disabled  = false;
 });
 
-   // Confetti animation function
-   function createConfetti() {
+// Confetti animation function
+function createConfetti() {
     const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+    
+    const body = document.body;
+    const originalOverflow = body.style.overflow;
     body.style.overflow = 'hidden'; // Prevent scrolling during animation
+
     function createPiece() {
         const piece = document.createElement('div');
         piece.classList.add('confetti');
@@ -902,8 +908,8 @@ giveUpBtn.addEventListener("click", () => {
         piece.style.height = Math.random() * 20 + 'px';
         piece.style.left = (Math.random() * window.innerWidth) + 'px';
         piece.style.top = '-20px';
-        piece.style.animationDuration = '2s'; // Set animation duration to 3 seconds
-        document.body.appendChild(piece);
+        piece.style.animationDuration = '2s';
+        body.appendChild(piece);
         piece.addEventListener('animationend', function() {
             piece.parentNode.removeChild(piece);
         });
@@ -919,9 +925,15 @@ giveUpBtn.addEventListener("click", () => {
         i++;
         if (i >= totalPieces) {
             clearInterval(intervalId);
+
+            // Restore scrolling after the animation ends
+            setTimeout(() => {
+                body.style.overflow = originalOverflow || 'auto';
+            }, 2000); // Wait for the last pieces to finish animating
         }
     }, interval);
 }
+
 
 // initialize first flag
 loadFlag();
