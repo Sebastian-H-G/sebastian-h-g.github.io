@@ -4,10 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flag Coloring Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
       background: #f7f7f7;
       color: #333;
       user-select: none;
@@ -15,8 +22,11 @@
       overflow: auto;
     }
 
-    h1, h2 {
+    h1 {
       text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      margin: 20px 0;
     }
     #flagContainer {
       text-align: center;
@@ -205,6 +215,95 @@
 }
 
 
+.footer {
+  background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+  bottom: 0;
+  display: flex;
+  margin-top: 110px;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
+@media only screen and (max-width: 524px) and (min-height: 879px) and (max-height: 1057px) and (orientation: portrait) {
+
+}
   </style>
 </head>
 <body>
@@ -1253,20 +1352,65 @@
     /> <span id="widthValue">40%</span>
   </label>
   <canvas id="confettiCanvas"></canvas>
+
+  <footer class="footer" data-aos="fade-up">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <a href="index.html"><img src="Logos/flag-color.PNG" alt="Company Logo"></a>
+      </div>
+      <div class="footer-info">
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copyright">
+          <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
   <script>
 
 const widthRange = document.getElementById('widthRange');
 const widthValue = document.getElementById('widthValue');
 const flagContainer = document.getElementById('flagContainer');
 
-// set initial width
+// Set initial width
 flagContainer.style.width = widthRange.value + '%';
+
+// Media query for specific screen size and orientation
+const mediaQuery = window.matchMedia(
+  '(max-width: 524px) and (min-height: 879px) and (max-height: 1057px) and (orientation: portrait)'
+);
+
+function applyMediaQueryStyles(e) {
+  if (e.matches) {
+    // Set width to 90% if media query matches
+    flagContainer.style.width = '90%';
+    widthRange.value = 90;
+    widthValue.textContent = '90%';
+  } else {
+    // Otherwise use current slider value
+    const w = widthRange.value + '%';
+    flagContainer.style.width = w;
+    widthValue.textContent = w;
+  }
+}
+
+// Listen for changes to the media query
+mediaQuery.addEventListener('change', applyMediaQueryStyles);
+
+// Apply styles on load
+applyMediaQueryStyles(mediaQuery);
 
 widthRange.addEventListener('input', () => {
   const w = widthRange.value + '%';
   flagContainer.style.width = w;
   widthValue.textContent = w;
 });
+
 
 
 /*********************************************************************
