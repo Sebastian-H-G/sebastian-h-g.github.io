@@ -20,6 +20,7 @@
       user-select: none;
       text-align: center;
       overflow: auto;
+      overflow-x: hidden;
     }
 
     h1 {
@@ -1531,41 +1532,18 @@
     <rect x="0" y="1.3333" width="3" height="0.6667" fill="#009639" />
   </g>
 </svg>
-
-<!-- Qatar -->
-<svg id="Qatar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 11" style="display:block;" width="280" height="110">
-  
-  <g class="stripe">
-    <!-- Maroon field (from x=10 to x=28) -->
-  <rect x="10" y="0" width="18" height="11" fill="#8A1538"/>
+<!-- Qatar (viewBox adjusted to 0 0 3 2 with automatic scaling of the original 640×480 paths) -->
+<svg id="Qatar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:block;" width="300" height="200">
+  <!-- scale factor: 3/640 = 0.0046875 horizontally, 2/480 = 0.0041666667 vertically -->
+  <g transform="scale(0.0046875,0.0041666667)">
+    <g class="stripe" data-index="0">
+      <path fill="#8d1b3d" d="M0 0h640v480H0z"/>
+    </g>
+    <g class="stripe" data-index="1">
+      <path fill="#fff" d="M0 0v480h158.4l97.8-26.7-97.8-26.6 97.7-26.7-97.7-26.7 97.7-26.6-97.7-26.7 97.8-26.7-97.8-26.6 97.7-26.7-97.7-26.7 97.7-26.6-97.7-26.7 97.8-26.7-97.8-26.6L256.1 80l-97.7-26.7 97.8-26.6L158.3 0z"/>
+    </g>
   </g>
-  <g class="stripe"><!-- White serrated band (from x=0 to x≈10) with nine points -->
-    <path d="
-      M0,0
-      L10,0
-      L13,0.6111
-      L10,1.2222
-      L13,1.8333
-      L10,2.4444
-      L13,3.0556
-      L10,3.6667
-      L13,4.2778
-      L10,4.8889
-      L13,5.5
-      L10,6.1111
-      L13,6.7222
-      L10,7.3333
-      L13,7.9444
-      L10,8.5556
-      L13,9.1667
-      L10,9.7778
-      L13,10.3889
-      L10,11
-      L0,11
-      Z
-    " fill="#FFFFFF"/></g>
 </svg>
-
 
 <!-- Bahrain -->
 <svg id="Bahrain" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 3" style="display:block;">
@@ -1590,6 +1568,97 @@
       L1.625,3
       L0,3
       Z" fill="#FFFFFF" />
+  </g>
+</svg>
+
+
+<!-- South Africa -->
+<svg id="South Africa" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+  <!-- red upper half -->
+  <g class="stripe" data-index="0">
+    <rect x="0" y="0" width="3" height="1" fill="#E1392D" />
+  </g>
+  <!-- blue lower half -->
+  <g class="stripe">
+    <rect x="0" y="1" width="3" height="1" fill="#000C8A" />
+  </g>
+  <!-- white fimbriation around the Y -->
+  <g class="stripe">
+    <path d="M0,0 L0.6,0 L1.5975,0.666667 L3,0.666667 L3,1.333333 L1.5975,1.333333 L0.6,2 L0,2 Z" fill="#FFFFFF" />
+  </g>
+  <!-- green Y-shaped pall -->
+  <g class="stripe">
+    <path d="M0,0 L0.36375,0 L1.55625,0.797753 L3,0.797753 L3,1.202247 L1.55625,1.202247 L0.36375,2 L0,2 Z" fill="#007847" />
+  </g>
+  <!-- gold fimbriation between green and black -->
+  <g class="stripe">
+    <path d="M0,0.243446 L1.14,1 L0,1.756554 Z" fill="#FFB915" />
+  </g>
+  <!-- black hoist triangle -->
+  <g class="stripe">
+    <path d="M0,0.400749 L0.9,1 L0,1.599251 Z" fill="#000000" />
+  </g>
+</svg>
+
+<!-- Greece -->
+<svg id="Greece" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+  <!-- 9 equal horizontal stripes -->
+  <g class="stripe" data-index="0">
+    <rect x="0" y="0.000000" width="3" height="0.222222" fill="#0D5EAF" />
+  </g>
+  <g class="stripe" data-index="1">
+    <rect x="0" y="0.222222" width="3" height="0.222222" fill="#FFFFFF" />
+  </g>
+  <g class="stripe" data-index="2">
+    <rect x="0" y="0.444444" width="3" height="0.222222" fill="#0D5EAF" />
+  </g>
+  <g class="stripe" data-index="3">
+    <rect x="0" y="0.666667" width="3" height="0.222222" fill="#FFFFFF" />
+  </g>
+  <g class="stripe" data-index="4">
+    <rect x="0" y="0.888889" width="3" height="0.222222" fill="#0D5EAF" />
+  </g>
+  <g class="stripe" data-index="5">
+    <rect x="0" y="1.111111" width="3" height="0.222222" fill="#FFFFFF" />
+  </g>
+  <g class="stripe" data-index="6">
+    <rect x="0" y="1.333333" width="3" height="0.222222" fill="#0D5EAF" />
+  </g>
+  <g class="stripe" data-index="7">
+    <rect x="0" y="1.555556" width="3" height="0.222222" fill="#FFFFFF" />
+  </g>
+  <g class="stripe" data-index="8">
+    <rect x="0" y="1.777778" width="3" height="0.222222" fill="#0D5EAF" />
+  </g>
+  <!-- blue canton -->
+  <g class="stripe" data-index="9">
+    <rect x="0" y="0" width="1.111111" height="1.111111" fill="#0D5EAF" />
+  </g>
+  <!-- white cross -->
+  <g class="stripe" data-index="10">
+    <rect x="0.444445" y="0" width="0.222222" height="1.111111" fill="#FFFFFF" />
+  </g>
+  <g class="stripe" data-index="11">
+    <rect x="0" y="0.444445" width="1.111111" height="0.222222" fill="#FFFFFF" />
+  </g>
+</svg>
+<!-- Niger -->
+<svg id="Niger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
+  <!-- Orange top stripe -->
+  <g class="stripe" data-index="0">
+    <rect x="0" y="0" width="3" height="0.6667" fill="#E05206"/>
+  </g>
+  <!-- White middle stripe -->
+  <g class="stripe" data-index="1">
+    <rect x="0" y="0.6667" width="3" height="0.6666" fill="#FFFFFF"/>
+  </g>
+  <!-- Green bottom stripe -->
+  <g class="stripe" data-index="2">
+    <rect x="0" y="1.3333" width="3" height="0.6667" fill="#0DB02B"/>
+  </g>
+  <!-- Orange circle in center of white stripe -->
+  <g class="stripe" data-index="3">
+    <circle cx="1.5" cy="1" r="0.25" fill="#E05206"/>
   </g>
 </svg>
 
@@ -1727,10 +1796,10 @@ widthRange.addEventListener('input', () => {
   { country: "Denmark", colors: ["#C60C30", "#FFFFFF"], status: null },
   { country: "Sweden", colors: ["#005293", "#FECC00"], status: null },
   { country: "Norway", colors: ["#BA0C2F", "#FFFFFF", "#00205B"], status: null },
-  { country: "Finland", colors: ["#003580", "#FFFFFF"], status: null },
+  { country: "Finland", colors: ["#FFFFFF", "#003580"], status: null },
   { country: "Iceland", colors: ["#0048BA", "#FFFFFF", "#BA0C2F"], status: null },
   { country: "Iraq", colors: ["#CE1126", "#FFFFFF", "#000000"], status: null },
-
+  { country: "Niger", colors: ["#E05206", "#FFFFFF", "#0DB02B"], status: null },
   { country: "Bahamas", colors: ["#00ABC9", "#FFD700", "#00ABC9", "black"], status: null },
   { country: "Benin", colors: ["#008751", "#FCD116", "#C70000"], status: null },
   { country: "Costa Rica", colors: ["#00247D", "#FFFFFF", "#CE1126", "#FFFFFF", "#00247D" ], status: null },
@@ -1745,7 +1814,21 @@ widthRange.addEventListener('input', () => {
   { country: "Yemen", colors: ["#CE1126", "white", "black"], status: null },
   { country: "Gambia", colors: ["#CE1126", "#FFFFFF", "#0033A0", "#FFFFFF", "#009639"], status: null },
   { country: "Qatar", colors: ["#8A1538", "#FFFFFF"], status: null },
-  { country: "Bahrain", colors: ["#DA291C", "#FFFFFF"], status: null }
+  { country: "Bahrain", colors: ["#DA291C", "#FFFFFF"], status: null },
+  { country: "Greece", colors: [
+    "#0D5EAF", "#FFFFFF", "#0D5EAF", "#FFFFFF", "#0D5EAF",
+    "#FFFFFF", "#0D5EAF", "#FFFFFF", "#0D5EAF", // 9 stripes
+    "#0D5EAF", "#FFFFFF", "#FFFFFF"             // canton + vertical cross + horizontal cross
+  ], status: null },
+
+{ country: "South Africa", colors: [
+    "#DE3831", // red stripe
+    "#003897", // blue stripe
+    "#FFFFFF", // white fimbriation
+    "#FEDD00", // gold fimbriation
+    "#007A5E", // green “Y”
+    "#000000"  // black triangle
+  ], status: null },
 ];
 
 
