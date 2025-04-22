@@ -1252,7 +1252,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/GeoQuiz/service-worker.js')
+    navigator.serviceWorker.register('service-worker.js')
       .then(() => {
         console.log('Service Worker registered');
       })
@@ -1261,7 +1261,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 });
-
         
     // Listen for cache progress messages from the service worker
     navigator.serviceWorker.addEventListener('message', (event) => {
