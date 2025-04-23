@@ -95,8 +95,9 @@
         font-size: inherit;
         cursor: pointer;
         border-radius: 5px;
-        margin: 10px;
+        margin-left: 10px;
     }
+
     .modal {
         display: none;
         position: fixed;
@@ -144,24 +145,54 @@
     .close-modal:hover {
         color: red;
     }
-    .play-game-container {
-        display: flex;
-        position: fixed;
-        bottom: 20px;
-        left: -500px; /* Start off-screen */
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: 10px;
-        padding: 10px 30px;
-        font-size: 17px;
-        gap: 20px;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        transition: left 1s ease-in-out; /* Smooth transition */
-    }
-    .play-game-container.visible {
-        left: 20px; /* Final position */
-    }
+ /* container just holds them at bottom left */
+ .play-game-container {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    pointer-events: none; /* let buttons still work */
+  }
+
+  /* both wrappers start off-screen to the left */
+  .play-game-wrapper {
+    position: fixed;
+    left: -900px;                /* off-screen */
+    transition: left 0.5s ease, bottom 0.5s ease;
+    pointer-events: auto;        /* re-enable clicks */
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-direction: row;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  /* initial positions (same for both) */
+  #wrapper1,
+  #wrapper2 {
+    bottom: 20px;
+  }
+
+  /* “show” class slides a wrapper in to left:50px */
+  .play-game-wrapper.show {
+    left: 30px;
+  }
+
+
+    .geo {
+    background-image: url(Logos/Geography.jpg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 6px;
+    width: 65px; /* Adjust size based on parent container */
+    height: 65px; /* Or set a height that maintains the aspect ratio */
+    display: block;
+    text-decoration: none;
+}
     .play-game-container p {
         margin: 0;
         font-size: inherit;
@@ -176,9 +207,15 @@
         <p class="message">It looks like you lost connection. Check your internet and try again.</p>
         <button class="retry" onclick="location.reload()">Retry</button>
         <div class="play-game-container">
-        <p class="message">Play a Game while you are waiting...</p>
-        <button class="play-game" id="playGameButton">Play</button>
-        </div>
+            <div id="wrapper1" class="play-game-wrapper">
+              <p class="message">Go back to GeoQuiz</p>
+              <a href="index.html" class="geo"></a>
+            </div>
+            <div id="wrapper2" class="play-game-wrapper">
+              <p class="message">Play a Game while you are waiting...</p>
+              <button class="play-game" id="playGameButton">Play</button>
+            </div>
+          </div>
         
     </div>
     <div class="modal" id="gameModal">
@@ -239,12 +276,35 @@
         });
     </script>
     <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const playGameContainer = document.querySelector('.play-game-container');
-                playGameContainer.classList.add('visible');
-            }, 1000); // Delay of 2 seconds
-        });
+  window.addEventListener('load', () => {
+    const w1 = document.getElementById('wrapper1');
+    const w2 = document.getElementById('wrapper2');
+    const gap = 12;  // spacing between wrappers
+
+    // 1) show wrapper1 immediately (or use a tiny delay if you like)
+    setTimeout(() => {
+      w1.classList.add('show');
+    }, 100);
+
+    // 2) after 2s, show wrapper2 and bump w1 upward
+    setTimeout(() => {
+      w2.classList.add('show');
+      // compute how tall wrapper2 is now that it's visible
+      const extra  = w2.offsetHeight + gap;
+      // move wrapper1 up by that much (from its original bottom:20px)
+      w1.style.bottom = `${25 + extra}px`;
+    }, 2100);
+  });
+
+  const w1 = document.getElementById('wrapper1');
+const w2 = document.getElementById('wrapper2');
+
+// Set both to the same width after the page loads
+window.addEventListener('load', () => {
+  const maxWidth = Math.max(w1.offsetWidth, w2.offsetWidth);
+  w1.style.width = w2.style.width = `${maxWidth}px`;
+});
+
     </script>
 </body>
 </html>
