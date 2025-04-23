@@ -1250,43 +1250,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => {
-        console.log('Service Worker registered');
-      })
-      .catch((error) => {
-        console.error('Service Worker registration failed:', error);
-      });
-  }
-});
-        
-    // Listen for cache progress messages from the service worker
-    navigator.serviceWorker.addEventListener('message', (event) => {
-      if (event.data && event.data.type === 'CACHE_PROGRESS') {
-        const { loaded, total } = event.data;
-        const progress = Math.round((loaded / total) * 100);  // Calculate percentage progress
-        console.log(`Caching Progress: ${progress}%`);
-
-        // Show alert when all files are cached
-        if (progress >= 100) {
-          console.log("Caching complete!");
-          setTimeout(() => {
-            alert('All resources have been cached!');
-          }, 300);
-        }
-      }
-
-      // Alert when all files are cached
-      if (event.data && event.data.type === 'CACHE_COMPLETE') {
-        console.log('All resources have been cached!');
+    document.addEventListener('DOMContentLoaded', () => {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => {
+            console.log('Service Worker registered');
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+    
+        // Listen for cache progress messages from the service worker
+        navigator.serviceWorker.addEventListener('message', (event) => {
+          if (event.data && event.data.type === 'CACHE_PROGRESS') {
+            const { loaded, total } = event.data;
+            const progress = Math.round((loaded / total) * 100);  // Calculate percentage progress
+            console.log(`Caching Progress: ${progress}%`);
+    
+            // Show alert when all files are cached
+            if (progress >= 100) {
+              console.log("Caching complete!");
+              setTimeout(() => {
+                alert('All resources have been cached!');
+              }, 300);
+            }
+          }
+    
+          // Alert when all files are cached (explicit message)
+          if (event.data && event.data.type === 'CACHE_COMPLETE') {
+            console.log('All resources have been cached!');
+          }
+        });
       }
     });
-  }
-});
-
-</script>
+    </script>
+    
 <script>
     document.addEventListener('click', function(e) {
       const target = e.target.closest('.quiz-link');
