@@ -82,6 +82,8 @@ const urlsToCache = [
   'northamerica.js',
   'southamerica.js',
   'worldcountries.js',
+  'flag-color.html',
+  'flag-color-all.html',
   'Capitals_Quizzes.html',
   'worldcountries.css',
   'worldcountries.html',
