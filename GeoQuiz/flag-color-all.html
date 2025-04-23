@@ -205,14 +205,25 @@
     animation: confetti-fall 1s linear forwards;
   }
   .flag-item {
-  width: 160px;       /* wrapper width can stay */
-  height: 100px;  
-  margin: 15px auto;    /* fixed wrapper height */
+  width: 208px;  
+  display: flex;
+  text-align: center;     /* wrapper width can stay */
+  height: 130px;  
+  align-items: center;
+  justify-content: center; /* center the flag vertically */
+  flex-direction: column;
+  margin: 0 auto;    /* fixed wrapper height */
+}
+.flag-item svg {
+  width: 100%;           /* fill the wrapper width */
+  height: auto;         /* let SVG scale proportionally */
+  max-height: 100%;     /* limit SVG height to wrapper height */
+  margin: 0 auto;       /* center the SVG horizontally */
 }
 .flag-label {
   font-size: 1.2em;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-top: 15px;
   color: #333;
   text-align: center;
 }
