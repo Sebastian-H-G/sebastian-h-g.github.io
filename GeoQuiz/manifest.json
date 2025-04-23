@@ -2,7 +2,7 @@
   "name": "Geo Quiz",
   "short_name": "GeoQuiz",
   "description": "A fun and educational geography quiz app.",
-  "start_url": "./index.html"
+  "start_url": "index.html"
   "display": "standalone",
   "background_color": "#f0f2f5",
   "theme_color": "#002f5f",
