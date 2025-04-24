@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Flag Coloring Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+      user-select: none;
+      text-align: center;
+      overflow: auto;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      margin: 20px 0;
+    }
+    #flagContainer {
+      text-align: center;
+      justify-content: center;
+    align-items: center;
+     flex-wrap: wrap;
+      margin: 20px auto;
+      gap:  50px;
+      width: 55%;
+      display: flex;
+    }
+    svg {
+      margin: 10px;
+      width: 100%;
+      cursor: pointer;
+    }
+    #controls {
+      text-align: center;
+      margin: 20px 0;
+    }
+    #message {
+      text-align: center;
+      font-size: 1.1em;
+      margin: 10px 0;
+    }
+     #progress {
+      text-align: center;
+      font-size: 1.1em;
+      margin: 10px 0;
+    }
+    #give-up-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+#controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.icon-btn {
+  font-size: 1.5rem;
+  background: linear-gradient(145deg, #e0e0e0, #ffffff);
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.icon-btn:active {
+    transform: scale(1); /* Slightly shrinks */
+}
+
+.icon-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.give-up {
+  background: linear-gradient(145deg, #ffe0e0, #fff0f0);
+  box-shadow:
+    0 5px 0 #d8a8a8,            /* darker pinkish tone for depth */
+    0 5px 10px rgba(255, 180, 180, 0.4); /* soft pink glow */
+}
+
+.give-up:active {
+  box-shadow:
+    0 2px 0 #d8a8a8,
+    0 2px 5px rgba(255, 180, 180, 0.2);
+  transform: translateY(3px);
+}
+
+#checkBtn {
+  background: linear-gradient(145deg, #d0ffd0, #f0fff0);
+  box-shadow:
+    0 5px 0 #a2dba2,           /* darker green shadow for "lift" */
+    0 5px 10px rgba(160, 255, 160, 0.4); /* soft green glow for depth */
+}
+#checkBtn:active {
+  box-shadow:
+    0 2px 0 #a2dba2,
+    0 2px 5px rgba(160, 255, 160, 0.2);
+  transform: translateY(3px);
+}
+#nextBtn {
+  background: linear-gradient(145deg, #d0d0ff, #f0f0ff);
+  box-shadow:
+    0 5px 0 #a2a2db,           /* darker blue shadow for "lift" */
+    0 5px 10px rgba(160, 160, 255, 0.4); /* soft blue glow for depth */
+}
+#nextBtn:active {
+  box-shadow:
+    0 2px 0 #a2a2db,
+    0 2px 5px rgba(160, 160, 255, 0.2);
+  transform: translateY(3px);
+}
+#width {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  gap: 10px; /* Adds space between elements */
+  background: #85add4; /* Light background for better contrast */
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+  margin: 25px auto;
+}
+
+#width label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+#width input[type="range"] {
+  appearance: none;
+  width: 150px;
+  height: 6px;
+  background: #00ffea;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#width input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 2px solid #00ffea;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#width input[type="range"]:hover {
+  background: #11cdbd;
+}
+
+#widthValue {
+  font-weight: bold;
+  font-size: 14px;
+  color: #00ffea;
+  padding-left: 5px;
+}
+#confettiCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2000000000;
+}
+
+
+@keyframes confetti-fall {
+    0% {
+      transform: translateY(-20vh) rotateZ(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotateZ(720deg);
+      opacity: 0;
+    }
+  }
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    z-index: 50000000000;
+    background-color: #f00; /* initial color */
+    pointer-events: none;
+    animation: confetti-fall 1s linear forwards;
+  }
+  .flag-item {
+  width: 208px;  
+  display: flex;
+  text-align: center;     /* wrapper width can stay */
+  height: 130px;  
+  align-items: center;
+  justify-content: center; /* center the flag vertically */
+  flex-direction: column;
+  margin: 0 auto;    /* fixed wrapper height */
+}
+.flag-item svg {
+  width: 100%;           /* fill the wrapper width */
+  height: auto;         /* let SVG scale proportionally */
+  max-height: 100%;     /* limit SVG height to wrapper height */
+  margin: 0 auto;       /* center the SVG horizontally */
+}
+.flag-label {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 15px;
+  color: #333;
+  text-align: center;
+}
+.flag-item svg {
+  width: auto;        /* let SVG scale proportionally */
+  height: 100%;       /* fill the wrapper height */
+}
+
+
+.footer {
+  background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+  bottom: 0;
+  display: flex;
+  margin-top: 110px;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
+@media only screen and (max-width: 524px) and (min-height: 879px) and (max-height: 1057px) and (orientation: portrait) {
+
+}
+  </style>
+</head>
+<body>
+  <h1>Flag Coloring Quiz</h1>
+  <!-- The country to color will be displayed here -->
+  <h2 id="countryName"></h2>
+  
+  <!-- Container for the current flag (SVG) -->
+  <div id="flagContainer">
+
+  </div><!-- end flagContainer -->
+
+  <div id="controls">
+    <button id="checkBtn" class="icon-btn" title="Check Answer">
+        ✅
+      </button>
+    
+      <button id="nextBtn" class="icon-btn" disabled title="Next Question">
+        ⏭️
+      </button>
+    
+      <button id="give-up-button" class="icon-btn give-up" title="Give Up">
+        🚫
+      </button>
+  </div>
+
+  <div id="message"></div>
+  <div id="progress"></div>
+
+  <label id="width" for="widthRange">
+    Flag width:
+    <input
+      type="range"
+      id="widthRange"
+      min="20"
+      max="100"
+      value="55"
+    /> <span id="widthValue">55%</span>
+  </label>
+  <canvas id="confettiCanvas"></canvas>
+
+  <footer class="footer" data-aos="fade-up">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <a href="index.html"><img src="Logos/flag-color.PNG" alt="Company Logo"></a>
+      </div>
+      <div class="footer-info">
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copyright">
+          <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script>
+
+const widthRange = document.getElementById('widthRange');
+const widthValue = document.getElementById('widthValue');
+const flagContainer = document.getElementById('flagContainer');
+
+// Set initial width
+flagContainer.style.width = widthRange.value + '%';
+
+// Media query for specific screen size and orientation
+const mediaQuery = window.matchMedia(
+  '(max-width: 524px) and (min-height: 879px) and (max-height: 1057px) and (orientation: portrait)'
+);
+
+function applyMediaQueryStyles(e) {
+  if (e.matches) {
+    // Set width to 90% if media query matches
+    flagContainer.style.width = '90%';
+    widthRange.value = 90;
+    widthValue.textContent = '90%';
+  } else {
+    // Otherwise use current slider value
+    const w = widthRange.value + '%';
+    flagContainer.style.width = w;
+    widthValue.textContent = w;
+  }
+}
+
+// Listen for changes to the media query
+mediaQuery.addEventListener('change', applyMediaQueryStyles);
+
+// Apply styles on load
+applyMediaQueryStyles(mediaQuery);
+
+widthRange.addEventListener('input', () => {
+  const w = widthRange.value + '%';
+  flagContainer.style.width = w;
+  widthValue.textContent = w;
+});
+
+
+
+/*********************************************************************
+ * Data definition: an array that defines each flag by its country name 
+ * and the allowed colors in the correct order.
+ *********************************************************************/
+ const flagsData = [
+
+];
+
+
+// Shuffle the flags array using a Fisher-Yates algorithm.
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+shuffleArray(flagsData);
+
+let currentFlagIndex = 0;
+let score = 0;
+// This is the base (grey) color used for uncolored parts.
+const baseColor = "#ccc";
+
+// Reference needed DOM elements.
+const countryNameElem = document.getElementById("countryName");
+const messageElem     = document.getElementById("message");
+const progressElem    = document.getElementById("progress");
+const checkBtn        = document.getElementById("checkBtn");
+const nextBtn         = document.getElementById("nextBtn");
+const giveUpBtn       = document.getElementById("give-up-button");
+const body            = document.body;
+const widthElem       = document.getElementById("width");
+const controlsElem    = document.getElementById("controls");
+
+/*********************************************************************
+ * Function: loadFlag
+ *********************************************************************/
+ function loadFlag() {
+  messageElem.textContent = "";
+
+  // hide all previous flags
+  flagsData.forEach(f => {
+    const svg = document.getElementById(f.country);
+    if (svg) svg.style.display = "none";
+  });
+
+  const currentFlag = flagsData[currentFlagIndex];
+  countryNameElem.textContent = `Color the flag of ${currentFlag.country}`;
+  countryNameElem.title = `To color the flag of ${currentFlag.country}, click on the flag parts.`;
+
+  const currentSVG = document.getElementById(currentFlag.country);
+  currentSVG.style.display = "inline-block";
+
+  // for each stripe (g.stripe) initialize and hook up click
+  currentSVG.querySelectorAll(".stripe").forEach(stripe => {
+    stripe.dataset.cycleIndex = "-1";
+
+    // initialize shapes to base color only if they are not marked as not-hidden
+    stripe.querySelectorAll("rect, circle, path, polygon").forEach(shape => {
+      if (!shape.classList.contains("not-hidden")) {
+        shape.setAttribute("fill", baseColor);
+      }
+    });
+
+    // remove old listener(s) by replacing the node
+    const fresh = stripe.cloneNode(true);
+    stripe.parentNode.replaceChild(fresh, stripe);
+
+    // now add a fresh click‐handler to cycle through allowed colours
+    fresh.addEventListener("click", () => {
+      const allowed = currentFlag.colors;
+      let idx = parseInt(fresh.dataset.cycleIndex, 10);
+      let nextIdx = 0;
+      if (allowed.length > 1) {
+        do {
+          nextIdx = Math.floor(Math.random() * allowed.length);
+        } while (nextIdx === idx);
+      }
+      fresh.dataset.cycleIndex = nextIdx;
+
+      // apply the chosen colour to every shape in this stripe
+      fresh.querySelectorAll("rect, circle, path, polygon").forEach(shape => {
+        shape.setAttribute("fill", allowed[nextIdx]);
+      });
+    });
+  });
+
+  progressElem.textContent =
+    `Flag ${currentFlagIndex + 1} of ${flagsData.length}. Correct so far: ${score}.`;
+  nextBtn.disabled = true;
+  checkBtn.disabled = false;
+}
+
+
+/*********************************************************************
+ * Check Button: Compare each stripe’s fill to the correct array.
+ *********************************************************************/
+ checkBtn.addEventListener("click", () => {
+  const currentFlag = flagsData[currentFlagIndex];
+  const currentSVG = document.getElementById(currentFlag.country);
+  const stripes = currentSVG.querySelectorAll(".stripe");
+  flagsData[currentFlagIndex].status = 'correct';
+
+  let correctCount = 0;
+
+  stripes.forEach((stripe, i) => {
+    // skip if there's no expected color defined for this stripe
+    const expected = currentFlag.colors[i];
+    if (!expected) return;
+
+    // only check shapes that are NOT marked as not-hidden
+    const shapes = Array.from(stripe.querySelectorAll("rect, circle, path, polygon"))
+      .filter(shape => !shape.classList.contains("not-hidden"));
+
+    if (shapes.length === 0) return;
+
+    const allMatch = shapes.every(
+      shape => shape.getAttribute("fill") === expected
+    );
+
+    if (allMatch) correctCount++;
+  });
+
+  if (correctCount === stripes.length) {
+    messageElem.textContent = "✅ Correct!";
+    body.style.backgroundColor = "#d4edda";
+    score++;
+    nextBtn.disabled = false;
+    checkBtn.disabled = true;
+    giveUpBtn.disabled = true;
+  } else if (correctCount > 0) {
+    messageElem.textContent = `Almost! You got ${correctCount}/${stripes.length}.`;
+    body.style.backgroundColor = "#fff3cd";
+  } else {
+    messageElem.textContent = "None correct. Try again.";
+    body.style.backgroundColor = "#f8d7da";
+  }
+
+  progressElem.textContent =
+    `Flag ${currentFlagIndex + 1} of ${flagsData.length}. Correct so far: ${score}.`;
+});
+
+
+
+/*********************************************************************
+ * Next Button: load next or end quiz
+ *********************************************************************/
+ nextBtn.addEventListener("click", () => {
+  if (currentFlagIndex < flagsData.length - 1) {
+    currentFlagIndex++;
+    giveUpBtn.disabled = false;
+    body.style.backgroundColor = "#f7f7f7"; // reset background color
+    loadFlag();
+  } else {
+    countryNameElem.textContent = "Quiz Completed!";
+    createConfetti(); // Call the confetti function
+    messageElem.textContent     = `Final score: ${score}/${flagsData.length}.`;
+    checkBtn.disabled = true;
+    flagContainer.querySelectorAll("svg").forEach(svg => svg.style.display = "none");
+    body.style.backgroundColor = "#d4edda"; // light green
+    widthElem.style.display = "none"; // hide width slider
+    controlsElem.style.display = "none"; // hide controls
+    progressElem.textContent = ""; // clear progress message
+    nextBtn.disabled  = true;
+    showAllFlags(); // show all flags
+  }
+});
+/*********************************************************************
+ * Show All Flags Button: show all flags in a grid
+ *********************************************************************/
+ function showAllFlags() {
+  flagContainer.style.margin = "20px auto 100px auto";
+  flagContainer.style.width = "100%"; // set width to 100%
+
+  // pull out all existing <svg> elements
+  const svgs = Array.from(flagContainer.querySelectorAll('svg'));
+
+  // clear the container
+  flagContainer.innerHTML = '';
+
+  svgs.forEach(originalSvg => {
+    // Clone the SVG to strip interactivity
+    const svg = originalSvg.cloneNode(true);
+
+    // Remove interactivity from stripes
+    svg.querySelectorAll(".stripe").forEach(stripe => {
+      stripe.removeAttribute("data-cycle-index");
+
+      // Replace with a clean clone to remove listeners
+      const fresh = stripe.cloneNode(true);
+      stripe.parentNode.replaceChild(fresh, stripe);
+    });
+
+    svg.style.display = 'block';  // un‑hide
+
+    // find its status emoji
+    const f = flagsData.find(item => item.country === svg.id);
+    const emoji = f.status === 'correct' ? '✅'
+                : f.status === 'skipped' ? '❌'
+                : '';
+
+    // build wrapper + label
+    const wrapper = document.createElement('div');
+    wrapper.className = 'flag-item';
+
+    const label = document.createElement('div');
+    label.textContent = `${svg.id} ${emoji}`;
+    label.className = 'flag-label';
+
+    wrapper.appendChild(svg);
+    wrapper.appendChild(label);
+    flagContainer.appendChild(wrapper);
+  });
+
+  countryNameElem.textContent     = "All Flags";
+  widthElem.style.display = "none"; // hide width slider
+  messageElem.textContent     = `Final score: ${score}/${flagsData.length}.`;
+  progressElem.textContent = ""; // clear progress message
+  controlsElem.style.display      = "none";
+  body.style.backgroundColor      = "#f7f7f7";
+}
+
+
+
+/*********************************************************************
+ * Give‑Up Button: show correct colors on both rects & circles
+ *********************************************************************/
+ giveUpBtn.addEventListener("click", () => {
+  const currentFlag = flagsData[currentFlagIndex];
+  const svg         = document.getElementById(currentFlag.country);
+
+  svg.querySelectorAll(".stripe").forEach((stripe, i) => {
+    const shapes = stripe.querySelectorAll("rect, circle, path, polygon");
+    if (shapes.length === 0) return;
+
+    shapes.forEach(shape => {
+      shape.setAttribute("fill", currentFlag.colors[i]);
+      shape.style.pointerEvents = "none"; // lock it
+    });
+  });
+
+  flagsData[currentFlagIndex].status = 'skipped';
+  giveUpBtn.disabled = true;
+  messageElem.textContent = `The correct colors for ${currentFlag.country} are now shown.`;
+  checkBtn.disabled = true;
+  body.style.backgroundColor = "#f8d7da"; // light red
+  nextBtn.disabled  = false;
+});
+
+
+// Confetti animation function
+function createConfetti() {
+    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+    
+    const body = document.body;
+    const originalOverflow = body.style.overflow;
+    body.style.overflow = 'hidden'; // Prevent scrolling during animation
+
+    function createPiece() {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti');
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = Math.random() * 20 + 'px';
+        piece.style.height = Math.random() * 20 + 'px';
+        piece.style.left = (Math.random() * window.innerWidth) + 'px';
+        piece.style.top = '-20px';
+        piece.style.animationDuration = '2s';
+        body.appendChild(piece);
+        piece.addEventListener('animationend', function() {
+            piece.parentNode.removeChild(piece);
+        });
+    }
+
+    // Adjust the number of confetti pieces
+    const totalPieces = 700;
+    const interval = 5; // milliseconds
+
+    let i = 0;
+    let intervalId = setInterval(function() {
+        createPiece();
+        i++;
+        if (i >= totalPieces) {
+            clearInterval(intervalId);
+
+            // Restore scrolling after the animation ends
+            setTimeout(() => {
+                body.style.overflow = originalOverflow || 'auto';
+            }, 2000); // Wait for the last pieces to finish animating
+        }
+    }, interval);
+}
+
+
+// initialize first flag
+loadFlag();
+
+
+
+  
+
+  </script>    
+
+</body>
+</html>
