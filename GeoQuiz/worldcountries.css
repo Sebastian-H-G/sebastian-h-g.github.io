@@ -515,3 +515,24 @@ footer {
   }
 
 }
+@media (max-width: 480px), 
+       (min-width: 481px) and (max-width: 768px), 
+       (min-width: 769px) {
+        body {
+          font-size: 14px; /* Adjust font size */
+      }
+      h1 {
+          font-size: 2rem; /* Adjust heading size */
+          margin-top: 60px; /* Add more space */
+      }
+      #countryInput {
+          width: 250px; /* Adjust input width */
+          padding: 8px; /* Adjust padding */
+      }
+      footer{
+        margin-top: 200px;
+      }
+    
+
+
+       }

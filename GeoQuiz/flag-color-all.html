@@ -232,7 +232,45 @@
   height: 100%;       /* fill the wrapper height */
 }
 
+.info-icon {
+    display: inline-block;
+    background: #ddd;
+    color: #000;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 12px;
+    vertical-align: super;
+    line-height: 16px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    top: -2px;
+    margin-left: 5px;
+  }
 
+  .tooltip {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    padding: 6px 10px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    top: 20px;
+    left: -30px;
+    width: 200px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .info-icon:hover .tooltip,
+  .info-icon:focus .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
 .footer {
   background: linear-gradient(to right, #003c4e, #00bcd4); /* Blue gradient */
   color: #fff;
@@ -327,7 +365,7 @@
 <body>
   <h1>Flag Coloring Quiz</h1>
   <!-- The country to color will be displayed here -->
-  <h2 id="countryName"></h2>
+  <h2 id="countryName"> </h2>
   
   <!-- Container for the current flag (SVG) -->
   <div id="flagContainer">
@@ -2214,8 +2252,11 @@ const controlsElem    = document.getElementById("controls");
     if (svg) svg.style.display = "none";
   });
 
-  const currentFlag = flagsData[currentFlagIndex];
-  countryNameElem.textContent = `Color the flag of ${currentFlag.country}`;
+  const currentFlag = flagsData[currentFlagIndex];countryNameElem.innerHTML = `Color the flag of ${currentFlag.country}
+  <span class="info-icon" tabindex="0">i
+    <span class="tooltip">Click on each part of the flag to cycle through the colors and match the real flag!</span>
+  </span>`;
+
   countryNameElem.title = `To color the flag of ${currentFlag.country}, click on the flag parts.`;
 
   const currentSVG = document.getElementById(currentFlag.country);

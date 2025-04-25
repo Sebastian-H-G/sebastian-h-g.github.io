@@ -444,6 +444,38 @@
     color: #e53935;
   }
 }
+@media (max-width: 480px), 
+       (min-width: 481px) and (max-width: 768px), 
+       (min-width: 769px) {
+  /* Shared styles for all screen sizes */
+      /* Apply your styles here */
+      #quiz-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 70px;
+        margin: 10px;
+    }
+    .wrapper {
+        width: 400px; /* Adjust width for smaller screens */
+        height: 200px; /* Adjust height for smaller screens */
+    }
+    .wrapper:before {
+      height: 350px; /* Adjust height for smaller screens */
+    }
+    h1 {
+        font-size: 2.5em; /* Adjust font size for smaller screens */
+    }	
+    #difficulty-container, #game-mode-container, #filter-container {
+        font-size: 16px;
+        padding: 10px;
+    }
+    #hide {
+        display: none; /* Hide the "Select" text on smaller screens */
+    }
+    .footer {
+      margin-top: 40px;
+    }
+}
 
 
   </style>

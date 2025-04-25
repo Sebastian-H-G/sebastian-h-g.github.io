@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Capitales de los Estados de Mexico</title>
+    <link href="worldcountries.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
-        path {
+path {
 	fill: red;
 	stroke-width: 0.5;
 	stroke: black;
@@ -21,8 +22,14 @@ fill: yellow!important;
 #WATER {
 fill: lightblue;
 }
+
 .map-styles_extendedHitboxHidden__PNW0h, .map-styles_hitboxDot__91ZW_, .map-styles_hitboxRiver__Al0N_, .map-styles_labelBox__gTsp5, .map-styles_labelLine__VViQN, .map-styles_transparentAreaOnHover__eVmKk, .map-styles_transparentAreaVisible__MBVVQ {
     opacity: 0!important;
+}
+svg circle {
+    fill: #F90!important;
+    stroke: #000!important;
+    stroke-width: 1px!important;
 }
 SVG {margin: 40px;}
     #countries-container table {
@@ -117,7 +124,7 @@ SVG {margin: 40px;}
 
 </head>
 <body class="page-exit">
-    <h1>Estados de Mexico</h1>
+    <h1>Capitales de los Estados de Mexico</h1>
     <div class="flexbox"><div class="outScoreBoard"><div id="scoreBoard">Score: 0 / 32</div></div><input type="text" id="countryInput" placeholder="Escriba el nombre de un estado"><button id="pauseButton" class="pause"></button><div id="timer">5:00</div>
    </div>
     <div id="pauseMessage" style="display: none;"></div><br>
@@ -703,9 +710,286 @@ SVG {margin: 40px;}
 
 </script>
   <script src="transition.js"></script>
-    <script src="mexico.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@9.4.0/dist/panzoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@9.4.0/dist/panzoom.min.js"></script>
     
+
+  <script>
+    const capitals = {
+"aguascalientes": "aguascalientes",
+"la paz": "baja california sur",
+"mexicali": "baja california",
+"campeche": "campeche",
+"tuxtla gutiérrez": "chiapas",
+"chihuahua": "chihuahua",
+"saltillo": "coahuila",
+"colima": "colima",
+"victoria de durango": "durango",
+"guanajuato": "guanajuato",
+"chilpancingo": "guerrero",
+"pachuca": "hidalgo",
+"guadalajara": "jalisco",
+"toluca": "estado de méxico",
+"morelia": "michoacán",
+"cuernavaca": "morelos",
+"tepic": "nayarit",
+"monterrey": "nuevo león",
+"oaxaca": "oaxaca",
+"puebla": "puebla",
+"querétaro": "querétaro",
+"chetumal": "quintana roo",
+"san luis potosí": "san luis potosí",
+"culiacán": "sinaloa",
+"hermosillo": "sonora",
+"villahermosa": "tabasco",
+"ciudad victoria": "tamaulipas",
+"tlaxcala": "tlaxcala",
+"xalapa": "veracruz",
+"mérida": "yucatán",
+"zacatecas": "zacatecas"
+};
+  
+  const alternativeSpellings = {
+    "mexico city": "Ciudad de México",
+    "cdmx": "Ciudad de México",
+    "df": "Ciudad de México",
+    // Add more alternative spellings here
+};
+
+
+const countryToCapitals = {
+    "south africa": ["pretoria", "cape town", "bloemfontein"],
+    "benin": ["cotonou", "porto novo"],
+    "bolivia": ["la paz", "sucre"],
+    // ...other countries with multiple capitals...
+};
+
+function checkCapital(capitalName) {
+    const normalizedCapitalName = normalizeCountryName(capitalName);
+    let mainCapitalName = normalizedCapitalName;
+
+    if (!capitals[normalizedCapitalName]) {
+        mainCapitalName = alternativeSpellings[normalizedCapitalName];
+    }
+
+    const countryName = capitals[mainCapitalName];
+
+    if (countryName && !correctCountries.includes(mainCapitalName)) {
+        correctCountries.push(mainCapitalName);
+        score++;
+        scoreBoard.textContent = `Score: ${score} / 196`;
+
+        // Normalize the title attribute for the circle elements
+        const capitalNames = countryToCapitals[countryName.toLowerCase()] || [mainCapitalName];
+        capitalNames.forEach(capital => {
+            document.querySelectorAll(`[title="${normalizeCountryName(capital)}"]`).forEach(circle => {
+                circle.classList.add('correct');
+            });
+        });
+
+        countryInput.value = ''; // Clear the input field
+        countryInput.focus(); // Focus the input field
+    }
+}
+function normalizeCountryName(name) {
+    return name
+        .normalize("NFD") // Normalize to NFD Unicode form
+        .replace(/[\u0300-\u036f]/g, "") // Remove accents
+        .replace(/[-\s]+/g, " ") // Replace multiple spaces with a single space
+        .replace(/[^\w\s.'-]/g, "") // Remove non-alphanumeric characters except hyphens, dots, and apostrophes
+        .trim() // Trim leading and trailing spaces
+        .toLowerCase(); // Convert to lowercase
+}
+
+
+
+const correctCountries = [];
+let score = 0;
+let timeRemaining = 15 * 60;
+
+const countryInput = document.getElementById('countryInput');
+const scoreBoard = document.getElementById('scoreBoard');
+const timerElement = document.getElementById('timer');
+
+countryInput.addEventListener('input', (e) => {
+    checkCapital(e.target.value.trim());
+});
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    let countdownInterval;
+    let pauseCount = 0;
+    const maxPauses = 3;
+    let isPaused = false;
+
+    function endGame() {
+        Object.keys(capitals).forEach(capital => {
+            const normalizedCapitalName = normalizeCountryName(capital);
+            if (!correctCountries.includes(normalizedCapitalName)) {
+                document.querySelectorAll(`[title="${normalizedCapitalName}"]`).forEach(circle => {
+                    circle.classList.add('not-guessed');
+                });
+            }
+        });
+    }
+    function checkAllStatesGuessed() {
+        return correctCountries.length === Object.keys(capitals).length;
+    }
+
+    function startCountdown() {
+        countdownInterval = setInterval(() => {
+            if (!isPaused) {
+                timeRemaining--;
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timeRemaining <= 0 || checkAllStatesGuessed()) {
+                    clearInterval(countdownInterval);
+                    const messageElement = document.getElementById('message');
+                    const giveUpButton = document.getElementById('giveUpButton');
+
+                    if (checkAllStatesGuessed()) {
+                        createConfetti();
+                        messageElement.textContent = `Congratulations! 👏 You named all countries. 🎉`;
+                        messageElement.style.color = 'green';
+                        pauseButton.style.display = 'none';
+                        showTables();
+                        enableCountryTooltip();
+                        messageElement.classList.add('congrats-animation');
+                        setTimeout(() => {
+                            messageElement.classList.remove('congrats-animation');
+                        }, 1500);
+                        if (navigator.vibrate) {
+                            console.log('Vibration triggered'); // Add this line for debugging
+                            navigator.vibrate(200); // Vibrate for 200 milliseconds
+                        }
+                        // Change "Give Up" button to "Restart" button
+                        giveUpButton.textContent = 'Restart';
+                        giveUpButton.onclick = () => location.reload();
+                    } else {
+                        messageElement.textContent = `Time is up! You named ${score} countries.`;
+                        giveUpButton.textContent = 'Restart';
+                        giveUpButton.onclick = () => location.reload();
+                        pauseButton.style.display = 'none';
+                        enableCountryTooltip();
+                    }
+
+                    messageElement.style.display = 'block';
+                    countryInput.disabled = true;
+                    endGame();
+                    // Disable the input field
+                    showTables();
+                }
+            }
+        }, 1000);
+    }
+
+    // Confetti animation function
+    function createConfetti() {
+        const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+
+        function createPiece() {
+            const piece = document.createElement('div');
+            piece.classList.add('confetti');
+            piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            piece.style.width = Math.random() * 20 + 'px';
+            piece.style.height = Math.random() * 20 + 'px';
+            piece.style.left = (Math.random() * window.innerWidth) + 'px';
+            piece.style.top = '-20px';
+            piece.style.animationDuration = '2s'; // Set animation duration to 3 seconds
+            document.body.appendChild(piece);
+            piece.addEventListener('animationend', function () {
+                piece.parentNode.removeChild(piece);
+            });
+        }
+
+        // Adjust the number of confetti pieces
+        const totalPieces = 700;
+        const interval = 5; // milliseconds
+
+        let i = 0;
+        let intervalId = setInterval(function () {
+            createPiece();
+            i++;
+            if (i >= totalPieces) {
+                clearInterval(intervalId);
+            }
+        }, interval);
+    }
+
+    // Add event listener for keydown to detect Control + X
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === 'x') {
+            isPaused = !isPaused; // Toggle the timerRunning variable
+            pauseButton.disabled = true;
+            if (timerRunning) {
+                startTimer();
+            } else {
+                stopTimer();
+            }
+        }
+    });
+
+    function stopTimer() {
+        isPaused = true;
+    }
+
+    function togglePause() {
+        const pauseButton = document.getElementById('pauseButton');
+        if (!isPaused && pauseCount < maxPauses) {
+            isPaused = true;
+            pauseCount++;
+            pauseButton.classList.remove('pause');
+            pauseButton.classList.add('play');
+            countryInput.disabled = true;
+            document.getElementById('map-container').style.display = 'none'; // Disable map interaction
+            document.getElementById('pauseMessage').style.display = 'block';
+            document.querySelector('.controls').style.display = 'none';
+            document.getElementById('pauseMessage').textContent = `Game is Paused! Pauses left: ${maxPauses - pauseCount}`;
+        } else if (isPaused) {
+            isPaused = false;
+            pauseButton.classList.remove('play');
+            pauseButton.classList.add('pause');
+            countryInput.disabled = false;
+            document.getElementById('map-container').style.display = 'block'; // Enable map interaction
+            document.getElementById('pauseMessage').style.display = 'none';
+
+            if (pauseCount >= maxPauses) {
+                pauseButton.disabled = true;
+                pauseButton.style.display = 'none';
+            }
+        }
+    }
+
+    function giveUp() {
+        clearInterval(countdownInterval);
+        const messageElement = document.getElementById('message');
+        messageElement.textContent = `You gave up! You named ${score} countries.`;
+        messageElement.style.display = 'block';
+        document.getElementById('pauseButton').style.display = 'none';
+        document.getElementById('giveUpButton').style.display = 'none';
+        document.getElementById('restartButton').style.display = 'block';
+        document.getElementById('pauseMessage').style.display = 'none';
+        document.getElementById('map-container').style.display = 'block';
+        countryInput.disabled = true; // Disable the input field
+        showTables();
+        enableCountryTooltip();
+        endGame(); // Ensure endGame is called here
+    }
+
+    function restartGame() {
+        location.reload();
+    }
+
+    document.getElementById('pauseButton').addEventListener('click', togglePause);
+    document.getElementById('giveUpButton').addEventListener('click', giveUp);
+    document.getElementById('restartButton').addEventListener('click', restartGame);
+
+    startCountdown();
+});
+
+  </script>
 </body>
 </html>
 
