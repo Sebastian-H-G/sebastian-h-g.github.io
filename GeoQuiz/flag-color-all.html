@@ -2254,10 +2254,10 @@ const controlsElem    = document.getElementById("controls");
 
   const currentFlag = flagsData[currentFlagIndex];countryNameElem.innerHTML = `Color the flag of ${currentFlag.country}
   <span class="info-icon" tabindex="0">i
-    <span class="tooltip">Click on each part of the flag to cycle through the colors and match the real flag!</span>
+    <span class="tooltip">Click on each part of the flag to cycle through the colors and match the real flag!
+    <br>Click ✅ to check and 🚫to give up.
+    </span>
   </span>`;
-
-  countryNameElem.title = `To color the flag of ${currentFlag.country}, click on the flag parts.`;
 
   const currentSVG = document.getElementById(currentFlag.country);
   currentSVG.style.display = "inline-block";
