@@ -31,6 +31,20 @@
     #site-content {
         display: none;
     }
+        /* Custom fade-in animation */
+        @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
 /* Styling for the search area */
 .containerSearch {
     display: flex;
@@ -199,17 +213,27 @@ button {
 
 
   <!-- Supabase Auth Embed -->
-<div id="supabase-auth-box" style="max-width: 400px; margin: 2rem auto; font-family: sans-serif;">
-    <h2>Register</h2>
-    <input id="sa-regEmail"     type="email"    placeholder="Email">
-    <input id="sa-regPassword"  type="password" placeholder="Password">
-    <input id="sa-regUsername"  type="text"     placeholder="Username">
-    <button onclick="saHandleRegister()">Sign Up</button>
-  
-    <h2>Login</h2>
-    <input id="sa-loginEmail"    type="email"    placeholder="Email">
-    <input id="sa-loginPassword" type="password" placeholder="Password">
-    <button onclick="saHandleLogin()">Log In</button>
+  <div id="supabase-auth-box" class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md space-y-6 animate-fade-in-up">
+    
+    <div>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Register</h2>
+      <div class="space-y-3">
+        <input id="sa-regEmail" type="email" placeholder="Email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
+        <input id="sa-regPassword" type="password" placeholder="Password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
+        <input id="sa-regUsername" type="text" placeholder="Username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
+        <button onclick="saHandleRegister()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-200">Sign Up</button>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-200 pt-6">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Login</h2>
+      <div class="space-y-3">
+        <input id="sa-loginEmail" type="email" placeholder="Email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition" />
+        <input id="sa-loginPassword" type="password" placeholder="Password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition" />
+        <button onclick="saHandleLogin()" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-all duration-200">Log In</button>
+      </div>
+    </div>
+
   </div>
   
   <div id="sa-profile" style="display:none; margin-top: 2rem; padding: 1rem; border: 1px solid #ddd;">
