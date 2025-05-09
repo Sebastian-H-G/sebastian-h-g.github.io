@@ -978,76 +978,78 @@ button {
 
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
-    const SUPABASE_URL = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
-    
-    // Initialize Supabase client
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+  const SUPABASE_URL = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA'; // truncated for clarity
 
-    // Hide the website content initially
-    const website = document.getElementById('site-content').style.display = 'none';
+  // ✅ Initialize Supabase client (IMPORTANT: don't shadow the name)
+  const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    function showSite(user) {
-        document.getElementById('supabase-auth-box').style.display = 'none';
-        document.getElementById('sa-profile').style.display = 'block';
-        website.style.display = 'block';
-        saLoadProfile(user);
-    }
-  
-    async function saHandleRegister() {
-      const email    = document.getElementById('sa-regEmail').value;
-      const password = document.getElementById('sa-regPassword').value;
-      const username = document.getElementById('sa-regUsername').value;
-  
-      const { data, error: signError } = await supabase.auth.signUp({ email, password });
-      if (signError) return alert('Signup error: ' + signError.message);
-  
-      const user = data.user;
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert([{ id: user.id, username }]);
-      if (profileError) return alert('Error saving profile: ' + profileError.message);
-  
-      alert('Registration successful! Check your email to confirm.');
-      showSite(user);
-    }
-  
-    async function saHandleLogin() {
-      const email    = document.getElementById('sa-loginEmail').value;
-      const password = document.getElementById('sa-loginPassword').value;
-  
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) return alert('Login error: ' + error.message);
-  
-      showSite(data.user);
-    }
-  
-    async function saLoadProfile(user) {
-      document.getElementById('sa-pEmail').textContent = user.email;
-  
-      const { data: profile, error } = await supabase
-        .from('profiles')
-        .select('username')
-        .eq('id', user.id)
-        .single();
-  
-      document.getElementById('sa-pUsername').textContent = profile?.username || '(error)';
-    }
-  
-    async function saHandleLogout() {
-      await supabase.auth.signOut();
-      document.getElementById('sa-profile').style.display = 'none';
-      document.getElementById('supabase-auth-box').style.display = 'block';
-      document.getElementById('site-content').style.display = 'none';
-      alert('Logged out');
-    }
-  
-    // Auto-show if already logged in
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) showSite(data.session.user);
-    });
-  </script>
+  // ✅ Hide the website content initially
+  document.getElementById('site-content').style.display = 'none';
+
+  function showSite(user) {
+    document.getElementById('supabase-auth-box').style.display = 'none';
+    document.getElementById('sa-profile').style.display = 'block';
+    document.getElementById('site-content').style.display = 'block';
+    saLoadProfile(user);
+  }
+
+  async function saHandleRegister() {
+    const email    = document.getElementById('sa-regEmail').value;
+    const password = document.getElementById('sa-regPassword').value;
+    const username = document.getElementById('sa-regUsername').value;
+
+    const { data, error: signError } = await sbClient.auth.signUp({ email, password });
+    if (signError) return alert('Signup error: ' + signError.message);
+
+    const user = data.user;
+    const { error: profileError } = await sbClient
+      .from('profiles')
+      .insert([{ id: user.id, username }]);
+    if (profileError) return alert('Error saving profile: ' + profileError.message);
+
+    alert('Registration successful! Check your email to confirm.');
+    showSite(user);
+  }
+
+  async function saHandleLogin() {
+    const email    = document.getElementById('sa-loginEmail').value;
+    const password = document.getElementById('sa-loginPassword').value;
+
+    const { data, error } = await sbClient.auth.signInWithPassword({ email, password });
+    if (error) return alert('Login error: ' + error.message);
+
+    showSite(data.user);
+  }
+
+  async function saLoadProfile(user) {
+    document.getElementById('sa-pEmail').textContent = user.email;
+
+    const { data: profile, error } = await sbClient
+      .from('profiles')
+      .select('username')
+      .eq('id', user.id)
+      .single();
+
+    document.getElementById('sa-pUsername').textContent = profile?.username || '(error)';
+  }
+
+  async function saHandleLogout() {
+    await sbClient.auth.signOut();
+    document.getElementById('sa-profile').style.display = 'none';
+    document.getElementById('supabase-auth-box').style.display = 'block';
+    document.getElementById('site-content').style.display = 'none';
+    alert('Logged out');
+  }
+
+  // Auto-login if session exists
+  sbClient.auth.getSession().then(({ data }) => {
+    if (data.session) showSite(data.session.user);
+  });
+</script>
+
   
   <script>
     function toggleQuizSections(event) {
