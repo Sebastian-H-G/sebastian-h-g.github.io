@@ -307,7 +307,6 @@ const urlsToCache = [
 'flags/tr.webp',
 'flags/ua.webp',
 'flags/gb.webp',
-'flags/vt.webp',
 ];
 
 self.addEventListener('install', (event) => {
