@@ -1030,9 +1030,9 @@ button {
 
     
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
+<script>
   const SUPABASE_URL      = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA'; // your anon key
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   function showApp(user) {
@@ -1086,15 +1086,15 @@ button {
     const email    = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
 
-    const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({ email, password });
+    const { error: signInError, data: signInData } = await sb.auth.signInWithPassword({ email, password });
     if (signInError) {
       console.error('[handleLogin] login error:', signInError);
       return alert('Login error: ' + signInError.message);
     }
 
-    const { data: userData, error: userError } = await sb.auth.getUser();
-    if (userError || !userData.user) {
-      console.error('[handleLogin] getUser error:', userError);
+    const { data: userData, error: userErr } = await sb.auth.getUser();
+    if (userErr || !userData.user) {
+      console.error('[handleLogin] getUser error:', userErr);
       return alert('Unable to get user—make sure you confirmed your email.');
     }
     const user = userData.user;
@@ -1111,18 +1111,15 @@ button {
       // 2b) pull username from metadata
       const username = user.user_metadata?.username || 'anonymous';
 
-      // 2c) insert and catch unique-constraint error
-      const { error: insertErr } = await sb
+      // 2c) upsert: insert or update the username in profiles
+      const { error: upsertErr } = await sb
         .from('profiles')
-        .insert([{ id: user.id, username }]);
-      if (insertErr) {
-        console.error('[handleLogin] insert profile error:', insertErr);
-        if (insertErr.code === '23505') {  // Postgres unique_violation
-          return alert(`Username “${username}” is already in use. Please choose another via your profile settings.`);
-        }
-        return alert('Error creating profile: ' + insertErr.message);
+        .upsert([{ id: user.id, username }], { onConflict: 'id' });
+      if (upsertErr) {
+        console.error('[handleLogin] upsert profile error:', upsertErr);
+        return alert('Error saving profile: ' + upsertErr.message);
       }
-      console.log('[handleLogin] profile created with username:', username);
+      console.log('[handleLogin] profile upserted for', user.id, 'as', username);
     }
 
     showApp(user);
@@ -1153,7 +1150,7 @@ button {
     alert('Logged out');
   }
 
-  // 5) Auto-login on session/auth change
+  // Auto-login on page load / auth changes
   sb.auth.getSession().then(({ data }) => {
     if (data.session) showApp(data.session.user);
   });
@@ -1161,6 +1158,7 @@ button {
     if (session) showApp(session.user);
   });
 </script>
+
 
 
 
