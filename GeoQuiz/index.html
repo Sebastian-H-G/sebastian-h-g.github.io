@@ -1029,10 +1029,9 @@ button {
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
   const SUPABASE_URL      = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA'; // your anon key
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // Show/hide UI
   function showApp(user) {
     document.getElementById('auth-box').style.display     = 'none';
     document.getElementById('profile').style.display      = 'block';
@@ -1040,32 +1039,50 @@ button {
     loadProfile(user);
   }
 
-  
-  // Register: save username locally, then sign up (email confirmation required)
+  // 1) Register: check username availability, then sign up
   async function handleRegister() {
-    const email    = document.getElementById('regEmail').value;
+    const email    = document.getElementById('regEmail').value.trim();
     const password = document.getElementById('regPassword').value;
-    const username = document.getElementById('regUsername').value.trim() || 'anonymous';
+    const username = document.getElementById('regUsername').value.trim();
 
-    // store for later
-    localStorage.setItem('pendingUsername', username);
+    if (!username) {
+      return alert('Please choose a username.');
+    }
 
-    const { data, error } = await sb.auth.signUp({ email, password });
+    // 1a) client-side check for existing username
+    const { data: clash, error: clashErr } = await sb
+      .from('profiles')
+      .select('id', { count: 'exact' })
+      .eq('username', username)
+      .maybeSingle();
+    if (clashErr) {
+      console.error('[handleRegister] username check error:', clashErr);
+      return alert('Error checking username availability.');
+    }
+    if (clash) {
+      return alert(`Sorry, “${username}” is already taken. Please choose another.`);
+    }
+
+    // 1b) sign up, storing username in metadata
+    const { data, error } = await sb.auth.signUp({
+      email,
+      password,
+      options: { data: { username } }
+    });
     if (error) {
       console.error('[handleRegister] signup error:', error);
       return alert('Signup error: ' + error.message);
     }
 
+    alert('✅ Check your email to confirm before logging in.');
     console.log('[handleRegister] signUp returned user:', data.user);
-    alert('🎉 Check your email to confirm your account, then come back to log in.');
   }
 
-  // Login: then maybe insert profile if none exists
+  // 2) Login: maybe insert profile if none exists
   async function handleLogin() {
-    const email    = document.getElementById('loginEmail').value;
+    const email    = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
 
-    console.log('[handleLogin] signing in:', email);
     const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({ email, password });
     if (signInError) {
       console.error('[handleLogin] login error:', signInError);
@@ -1079,7 +1096,7 @@ button {
     }
     const user = userData.user;
 
-    // Check if profile exists
+    // 2a) check if profile already exists
     const { data: existing, error: fetchErr } = await sb
       .from('profiles')
       .select('id')
@@ -1088,23 +1105,27 @@ button {
     if (fetchErr) console.error('[handleLogin] fetch profile error:', fetchErr);
 
     if (!existing) {
-      // no profile yet → insert using stored username
-      const pendingUsername = localStorage.getItem('pendingUsername') || 'anonymous';
+      // 2b) pull username from metadata
+      const username = user.user_metadata?.username || 'anonymous';
+
+      // 2c) insert and catch unique-constraint error
       const { error: insertErr } = await sb
         .from('profiles')
-        .insert([{ id: user.id, username: pendingUsername }]);
+        .insert([{ id: user.id, username }]);
       if (insertErr) {
         console.error('[handleLogin] insert profile error:', insertErr);
+        if (insertErr.code === '23505') {  // Postgres unique_violation
+          return alert(`Username “${username}” is already in use. Please choose another via your profile settings.`);
+        }
         return alert('Error creating profile: ' + insertErr.message);
       }
-      localStorage.removeItem('pendingUsername');
-      console.log('[handleLogin] profile created for', user.id);
+      console.log('[handleLogin] profile created with username:', username);
     }
 
     showApp(user);
   }
 
-  // Load and display profile
+  // 3) Load and display profile
   async function loadProfile(user) {
     document.getElementById('pEmail').textContent = user.email;
     const { data: profile, error } = await sb
@@ -1113,14 +1134,14 @@ button {
       .eq('id', user.id)
       .single();
     if (error) {
-      console.error('[loadProfile] error fetching profile:', error);
+      console.error('[loadProfile] error:', error);
       document.getElementById('pUsername').textContent = '(error)';
       return;
     }
     document.getElementById('pUsername').textContent = profile.username || '(no username)';
   }
 
-  // Logout
+  // 4) Logout
   async function handleLogout() {
     await sb.auth.signOut();
     document.getElementById('auth-box').style.display     = 'block';
@@ -1129,14 +1150,15 @@ button {
     alert('Logged out');
   }
 
-  // Auto-login / auth change
+  // 5) Auto-login on session/auth change
   sb.auth.getSession().then(({ data }) => {
     if (data.session) showApp(data.session.user);
   });
-  sb.auth.onAuthStateChange((event, session) => {
+  sb.auth.onAuthStateChange((_, session) => {
     if (session) showApp(session.user);
   });
 </script>
+
 
 
 	
