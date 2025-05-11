@@ -96,6 +96,16 @@ strong {
 }
 #profile {
     display: none;
+    position: absolute;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    padding: 2rem;
+    max-width: 400px;
 }
         /* Custom fade-in animation */
         @keyframes fadeInUp {
@@ -294,7 +304,7 @@ button {
     <button onclick="handleLogin()">Log In</button>
   </div>
 
-  <div id="profile">
+  <div id="profile" style="display:none;">
     <h2>Your Profile</h2>
     <p><strong>Email:</strong> <span id="pEmail"></span></p>
     <p><strong>Username:</strong> <span id="pUsername"></span></p>
@@ -1037,7 +1047,6 @@ button {
 
   function showApp(user) {
     document.getElementById('auth-box').style.display     = 'none';
-    document.getElementById('profile').style.display      = 'block';
     document.getElementById('site-content').style.display = 'block';
     loadProfile(user);
   }
@@ -1157,6 +1166,16 @@ button {
   sb.auth.onAuthStateChange((_, session) => {
     if (session) showApp(session.user);
   });
+
+
+document.getElementById('logo').addEventListener('click', () => {
+  const profileBox = document.getElementById('profile');
+  if (profileBox.style.display === 'none') {
+    profileBox.style.display = 'block';
+  } else {
+    profileBox.style.display = 'none';
+  }
+});
 </script>
 
 
