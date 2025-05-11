@@ -976,84 +976,83 @@ button {
     
     </div>
 
-
+    
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
-    // 1) Initialize Supabase client
-    const SUPABASE_URL     = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
-    const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+ <script>
+  const SUPABASE_URL = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
+  const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // 2) Show/hide UI
-    function showSite(user) {
-      document.getElementById('supabase-auth-box').style.display = 'none';
-      document.getElementById('sa-profile').style.display        = 'block';
-      document.getElementById('site-content').style.display      = 'block';
-      saLoadProfile(user);
-    }
+  // Show/hide interface
+  function showSite(user) {
+    document.getElementById('supabase-auth-box').style.display = 'none';
+    document.getElementById('sa-profile').style.display = 'block';
+    document.getElementById('site-content').style.display = 'block';
+    saLoadProfile(user);
+  }
 
-    // 3) Registration handler
-    async function saHandleRegister() {
-      const email    = document.getElementById('sa-regEmail').value;
-      const password = document.getElementById('sa-regPassword').value;
-      const username = document.getElementById('sa-regUsername').value;
+  // Register user (no profile insert here — wait for confirmation)
+  async function saHandleRegister() {
+    const email = document.getElementById('sa-regEmail').value;
+    const password = document.getElementById('sa-regPassword').value;
 
-      // Sign up (email confirmation may be enabled)
-      const { data, error: signError } = await sbClient.auth.signUp({ email, password });
-      if (signError) return alert('Signup error: ' + signError.message);
+    const { error } = await sbClient.auth.signUp({ email, password });
+    if (error) return alert('Signup error: ' + error.message);
 
-      // Fetch the user from the session
-      const { data: { user }, error: getUserError } = await sbClient.auth.getUser();
-      if (getUserError || !user) {
-        return alert('Please check your email for the confirmation link before proceeding.');
-      }
+    alert('Registration successful! Please check your email to confirm.');
+  }
 
-      // Insert into profiles table
-      const { error: profileError } = await sbClient
-        .from('profiles')
-        .insert([{ id: user.id, username }]);
-      if (profileError) return alert('Error saving profile: ' + profileError.message);
+  // Login + insert profile if it doesn’t exist
+  async function saHandleLogin() {
+    const email = document.getElementById('sa-loginEmail').value;
+    const password = document.getElementById('sa-loginPassword').value;
+    const username = document.getElementById('sa-regUsername')?.value || 'anonymous';
 
-      alert('Registration successful!');
-      showSite(user);
-    }
+    const { data, error } = await sbClient.auth.signInWithPassword({ email, password });
+    if (error) return alert('Login error: ' + error.message);
 
-    // 4) Login handler
-    async function saHandleLogin() {
-      const email    = document.getElementById('sa-loginEmail').value;
-      const password = document.getElementById('sa-loginPassword').value;
-      const { data, error } = await sbClient.auth.signInWithPassword({ email, password });
-      if (error) return alert('Login error: ' + error.message);
-      showSite(data.user);
-    }
+    const user = data.user;
 
-    // 5) Load and display profile
-    async function saLoadProfile(user) {
-      document.getElementById('sa-pEmail').textContent    = user.email;
-      const { data: profile, error } = await sbClient
-        .from('profiles')
-        .select('username')
-        .eq('id', user.id)
-        .single();
-      document.getElementById('sa-pUsername').textContent = profile?.username || '(no username)';
-    }
+    // Insert or update profile
+    await sbClient
+      .from('profiles')
+      .upsert([{ id: user.id, username }]); // Upsert to avoid duplicate error
 
-    // 6) Logout handler
-    async function saHandleLogout() {
-      await sbClient.auth.signOut();
-      document.getElementById('sa-profile').style.display        = 'none';
-      document.getElementById('supabase-auth-box').style.display = 'block';
-      document.getElementById('site-content').style.display      = 'none';
-      alert('Logged out');
-    }
+    showSite(user);
+  }
 
-    // 7) Auto-load session on page load
-    sbClient.auth.onAuthStateChange((event, session) => {
-  if (session) showSite(session.user);
-});
-  </script>
-  
+  // Load and show profile data
+  async function saLoadProfile(user) {
+    document.getElementById('sa-pEmail').textContent = user.email;
+
+    const { data: profile, error } = await sbClient
+      .from('profiles')
+      .select('username')
+      .eq('id', user.id)
+      .single();
+
+    document.getElementById('sa-pUsername').textContent = profile?.username || '(no username)';
+  }
+
+  // Logout user
+  async function saHandleLogout() {
+    await sbClient.auth.signOut();
+    document.getElementById('sa-profile').style.display = 'none';
+    document.getElementById('supabase-auth-box').style.display = 'block';
+    document.getElementById('site-content').style.display = 'none';
+    alert('Logged out');
+  }
+
+  // Auto-login: on session or auth state change
+  sbClient.auth.getSession().then(({ data }) => {
+    if (data.session) showSite(data.session.user);
+  });
+
+  sbClient.auth.onAuthStateChange((event, session) => {
+    if (session) showSite(session.user);
+  });
+</script> 
   <script>
     function toggleQuizSections(event) {
         const section = event.currentTarget;
