@@ -1049,9 +1049,9 @@ button {
     }
 
     // 7) Auto-load session on page load
-    sbClient.auth.getSession().then(({ data }) => {
-      if (data.session) showSite(data.session.user);
-    });
+    sbClient.auth.onAuthStateChange((event, session) => {
+  if (session) showSite(session.user);
+});
   </script>
   
   <script>
