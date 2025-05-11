@@ -226,27 +226,26 @@ button {
 
 
   <!-- Supabase Auth Embed -->
-  <div id="supabase-auth-box" class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md space-y-6 animate-fade-in-up">
-    
-    <div>
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Register</h2>
-      <div class="space-y-3">
-        <input id="sa-regEmail" type="email" placeholder="Email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
-        <input id="sa-regPassword" type="password" placeholder="Password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
-        <input id="sa-regUsername" type="text" placeholder="Username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
-        <button onclick="saHandleRegister()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-200">Sign Up</button>
-      </div>
-    </div>
+  <div id="auth-box">
+    <h2>Register</h2>
+    <input id="regEmail"    type="email"    placeholder="Email">
+    <input id="regPassword" type="password" placeholder="Password">
+    <input id="regUsername" type="text"     placeholder="Username">
+    <button onclick="handleRegister()">Sign Up</button>
 
-    <div class="border-t border-gray-200 pt-6">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Login</h2>
-      <div class="space-y-3">
-        <input id="sa-loginEmail" type="email" placeholder="Email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition" />
-        <input id="sa-loginPassword" type="password" placeholder="Password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition" />
-        <button onclick="saHandleLogin()" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-all duration-200">Log In</button>
-      </div>
-    </div>
+    <hr>
 
+    <h2>Login</h2>
+    <input id="loginEmail"    type="email"    placeholder="Email">
+    <input id="loginPassword" type="password" placeholder="Password">
+    <button onclick="handleLogin()">Log In</button>
+  </div>
+
+  <div id="profile">
+    <h2>Your Profile</h2>
+    <p><strong>Email:</strong> <span id="pEmail"></span></p>
+    <p><strong>Username:</strong> <span id="pUsername"></span></p>
+    <button onclick="handleLogout()">Log Out</button>
   </div>
   
   <div id="sa-profile" style="display:none; margin-top: 2rem; padding: 1rem; border: 1px solid #ddd;">
