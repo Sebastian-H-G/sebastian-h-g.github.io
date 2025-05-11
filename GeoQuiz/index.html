@@ -1015,10 +1015,9 @@ button {
     const user = data.user;
 
     // Insert or update profile
-    await sbClient
-      .from('profiles')
-      .upsert([{ id: user.id, username }]); // Upsert to avoid duplicate error
-
+await sbClient
+  .from('profiles')
+  .upsert([{ id: user.id, username }]);
     showSite(user);
   }
 
