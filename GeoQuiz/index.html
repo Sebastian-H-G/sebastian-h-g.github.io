@@ -1004,43 +1004,47 @@ button {
     alert('Check your email to confirm before logging in.');
   }
 
-  // Login + profile upsert
-  async function handleLogin() {
-    const email    = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    const username = document.getElementById('regUsername').value || 'anonymous';
-    console.log('[handleLogin] attempting login for:', email);
+async function handleLogin() {
+  const email    = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  const usernameInput = document.getElementById('regUsername').value;
+  const username = usernameInput.trim() || 'anonymous';
 
-    // 1) sign in
-    const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({ email, password });
-    if (signInError) {
-      console.error('[handleLogin] login error:', signInError);
-      return alert('Login error: ' + signInError.message);
-    }
-    console.log('[handleLogin] signInData:', signInData);
+  console.log('[handleLogin] attempting login for:', email);
 
-    // 2) fetch confirmed user
-    const { data: userData, error: userError } = await sb.auth.getUser();
-    if (userError || !userData.user) {
-      console.error('[handleLogin] getUser error or no user:', userError);
-      return alert('Unable to get user—make sure you confirmed your email.');
-    }
-    const user = userData.user;
-    console.log('[handleLogin] confirmed user:', user);
-
-    // 3) upsert profile
-    const { error: upsertError } = await sb
-      .from('profiles')
-      .upsert([{ id: user.id, username }]);
-    if (upsertError) {
-      console.error('[handleLogin] upsert error:', upsertError);
-      return alert('Error saving profile: ' + upsertError.message);
-    }
-    console.log('[handleLogin] profile upserted for user id:', user.id);
-
-    // 4) show app
-    showApp(user);
+  // 1) sign in
+  const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({ email, password });
+  if (signInError) {
+    console.error('[handleLogin] login error:', signInError);
+    return alert('Login error: ' + signInError.message);
   }
+
+  // 2) get the authenticated user
+  const { data: userData, error: userError } = await sb.auth.getUser();
+  if (userError || !userData.user) {
+    console.error('[handleLogin] getUser error or no user:', userError);
+    return alert('Unable to get user—make sure you confirmed your email.');
+  }
+
+  const user = userData.user;
+  console.log('[handleLogin] confirmed user:', user);
+
+  // 3) insert profile (instead of upsert, for debugging)
+  const { data: insertedProfile, error: insertError } = await sb
+    .from('profiles')
+    .insert([{ id: user.id, username }]);
+
+  if (insertError) {
+    console.error('[handleLogin] insert error:', insertError);
+    return alert('Error inserting profile: ' + insertError.message);
+  }
+
+  console.log('[handleLogin] profile inserted:', insertedProfile);
+
+  // 4) show app
+  showApp(user);
+}
+
 
   // Load and display profile
   async function loadProfile(user) {
