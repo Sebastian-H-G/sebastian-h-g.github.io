@@ -7,7 +7,6 @@
     <title>Geo Quiz</title>
     <!-- Include Swiper's CSS and JS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
@@ -978,77 +977,83 @@ button {
     
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
-  const SUPABASE_URL     = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
+  const SUPABASE_URL      = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dm5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   // Show/hide UI
   function showApp(user) {
-    console.log('[showApp] logged-in user:', user);
-    document.getElementById('auth-box').style.display      = 'none';
-    document.getElementById('profile').style.display       = 'block';
-    document.getElementById('site-content').style.display  = 'block';
+    document.getElementById('auth-box').style.display     = 'none';
+    document.getElementById('profile').style.display      = 'block';
+    document.getElementById('site-content').style.display = 'block';
     loadProfile(user);
   }
 
-  // Register (no DB insert here)
+  // Register: save username locally, then sign up (email confirmation required)
   async function handleRegister() {
     const email    = document.getElementById('regEmail').value;
     const password = document.getElementById('regPassword').value;
-    console.log('[handleRegister] email:', email);
-    const { error } = await sb.auth.signUp({ email, password });
+    const username = document.getElementById('regUsername').value.trim() || 'anonymous';
+
+    // store for later
+    localStorage.setItem('pendingUsername', username);
+
+    const { data, error } = await sb.auth.signUp({ email, password });
     if (error) {
       console.error('[handleRegister] signup error:', error);
       return alert('Signup error: ' + error.message);
     }
-    alert('Check your email to confirm before logging in.');
+
+    console.log('[handleRegister] signUp returned user:', data.user);
+    alert('🎉 Check your email to confirm your account, then come back to log in.');
   }
 
-async function handleLogin() {
-  const email    = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
-  const usernameInput = document.getElementById('regUsername').value;
-  const username = usernameInput.trim() || 'anonymous';
+  // Login: then maybe insert profile if none exists
+  async function handleLogin() {
+    const email    = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
-  console.log('[handleLogin] attempting login for:', email);
+    console.log('[handleLogin] signing in:', email);
+    const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({ email, password });
+    if (signInError) {
+      console.error('[handleLogin] login error:', signInError);
+      return alert('Login error: ' + signInError.message);
+    }
 
-  // 1) sign in
-  const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({ email, password });
-  if (signInError) {
-    console.error('[handleLogin] login error:', signInError);
-    return alert('Login error: ' + signInError.message);
+    const { data: userData, error: userError } = await sb.auth.getUser();
+    if (userError || !userData.user) {
+      console.error('[handleLogin] getUser error:', userError);
+      return alert('Unable to get user—make sure you confirmed your email.');
+    }
+    const user = userData.user;
+
+    // Check if profile exists
+    const { data: existing, error: fetchErr } = await sb
+      .from('profiles')
+      .select('id')
+      .eq('id', user.id)
+      .maybeSingle();
+    if (fetchErr) console.error('[handleLogin] fetch profile error:', fetchErr);
+
+    if (!existing) {
+      // no profile yet → insert using stored username
+      const pendingUsername = localStorage.getItem('pendingUsername') || 'anonymous';
+      const { error: insertErr } = await sb
+        .from('profiles')
+        .insert([{ id: user.id, username: pendingUsername }]);
+      if (insertErr) {
+        console.error('[handleLogin] insert profile error:', insertErr);
+        return alert('Error creating profile: ' + insertErr.message);
+      }
+      localStorage.removeItem('pendingUsername');
+      console.log('[handleLogin] profile created for', user.id);
+    }
+
+    showApp(user);
   }
-
-  // 2) get the authenticated user
-  const { data: userData, error: userError } = await sb.auth.getUser();
-  if (userError || !userData.user) {
-    console.error('[handleLogin] getUser error or no user:', userError);
-    return alert('Unable to get user—make sure you confirmed your email.');
-  }
-
-  const user = userData.user;
-  console.log('[handleLogin] confirmed user:', user);
-
-  // 3) insert profile (instead of upsert, for debugging)
-  const { data: insertedProfile, error: insertError } = await sb
-    .from('profiles')
-    .insert([{ id: user.id, username }]);
-
-  if (insertError) {
-    console.error('[handleLogin] insert error:', insertError);
-    return alert('Error inserting profile: ' + insertError.message);
-  }
-
-  console.log('[handleLogin] profile inserted:', insertedProfile);
-
-  // 4) show app
-  showApp(user);
-}
-
 
   // Load and display profile
   async function loadProfile(user) {
-    console.log('[loadProfile] loading for user id:', user.id);
     document.getElementById('pEmail').textContent = user.email;
     const { data: profile, error } = await sb
       .from('profiles')
@@ -1057,30 +1062,30 @@ async function handleLogin() {
       .single();
     if (error) {
       console.error('[loadProfile] error fetching profile:', error);
+      document.getElementById('pUsername').textContent = '(error)';
+      return;
     }
-    document.getElementById('pUsername').textContent = profile?.username || '(none)';
+    document.getElementById('pUsername').textContent = profile.username || '(no username)';
   }
 
   // Logout
   async function handleLogout() {
-    console.log('[handleLogout] signing out');
     await sb.auth.signOut();
-    document.getElementById('auth-box').style.display      = 'block';
-    document.getElementById('profile').style.display       = 'none';
-    document.getElementById('site-content').style.display  = 'none';
+    document.getElementById('auth-box').style.display     = 'block';
+    document.getElementById('profile').style.display      = 'none';
+    document.getElementById('site-content').style.display = 'none';
     alert('Logged out');
   }
 
-  // Auto-login on session or auth change
+  // Auto-login / auth change
   sb.auth.getSession().then(({ data }) => {
-    console.log('[init] getSession data:', data);
     if (data.session) showApp(data.session.user);
   });
   sb.auth.onAuthStateChange((event, session) => {
-    console.log('[authStateChange]', event, session);
     if (session) showApp(session.user);
   });
 </script>
+
 
 	
 <script>
