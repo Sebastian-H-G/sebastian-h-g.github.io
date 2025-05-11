@@ -978,81 +978,109 @@ button {
 
     
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
- <script>
-  const SUPABASE_URL = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
+  <script>
+  const SUPABASE_URL     = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
-  const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // Show/hide interface
-  function showSite(user) {
-    document.getElementById('supabase-auth-box').style.display = 'none';
-    document.getElementById('sa-profile').style.display = 'block';
-    document.getElementById('site-content').style.display = 'block';
-    saLoadProfile(user);
+  // Show/hide UI
+  function showApp(user) {
+    console.log('[showApp] logged-in user:', user);
+    document.getElementById('auth-box').style.display      = 'none';
+    document.getElementById('profile').style.display       = 'block';
+    document.getElementById('site-content').style.display  = 'block';
+    loadProfile(user);
   }
 
-  // Register user (no profile insert here — wait for confirmation)
-  async function saHandleRegister() {
-    const email = document.getElementById('sa-regEmail').value;
-    const password = document.getElementById('sa-regPassword').value;
-
-    const { error } = await sbClient.auth.signUp({ email, password });
-    if (error) return alert('Signup error: ' + error.message);
-
-    alert('Registration successful! Please check your email to confirm.');
+  // Register (no DB insert here)
+  async function handleRegister() {
+    const email    = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+    console.log('[handleRegister] email:', email);
+    const { error } = await sb.auth.signUp({ email, password });
+    if (error) {
+      console.error('[handleRegister] signup error:', error);
+      return alert('Signup error: ' + error.message);
+    }
+    alert('Check your email to confirm before logging in.');
   }
 
-  // Login + insert profile if it doesn’t exist
-  async function saHandleLogin() {
-    const email = document.getElementById('sa-loginEmail').value;
-    const password = document.getElementById('sa-loginPassword').value;
-    const username = document.getElementById('sa-regUsername')?.value || 'anonymous';
+  // Login + profile upsert
+  async function handleLogin() {
+    const email    = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const username = document.getElementById('regUsername').value || 'anonymous';
+    console.log('[handleLogin] attempting login for:', email);
 
-    const { data, error } = await sbClient.auth.signInWithPassword({ email, password });
-    if (error) return alert('Login error: ' + error.message);
+    // 1) sign in
+    const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({ email, password });
+    if (signInError) {
+      console.error('[handleLogin] login error:', signInError);
+      return alert('Login error: ' + signInError.message);
+    }
+    console.log('[handleLogin] signInData:', signInData);
 
-    const user = data.user;
+    // 2) fetch confirmed user
+    const { data: userData, error: userError } = await sb.auth.getUser();
+    if (userError || !userData.user) {
+      console.error('[handleLogin] getUser error or no user:', userError);
+      return alert('Unable to get user—make sure you confirmed your email.');
+    }
+    const user = userData.user;
+    console.log('[handleLogin] confirmed user:', user);
 
-    // Insert or update profile
-await sbClient
-  .from('profiles')
-  .upsert([{ id: user.id, username }]);
-    showSite(user);
+    // 3) upsert profile
+    const { error: upsertError } = await sb
+      .from('profiles')
+      .upsert([{ id: user.id, username }]);
+    if (upsertError) {
+      console.error('[handleLogin] upsert error:', upsertError);
+      return alert('Error saving profile: ' + upsertError.message);
+    }
+    console.log('[handleLogin] profile upserted for user id:', user.id);
+
+    // 4) show app
+    showApp(user);
   }
 
-  // Load and show profile data
-  async function saLoadProfile(user) {
-    document.getElementById('sa-pEmail').textContent = user.email;
-
-    const { data: profile, error } = await sbClient
+  // Load and display profile
+  async function loadProfile(user) {
+    console.log('[loadProfile] loading for user id:', user.id);
+    document.getElementById('pEmail').textContent = user.email;
+    const { data: profile, error } = await sb
       .from('profiles')
       .select('username')
       .eq('id', user.id)
       .single();
-
-    document.getElementById('sa-pUsername').textContent = profile?.username || '(no username)';
+    if (error) {
+      console.error('[loadProfile] error fetching profile:', error);
+    }
+    document.getElementById('pUsername').textContent = profile?.username || '(none)';
   }
 
-  // Logout user
-  async function saHandleLogout() {
-    await sbClient.auth.signOut();
-    document.getElementById('sa-profile').style.display = 'none';
-    document.getElementById('supabase-auth-box').style.display = 'block';
-    document.getElementById('site-content').style.display = 'none';
+  // Logout
+  async function handleLogout() {
+    console.log('[handleLogout] signing out');
+    await sb.auth.signOut();
+    document.getElementById('auth-box').style.display      = 'block';
+    document.getElementById('profile').style.display       = 'none';
+    document.getElementById('site-content').style.display  = 'none';
     alert('Logged out');
   }
 
-  // Auto-login: on session or auth state change
-  sbClient.auth.getSession().then(({ data }) => {
-    if (data.session) showSite(data.session.user);
+  // Auto-login on session or auth change
+  sb.auth.getSession().then(({ data }) => {
+    console.log('[init] getSession data:', data);
+    if (data.session) showApp(data.session.user);
   });
+  sb.auth.onAuthStateChange((event, session) => {
+    console.log('[authStateChange]', event, session);
+    if (session) showApp(session.user);
+  });
+</script>
 
-  sbClient.auth.onAuthStateChange((event, session) => {
-    if (session) showSite(session.user);
-  });
-</script> 
-  <script>
+	
+<script>
     function toggleQuizSections(event) {
         const section = event.currentTarget;
         const quizSection = section.nextElementSibling;
