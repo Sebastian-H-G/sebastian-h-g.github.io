@@ -31,15 +31,38 @@
     #site-content {
         display: none;
     }
-#auth-box, #profile, #sa-profile {
+#auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* Shared style for both boxes */
+.auth-box {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
   padding: 2rem;
-  max-width: 400px;
   width: 100%;
-  margin-bottom: 2rem;
+  max-width: 400px;
+  box-sizing: border-box;
 }
+
+/* For larger screens: display side by side */
+@media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
+  #auth-container {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .auth-box {
+    width: 100%;
+    max-width: 350px;
+  }
+}
+
 
 h2, h3 {
   margin-top: 0;
@@ -295,22 +318,24 @@ button {
 
 
   <!-- Supabase Auth Embed -->
-  <div id="auth-box">
+<div id="auth-container">
+  <div class="auth-box">
     <h2>Register</h2>
     <input id="regEmail"    type="email"    placeholder="Email">
     <input id="regPassword" type="password" placeholder="Password">
     <input id="regUsername" type="text"     placeholder="Username">
     <button onclick="handleRegister()">Sign Up</button>
+  </div>
 
-    <hr>
-
+  <div class="auth-box">
     <h2>Login</h2>
     <input id="loginEmail"    type="email"    placeholder="Email">
     <input id="loginPassword" type="password" placeholder="Password">
     <button onclick="handleLogin()">Log In</button>
   </div>
+</div>
 
-  <div id="profile" style="display:none;">
+  <div id="profile">
     <div id="profile-wrapper">    
     <h2>Your Profile</h2>
     <p><strong>Email:</strong> <span id="pEmail"></span></p>
@@ -1047,8 +1072,9 @@ button {
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   function showApp(user) {
-    document.getElementById('auth-box').style.display     = 'none';
+    document.getElementById('auth-container').style.display     = 'none';
     document.getElementById('site-content').style.display = 'block';
+    document.getElementById('profile').style.display      = 'none';
     loadProfile(user);
   }
 
@@ -1154,7 +1180,7 @@ button {
   // 4) Logout
   async function handleLogout() {
     await sb.auth.signOut();
-    document.getElementById('auth-box').style.display     = 'block';
+    document.getElementById('auth-container').style.display     = 'block';
     document.getElementById('profile').style.display      = 'none';
     document.getElementById('site-content').style.display = 'none';
     alert('Logged out');
