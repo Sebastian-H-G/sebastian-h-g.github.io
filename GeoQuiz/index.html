@@ -95,22 +95,23 @@ strong {
   font-weight: 600;
 }
 #profile {
-    display: flex;
-    flex-direction: column;
+    position: fixed; /* Use fixed to stay centered even on scroll */
     top: 0;
     left: 0;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    margin: 0 auto;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+}
+
+#profile-wrapper {
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
     padding: 2rem;
 }
-#profile-wrapper {
-    margin: 50px auto;
-}
+
 
         /* Custom fade-in animation */
         @keyframes fadeInUp {
@@ -318,13 +319,6 @@ button {
     </div>
   </div>
   
-  <div id="sa-profile" style="display:none; margin-top: 2rem; padding: 1rem; border: 1px solid #ddd;">
-    <h3>Your Profile</h3>
-    <p><strong>Email:</strong> <span id="sa-pEmail"></span></p>
-    <p><strong>Username:</strong> <span id="sa-pUsername"></span></p>
-    <button onclick="saHandleLogout()">Log Out</button>
-  </div>
-
   <div id="site-content">
     <header>
         <div id="logo" class="logo">
