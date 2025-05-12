@@ -249,7 +249,7 @@ margin-top: 10px;	/* Ensure pagination stays above the background */
 
 #auth-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 2rem;
   padding: 2rem;
@@ -269,7 +269,7 @@ margin-top: 10px;	/* Ensure pagination stays above the background */
 /* For larger screens: display side by side */
 @media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
   #auth-container {
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
   }
 
