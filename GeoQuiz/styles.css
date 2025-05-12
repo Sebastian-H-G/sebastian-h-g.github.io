@@ -253,6 +253,7 @@ margin-top: 10px;	/* Ensure pagination stays above the background */
   align-items: center;
   gap: 2rem;
   padding: 2rem;
+  margin: 0 auto;
 }
 
 /* Shared style for both boxes */
@@ -302,7 +303,9 @@ input:focus {
   border-color: #3498db;
   outline: none;
 }
-
+#close-profile {
+  float:right; font-size: 1.5rem; color: black; border: none; background: none; cursor: pointer;
+}
 button {
   width: 100%;
   padding: 0.75rem;
