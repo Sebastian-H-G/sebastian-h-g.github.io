@@ -1100,7 +1100,8 @@ const profileWrapper = document.getElementById('profile-wrapper');
 const closeBtn = document.getElementById('close-profile');
 
 // Toggle profile on logo click
-logo.addEventListener('click', () => {
+logo.addEventListener('click', (event) => {
+  event.stopPropagation(); // Prevent event from reaching the document
   profile.style.display = (profile.style.display === 'flex') ? 'none' : 'flex';
 });
 
@@ -1109,12 +1110,17 @@ closeBtn.addEventListener('click', () => {
   profile.style.display = 'none';
 });
 
+// Prevent clicks inside the profile wrapper from closing the profile
+profileWrapper.addEventListener('click', (event) => {
+  event.stopPropagation();
+});
+
 // Close when clicking outside the profile box
 document.addEventListener('click', (event) => {
   if (
-    profile.style.display === 'flex' &&
+    window.getComputedStyle(profile).display === 'flex' &&
     !profileWrapper.contains(event.target) &&
-    event.target !== logo
+    !logo.contains(event.target)
   ) {
     profile.style.display = 'none';
   }
