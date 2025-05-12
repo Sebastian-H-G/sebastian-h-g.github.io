@@ -123,14 +123,13 @@ strong {
     left: 0;
     width: 100vw;
     height: 100vh;
-    display: flex;
+    display: none;
     justify-content: center; /* Center horizontally */
     align-items: center;     /* Center vertically */
 }
 
 #profile-wrapper {
     background: #fff;
-    display: none; /* Initially hidden */
     border-radius: 12px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
     padding: 2rem;
@@ -1199,7 +1198,7 @@ button {
 document.getElementById('logo').addEventListener('click', () => {
   const profileBox = document.getElementById('profile');
   if (profileBox.style.display === 'none') {
-    profileBox.style.display = 'block';
+    profileBox.style.display = 'flex';
   } else {
     profileBox.style.display = 'none';
   }
