@@ -304,8 +304,23 @@ input:focus {
   outline: none;
 }
 #close-profile {
-  float:right; font-size: 1.5rem; color: black; border: none; background: none; cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  /* override the generic button reset */
+  width: auto;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+
+  font-size: 1.5rem;
+  color: black;
+  border: none;
+  background: none;
+  cursor: pointer;
 }
+
 button {
   width: 100%;
   padding: 0.75rem;
@@ -355,6 +370,7 @@ strong {
     margin: 20vw auto;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
     padding: 2rem;
+    position: relative;
 }
 
 
@@ -463,7 +479,9 @@ gap: 20px;
 max-width: 100px;
 height: auto;
 }
-
+#profile-wrapper {
+    color: black;
+  }
 /* Default state */
 .quiz-link {
     display: block;
@@ -703,16 +721,20 @@ nav ul li a i{
 		background-color: #246394;
 		color: white;
 	}
+  	.slide-text h2, .slide-text p {
+		color: white;
+	}
 .quiz-section {
 	background-color: #246394;
 	box-shadow: 0 5px 0 #1b4f74;
 
 }
+.quiz-content div h2  {
+    color: white;}
     .quiz-link {
         background-color: #0F9B7E; /* Dark mode background */
         box-shadow: 0 5px 0 #0C7A65;
     }
-
 
     .quiz-link:active {
         box-shadow: 0 2px 0 #0C7A65; /* Adjust shadow for active state */
