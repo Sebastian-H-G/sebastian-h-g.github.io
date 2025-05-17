@@ -972,67 +972,57 @@ button {
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+
   function showApp(user) {
-    document.getElementById('auth-container').style.display     = 'none';
-    document.getElementById('site-content').style.display       = 'block';
-    document.getElementById('profile').style.display            = 'none';
+    document.getElementById('auth-container').style.display = 'none';
+    document.getElementById('site-content').style.display = 'block';
+    document.getElementById('profile').style.display = 'none';
     loadProfile(user);
   }
 
-  // 1) Register: check username availability, then sign up
-async function handleRegister() {
-  const email    = document.getElementById('regEmail').value.trim();
-  const password = document.getElementById('regPassword').value;
-  const username = document.getElementById('regUsername').value.trim();
+  async function handleRegister() {
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const username = document.getElementById('regUsername').value.trim();
 
-  if (!username) {
-    return alert('Please choose a username.');
-  }
+    if (!username) return alert('Please choose a username.');
 
-  // 1a) client‑side check for existing username
-  const { data: clash, error: clashErr } = await sb
-    .from('profiles')
-    .select('id', { count: 'exact' })
-    .eq('username', username)
-    .maybeSingle();
-  if (clashErr) {
-    console.error('[handleRegister] username check error:', clashErr);
-    return alert('Error checking username availability.');
-  }
-  if (clash) {
-    return alert(`Sorry, “${username}” is already taken. Please choose another.`);
-  }
+    const { data: clash, error: clashErr } = await sb
+      .from('profiles')
+      .select('id', { count: 'exact' })
+      .eq('username', username)
+      .maybeSingle();
 
-  // 1b) sign up, storing username in metadata
-  const {
-    data: { user, session },
-    error
-  } = await sb.auth.signUp(
-    {
-      email,
-      password,
-      options: { data: { username } }
-    },
-    {
-      redirectTo: 'https://sebastian-h-g.github.io/GeoQuiz/index.html'
+    if (clashErr) {
+      console.error('[handleRegister] username check error:', clashErr);
+      return alert('Error checking username availability.');
     }
-  );
-  if (error) {
-    console.error('[handleRegister] signup error:', error);
-    return alert('Signup error: ' + error.message);
+    if (clash) {
+      return alert(`Sorry, “${username}” is already taken. Please choose another.`);
+    }
+
+    const { data: { user, session }, error } = await sb.auth.signUp(
+      {
+        email,
+        password,
+        options: { data: { username } }
+      },
+      {
+        redirectTo: 'https://sebastian-h-g.github.io/GeoQuiz/index.html'
+      }
+    );
+
+    if (error) {
+      console.error('[handleRegister] signup error:', error);
+      return alert('Signup error: ' + error.message);
+    }
+
+    alert('✅ Check your email to confirm before logging in.');
+    console.log('[handleRegister] signUp returned user:', user);
   }
 
-  // → Removed immediate upsert here ←
-
-  // Let the user confirm their email, then handleLogin() will upsert
-  alert('✅ Check your email to confirm before logging in.');
-  console.log('[handleRegister] signUp returned user:', user);
-}
-    
-
-  // 2) Login: maybe insert profile if none exists
   async function handleLogin() {
-    const email    = document.getElementById('loginEmail').value.trim();
+    const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
 
     const { error: signInError, data: signInData } = await sb.auth.signInWithPassword({ email, password });
@@ -1046,35 +1036,10 @@ async function handleRegister() {
       console.error('[handleLogin] getUser error:', userErr);
       return alert('Unable to get user—make sure you confirmed your email.');
     }
-    const user = userData.user;
 
-    // 2a) check if profile already exists
-    const { data: existing, error: fetchErr } = await sb
-      .from('profiles')
-      .select('id')
-      .eq('id', user.id)
-      .maybeSingle();
-    if (fetchErr) console.error('[handleLogin] fetch profile error:', fetchErr);
-
-    if (!existing) {
-      // 2b) pull username from metadata
-      const username = user.user_metadata?.username || 'anonymous';
-
-      // 2c) upsert: insert or update the username in profiles
-      const { error: upsertErr } = await sb
-        .from('profiles')
-        .upsert([{ id: user.id, username }], { onConflict: 'id' });
-      if (upsertErr) {
-        console.error('[handleLogin] upsert profile error:', upsertErr);
-        return alert('Error saving profile: ' + upsertErr.message);
-      }
-      console.log('[handleLogin] profile upserted for', user.id, 'as', username);
-    }
-
-    showApp(user);
+    // Don't showApp here — will be handled in onAuthStateChange
   }
 
-  // 3) Load and display profile
   async function loadProfile(user) {
     document.getElementById('pEmail').textContent = user.email;
     const { data: profile, error } = await sb
@@ -1082,56 +1047,74 @@ async function handleRegister() {
       .select('username')
       .eq('id', user.id)
       .single();
+
     if (error) {
       console.error('[loadProfile] error:', error);
       document.getElementById('pUsername').textContent = '(error)';
       return;
     }
+
     document.getElementById('pUsername').textContent = profile.username || '(no username)';
   }
 
-  // 4) Logout
   async function handleLogout() {
     await sb.auth.signOut();
-    document.getElementById('auth-container').style.display     = 'block';
-    document.getElementById('profile').style.display            = 'none';
-    document.getElementById('site-content').style.display       = 'none';
+    document.getElementById('auth-container').style.display = 'block';
+    document.getElementById('profile').style.display = 'none';
+    document.getElementById('site-content').style.display = 'none';
     alert('Logged out');
   }
 
-  // Auto-login on page load / auth changes
-  sb.auth.getSession().then(({ data }) => {
-    if (data.session) showApp(data.session.user);
-  });
-  sb.auth.onAuthStateChange((_, session) => {
-    if (session) showApp(session.user);
+  // 👇 This handles profile creation after confirmation or login
+  sb.auth.onAuthStateChange(async (_, session) => {
+    if (session) {
+      const user = session.user;
+
+      const { data: existing, error: fetchErr } = await sb
+        .from('profiles')
+        .select('id')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (!existing) {
+        const username = user.user_metadata?.username || 'anonymous';
+        const { error: upsertErr } = await sb
+          .from('profiles')
+          .upsert([{ id: user.id, username }], { onConflict: 'id' });
+
+        if (upsertErr) {
+          console.error('[authState] profile upsert error:', upsertErr);
+        } else {
+          console.log('[authState] profile created for', user.id, username);
+        }
+      }
+
+      showApp(user);
+    }
   });
 
-  // ─────────────────────────────────────────────────────────────
-  // Profile overlay toggling
-  const logo            = document.getElementById('logo');
-  const profile         = document.getElementById('profile');
-  const profileWrapper  = document.getElementById('profile-wrapper');
-  const closeBtn        = document.getElementById('close-profile');
+  // You can skip this now — session is handled by onAuthStateChange
+  // sb.auth.getSession().then(({ data }) => {
+  //   if (data.session) showApp(data.session.user);
+  // });
 
-  logo.addEventListener('click', (event) => {
-    event.stopPropagation();
+  // Overlay/profile toggling
+  const logo = document.getElementById('logo');
+  const profile = document.getElementById('profile');
+  const profileWrapper = document.getElementById('profile-wrapper');
+  const closeBtn = document.getElementById('close-profile');
+
+  logo.addEventListener('click', (e) => {
+    e.stopPropagation();
     profile.style.display = (profile.style.display === 'flex') ? 'none' : 'flex';
   });
-
-  closeBtn.addEventListener('click', () => {
-    profile.style.display = 'none';
-  });
-
-  profileWrapper.addEventListener('click', (event) => {
-    event.stopPropagation();
-  });
-
-  document.addEventListener('click', () => {
+  closeBtn.addEventListener('click', () => profile.style.display = 'none');
+  profileWrapper.addEventListener('click', (e) => e.stopPropagation());
+  document.addEventListener('click', (e) => {
     if (
       window.getComputedStyle(profile).display === 'flex' &&
-      !profileWrapper.contains(event.target) &&
-      !logo.contains(event.target)
+      !profileWrapper.contains(e.target) &&
+      !logo.contains(e.target)
     ) {
       profile.style.display = 'none';
     }
