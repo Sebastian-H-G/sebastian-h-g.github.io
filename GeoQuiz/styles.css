@@ -258,9 +258,10 @@ margin-top: 10px;	/* Ensure pagination stays above the background */
 }
 
 .logo {
-  max-width: 180px;
-  margin-bottom: 2rem;
+  max-width: 15%;
+  margin-bottom: 3rem;
   height: auto;
+  border-radius: 10px;
 }
 
 .boxes {
@@ -337,6 +338,13 @@ button:hover {
   .auth-box {
     width: 100%;
     max-width: 350px;
+  }
+    .boxes {
+    grid-template-columns: 1fr;
+  }
+  .logo {
+    max-width: 8%;
+    margin-bottom: 2rem;
   }
 }
 #profile {

@@ -10,25 +10,24 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="lockscreen">
-        <div class="background"></div>
-        <div class="lockscreen-content">
-            <div class="clock-container">
-                <div id="clock"></div>
-                <div id="dayOfWeek"></div>
-            </div>
-            <button id="showPasswordField">Unlock</button>
-            <div class="password-field hidden">
-                <input type="password" id="password" placeholder="Password">
-                <button id="unlockButton">Enter</button>
-            </div>
-        </div>
-    </div>
-    <div class="app-menu hidden">
-        <nav class="navbar">
+ <div id="login">
+    <!-- Logo -->
+    <img src="Bilder/logo.png" id="logo" alt="Logo">
+
+    <h2>Sign In</h2>
+
+    <input type="email" id="email" placeholder="Email Address" />
+    <input type="password" id="password" placeholder="Password" />
+
+    <button onclick="login()">Login</button>
+    <div id="error"></div>
+  </div>
+
+  <div id="protected" style="display:none;">
+       <nav class="navbar">
             <a href="#page1" class="nav-link"><img src="Bilder/Home.png" alt="Home" id="navbar-icons"></img></a>
             <a href="#page2" class="nav-link"><img src="Bilder/Education.png" alt="Education" id="navbar-icons"></img></a>
-          <a href="#page3" class="nav-link"><img src="Bilder/Favorites.png" alt="Star" id="navbar-icons"></img></a>
+          <a href="#page3" class="nav-link"><img src="Bilder/Favorite.png" alt="Star" id="navbar-icons"></img></a>
             <a href="#page4" class="nav-link"><img src="Bilder/Games.png" alt="Game-Console" id="navbar-icons"></img></a>
             <a href="#page5" class="nav-link"><img src="Bilder/Settings.png" alt="Settings Wheel" id="navbar-icons"></img></a>
         </nav>
@@ -43,7 +42,14 @@
     <span class="letter">M</span>
     <span class="letter">E</span>
   </div>
-          </div> <p>Page 1 Content</p></div>
+          </div>
+         
+        <div id="page1-content">
+             <img src="Bilder/logo.png" id="logo-page1" alt="logo">
+        </div>
+        </div>
+
+
         <div id="page2" class="page hidden">
             <div class="heading-container">
         <h1 class="three-d-text">Education</h1>
@@ -196,10 +202,58 @@
   </div>
         </div>
             <div class="settings-item">
-            <button id="logoutButton">Log out</button>
+            <button id="logoutButton" onclick="logout()">Log out</button>
         </div>
         </div></div>
-    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    // Initialize supabase client
+    const sbase = supabase.createClient(
+      'https://swhkdsslxrhqiipchmep.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3aGtkc3NseHJocWlpcGNobWVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDczMjM1ODIsImV4cCI6MjA2Mjg5OTU4Mn0.7_MbR6p9fVwC4u0Vt2lF2tPQhP_iqgkmB2At6s-4lok'
+    );
+
+    // Login handler
+    async function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const { data, error } = await sbase.auth.signInWithPassword({ email, password });
+      if (error) {
+        document.getElementById('error').textContent = error.message;
+      } else {
+        showProtectedContent();
+      }
+    }
+
+    // Logout handler
+    async function logout() {
+      await sbase.auth.signOut();
+      document.getElementById('protected').style.display = 'none';
+      document.getElementById('login').style.display = 'block';
+      document.getElementById('error').textContent = '';
+      document.getElementById('email').value = '';
+      document.getElementById('password').value = '';
+    }
+
+    // On page load, check if already logged in
+    async function checkSession() {
+      const { data: { session } } = await sbase.auth.getSession();
+      if (session) {
+        showProtectedContent();
+      }
+    }
+
+    // Show protected, hide login
+    function showProtectedContent() {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('protected').style.display = 'block';
+    }
+
+    // Kick off session check
+    checkSession();
+  </script>
 
     <script src="script.js"></script>
 </body>

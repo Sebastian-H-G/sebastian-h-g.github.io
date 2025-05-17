@@ -8,87 +8,87 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-x: hidden;
     transition: background-color 0.3s, color 0.3s;
 }
-.background {
-    position: absolute; 
-    width: 100%;
-    height: 100%;
-    background: url('https://wallpaperaccess.com/full/1779180.jpg') no-repeat center center/cover;
-    z-index: -1;
-    transition: filter 0.3s;
-} 
-.lockscreen {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-.lockscreen-content {
-    text-align: center;
-    color: white;
-    animation: fadeIn 1s;
-}
+      /* Card container */
+    #login {
+      background: #ffffff;
+      width: 340px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      border-radius: 8px;
+      text-align: center;
+    }
 
-.lockscreen-content button#showPasswordField {
-    padding: 15px 30px;
-    font-size: 20px;
-    border: none;
-    border-radius: 30px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    animation: bounce 2s infinite;
-}
+    /* Logo */
+    #login img {
+      width: 50%;
+      margin-bottom: 1.5rem;
+      border-radius: 50%;
+    }
+    #page1-content {
+      display: flex;
+      margin-top: 4%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #logo-page1 {
+      width: 30%;
+      margin-bottom: 1.5rem;
+      border-radius: 50%;
+      margin: 0 auto;
+    }
 
-.lockscreen-content button#showPasswordField:hover {
-    background-color: #0056b3;
-    transform: scale(1.1);
-}
-.clock-container {
-  margin-bottom: 40px;
-}
-#clock {
-  font-size: 5em;
-  font-weight: 700;
-}
-#dayOfWeek {
-margin-top: 5px;
-  font-size: 1.3em;
-  font-weight: 700;
-}
+    /* Heading */
+    #login h2 {
+      margin: 0 0 1.5rem;
+      font-size: 1.5rem;
+      color: #333;
+    }
 
-.password-field {
-    margin-top: 20px;
-    animation: fadeIn 0.5s;
-}
+    /* Inputs */
+    #login input {
+      width: calc(100% - 24px);
+      max-width: 100%;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccd0d5;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    #login input:focus {
+      border-color: #3b82f6;
+      outline: none;
+    }
 
-.password-field input {
-    padding: 10px 15px;
-    margin-bottom: 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-}
+    /* Button */
+    #login button {
+      width: 100%;
+      padding: 0.75rem;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #login button:hover {
+      background: #2563eb;
+    }
 
-.password-field button#unlockButton {
-    padding: 10px 15px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-}
-
-.password-field button#unlockButton:hover {
-    background-color: #0056b3;
-}
+    /* Error message */
+    #login #error {
+      color: #dc2626;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      min-height: 1.2em;
+    }
 
 .app-menu {
     text-align: center;
@@ -105,7 +105,11 @@ margin-top: 5px;
 .navbar {
     position: fixed;
     bottom: 0;
-    width: 100%;
+    z-index: 1000;
+    left: 0;
+    width: 100vw;
+    margin: 0;
+    height: 15vh;
     display: flex;
     justify-content: space-around;
     background-color: #007bff;
@@ -120,23 +124,36 @@ height: 40px;
     color: white;
     text-decoration: none;
     font-size: 24px;
+    width: 40px;           /* Set a fixed width */
+    height: 40px;          /* Set a fixed height */
+    transition: hover 0.3s, transform 0.3s;
 }
 .navbar a:hover {
     color: #ffdd57;
     transform: scale(1.2);
 }
+/* ...existing code... */
 .navbar a.active {
-    color: #ffdd57; /* Example highlight color */
-    background-color: #0056b3; /* Example background color */
-    border-radius: 50%; /* Optional: make the icon look like a button */
-    padding: 10px; /* Optional: increase the padding for the active link */
+    color: #ffdd57;
+    background-color: #0056b3;
+    border-radius: 50%;
+    width: 40px;           /* Set a fixed width */
+    height: 40px;          /* Set a fixed height */
+    display: flex;         /* Center content */
+    align-items: center;
+    justify-content: center;
+    padding: 0;            /* Remove extra padding */
+    overflow: hidden;      /* Clip overflow */
 }
+/* ...existing code... */
 .page {
     display: none;
 }
 
 .page.visible {
     display: block;
+   padding: 10px 0;
+   height: 85vh;
   animation: slideIn 0.5s ease-out;
 }
 /* Keyframes for slide-in */
@@ -345,7 +362,6 @@ a {
 }
 .text {
   display: flex; /* Flex container */
-  margin-top: 50px;
   flex-wrap: wrap; /* Allow wrapping of words */
   justify-content: center; /* Center horizontally */
   font-size: 80px; /* Adjust font size */
@@ -504,6 +520,7 @@ text-align: center;
   background-color: rgba(255, 0, 0, 0.5);
   color: white;
   border-radius: 5px;
+  overflow-x: none;
 }
 
 /* Theme Styles */
