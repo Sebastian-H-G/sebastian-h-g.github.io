@@ -983,76 +983,55 @@ button {
   }
 
   // 1) Register: check username availability, then sign up
-  async function handleRegister() {
-    const email    = document.getElementById('regEmail').value.trim();
-    const password = document.getElementById('regPassword').value;
-    const username = document.getElementById('regUsername').value.trim();
+async function handleRegister() {
+  const email    = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const username = document.getElementById('regUsername').value.trim();
 
-    if (!username) {
-      return alert('Please choose a username.');
-    }
-
-    // 1a) client-side check for existing username
-    const { data: clash, error: clashErr } = await sb
-      .from('profiles')
-      .select('id', { count: 'exact' })
-      .eq('username', username)
-      .maybeSingle();
-    if (clashErr) {
-      console.error('[handleRegister] username check error:', clashErr);
-      return alert('Error checking username availability.');
-    }
-    if (clash) {
-      return alert(`Sorry, “${username}” is already taken. Please choose another.`);
-    }
-
-    // 1b) sign up, storing username in metadata
-    const {
-      data: { user, session },
-      error
-    } = await sb.auth.signUp(
-      {
-        email,
-        password,
-        options: {
-          data: { username }
-        }
-      },
-      {
-        // this must exactly match one of your Redirect URLs in the dashboard
-        redirectTo: 'https://sebastian-h-g.github.io/GeoQuiz/index.html'
-      }
-    );
-    if (error) {
-      console.error('[handleRegister] signup error:', error);
-      return alert('Signup error: ' + error.message);
-    }
-
-    // ─────────────────────────────────────────────────────────────
-    // ⚡️ Immediately create your profile row so you can display it
-    if (user) {
-      const { error: upsertErr } = await sb
-        .from('profiles')
-        .upsert(
-          { id: user.id, username },
-          { onConflict: 'id' }
-        );
-      if (upsertErr) {
-        console.error('[handleRegister] profile upsert error:', upsertErr);
-        // optional: alert('Error creating profile: ' + upsertErr.message);
-      }
-
-      // If email confirmation is disabled (or auto-confirmed),
-      // you’ll have a session immediately — so show the app now:
-      if (session) {
-        showApp(user);
-      }
-      // Otherwise you could show a “Thank you, please confirm your email” state here.
-    }
-
-    alert('✅ Check your email to confirm before logging in.');
-    console.log('[handleRegister] signUp returned user:', user);
+  if (!username) {
+    return alert('Please choose a username.');
   }
+
+  // 1a) client‑side check for existing username
+  const { data: clash, error: clashErr } = await sb
+    .from('profiles')
+    .select('id', { count: 'exact' })
+    .eq('username', username)
+    .maybeSingle();
+  if (clashErr) {
+    console.error('[handleRegister] username check error:', clashErr);
+    return alert('Error checking username availability.');
+  }
+  if (clash) {
+    return alert(`Sorry, “${username}” is already taken. Please choose another.`);
+  }
+
+  // 1b) sign up, storing username in metadata
+  const {
+    data: { user, session },
+    error
+  } = await sb.auth.signUp(
+    {
+      email,
+      password,
+      options: { data: { username } }
+    },
+    {
+      redirectTo: 'https://sebastian-h-g.github.io/GeoQuiz/index.html'
+    }
+  );
+  if (error) {
+    console.error('[handleRegister] signup error:', error);
+    return alert('Signup error: ' + error.message);
+  }
+
+  // → Removed immediate upsert here ←
+
+  // Let the user confirm their email, then handleLogin() will upsert
+  alert('✅ Check your email to confirm before logging in.');
+  console.log('[handleRegister] signUp returned user:', user);
+}
+    
 
   // 2) Login: maybe insert profile if none exists
   async function handleLogin() {
