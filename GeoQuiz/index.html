@@ -1002,11 +1002,19 @@ button {
     }
 
     // 1b) sign up, storing username in metadata
-    const { data, error } = await sb.auth.signUp({
-      email,
-      password,
-      options: { data: { username } }
-    });
+    const { data, error } = await sb.auth.signUp(
+  {
+    email,
+    password,
+    options: {
+      data: { username }
+    }
+  },
+  {
+    // this must exactly match one of your Redirect URLs in the dashboard
+    redirectTo: 'https://sebastian-h-g.github.io/GeoQuiz/index.html'
+  }
+);
     if (error) {
       console.error('[handleRegister] signup error:', error);
       return alert('Signup error: ' + error.message);
