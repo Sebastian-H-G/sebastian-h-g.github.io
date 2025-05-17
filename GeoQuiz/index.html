@@ -214,21 +214,26 @@ button {
 <body class="page-exit">
 
 
-  <!-- Supabase Auth Embed -->
 <div id="auth-container">
-  <div class="auth-box">
-    <h2>Register</h2>
-    <input id="regEmail"    type="email"    placeholder="Email">
-    <input id="regPassword" type="password" placeholder="Password">
-    <input id="regUsername" type="text"     placeholder="Username">
-    <button onclick="handleRegister()">Sign Up</button>
-  </div>
+  <!-- Logo centered above the forms -->
+  <img src="path/to/your-logo.png" alt="Your Logo" class="logo" />
 
-  <div class="auth-box">
-    <h2>Login</h2>
-    <input id="loginEmail"    type="email"    placeholder="Email">
-    <input id="loginPassword" type="password" placeholder="Password">
-    <button onclick="handleLogin()">Log In</button>
+  <!-- Container for the two auth boxes -->
+  <div class="boxes">
+    <div class="auth-box">
+      <h2>Register</h2>
+      <input id="regEmail"    type="email"    placeholder="Email">
+      <input id="regPassword" type="password" placeholder="Password">
+      <input id="regUsername" type="text"     placeholder="Username">
+      <button onclick="handleRegister()">Sign Up</button>
+    </div>
+
+    <div class="auth-box">
+      <h2>Login</h2>
+      <input id="loginEmail"    type="email"    placeholder="Email">
+      <input id="loginPassword" type="password" placeholder="Password">
+      <button onclick="handleLogin()">Log In</button>
+    </div>
   </div>
 </div>
 

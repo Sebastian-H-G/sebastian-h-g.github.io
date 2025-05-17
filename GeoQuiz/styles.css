@@ -249,30 +249,88 @@ margin-top: 10px;	/* Ensure pagination stays above the background */
 
 #auth-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  min-height: 100vh;
   padding: 2rem;
-  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-/* Shared style for both boxes */
+.logo {
+  max-width: 180px;
+  margin-bottom: 2rem;
+  height: auto;
+}
+
+.boxes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  width: 100%;
+  max-width: 900px;
+}
+
 .auth-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
   padding: 2rem;
-  width: 100%;
-  margin: 10px auto;
-  max-width: 400px;
   box-sizing: border-box;
 }
 
+@media (max-width: 768px) {
+  .boxes {
+    grid-template-columns: 1fr;
+  }
+}
+
+h2 {
+  margin: 0 0 1rem;
+  font-size: 1.75rem;
+  color: #2c3e50;
+  text-align: center;
+}
+
+input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: #fff;
+  transition: opacity 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
 /* For larger screens: display side by side */
 @media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
   #auth-container {
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
   }
 
@@ -280,79 +338,6 @@ margin-top: 10px;	/* Ensure pagination stays above the background */
     width: 100%;
     max-width: 350px;
   }
-}
-
-
-h2, h3 {
-  margin-top: 0;
-  color: #2c3e50;
-  font-size: 1.5rem;
-}
-
-input {
-  width: 100%;
-  padding: 0.75rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  color: #333;
-  box-sizing: border-box;
-  transition: border 0.3s ease;
-}
-
-input:focus {
-  border-color: #3498db;
-  outline: none;
-}
-#close-profile {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-
-  /* override the generic button reset */
-  width: auto;
-  padding: 0;
-  margin: 0;
-  line-height: 1;
-
-  font-size: 1.5rem;
-  color: black;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-bottom: 1rem;
-}
-
-button:hover {
-  background-color: #2980b9;
-}
-
-hr {
-  border: none;
-  border-top: 1px solid #eee;
-  margin: 2rem 0;
-}
-
-p {
-  margin: 0.5rem 0;
-}
-
-strong {
-  font-weight: 600;
 }
 #profile {
     position: fixed; /* Use fixed to stay centered even on scroll */
@@ -375,7 +360,23 @@ strong {
     padding: 2rem;
     position: relative;
 }
+#close-profile {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 
+  /* override the generic button reset */
+  width: auto;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+
+  font-size: 1.5rem;
+  color: black;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
 
 
 /* Animation for showing the quiz sections */
