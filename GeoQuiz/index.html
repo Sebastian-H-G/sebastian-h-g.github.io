@@ -1059,7 +1059,7 @@ button {
 
   async function handleLogout() {
     await sb.auth.signOut();
-    document.getElementById('auth-container').style.display = 'block';
+    document.getElementById('auth-container').style.display = 'flex';
     document.getElementById('profile').style.display = 'none';
     document.getElementById('site-content').style.display = 'none';
     alert('Logged out');
