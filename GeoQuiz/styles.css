@@ -60,10 +60,13 @@ header .logo img {
     max-width: 100px;
     height: auto;
     border-radius: 10px;
+    margin: 0 auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
+#logo {
+  margin: 0 auto;
+}
 header .logo img:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
@@ -259,7 +262,7 @@ margin-top: 10px;	/* Ensure pagination stays above the background */
 
 .logo {
   max-width: 15%;
-  margin-bottom: 3rem;
+  margin: 0 auto 3rem auto;
   height: auto;
   border-radius: 10px;
 }
@@ -344,7 +347,7 @@ button:hover {
   }
   .logo {
     max-width: 8%;
-    margin-bottom: 2rem;
+    margin: 0 auto 2rem auto;
   }
 }
 #profile {
