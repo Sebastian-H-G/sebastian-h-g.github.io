@@ -972,8 +972,8 @@ button {
 
   function showApp(user) {
     document.getElementById('auth-container').style.display     = 'none';
-    document.getElementById('site-content').style.display = 'block';
-    document.getElementById('profile').style.display      = 'none';
+    document.getElementById('site-content').style.display       = 'block';
+    document.getElementById('profile').style.display            = 'none';
     loadProfile(user);
   }
 
@@ -1002,26 +1002,51 @@ button {
     }
 
     // 1b) sign up, storing username in metadata
-    const { data, error } = await sb.auth.signUp(
-  {
-    email,
-    password,
-    options: {
-      data: { username }
-    }
-  },
-  {
-    // this must exactly match one of your Redirect URLs in the dashboard
-    redirectTo: 'https://sebastian-h-g.github.io/GeoQuiz/index.html'
-  }
-);
+    const {
+      data: { user, session },
+      error
+    } = await sb.auth.signUp(
+      {
+        email,
+        password,
+        options: {
+          data: { username }
+        }
+      },
+      {
+        // this must exactly match one of your Redirect URLs in the dashboard
+        redirectTo: 'https://sebastian-h-g.github.io/GeoQuiz/index.html'
+      }
+    );
     if (error) {
       console.error('[handleRegister] signup error:', error);
       return alert('Signup error: ' + error.message);
     }
 
+    // ─────────────────────────────────────────────────────────────
+    // ⚡️ Immediately create your profile row so you can display it
+    if (user) {
+      const { error: upsertErr } = await sb
+        .from('profiles')
+        .upsert(
+          { id: user.id, username },
+          { onConflict: 'id' }
+        );
+      if (upsertErr) {
+        console.error('[handleRegister] profile upsert error:', upsertErr);
+        // optional: alert('Error creating profile: ' + upsertErr.message);
+      }
+
+      // If email confirmation is disabled (or auto-confirmed),
+      // you’ll have a session immediately — so show the app now:
+      if (session) {
+        showApp(user);
+      }
+      // Otherwise you could show a “Thank you, please confirm your email” state here.
+    }
+
     alert('✅ Check your email to confirm before logging in.');
-    console.log('[handleRegister] signUp returned user:', data.user);
+    console.log('[handleRegister] signUp returned user:', user);
   }
 
   // 2) Login: maybe insert profile if none exists
@@ -1088,8 +1113,8 @@ button {
   async function handleLogout() {
     await sb.auth.signOut();
     document.getElementById('auth-container').style.display     = 'block';
-    document.getElementById('profile').style.display      = 'none';
-    document.getElementById('site-content').style.display = 'none';
+    document.getElementById('profile').style.display            = 'none';
+    document.getElementById('site-content').style.display       = 'none';
     alert('Logged out');
   }
 
@@ -1101,42 +1126,36 @@ button {
     if (session) showApp(session.user);
   });
 
+  // ─────────────────────────────────────────────────────────────
+  // Profile overlay toggling
+  const logo            = document.getElementById('logo');
+  const profile         = document.getElementById('profile');
+  const profileWrapper  = document.getElementById('profile-wrapper');
+  const closeBtn        = document.getElementById('close-profile');
 
-const logo = document.getElementById('logo');
-const profile = document.getElementById('profile');
-const profileWrapper = document.getElementById('profile-wrapper');
-const closeBtn = document.getElementById('close-profile');
+  logo.addEventListener('click', (event) => {
+    event.stopPropagation();
+    profile.style.display = (profile.style.display === 'flex') ? 'none' : 'flex';
+  });
 
-// Toggle profile on logo click
-logo.addEventListener('click', (event) => {
-  event.stopPropagation(); // Prevent event from reaching the document
-  profile.style.display = (profile.style.display === 'flex') ? 'none' : 'flex';
-});
-
-// Close on close button click
-closeBtn.addEventListener('click', () => {
-  profile.style.display = 'none';
-});
-
-// Prevent clicks inside the profile wrapper from closing the profile
-profileWrapper.addEventListener('click', (event) => {
-  event.stopPropagation();
-});
-
-// Close when clicking outside the profile box
-document.addEventListener('click', (event) => {
-  if (
-    window.getComputedStyle(profile).display === 'flex' &&
-    !profileWrapper.contains(event.target) &&
-    !logo.contains(event.target)
-  ) {
+  closeBtn.addEventListener('click', () => {
     profile.style.display = 'none';
-  }
-});
+  });
 
+  profileWrapper.addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
+
+  document.addEventListener('click', () => {
+    if (
+      window.getComputedStyle(profile).display === 'flex' &&
+      !profileWrapper.contains(event.target) &&
+      !logo.contains(event.target)
+    ) {
+      profile.style.display = 'none';
+    }
+  });
 </script>
-
-
 
 
 	
