@@ -13,6 +13,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 	<link rel="stylesheet" href="styles.css">
 	
 	<link rel="icon" href="Logos/Geography.ico" type="image/x-icon">
@@ -75,19 +77,16 @@
     box-shadow: 0 4px 0 #d0d0d0;
 }
 
-
 #searchInput::placeholder {
     color: black;
     opacity: 0.7;
 }
-
 
 #searchInput:focus {
     outline: none;
     transform: translateY(-2px);
     box-shadow: 0 2px 0 #d0d0d0;
 }
-
 
 #clearSearch {
     position: absolute;
@@ -103,14 +102,12 @@
     transition: color 0.2s ease, transform 0.2s ease-in-out;
 }
 
-/* Hover effect on clear button */
 #clearSearch:hover {
     color: red;
     cursor: pointer;
 
 }
 
-/* Suggestions dropdown styling */
 #suggestions {
         border: 1px solid #ccc;
         max-height: 120px;
@@ -965,8 +962,6 @@ button {
     
     </div>
 
-    
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
   const SUPABASE_URL      = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
