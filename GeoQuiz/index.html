@@ -1001,16 +1001,16 @@ button {
       return alert(`Sorry, “${username}” is already taken. Please choose another.`);
     }
 
-    const { data: { user, session }, error } = await sb.auth.signUp(
-      {
-        email,
-        password,
-        options: { data: { username } }
-      },
-      {
-        redirectTo: 'https://sebastian-h-g.github.io/GeoQuiz/index.html'
-      }
-    );
+    const { data: { user, session }, error } = await sb.auth.signUp({
+  email,
+  password,
+  options: {
+    data: { username },
+    // ← this is the v2 field that actually gets used
+    emailRedirectTo: 'https://sebastian-h-g.github.io/GeoQuiz'
+  }
+});
+
 
     if (error) {
       console.error('[handleRegister] signup error:', error);
