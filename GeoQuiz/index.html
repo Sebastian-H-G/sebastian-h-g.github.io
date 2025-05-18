@@ -961,16 +961,21 @@ button {
     
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<!-- Include Supabase JS client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
+  // 1️⃣ Initialize Supabase client
   const SUPABASE_URL      = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: { persistSession: true, autoRefreshToken: true }
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+    }
   });
 
-
+  // 2️⃣ Show/hide main UI
   function showApp(user) {
     document.getElementById('auth-container').style.display = 'none';
     document.getElementById('site-content').style.display = 'block';
@@ -978,6 +983,13 @@ button {
     loadProfile(user);
   }
 
+  function showAuth() {
+    document.getElementById('auth-container').style.display = 'flex';
+    document.getElementById('site-content').style.display = 'none';
+    document.getElementById('profile').style.display = 'none';
+  }
+
+  // 3️⃣ Register new users
   async function handleRegister() {
     const email = document.getElementById('regEmail').value.trim();
     const password = document.getElementById('regPassword').value;
@@ -985,59 +997,50 @@ button {
 
     if (!username) return alert('Please choose a username.');
 
+    // Check if username already exists
     const { data: clash, error: clashErr } = await sb
       .from('profiles')
       .select('id', { count: 'exact' })
       .eq('username', username)
       .maybeSingle();
-
     if (clashErr) {
       console.error('[handleRegister] username check error:', clashErr);
       return alert('Error checking username availability.');
     }
     if (clash) {
-      return alert(`Sorry, “${username}” is already taken. Please choose another.`);
+      return alert(`Sorry, “${username}” is taken.`);
     }
 
-    const { data: { user, session }, error } = await sb.auth.signUp({
-  email,
-  password,
-  options: {
-    data: { username },
-    // ← this is the v2 field that actually gets used
-    emailRedirectTo: 'https://sebastian-h-g.github.io/GeoQuiz'
-  }
-});
-
-
+    // Sign up user
+    const { error } = await sb.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { username },
+        emailRedirectTo: 'https://sebastian-h-g.github.io/GeoQuiz'
+      }
+    });
     if (error) {
       console.error('[handleRegister] signup error:', error);
       return alert('Signup error: ' + error.message);
     }
-
     alert('✅ Check your email to confirm before logging in.');
-    console.log('[handleRegister] signUp returned user:', user);
   }
 
+  // 4️⃣ Login existing users
   async function handleLogin() {
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
 
-    const { error: signInError, data: signInData } = await sb.auth.signInWithPassword({ email, password });
-    if (signInError) {
-      console.error('[handleLogin] login error:', signInError);
-      return alert('Login error: ' + signInError.message);
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) {
+      console.error('[handleLogin] login error:', error);
+      return alert('Login error: ' + error.message);
     }
-
-    const { data: userData, error: userErr } = await sb.auth.getUser();
-    if (userErr || !userData.user) {
-      console.error('[handleLogin] getUser error:', userErr);
-      return alert('Unable to get user—make sure you confirmed your email.');
-    }
-
-    // Don't showApp here — will be handled in onAuthStateChange
+    // onAuthStateChange will handle success
   }
 
+  // 5️⃣ Load and display user profile data
   async function loadProfile(user) {
     document.getElementById('pEmail').textContent = user.email;
     const { data: profile, error } = await sb
@@ -1045,93 +1048,67 @@ button {
       .select('username')
       .eq('id', user.id)
       .single();
-
     if (error) {
       console.error('[loadProfile] error:', error);
       document.getElementById('pUsername').textContent = '(error)';
       return;
     }
-
     document.getElementById('pUsername').textContent = profile.username || '(no username)';
   }
 
+  // 6️⃣ Logout users
   async function handleLogout() {
     await sb.auth.signOut();
-    document.getElementById('auth-container').style.display = 'flex';
-    document.getElementById('profile').style.display = 'none';
-    document.getElementById('site-content').style.display = 'none';
+    showAuth();
     alert('Logged out');
   }
 
-  // 👇 This handles profile creation after confirmation or login
-  sb.auth.onAuthStateChange(async (_, session) => {
-    if (session) {
-      const user = session.user;
-
-      const { data: existing, error: fetchErr } = await sb
-        .from('profiles')
-        .select('id')
-        .eq('id', user.id)
-        .maybeSingle();
-
-      if (!existing) {
-        const username = user.user_metadata?.username || 'anonymous';
-        const { error: upsertErr } = await sb
+  // 7️⃣ Auth state handler (initial load & token refreshes)
+  sb.auth.onAuthStateChange((event, session) => {
+    if (session && session.user) {
+      // Ensure user has a profile record
+      (async () => {
+        const user = session.user;
+        const { data: existing } = await sb
           .from('profiles')
-          .upsert([{ id: user.id, username }], { onConflict: 'id' });
-
-        if (upsertErr) {
-          console.error('[authState] profile upsert error:', upsertErr);
-        } else {
-          console.log('[authState] profile created for', user.id, username);
+          .select('id')
+          .eq('id', user.id)
+          .maybeSingle();
+        if (!existing) {
+          const username = user.user_metadata?.username || 'anonymous';
+          await sb.from('profiles').upsert(
+            { id: user.id, username },
+            { onConflict: 'id' }
+          );
         }
-      }
-
-      showApp(user);
-    }
-  });
-
-    // ► NEW: on page load, check for existing session ◄
-  window.addEventListener('load', async () => {
-    const { data, error } = await sb.auth.getSession();
-    if (error) {
-      console.error('[init] getSession error:', error);
-      return;
-    }
-    if (data.session) {
-      showApp(data.session.user);
+      })();
+      showApp(session.user);
     } else {
-      document.getElementById('auth-container').style.display = 'flex';
-      document.getElementById('site-content').style.display = 'none';
+      showAuth();
     }
   });
-  // You can skip this now — session is handled by onAuthStateChange
-  // sb.auth.getSession().then(({ data }) => {
-  //   if (data.session) showApp(data.session.user);
-  // });
 
-  // Overlay/profile toggling
-  const logo = document.getElementById('logo');
-  const profile = document.getElementById('profile');
-  const profileWrapper = document.getElementById('profile-wrapper');
-  const closeBtn = document.getElementById('close-profile');
-
-  logo.addEventListener('click', (e) => {
+  // 8️⃣ Overlay/profile toggling UI
+  document.getElementById('logo').addEventListener('click', (e) => {
     e.stopPropagation();
-    profile.style.display = (profile.style.display === 'flex') ? 'none' : 'flex';
+    const prof = document.getElementById('profile');
+    prof.style.display = prof.style.display === 'flex' ? 'none' : 'flex';
   });
-  closeBtn.addEventListener('click', () => profile.style.display = 'none');
-  profileWrapper.addEventListener('click', (e) => e.stopPropagation());
+  document.getElementById('close-profile').addEventListener('click', () => {
+    document.getElementById('profile').style.display = 'none';
+  });
   document.addEventListener('click', (e) => {
+    const prof = document.getElementById('profile');
     if (
-      window.getComputedStyle(profile).display === 'flex' &&
-      !profileWrapper.contains(e.target) &&
-      !logo.contains(e.target)
+      window.getComputedStyle(prof).display === 'flex' &&
+      !document.getElementById('profile-wrapper').contains(e.target) &&
+      !document.getElementById('logo').contains(e.target)
     ) {
-      profile.style.display = 'none';
+      prof.style.display = 'none';
     }
   });
 </script>
+
 
 <script>
     function toggleQuizSections(event) {
