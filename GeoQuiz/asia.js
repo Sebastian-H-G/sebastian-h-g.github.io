@@ -115,7 +115,7 @@ let timeRemaining = 7 * 60;
 let attainableScore = countries.length;
 let attainedScore = 0;
 let completed = false;
-const quizId = "1c65fe7d-9ab8-414c-89fd-bf378c7cf531"; // <-- real UUID
+const quizId = "f555cede-1899-43cf-aa89-9780a727b800"; // <-- real UUID DONT FORGET TO CHANGE IT
 let gave_up = false; // <-- Add this line
 
 
