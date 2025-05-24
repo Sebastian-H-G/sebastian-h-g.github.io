@@ -109,7 +109,6 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
 }
 }
 async function onQuizComplete() {
-  completed = true;
   try {
     const result = await saveQuizResult({
       quizId,
@@ -176,6 +175,7 @@ function startCountdown() {
                     giveUpButton.textContent = 'Neustart';
                     giveUpButton.onclick = () => location.reload();
                 } else {
+                    completed = false; // <-- Add this
                     onQuizComplete(); // <-- Add this
                     messageElement.textContent =  `Die Zeit ist um! Du hast ${score} Bundesländer gennant.`;
                     giveUpButton.textContent = 'Neustart';

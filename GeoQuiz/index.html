@@ -1109,24 +1109,43 @@ button {
   });
 
   // 8️⃣ Overlay/profile toggling UI
-  document.getElementById('logo').addEventListener('click', (e) => {
-    e.stopPropagation();
-    const prof = document.getElementById('profile');
-    prof.style.display = prof.style.display === 'flex' ? 'none' : 'flex';
-  });
-  document.getElementById('close-profile').addEventListener('click', () => {
-    document.getElementById('profile').style.display = 'none';
-  });
-  document.addEventListener('click', (e) => {
-    const prof = document.getElementById('profile');
-    if (
-      window.getComputedStyle(prof).display === 'flex' &&
-      !document.getElementById('profile-wrapper').contains(e.target) &&
-      !document.getElementById('logo').contains(e.target)
-    ) {
-      prof.style.display = 'none';
-    }
-  });
+document.getElementById('logo').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const prof = document.getElementById('profile');
+  const body = document.body;
+  
+  // Toggle profile visibility
+  if (prof.style.display === 'flex') {
+    prof.style.display = 'none';
+    body.style.overflow = 'auto'; // Re-enable vertical scrolling
+  } else {
+    prof.style.display = 'flex';
+    body.style.overflow = 'hidden'; // Disable vertical scrolling
+  }
+});
+
+document.getElementById('close-profile').addEventListener('click', () => {
+  const prof = document.getElementById('profile');
+  const body = document.body;
+  
+  prof.style.display = 'none';
+  body.style.overflow = 'auto'; // Re-enable vertical scrolling
+});
+
+document.addEventListener('click', (e) => {
+  const prof = document.getElementById('profile');
+  const body = document.body;
+
+  // Close profile if clicked outside of it
+  if (
+    window.getComputedStyle(prof).display === 'flex' &&
+    !document.getElementById('profile-wrapper').contains(e.target) &&
+    !document.getElementById('logo').contains(e.target)
+  ) {
+    prof.style.display = 'none';
+    body.style.overflow = 'auto'; // Re-enable vertical scrolling
+  }
+});
 </script>
 
   <script type="module" src="displayResults.js" defer></script>

@@ -356,6 +356,7 @@ button:hover {
     left: 0;
     width: 100vw;
     height: 100vh;
+    overflow: hidden;  
     display: none;
     z-index: 100000;
     background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
@@ -373,6 +374,7 @@ button:hover {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
     padding: 2rem;
     position: relative;
+    overflow-y: auto;  /* Enable scrolling inside the modal if content overflows */
 }
 #close-profile {
   position: absolute;
