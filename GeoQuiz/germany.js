@@ -1,3 +1,5 @@
+import { saveQuizResult } from './saveQuizResults.js';
+// ...existing code...
 const countryMappings = {
     "Baden-Württemberg": ["Baden-Württemberg"],
     "Bayern": ["Bayern"],
@@ -75,7 +77,12 @@ document.getElementById('countries-container').innerHTML = table;
 const correctCountries = [];
 let score = 0;
 let timeRemaining = 2 * 60;
-
+// ...existing code...
+let quizId = 'germany-bundeslaender-quiz';
+let attainableScore = countries.length;
+let attainedScore = 0;
+let completed = false;
+// ...existing code...
 const countryInput = document.getElementById('countryInput');
 const scoreBoard = document.getElementById('scoreBoard');
 const timerElement = document.getElementById('timer');
@@ -91,6 +98,7 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
     const originalCountryName = countries.find(c => c.toLowerCase() === normalizedCountryName.toLowerCase());
     correctCountries.push(originalCountryName);
     score++;
+    attainedScore = score; // <-- Add this line
     scoreBoard.textContent = `Score: ${score} / 16`;
     document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
         path.classList.add('correct');
@@ -100,7 +108,20 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
     countryInput.focus(); // Focus the input field
 }
 }
-
+async function onQuizComplete() {
+  completed = true;
+  try {
+    const result = await saveQuizResult({
+      quizId,
+      attainedScore,
+      attainableScore,
+      completed
+    });
+    console.log('Result saved:', result);
+  } catch (err) {
+    console.error('Save failed:', err.message);
+  }
+}
 document.addEventListener('DOMContentLoaded', () => {
 let countdownInterval;
 let pauseCount = 0;
@@ -136,6 +157,7 @@ function startCountdown() {
                 
                 if (checkAllStatesGuessed()) {
                     createConfetti();
+                    onQuizComplete(); // <-- Add this
                     messageElement.textContent = `Herzlichen Glückwunsch! 👏 Du hast alle Bundesländer richtig genannt. 🎉`;
                     messageElement.style.color = 'green';
                     pauseButton.style.display = 'none';
@@ -153,6 +175,7 @@ function startCountdown() {
                     giveUpButton.textContent = 'Neustart';
                     giveUpButton.onclick = () => location.reload();
                 } else {
+                    onQuizComplete(); // <-- Add this
                     messageElement.textContent =  `Die Zeit ist um! Du hast ${score} Bundesländer gennant.`;
                     giveUpButton.textContent = 'Neustart';
                     giveUpButton.onclick = () => location.reload();
@@ -247,6 +270,7 @@ function togglePause() {
 
 function giveUp() {
     clearInterval(countdownInterval);
+    onQuizComplete(); // <-- Add this
     const messageElement = document.getElementById('message');
     messageElement.textContent = `Du hast aufgegeben, du hast ${score} Bundesländer gennant.`;
     messageElement.style.display = 'block';
