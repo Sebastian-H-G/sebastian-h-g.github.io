@@ -40,7 +40,7 @@ tr.innerHTML = `
   <td>${row.quiz_name}</td>
   <td>${row.attained_score} / ${row.attainable_score}</td>
   <td>${row.completed ? '✔️' : '❌'}</td>
-  <td>${row.gave_up ? '❌' : '✔️'}</td>
+  <td>${row.gave_up ? '❌' : '/'}</td>
   <td>${new Date(row.played_at).toLocaleString()}</td>
 `;
 
