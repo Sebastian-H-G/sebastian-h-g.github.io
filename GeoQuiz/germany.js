@@ -73,12 +73,11 @@ for (let i = 0; i < countries.length; i++) {
 table += '</tr></table>';
 document.getElementById('countries-container').innerHTML = table;
 }
-
+const quizId = "8bcfecf7-0d7c-4403-a2a6-6475f040873e"; // <-- real UUID
 const correctCountries = [];
 let score = 0;
 let timeRemaining = 2 * 60;
 // ...existing code...
-let quizId = 'germany-bundeslaender-quiz';
 let attainableScore = countries.length;
 let attainedScore = 0;
 let completed = false;
@@ -295,5 +294,4 @@ document.getElementById('restartButton').addEventListener('click', restartGame);
 
 startCountdown();
 });
-startCountdown();
 
