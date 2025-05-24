@@ -479,6 +479,17 @@ button:hover {
       color: #666;
     }
 
+.filter-container {
+  margin-bottom: 1rem;
+  text-align: right;
+}
+
+#quizFilter {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
 
 
 #quiz-sections {
