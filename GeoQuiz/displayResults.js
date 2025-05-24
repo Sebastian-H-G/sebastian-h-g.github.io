@@ -8,10 +8,11 @@ const supabase          = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 async function init() {
   // 1) Enforce login
   const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
-    alert('Bitte einloggen, um Ergebnisse zu sehen.');
-    return window.location.replace('index.html');
-  }
+if (!session) {
+  document.getElementById('loading').textContent = 'Bitte zuerst einloggen.';
+  return;
+}
+
 
   // 2) Fetch results for the current user
 const { data, error } = await supabase
