@@ -44,18 +44,21 @@ supabase.auth.onAuthStateChange((event, session) => {
  * @param {number} params.attainedScore
  * @param {number} params.attainableScore
  * @param {boolean} params.completed
+ * @param {boolean} params.gave_up - whether the user gave up on the quiz
  */
 export async function saveQuizResult({
   quizId,
   attainedScore,
   attainableScore,
-  completed
+  completed,
+  gave_up
 }) {
   console.log('[quizApi] saveQuizResult called with:', {
     quizId,
     attainedScore,
     attainableScore,
-    completed
+    completed,
+    gave_up
   });
 
   // Ensure fresh user info
@@ -82,7 +85,8 @@ export async function saveQuizResult({
       quiz:             quizId,
       attained_score:   attainedScore,
       attainable_score: attainableScore,
-      completed:        completed
+      completed:        completed,
+      gave_up:         gave_up
     }]);
 
   console.log('[quizApi] Insert response:', { data, error });

@@ -74,6 +74,7 @@ table += '</tr></table>';
 document.getElementById('countries-container').innerHTML = table;
 }
 const quizId = "8bcfecf7-0d7c-4403-a2a6-6475f040873e"; // <-- real UUID
+let gave_up = false; // <-- Add this line
 const correctCountries = [];
 let score = 0;
 let timeRemaining = 2 * 60;
@@ -114,7 +115,8 @@ async function onQuizComplete() {
       quizId,
       attainedScore,
       attainableScore,
-      completed
+      completed,
+        gave_up
     });
     console.log('Result saved:', result);
   } catch (err) {
@@ -269,6 +271,7 @@ function togglePause() {
 
 function giveUp() {
     clearInterval(countdownInterval);
+    gave_up = true; // <-- Add this
     onQuizComplete(); // <-- Add this
     const messageElement = document.getElementById('message');
     messageElement.textContent = `Du hast aufgegeben, du hast ${score} Bundesländer gennant.`;
