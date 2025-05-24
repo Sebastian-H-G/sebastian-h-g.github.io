@@ -17,7 +17,7 @@ supabase.auth.getUser()
   .then(({ data: { user }, error }) => {
     if (error || !user) {
       alert('Bitte zuerst auf der Startseite einloggen!');
-      return window.location.replace('/index.html');
+      return window.location.replace('index.html');
     }
     // session ok → show page
     document.documentElement.style.visibility = '';
@@ -27,7 +27,7 @@ supabase.auth.getUser()
 supabase.auth.onAuthStateChange((event, session) => {
   if (!session) {
     alert('Session abgelaufen oder ausgeloggt – bitte neu einloggen!');
-    window.location.replace('/index.html');
+    window.location.replace('index.html');
   }
 });
 
