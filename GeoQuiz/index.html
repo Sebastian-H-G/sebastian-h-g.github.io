@@ -237,6 +237,23 @@ button {
     <p><strong>Email:</strong> <span id="pEmail"></span></p>
     <p><strong>Username:</strong> <span id="pUsername"></span></p>
     <button onclick="handleLogout()">Log Out</button>
+    <div class="results-container">
+    <h1>Your Quiz Results</h1>
+    <p id="loading">Loading your results…</p>
+    <table id="resultsTable" style="display:none;">
+      <thead>
+        <tr>
+          <th class="quiz-name">Quiz Name</th>
+          <th>Score</th>
+          <th>Out Of</th>
+          <th>Completed</th>
+          <th>Gave Up</th>
+          <th class="date">Date Played</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
   </div>
 </div>
 
@@ -1109,7 +1126,7 @@ button {
   });
 </script>
 
-
+  <script type="module" src="displayResults.js" defer></script>
 <script>
     function toggleQuizSections(event) {
         const section = event.currentTarget;
