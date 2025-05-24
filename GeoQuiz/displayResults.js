@@ -38,11 +38,10 @@ const { data, error } = await supabase
 // Inside data.forEach(row => { ... })
 tr.innerHTML = `
   <td>${row.quiz_name}</td>
-  <td>${row.attained_score}</td>
-  <td>${row.attainable_score}</td>
+  <td>${row.attained_score} / ${row.attainable_score}</td>
   <td>${row.completed ? '✔️' : '❌'}</td>
-  <td>${new Date(row.played_at).toLocaleString()}</td>
   <td>${row.gave_up ? '❌' : '✔️'}</td>
+  <td>${new Date(row.played_at).toLocaleString()}</td>
 `;
 
     tbody.appendChild(tr);
