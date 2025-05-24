@@ -364,7 +364,16 @@ button:hover {
     justify-content: center; /* Center horizontally */
     align-items: center;     /* Center vertically */
 }
+/* Hide scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+#profile-wrapper::-webkit-scrollbar {
+  display: none;
+}
 
+/* Optional: You can also hide the scrollbar for IE (but modern browsers are more common now) */
+#profile-wrapper {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
 #profile-wrapper {
     background: #fff;
     border-radius: 12px;
