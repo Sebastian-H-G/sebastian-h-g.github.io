@@ -1,3 +1,4 @@
+import { saveQuizResult } from './saveQuizResults.js';
 const countryMappings = 
 {
     "Afghanistan": ["Afghanistan", "Afghanistan"],
@@ -110,6 +111,14 @@ const correctCountries = [];
 let score = 0;
 let timeRemaining = 7 * 60;
 
+
+let attainableScore = countries.length;
+let attainedScore = 0;
+let completed = false;
+const quizId = "1c65fe7d-9ab8-414c-89fd-bf378c7cf531"; // <-- real UUID
+let gave_up = false; // <-- Add this line
+
+
 const countryInput = document.getElementById('countryInput');
 const scoreBoard = document.getElementById('scoreBoard');
 const timerElement = document.getElementById('timer');
@@ -125,6 +134,7 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
     const originalCountryName = countries.find(c => c.toLowerCase() === normalizedCountryName.toLowerCase());
     correctCountries.push(originalCountryName);
     score++;
+    attainedScore = score; // Update attainedScore
     scoreBoard.textContent = `Score: ${score} / 49`;
     document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
         path.classList.add('correct');
@@ -134,7 +144,20 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
     countryInput.focus(); // Focus the input field
 }
 }
-
+async function onQuizComplete() {
+  try {
+    const result = await saveQuizResult({
+      quizId,
+      attainedScore,
+      attainableScore,
+      completed,
+        gave_up
+    });
+    console.log('Result saved:', result);
+  } catch (err) {
+    console.error('Save failed:', err.message);
+  }
+}
 document.addEventListener('DOMContentLoaded', () => {
 let countdownInterval;
 let pauseCount = 0;
@@ -156,6 +179,8 @@ function checkAllStatesGuessed() {
 }
 
 function startCountdown() {
+    console.log("startCountdown called");
+    console.log(countries.length);
     countdownInterval = setInterval(() => {
         if (!isPaused) {
             timeRemaining--;
@@ -170,6 +195,7 @@ function startCountdown() {
                 
                 if (checkAllStatesGuessed()) {
                     createConfetti();
+                    onQuizComplete(); // <-- Add this
                     messageElement.textContent = `Congratulations! 👏 You named all countries. 🎉`;
                     messageElement.style.color = 'green';
                     pauseButton.style.display = 'none';
@@ -187,6 +213,8 @@ function startCountdown() {
                     giveUpButton.textContent = 'Restart';
                     giveUpButton.onclick = () => location.reload();
                 } else {
+                    completed = false; // Set completed to false if not all countries were guessed
+                    onQuizComplete(); // <-- Add this
                     messageElement.textContent = `Time is up! You named ${score} countries.`;
                     giveUpButton.textContent = 'Restart';
                     giveUpButton.onclick = () => location.reload();
@@ -280,6 +308,8 @@ function togglePause() {
 }
 
 function giveUp() {
+    gave_up = true; // <-- Add this
+    onQuizComplete(); // <-- Add this
     clearInterval(countdownInterval);
     const messageElement = document.getElementById('message');
     messageElement.textContent = `You gave up! You named ${score} countries.`;
