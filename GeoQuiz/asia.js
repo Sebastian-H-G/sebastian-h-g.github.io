@@ -195,6 +195,7 @@ function startCountdown() {
                 
                 if (checkAllStatesGuessed()) {
                     createConfetti();
+                    completed = true; // Set completed to true if all countries were guessed
                     onQuizComplete(); // <-- Add this
                     messageElement.textContent = `Congratulations! 👏 You named all countries. 🎉`;
                     messageElement.style.color = 'green';
@@ -335,5 +336,5 @@ document.getElementById('restartButton').addEventListener('click', restartGame);
 
 startCountdown();
 });
-startCountdown();
+
 

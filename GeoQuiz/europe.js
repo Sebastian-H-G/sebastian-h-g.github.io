@@ -1,3 +1,4 @@
+import { saveQuizResult } from './saveQuizResults.js';
 const countryMappings = {   
         "Andorra": ["Andorra"],
         "Albania": ["Albanien"],
@@ -104,6 +105,12 @@ const correctCountries = [];
 let score = 0;
 let timeRemaining = 5 * 60;
 
+let attainableScore = countries.length;
+let attainedScore = 0;
+let completed = false;
+const quizId = "10e7847b-b35e-49eb-835a-a4c8251e7399"; // <-- real UUID
+let gave_up = false; // <-- Add this line
+
 const countryInput = document.getElementById('countryInput');
 const scoreBoard = document.getElementById('scoreBoard');
 const timerElement = document.getElementById('timer');
@@ -119,6 +126,7 @@ function checkCountry(countryName) {
         const originalCountryName = countries.find(c => c.toLowerCase() === normalizedCountryName.toLowerCase());
         correctCountries.push(originalCountryName);
         score++;
+        attainedScore = score; // <-- Add this line
         scoreBoard.textContent = `Score: ${score} / 46`;
         document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
             path.classList.add('correct');
@@ -127,6 +135,20 @@ function checkCountry(countryName) {
         countryInput.value = ''; // Clear the input field
         countryInput.focus(); // Focus the input field
     }
+}
+async function onQuizComplete() {
+  try {
+    const result = await saveQuizResult({
+      quizId,
+      attainedScore,
+      attainableScore,
+      completed,
+        gave_up
+    });
+    console.log('Result saved:', result);
+  } catch (err) {
+    console.error('Save failed:', err.message);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -164,6 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (checkAllStatesGuessed()) {
                         createConfetti();
+                        completed = true; // Set completed to true if all countries were guessed
+                        onQuizComplete(); // <-- Add this
                         messageElement.textContent = `Congratulations! 👏 You named all countries. 🎉`;
                         messageElement.style.color = 'green';
                         pauseButton.style.display = 'none';
@@ -181,6 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         giveUpButton.textContent = 'Restart';
                         giveUpButton.onclick = () => location.reload();
                     } else {
+                        completed = false; // Set completed to true
+                        onQuizComplete(); // <-- Add this
                         messageElement.textContent = `Time is up! You named ${score} countries.`;
                         giveUpButton.textContent = 'Restart';
                         giveUpButton.onclick = () => location.reload();
@@ -274,6 +300,8 @@ function createConfetti() {
     }
 
     function giveUp() {
+        onQuizComplete(); // <-- Add this
+        gave_up = true; // <-- Set gave_up to true
         clearInterval(countdownInterval);
         const messageElement = document.getElementById('message');
         messageElement.textContent = `You gave up! You named ${score} countries.`;
@@ -299,5 +327,4 @@ function createConfetti() {
 
     startCountdown();
 });
-startCountdown();
 

@@ -157,6 +157,7 @@ function startCountdown() {
                 
                 if (checkAllStatesGuessed()) {
                     createConfetti();
+                    completed = true; // <-- Add this
                     onQuizComplete(); // <-- Add this
                     messageElement.textContent = `Herzlichen Glückwunsch! 👏 Du hast alle Bundesländer richtig genannt. 🎉`;
                     messageElement.style.color = 'green';

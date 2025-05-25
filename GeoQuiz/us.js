@@ -1,3 +1,4 @@
+import { saveQuizResult } from './saveQuizResults.js';
 const countryMappings = {
     "Alabama": ["The Yellowhammer State"],
     "Alaska": ["The Last Frontier"],
@@ -110,6 +111,12 @@ const correctCountries = [];
 let score = 0;
 let timeRemaining = 5 * 60;
 
+let attainableScore = countries.length;
+let attainedScore = 0;
+let completed = false;
+const quizId = "f226bfb5-2232-4bcb-b7d1-9150cb00208f"; // <-- real UUID
+let gave_up = false; // <-- Add this line
+
 const countryInput = document.getElementById('countryInput');
 const scoreBoard = document.getElementById('scoreBoard');
 const timerElement = document.getElementById('timer');
@@ -125,6 +132,7 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
     const originalCountryName = countries.find(c => c.toLowerCase() === normalizedCountryName.toLowerCase());
     correctCountries.push(originalCountryName);
     score++;
+    attainedScore = score; // <-- Add this line
     scoreBoard.textContent = `Score: ${score} / 50`;
     document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
         path.classList.add('correct');
@@ -151,6 +159,20 @@ function endGame() {
     });
 }
 
+async function onQuizComplete() {
+  try {
+    const result = await saveQuizResult({
+      quizId,
+      attainedScore,
+      attainableScore,
+      completed,
+        gave_up
+    });
+    console.log('Result saved:', result);
+  } catch (err) {
+    console.error('Save failed:', err.message);
+  }
+}
 function checkAllStatesGuessed() {
     return correctCountries.length === countries.length;
 }
@@ -170,6 +192,8 @@ function startCountdown() {
                 
                 if (checkAllStatesGuessed()) {
                     createConfetti();
+                    completed = true; // <-- Add this
+                    onQuizComplete(); // <-- Add this
                     messageElement.textContent = `Congratulations! 👏 You named all states correctly. 🎉`;
                     messageElement.style.color = 'green';
                     pauseButton.style.display = 'none';
@@ -187,6 +211,8 @@ function startCountdown() {
                     giveUpButton.textContent = 'Restart';
                     giveUpButton.onclick = () => location.reload();
                 } else {
+                    completed = false; // <-- Add this
+                    onQuizComplete(); // <-- Add this
                     messageElement.textContent = `Time is up! You named ${score} states.`;
                     giveUpButton.textContent = 'Restart';
                     giveUpButton.onclick = () => location.reload();
@@ -280,6 +306,8 @@ function togglePause() {
 }
 
 function giveUp() {
+     gave_up = true; // <-- Add this
+    onQuizComplete(); // <-- Add this
     clearInterval(countdownInterval);
     const messageElement = document.getElementById('message');
     messageElement.textContent = `You gave up! You named ${score} states.`;
@@ -305,5 +333,3 @@ document.getElementById('restartButton').addEventListener('click', restartGame);
 
 startCountdown();
 });
-startCountdown();
-

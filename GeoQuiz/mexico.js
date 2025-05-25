@@ -1,3 +1,4 @@
+import { saveQuizResult } from './saveQuizResults.js';
 const countryMappings = {
     "Aguascalientes": ["Aguascalientes"],
     "Baja California": ["Baja California", "Baja California Norte"],
@@ -92,6 +93,12 @@ const correctCountries = [];
 let score = 0;
 let timeRemaining = 5 * 60;
 
+let attainableScore = countries.length;
+let attainedScore = 0;
+let completed = false;
+const quizId = "18cef3ad-60b3-4b77-b697-3cd7d4c4953f"; // <-- real UUID
+let gave_up = false; // <-- Add this line
+
 const countryInput = document.getElementById('countryInput');
 const scoreBoard = document.getElementById('scoreBoard');
 const timerElement = document.getElementById('timer');
@@ -107,6 +114,7 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
     const originalCountryName = countries.find(c => c.toLowerCase() === normalizedCountryName.toLowerCase());
     correctCountries.push(originalCountryName);
     score++;
+    attainedScore = score; // <-- Add this line
     scoreBoard.textContent = `Score: ${score} / 32`;
     document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
         path.classList.add('correct');
@@ -116,7 +124,20 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
     countryInput.focus(); // Focus the input field
 }
 }
-
+async function onQuizComplete() {
+  try {
+    const result = await saveQuizResult({
+      quizId,
+      attainedScore,
+      attainableScore,
+      completed,
+        gave_up
+    });
+    console.log('Result saved:', result);
+  } catch (err) {
+    console.error('Save failed:', err.message);
+  }
+}
 document.addEventListener('DOMContentLoaded', () => {
 let countdownInterval;
 let pauseCount = 0;
@@ -152,6 +173,8 @@ function startCountdown() {
                 
                 if (checkAllStatesGuessed()) {
                     createConfetti();
+                    completed = true; // <-- Add this
+                    onQuizComplete(); // <-- Add this
                     messageElement.textContent = `Felicidades! 👏 Has nombrado correctamente todos los estados. 🎉`;
                     messageElement.style.color = 'green';
                     pauseButton.style.display = 'none';
@@ -169,6 +192,8 @@ function startCountdown() {
                     giveUpButton.textContent = 'Reiniciar';
                     giveUpButton.onclick = () => location.reload();
                 } else {
+                    completed = false; // <-- Add this
+                    onQuizComplete(); // <-- Add this
                     messageElement.textContent = `El tiempo ha acabado! Nombraste ${score} estados.`;
                     giveUpButton.textContent = 'Reiniciar';
                     giveUpButton.onclick = () => location.reload();
@@ -262,6 +287,8 @@ function togglePause() {
 }
 
 function giveUp() {
+    gave_up = true; // <-- Add this
+    onQuizComplete(); // <-- Add this
     clearInterval(countdownInterval);
     const messageElement = document.getElementById('message');
     messageElement.textContent = `Abandonaste! Nombraste ${score} estados.`;
@@ -287,5 +314,5 @@ document.getElementById('restartButton').addEventListener('click', restartGame);
 
 startCountdown();
 });
-startCountdown();
+
 

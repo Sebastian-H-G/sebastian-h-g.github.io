@@ -523,7 +523,8 @@
         
         </div>
 </footer>
-<script>
+<script type="module">
+    import { saveQuizResult } from './saveQuizResults.js';
     const capitals = {
         "Alabama": "Montgomery",
         "Alaska": "Juneau",
@@ -716,6 +717,12 @@
 
     document.getElementById('capitalInput').addEventListener('input', checkCapital);
 
+    let attainableScore = countries.length;
+let attainedScore = 0;
+let completed = false;
+const quizId = "81ead263-9f14-4fe6-8d78-e063af32cd39"; // <-- real UUID
+let gave_up = false; // <-- Add this line
+
     let score = 0;
     let timer = 300; // 5 minutes in seconds
     let pauses = 0;
@@ -736,6 +743,8 @@ function startTimer() {
                 clearInterval(timerInterval);
                 message.style.display = 'block';
                 togglePause(); // Pause the game
+                completed = false; // <-- Add this
+                onQuizComplete(); // <-- Add this
                 message.textContent = 'Time is up! You named' + score + ' US capitals.';
                 markUnansweredStates();
                 displayResultsTable();
@@ -743,6 +752,21 @@ function startTimer() {
             }
         }
     }, 1000);
+}
+
+async function onQuizComplete() {
+  try {
+    const result = await saveQuizResult({
+      quizId,
+      attainedScore,
+      attainableScore,
+      completed,
+        gave_up
+    });
+    console.log('Result saved:', result);
+  } catch (err) {
+    console.error('Save failed:', err.message);
+  }
 }
     function updateTimerDisplay() {
         const minutes = Math.floor(timer / 60);
@@ -823,11 +847,14 @@ function checkCapital() {
 
             document.getElementById('capitalInput').value = ''; // Clear the input field
             score++;
+            attainedScore = score; // <-- Add this line
             document.getElementById('score').textContent = `Score: ${score} / 50`;
 
             if (score === Object.keys(capitals).length) {
                 clearInterval(timerInterval);
                 message.style.display = 'block';
+                completed = true; // <-- Add this
+                onQuizComplete(); // <-- Add this
                 togglePause(); // Pause the game
                 message.textContent = `Congratulations! 🎉 You named all capitals in ${300 - timer} seconds.`;
                 displayResultsTable();
@@ -859,6 +886,8 @@ function checkCapital() {
 
     function giveUp() {
         clearInterval(timerInterval);
+        gave_up = true; // <-- Add this
+        onQuizComplete(); // <-- Add this
         revealAllAnswers();
         togglePause();
         mapContainer.style.display = 'block';
