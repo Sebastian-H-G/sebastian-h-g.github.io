@@ -237,6 +237,28 @@ button {
     <p><strong>Email:</strong> <span id="pEmail"></span></p>
     <p><strong>Username:</strong> <span id="pUsername"></span></p>
     <button onclick="handleLogout()">Log Out</button>
+    <!-- report.html -->
+<form id="report-form" class="report-form">
+  <h2>Report a Bug / Send Feedback</h2>
+  <label>
+    Type:
+    <select name="type" required>
+      <option value="">–– choose ––</option>
+      <option value="bug">🐞 Bug</option>
+      <option value="feedback">💡 Feedback</option>
+    </select>
+  </label>
+
+  <label>
+    Your Message:
+    <textarea name="message" rows="6" placeholder="Describe what happened…" required></textarea>
+  </label>
+
+  <button type="submit">Submit Report</button>
+
+  <p id="form-status" class="status"></p>
+</form>
+
     <div class="results-container">
     <h1>Your Quiz Results</h1>
     <div class="filter-container">
@@ -1108,6 +1130,45 @@ button {
     }
   });
 
+
+// ==== Replace your report logic with this ====
+const reportForm = document.getElementById('report-form')
+const statusMsg  = document.getElementById('form-status')
+
+if (reportForm) {
+  reportForm.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    statusMsg.textContent = ''
+    statusMsg.className = 'status'
+
+    // grab report form data
+    const { type, message } = Object.fromEntries(new FormData(reportForm))
+
+    // get current user
+    const { data: { user }, error: userErr } = await sb.auth.getUser()
+    if (userErr || !user) {
+      statusMsg.textContent = 'You must be logged in to submit a report.'
+      statusMsg.classList.add('error')
+      return
+    }
+
+    // insert the report
+    const { error: insertErr } = await sb
+      .from('reports')
+      .insert({ user_id: user.id, type, message })
+
+    if (insertErr) {
+      statusMsg.textContent = 'Error: ' + insertErr.message
+      statusMsg.classList.add('error')
+    } else {
+      statusMsg.textContent = 'Thank you! Your report has been submitted.'
+      statusMsg.classList.add('success')
+      reportForm.reset()
+    }
+  })
+}
+
+
   // 8️⃣ Overlay/profile toggling UI
 document.getElementById('logo').addEventListener('click', (e) => {
   e.stopPropagation();
@@ -1167,6 +1228,9 @@ quizFilterInput.addEventListener('input', function () {
 });
 
   </script>
+
+
+
 <script>
     function toggleQuizSections(event) {
         const section = event.currentTarget;
@@ -1203,6 +1267,7 @@ quizFilterInput.addEventListener('input', function () {
     }
 }   
     </script>
+
   <script>
     // Utility: Normalize strings by removing accents, converting to lowercase, and removing special characters and extra whitespace.
     function normalizeStr(str) {

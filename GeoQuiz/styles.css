@@ -453,7 +453,7 @@ button:hover {
     #resultsTable thead th {
       background-color: #4A90E2;
       color: #fff;
-      padding: 0.75rem;
+      padding: 0.9rem;
       text-align: left;
       position: sticky;
       top: 0;
@@ -501,6 +501,50 @@ button:hover {
   border-radius: 8px;
   font-size: 1rem;
 }
+/* report.css */
+.report-form {
+  max-width: 480px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: sans-serif;
+  background: #fafafa;
+}
+.report-form h2 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+.report-form label {
+  display: block;
+  margin-bottom: 1rem;
+}
+.report-form select,
+.report-form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.report-form button {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #0070f3;
+  color: white;
+}
+.report-form button:hover {
+  background-color: #005bb5;
+}
+.status {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+.status.success { color: green; }
+.status.error   { color: red; }
 
 
 #quiz-sections {
