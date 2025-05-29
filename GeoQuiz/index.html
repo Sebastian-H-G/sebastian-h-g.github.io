@@ -1514,11 +1514,11 @@ async function initFavorites() {
 
   // 3️⃣ Attach click handlers and set initial states
   document.querySelectorAll('.quiz-section').forEach(sec => {
-    const secId = sec.dataset.sectionId;
+    const secId = sec.Id;
     const btn   = sec.querySelector('.favorite-btn');
 
     if (!secId) {
-      console.warn('[initFavorites] quiz-section missing data-section-id:', sec);
+      console.warn('[initFavorites] quiz-section missing id:', sec);
       return;
     }
     if (!btn) return;
