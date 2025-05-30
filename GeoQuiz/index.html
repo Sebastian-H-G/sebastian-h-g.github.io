@@ -1516,15 +1516,12 @@ async function initFavorites() {
   document.querySelectorAll('.quiz-section').forEach(sec => {
     const secId = sec.id;
     const btn   = sec.querySelector('.favorite-btn');
-    console.log('[initFavorites] Found quiz-section:', sec);
+    if (!secId || !btn) return;
 
-    if (!secId) {
-      console.warn('[initFavorites] quiz-section missing id:', sec);
-      return;
+    // initial fill state
+    if (favs.includes(secId)) {
+      btn.classList.add('favorited');
     }
-    if (!btn) return;
-
-    if (favs.includes(secId)) btn.classList.add('favorited');
 
     btn.addEventListener('click', async () => {
       if (btn.classList.contains('favorited')) {
@@ -1534,18 +1531,26 @@ async function initFavorites() {
         await addFavorite(user.id, secId);
         btn.classList.add('favorited');
       }
-      // re-render list
-      await renderFavorites(user.id);
+      // no renderFavorites here
     });
   });
 
-  // 4️⃣ Initial render under banner
-  await renderFavorites(user.id);
+  // 4️⃣ Initial render under banner (and disable those cloned buttons)
+  const container = document.getElementById('favorites-container');
+  container.innerHTML = '';
+  favs.forEach(id => {
+    const orig = document.getElementById(id);
+    if (!orig) return;
+    const clone = orig.cloneNode(true);
+    // disable the button on clones so clicks there do nothing
+    const cloneBtn = clone.querySelector('.favorite-btn');
+    if (cloneBtn) {
+      cloneBtn.disabled = true;
+      cloneBtn.style.pointerEvents = 'none';
+    }
+    container.appendChild(clone);
+  });
 }
-
-
-
-
 
   // 8️⃣ Overlay/profile toggling UI
 document.getElementById('logo').addEventListener('click', (e) => {
