@@ -1243,7 +1243,8 @@ if (reportForm) {
     }
   })
 }
-// ───────────────
+
+  // ───────────────
 // FAVORITES LOGIC (using section `id` attribute)
 // ───────────────
 
@@ -1319,64 +1320,56 @@ async function initFavorites() {
   }
 
   // 3️⃣ Attach click handlers and set initial states
+  // Maintain an in-memory set of current favorites
+  let favoriteSet = new Set(favs);
+
+  // Helper to update the banner list
+  function updateBanner() {
+    const container = document.getElementById('favorites-container');
+    container.innerHTML = '';
+    favoriteSet.forEach(id => {
+      const orig = document.getElementById(id);
+      if (!orig) return;
+      const clone = orig.cloneNode(true);
+      clone.id = `fav_${id}`;
+      // disable button in clones
+      const cloneBtn = clone.querySelector('.favorite-btn');
+      if (cloneBtn) {
+        cloneBtn.disabled = true;
+        cloneBtn.style.pointerEvents = 'none';
+      }
+      container.appendChild(clone);
+    });
+  }
+
+  // Initial banner render
+  updateBanner();
+
+  // Bind click handlers
   document.querySelectorAll('.quiz-section').forEach(sec => {
     const secId = sec.id;
     const btn   = sec.querySelector('.favorite-btn');
     if (!secId || !btn) return;
 
-    // prevent double-binding
-    if (sec.dataset.favInit) return;
-    sec.dataset.favInit = 'true';
-
-    // initial fill state
-    if (favs.includes(secId)) {
-      btn.classList.add('favorited');
-    }
+    // Set initial button state
+    if (favoriteSet.has(secId)) btn.classList.add('favorited');
 
     btn.addEventListener('click', async () => {
       if (btn.classList.contains('favorited')) {
         console.log(`[removeFavorite] Removing favorite: userId=${user.id}, sectionId=${secId}`);
         await removeFavorite(user.id, secId);
         btn.classList.remove('favorited');
-        // remove the clone from banner
-        const clone = document.getElementById(`fav_${secId}`);
-        if (clone) clone.remove();
+        favoriteSet.delete(secId);
       } else {
         console.log(`[addFavorite] Adding favorite: userId=${user.id}, sectionId=${secId}`);
         await addFavorite(user.id, secId);
         btn.classList.add('favorited');
-        // add this section to banner
-        const clone = sec.cloneNode(true);
-        clone.id = `fav_${secId}`;
-        // disable button in clone
-        const cloneBtn = clone.querySelector('.favorite-btn');
-        if (cloneBtn) {
-          cloneBtn.disabled = true;
-          cloneBtn.style.pointerEvents = 'none';
-        }
-        document.getElementById('favorites-container').appendChild(clone);
+        favoriteSet.add(secId);
       }
+      updateBanner();
     });
   });
-
-  // 4️⃣ Initial render under banner (and disable those cloned buttons)
-  const container = document.getElementById('favorites-container');
-  container.innerHTML = '';
-  favs.forEach(id => {
-    const orig = document.getElementById(id);
-    if (!orig) return;
-    const clone = orig.cloneNode(true);
-    clone.id = `fav_${id}`;
-    // disable the button on clones so clicks there do nothing
-    const cloneBtn = clone.querySelector('.favorite-btn');
-    if (cloneBtn) {
-      cloneBtn.disabled = true;
-      cloneBtn.style.pointerEvents = 'none';
-    }
-    container.appendChild(clone);
-  });
-  await renderFavorites(user.id);
-}
+  }
 
 
   // 8️⃣ Overlay/profile toggling UI
@@ -1438,8 +1431,6 @@ quizFilterInput.addEventListener('input', function () {
 });
 
   </script>
-
-
 
 <script>
     function toggleQuizSections(event) {
