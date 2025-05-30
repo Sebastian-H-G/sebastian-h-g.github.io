@@ -1311,66 +1311,75 @@ async function initFavorites() {
   // 1️⃣ Fetch existing favorites
   let favs = await fetchFavorites(user.id);
 
-  // 2️⃣ Seed default favorites for new users
+  // 2️⃣ Seed defaults
   if (favs.length === 0) {
-    await Promise.all(
-      DEFAULT_FAVORITES.map(secId => addFavorite(user.id, secId))
-    );
+    await Promise.all(DEFAULT_FAVORITES.map(id => addFavorite(user.id, id)));
     favs = await fetchFavorites(user.id);
   }
 
-  // 3️⃣ Attach click handlers and set initial states
-  // Maintain an in-memory set of current favorites
-  let favoriteSet = new Set(favs);
+  // In‐memory set:
+  const favoriteSet = new Set(favs);
 
-  // Helper to update the banner list
+  // Helper: render banner & bind on‐clone clicks
   function updateBanner() {
     const container = document.getElementById('favorites-container');
     container.innerHTML = '';
+
     favoriteSet.forEach(id => {
       const orig = document.getElementById(id);
       if (!orig) return;
+
+      // clone and give it a banner‐specific ID
       const clone = orig.cloneNode(true);
       clone.id = `fav_${id}`;
-      // disable button in clones
+      clone.style.cursor = 'pointer';               // show pointer
+      clone.classList.add('favorited-clone');
+
+      // ensure its heart button exists
       const cloneBtn = clone.querySelector('.favorite-btn');
       if (cloneBtn) {
-        cloneBtn.disabled = true;
-        cloneBtn.style.pointerEvents = 'none';
+        cloneBtn.classList.add('favorited');         // show filled heart
+        cloneBtn.disabled = false;                   // allow click
+        cloneBtn.style.pointerEvents = 'auto';
+        cloneBtn.style.cursor = 'pointer';
+        // bind click to remove
+        cloneBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();                        // prevent bubbling
+          await removeFavorite(user.id, id);
+          favoriteSet.delete(id);
+          document.getElementById(id).querySelector('.favorite-btn').classList.remove('favorited');
+          updateBanner();
+        });
       }
       container.appendChild(clone);
     });
   }
 
-  // Initial banner render
-  updateBanner();
-
-  // Bind click handlers
+  // 3️⃣ Bind originals once
   document.querySelectorAll('.quiz-section').forEach(sec => {
-    const secId = sec.id;
-    const btn   = sec.querySelector('.favorite-btn');
-    if (!secId || !btn) return;
+    const id = sec.id;
+    const btn = sec.querySelector('.favorite-btn');
+    if (!id || !btn) return;
 
-    // Set initial button state
-    if (favoriteSet.has(secId)) btn.classList.add('favorited');
+    if (favoriteSet.has(id)) btn.classList.add('favorited');
 
     btn.addEventListener('click', async () => {
       if (btn.classList.contains('favorited')) {
-        console.log(`[removeFavorite] Removing favorite: userId=${user.id}, sectionId=${secId}`);
-        await removeFavorite(user.id, secId);
+        await removeFavorite(user.id, id);
         btn.classList.remove('favorited');
-        favoriteSet.delete(secId);
+        favoriteSet.delete(id);
       } else {
-        console.log(`[addFavorite] Adding favorite: userId=${user.id}, sectionId=${secId}`);
-        await addFavorite(user.id, secId);
+        await addFavorite(user.id, id);
         btn.classList.add('favorited');
-        favoriteSet.add(secId);
+        favoriteSet.add(id);
       }
       updateBanner();
     });
   });
-  }
 
+  // 4️⃣ Initial banner
+  updateBanner();
+}
 
   // 8️⃣ Overlay/profile toggling UI
 document.getElementById('logo').addEventListener('click', (e) => {
