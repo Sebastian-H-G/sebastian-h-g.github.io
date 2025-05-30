@@ -1244,10 +1244,11 @@ if (reportForm) {
   })
 }
 // ───────────────
-// FAVORITES LOGIC
+// FAVORITES LOGIC (using section `id` attribute)
 // ───────────────
 
-// IDs of quizzes you want every new user to have favorited (must match actual HTML `id`s!)
+// IDs of quizzes you want every new user to have favorited
+// These correspond to each <section id="..." class="quiz-section"> attribute
 const DEFAULT_FAVORITES = [
   'capital-quiz',
   'worldcountries',
@@ -1265,17 +1266,10 @@ async function fetchFavorites(userId) {
 }
 
 async function addFavorite(userId, sectionId) {
-  if (!sectionId) {
-    console.error('[addFavorite] sectionId is null or undefined:', sectionId);
-    return;
-  }
-  console.log(`[addFavorite] Adding favorite: userId=${userId}, sectionId=${sectionId}`);
-
   const { error } = await sb
     .from('favorites')
     .insert({ user_id: userId, section_id: sectionId });
-
-  if (error) console.error('[addFavorite] Error inserting favorite:', error.message);
+  if (error) console.error('addFavorite:', error);
 }
 
 async function removeFavorite(userId, sectionId) {
@@ -1299,14 +1293,12 @@ async function renderFavorites(userId) {
   }
 
   favs.forEach(id => {
-    const orig = document.querySelector(`.quiz-section[id="${id}"]`);
-    if (!orig) {
-      console.warn(`[renderFavorites] No section found with id="${id}"`);
-      return;
+    // find section by id attribute
+    const orig = document.getElementById(id);
+    if (orig && orig.classList.contains('quiz-section')) {
+      const clone = orig.cloneNode(true);
+      container.appendChild(clone);
     }
-
-    const clone = orig.cloneNode(true);
-    container.appendChild(clone);
   });
 }
 
@@ -1320,18 +1312,9 @@ async function initFavorites() {
 
   // 2️⃣ Seed default favorites for new users
   if (favs.length === 0) {
-    console.log('[initFavorites] Seeding default favorites for user:', user.id);
-    console.log('[initFavorites] DEFAULT_FAVORITES:', DEFAULT_FAVORITES);
-
     await Promise.all(
-      DEFAULT_FAVORITES.map(secId => {
-        if (!secId) {
-          console.error('[initFavorites] Invalid section ID in DEFAULT_FAVORITES:', secId);
-        }
-        return addFavorite(user.id, secId);
-      })
+      DEFAULT_FAVORITES.map(secId => addFavorite(user.id, secId))
     );
-
     favs = await fetchFavorites(user.id);
   }
 
@@ -1341,6 +1324,10 @@ async function initFavorites() {
     const btn   = sec.querySelector('.favorite-btn');
     if (!secId || !btn) return;
 
+    // prevent double-binding
+    if (sec.dataset.favInit) return;
+    sec.dataset.favInit = 'true';
+
     // initial fill state
     if (favs.includes(secId)) {
       btn.classList.add('favorited');
@@ -1348,13 +1335,27 @@ async function initFavorites() {
 
     btn.addEventListener('click', async () => {
       if (btn.classList.contains('favorited')) {
+        console.log(`[removeFavorite] Removing favorite: userId=${user.id}, sectionId=${secId}`);
         await removeFavorite(user.id, secId);
         btn.classList.remove('favorited');
+        // remove the clone from banner
+        const clone = document.getElementById(`fav_${secId}`);
+        if (clone) clone.remove();
       } else {
+        console.log(`[addFavorite] Adding favorite: userId=${user.id}, sectionId=${secId}`);
         await addFavorite(user.id, secId);
         btn.classList.add('favorited');
+        // add this section to banner
+        const clone = sec.cloneNode(true);
+        clone.id = `fav_${secId}`;
+        // disable button in clone
+        const cloneBtn = clone.querySelector('.favorite-btn');
+        if (cloneBtn) {
+          cloneBtn.disabled = true;
+          cloneBtn.style.pointerEvents = 'none';
+        }
+        document.getElementById('favorites-container').appendChild(clone);
       }
-      // no renderFavorites here
     });
   });
 
@@ -1365,6 +1366,7 @@ async function initFavorites() {
     const orig = document.getElementById(id);
     if (!orig) return;
     const clone = orig.cloneNode(true);
+    clone.id = `fav_${id}`;
     // disable the button on clones so clicks there do nothing
     const cloneBtn = clone.querySelector('.favorite-btn');
     if (cloneBtn) {
@@ -1373,7 +1375,9 @@ async function initFavorites() {
     }
     container.appendChild(clone);
   });
+  await renderFavorites(user.id);
 }
+
 
   // 8️⃣ Overlay/profile toggling UI
 document.getElementById('logo').addEventListener('click', (e) => {
