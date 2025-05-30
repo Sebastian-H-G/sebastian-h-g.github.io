@@ -604,11 +604,11 @@ textarea {
 }
 .favorite-btn {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  width: 1.5rem;
-  height: 1.5rem;
-  background: green;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  background: none;
   border: none;
   padding: 0;
   cursor: pointer;           /* always show hand */
