@@ -1282,7 +1282,7 @@ async function removeFavorite(userId, sectionId) {
   if (error) console.error('removeFavorite:', error);
 }
 
-// 2️⃣ Clone & render favorites under your banner
+// 2️⃣ Render favorites under the banner
 async function renderFavorites(userId) {
   const favs = await fetchFavorites(userId);
   const container = document.getElementById('favorites-container');
@@ -1299,20 +1299,25 @@ async function renderFavorites(userId) {
 
     const clone = orig.cloneNode(true);
     container.appendChild(clone);
-    clone.querySelector('.favorite-btn').disabled = true; // Disable button in the clone
 
-    // Allow removal by clicking the clone
-    clone.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      const secId = clone.id;
-      await removeFavorite(userId, secId);
-      clone.querySelector('.favorite-btn').classList.remove('favorited');
-      updateBanner();  // Update the banner after removal
-    });
+    // Add the 'favorited' class to the cloned button
+    const cloneBtn = clone.querySelector('.favorite-btn');
+    if (cloneBtn) {
+      cloneBtn.classList.add('favorited'); // show filled heart
+      cloneBtn.disabled = true;            // disable button in the clone
+
+      // Allow removal by clicking the clone
+      clone.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        await removeFavorite(userId, id);
+        clone.querySelector('.favorite-btn').classList.remove('favorited');
+        updateBanner();  // Update the banner after removal
+      });
+    }
   });
 }
 
-// 3️⃣ Wire up buttons, seed defaults & initial render
+// 3️⃣ Initialize favorites and handle button clicks
 async function initFavorites() {
   const { data: { user } } = await sb.auth.getUser();
   if (!user) return;
@@ -1329,7 +1334,7 @@ async function initFavorites() {
   // In‐memory set:
   const favoriteSet = new Set(favs);
 
-  // Render favorites banner
+  // Render the banner with favorites
   function updateBanner() {
     const container = document.getElementById('favorites-container');
     container.innerHTML = '';
@@ -1388,7 +1393,6 @@ async function initFavorites() {
 
   updateBanner();  // initial render
 }
-
 
 
 
