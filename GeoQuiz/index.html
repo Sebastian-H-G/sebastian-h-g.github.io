@@ -1363,7 +1363,30 @@ async function renderFavorites(userId) {
   });
 }
 
-function updateOriginalFavoriteButtons(favoriteSet) {
+
+
+// 3️⃣ Initialize favorites and handle button clicks
+async function initFavorites() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return;
+
+  // 1️⃣ Fetch existing favorites
+  let favs = await fetchFavorites(user.id);
+
+  // 2️⃣ Seed defaults ONLY if the user has never had favorites before
+  // Use a flag in localStorage (or Supabase profile if you want it cross-device)
+  const seededKey = `favoritesSeeded_${user.id}`;
+  if (favs.length === 0 && !localStorage.getItem(seededKey)) {
+    await Promise.all(DEFAULT_FAVORITES.map(id => addFavorite(user.id, id)));
+    favs = await fetchFavorites(user.id);
+    localStorage.setItem(seededKey, 'true');
+  }
+
+  // In‐memory set:
+  const favoriteSet = new Set(favs);
+
+
+  function updateOriginalFavoriteButtons(favoriteSet) {
   document.querySelectorAll('.quiz-section').forEach(sec => {
     const secId = sec.id;
     const btn = sec.querySelector('.favorite-btn');
@@ -1408,27 +1431,6 @@ function updateBanner() {
   // Update original buttons after banner update
   updateOriginalFavoriteButtons(favoriteSet);
 }
-
-
-// 3️⃣ Initialize favorites and handle button clicks
-async function initFavorites() {
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) return;
-
-  // 1️⃣ Fetch existing favorites
-  let favs = await fetchFavorites(user.id);
-
-  // 2️⃣ Seed defaults ONLY if the user has never had favorites before
-  // Use a flag in localStorage (or Supabase profile if you want it cross-device)
-  const seededKey = `favoritesSeeded_${user.id}`;
-  if (favs.length === 0 && !localStorage.getItem(seededKey)) {
-    await Promise.all(DEFAULT_FAVORITES.map(id => addFavorite(user.id, id)));
-    favs = await fetchFavorites(user.id);
-    localStorage.setItem(seededKey, 'true');
-  }
-
-  // In‐memory set:
-  const favoriteSet = new Set(favs);
 
   // Bind click handlers to original quiz sections
   document.querySelectorAll('.quiz-section').forEach(sec => {
