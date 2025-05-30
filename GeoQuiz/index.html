@@ -391,7 +391,7 @@ button {
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
     </div>
-    
+    <div id="favorites-container"></div>
     <main>
         <!-- Quiz Sections -->
          <section class="quiz-section-main" data-aos="fade-up">
@@ -399,8 +399,9 @@ button {
             Favorites
             <i class="fa-solid fa-star" id="section-symbol"></i>
          </section>
-         <!-- new container for favorited quizzes -->
-<div id="favorites-container"></div>
+         <div id="favorites-container"></div>
+      
+    
         <section style="background-color: rgb(61, 184, 143);" id="continent-section" class="quiz-section-main" data-aos="fade-up" onclick="toggleQuizSections(event)">
             <i class="fa-solid fa-globe" style="margin-right: 10px;"></i>
             Continents Quizzes
@@ -410,7 +411,8 @@ button {
          <section id="worldcountries" class="quiz-section" data-aos="fade-up">
            <button class="favorite-btn" aria-label="Toggle favorite">
              <svg class="heart-icon" width="24" height="24">
-               <use href="#heart-icon" />
+               <use href="#heart-icon .heart-outline"></use>
+               <use href="#heart-icon .heart-filled"></use>
              </svg>
            </button>
             <div class="quiz-content">
@@ -425,7 +427,8 @@ button {
         <section id="africa" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -440,7 +443,8 @@ button {
         <section id="europe" class="quiz-section" data-tags="europe, map, europe countries, countries" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -455,7 +459,8 @@ button {
         <section id="asia" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -470,7 +475,8 @@ button {
         <section id="south-america" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -485,7 +491,8 @@ button {
         <section id="north-america" class="quiz-section" data-tags="north america, map, north america countries, countries" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -500,7 +507,8 @@ button {
         <section id="oceania" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -530,7 +538,8 @@ button {
         <section id="usa" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -545,7 +554,8 @@ button {
         <section id="usa" class="quiz-section" data-tags="us, usa, us states capitals, capitals" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -576,7 +586,8 @@ button {
             <section id="mexico" class="quiz-section" data-aos="fade-up">
               <button class="favorite-btn" aria-label="Toggle favorite">
                 <svg class="heart-icon" width="24" height="24">
-                  <use href="#heart-icon" />
+                  <use href="#heart-icon .heart-outline"></use>
+                  <use href="#heart-icon .heart-filled"></use>
                 </svg>
               </button>
                 <div class="quiz-content">
@@ -591,7 +602,8 @@ button {
             <section id="mexico" class="quiz-section" data-tags="mexico, states capitals, capitales estados, capitales de los estados de mexico" data-aos="fade-up">
               <button class="favorite-btn" aria-label="Toggle favorite">
                 <svg class="heart-icon" width="24" height="24">
-                  <use href="#heart-icon" />
+                  <use href="#heart-icon .heart-outline"></use>
+                  <use href="#heart-icon .heart-filled"></use>
                 </svg>
               </button>
                 <div class="quiz-content">
@@ -615,7 +627,8 @@ button {
         <section id="germany" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -631,7 +644,8 @@ button {
         <section id="germany" class="quiz-section" data-tags="germany, deutschland, bundesländer hauptstädte, states capitals, capital, germany states capitals" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -656,7 +670,8 @@ button {
          <section id="capital-quiz" class="quiz-section" data-aos="fade-up">
            <button class="favorite-btn" aria-label="Toggle favorite">
              <svg class="heart-icon" width="24" height="24">
-               <use href="#heart-icon" />
+               <use href="#heart-icon .heart-outline"></use>
+               <use href="#heart-icon .heart-filled"></use>
              </svg>
            </button>
             <div class="quiz-content">
@@ -672,7 +687,8 @@ button {
         <section id="flag-quiz" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -687,7 +703,8 @@ button {
         <section id="flag-color-quiz" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -703,7 +720,8 @@ button {
         <section id="map-quiz" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -718,7 +736,8 @@ button {
         <section id="worldcountries" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -733,7 +752,8 @@ button {
         <section id="worldcountries_by_border" class="quiz-section" data-tags="world countries, borders, border, 90 seconds, map, world, countries" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -748,7 +768,8 @@ button {
         <section id="worldcountries_empty" class="quiz-section" data-tags="world countries, empty, challenging, hard, empty map, map, world, countries" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -763,7 +784,8 @@ button {
         <section id="africa" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -778,7 +800,8 @@ button {
         <section id="europe" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -793,7 +816,8 @@ button {
         <section id="asia" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -808,7 +832,8 @@ button {
         <section id="south-america" class="quiz-section" data-tags="south-america america, map, south america countries, countries" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -823,7 +848,8 @@ button {
         <section id="norht-america" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -838,7 +864,8 @@ button {
         <section id="oceania" class="quiz-section" data-tags="oceania, map, oceania countries, countries" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -853,7 +880,8 @@ button {
         <section id="river-quiz" class="quiz-section" data-tags="river, river quiz" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -868,7 +896,8 @@ button {
         <section id="moutain-quiz" class="quiz-section" data-tags="mountain, mountains" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -883,7 +912,8 @@ button {
         <section id="population-quiz" class="quiz-section" data-tags="population, population quiz" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -898,7 +928,8 @@ button {
         <section id="deserts-and-forests" class="quiz-section" data-tags="desert, forest, deserts and forests" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
         <div class="quiz-content">
@@ -913,7 +944,8 @@ button {
     <section id="cities" class="quiz-section" data-tags="cities, städte, city" data-aos="fade-up">
       <button class="favorite-btn" aria-label="Toggle favorite">
         <svg class="heart-icon" width="24" height="24">
-          <use href="#heart-icon" />
+          <use href="#heart-icon .heart-outline"></use>
+          <use href="#heart-icon .heart-filled"></use>
         </svg>
       </button>
         <div class="quiz-content">
@@ -928,7 +960,8 @@ button {
     <section id="countries-shape" class="quiz-section" data-tags="shape, countries shape, countries" data-aos="fade-up">
       <button class="favorite-btn" aria-label="Toggle favorite">
         <svg class="heart-icon" width="24" height="24">
-          <use href="#heart-icon" />
+          <use href="#heart-icon .heart-outline"></use>
+          <use href="#heart-icon .heart-filled"></use>
         </svg>
       </button>
         <div class="quiz-content">
@@ -943,7 +976,8 @@ button {
     <section id="germany" class="quiz-section" data-aos="fade-up">
       <button class="favorite-btn" aria-label="Toggle favorite">
         <svg class="heart-icon" width="24" height="24">
-          <use href="#heart-icon" />
+          <use href="#heart-icon .heart-outline"></use>
+          <use href="#heart-icon .heart-filled"></use>
         </svg>
       </button>
         <div class="quiz-content">
@@ -959,7 +993,8 @@ button {
     <section id="germany" class="quiz-section" data-aos="fade-up">
       <button class="favorite-btn" aria-label="Toggle favorite">
         <svg class="heart-icon" width="24" height="24">
-          <use href="#heart-icon" />
+          <use href="#heart-icon .heart-outline"></use>
+          <use href="#heart-icon .heart-filled"></use>
         </svg>
       </button>
         <div class="quiz-content">
@@ -974,7 +1009,8 @@ button {
     <section id="mexico" class="quiz-section" data-aos="fade-up">
       <button class="favorite-btn" aria-label="Toggle favorite">
         <svg class="heart-icon" width="24" height="24">
-          <use href="#heart-icon" />
+          <use href="#heart-icon .heart-outline"></use>
+          <use href="#heart-icon .heart-filled"></use>
         </svg>
       </button>
         <div class="quiz-content">
@@ -989,7 +1025,8 @@ button {
     <section id="mexico" class="quiz-section" data-aos="fade-up">
       <button class="favorite-btn" aria-label="Toggle favorite">
         <svg class="heart-icon" width="24" height="24">
-          <use href="#heart-icon" />
+          <use href="#heart-icon .heart-outline"></use>
+          <use href="#heart-icon .heart-filled"></use>
         </svg>
       </button>
         <div class="quiz-content">
@@ -1004,7 +1041,8 @@ button {
     <section id="usa" class="quiz-section" data-aos="fade-up">
       <button class="favorite-btn" aria-label="Toggle favorite">
         <svg class="heart-icon" width="24" height="24">
-          <use href="#heart-icon" />
+          <use href="#heart-icon .heart-outline"></use>
+          <use href="#heart-icon .heart-filled"></use>
         </svg>
       </button>
         <div class="quiz-content">
@@ -1019,7 +1057,8 @@ button {
     <section id="usa" class="quiz-section" data-aos="fade-up">
       <button class="favorite-btn" aria-label="Toggle favorite">
         <svg class="heart-icon" width="24" height="24">
-          <use href="#heart-icon" />
+          <use href="#heart-icon .heart-outline"></use>
+          <use href="#heart-icon .heart-filled"></use>
         </svg>
       </button>
         <div class="quiz-content">
@@ -1034,7 +1073,8 @@ button {
         <section id="memory-quiz" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
-              <use href="#heart-icon" />
+              <use href="#heart-icon .heart-outline"></use>
+              <use href="#heart-icon .heart-filled"></use>
             </svg>
           </button>
             <div class="quiz-content">
@@ -1243,13 +1283,10 @@ if (reportForm) {
     }
   })
 }
-
-  // ───────────────
+// ───────────────
 // FAVORITES LOGIC (using section `id` attribute)
 // ───────────────
 
-// IDs of quizzes you want every new user to have favorited
-// These correspond to each <section id="..." class="quiz-section"> attribute
 const DEFAULT_FAVORITES = [
   'capital-quiz',
   'worldcountries',
@@ -1282,7 +1319,7 @@ async function removeFavorite(userId, sectionId) {
   if (error) console.error('removeFavorite:', error);
 }
 
-// 2️⃣ Clone & render favorites under your banner
+// 2️⃣ Render favorites under your banner
 async function renderFavorites(userId) {
   const favs = await fetchFavorites(userId);
   const container = document.getElementById('favorites-container');
@@ -1294,7 +1331,6 @@ async function renderFavorites(userId) {
   }
 
   favs.forEach(id => {
-    // find section by id attribute
     const orig = document.getElementById(id);
     if (orig && orig.classList.contains('quiz-section')) {
       const clone = orig.cloneNode(true);
@@ -1308,19 +1344,16 @@ async function initFavorites() {
   const { data: { user } } = await sb.auth.getUser();
   if (!user) return;
 
-  // 1️⃣ Fetch existing favorites
   let favs = await fetchFavorites(user.id);
 
-  // 2️⃣ Seed defaults
   if (favs.length === 0) {
     await Promise.all(DEFAULT_FAVORITES.map(id => addFavorite(user.id, id)));
     favs = await fetchFavorites(user.id);
   }
 
-  // In‐memory set:
-  const favoriteSet = new Set(favs);
+  let favoriteSet = new Set(favs);
 
-  // Helper: render banner & bind on‐clone clicks
+  // Render favorites banner
   function updateBanner() {
     const container = document.getElementById('favorites-container');
     container.innerHTML = '';
@@ -1329,57 +1362,51 @@ async function initFavorites() {
       const orig = document.getElementById(id);
       if (!orig) return;
 
-      // clone and give it a banner‐specific ID
       const clone = orig.cloneNode(true);
       clone.id = `fav_${id}`;
-      clone.style.cursor = 'pointer';               // show pointer
-      clone.classList.add('favorited-clone');
+      clone.style.cursor = 'pointer';  // show pointer
 
-      // ensure its heart button exists
       const cloneBtn = clone.querySelector('.favorite-btn');
       if (cloneBtn) {
-        cloneBtn.classList.add('favorited');         // show filled heart
-        cloneBtn.disabled = false;                   // allow click
-        cloneBtn.style.pointerEvents = 'auto';
-        cloneBtn.style.cursor = 'pointer';
-        // bind click to remove
-        cloneBtn.addEventListener('click', async (e) => {
-          e.stopPropagation();                        // prevent bubbling
-          await removeFavorite(user.id, id);
-          favoriteSet.delete(id);
-          document.getElementById(id).querySelector('.favorite-btn').classList.remove('favorited');
-          updateBanner();
-        });
+        cloneBtn.classList.add('favorited'); // show filled heart
+        cloneBtn.disabled = true;            // disable button in the banner
+        cloneBtn.style.pointerEvents = 'none';
+        container.appendChild(clone);
       }
-      container.appendChild(clone);
     });
   }
 
-  // 3️⃣ Bind originals once
-  document.querySelectorAll('.quiz-section').forEach(sec => {
-    const id = sec.id;
-    const btn = sec.querySelector('.favorite-btn');
-    if (!id || !btn) return;
+  updateBanner();
 
-    if (favoriteSet.has(id)) btn.classList.add('favorited');
+  // Bind click handlers
+  document.querySelectorAll('.quiz-section').forEach(sec => {
+    const secId = sec.id;
+    const btn   = sec.querySelector('.favorite-btn');
+    if (!secId || !btn) return;
+
+    if (favoriteSet.has(secId)) btn.classList.add('favorited');
 
     btn.addEventListener('click', async () => {
       if (btn.classList.contains('favorited')) {
-        await removeFavorite(user.id, id);
+        console.log(`[removeFavorite] Removing favorite: userId=${user.id}, sectionId=${secId}`);
+        await removeFavorite(user.id, secId);
         btn.classList.remove('favorited');
-        favoriteSet.delete(id);
+        favoriteSet.delete(secId);
       } else {
-        await addFavorite(user.id, id);
+        console.log(`[addFavorite] Adding favorite: userId=${user.id}, sectionId=${secId}`);
+        await addFavorite(user.id, secId);
         btn.classList.add('favorited');
-        favoriteSet.add(id);
+        favoriteSet.add(secId);
       }
-      updateBanner();
+
+      updateBanner();  // rebuild banner
     });
   });
 
-  // 4️⃣ Initial banner
-  updateBanner();
+  updateBanner();  // initial render
 }
+
+
 
   // 8️⃣ Overlay/profile toggling UI
 document.getElementById('logo').addEventListener('click', (e) => {

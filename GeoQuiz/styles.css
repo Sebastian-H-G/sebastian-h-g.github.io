@@ -602,44 +602,38 @@ textarea {
     font-size: 2rem;
     margin: 10px;
 }
-
-/* Favorite button in the top right corner */
 .favorite-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
   background: none;
   border: none;
   padding: 0;
-  cursor: pointer;
+  cursor: pointer;           /* always show hand */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 10;
 }
 
-/* Heart icon styling */
-.heart-icon {
-  width: 24px;
-  height: 24px;
-  color: #ccc;
-  transition: transform 0.2s, color 0.2s;
+/* heart colors */
+.heart-outline { stroke: #ccc; }
+.heart-filled  { fill: #ff6b81; }
+
+/* default: hide filled, show outline */
+.heart-filled { opacity: 0; transition: opacity 0.2s; }
+
+/* hovered outline */
+.favorite-btn:hover .heart-outline {
+  stroke: #ff6b81;
 }
 
-.favorite-btn:hover .heart-icon {
-  transform: scale(1.1);
-  color: #ff6b81;
-}
+/* favorited: swap visibility */
+.favorite-btn.favorited .heart-outline { opacity: 0; }
+.favorite-btn.favorited .heart-filled  { opacity: 1; }
 
-/* Favorited state */
-.favorite-btn.favorited .heart-outline {
-  opacity: 0;
-}
-.favorite-btn.favorited .heart-filled {
-  opacity: 1;
-}
-
-.heart-filled {
-  opacity: 0;
-  transition: opacity 0.2s;
-}
 .quiz-section {
   background-color: white;
   margin: 40px 7%;
