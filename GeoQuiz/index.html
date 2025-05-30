@@ -1399,38 +1399,48 @@ async function initFavorites() {
   });
 }
 
-function updateBanner() {
+// ...existing code...
+async function updateBanner() {
+  const favs = await fetchFavorites(user.id); // Always fetch latest from DB
+  const favoriteSet = new Set(favs);
+
   const container = document.getElementById('favorites-container');
   container.innerHTML = '';
 
-  favoriteSet.forEach(id => {
-    const orig = document.getElementById(id);
-    if (!orig) return;
+  if (favs.length === 0) {
+    container.innerHTML = '<p>No favorites yet. ⭐ Click a heart to add one!</p>';
+  } else {
+    favoriteSet.forEach(id => {
+      const orig = document.getElementById(id);
+      if (!orig) return;
 
-    const clone = orig.cloneNode(true);
-    clone.id = `fav_${id}`;
-    clone.style.cursor = 'pointer';
+      const clone = orig.cloneNode(true);
+      clone.id = `fav_${id}`;
+      clone.style.cursor = 'pointer';
 
-    const cloneBtn = clone.querySelector('.favorite-btn');
-    if (cloneBtn) {
-      cloneBtn.classList.add('favorited');
-      cloneBtn.disabled = false; // Enable the button in the banner
+      const cloneBtn = clone.querySelector('.favorite-btn');
+// ...existing code...
+if (cloneBtn) {
+  cloneBtn.classList.add('favorited'); // Always add the class
+  cloneBtn.disabled = false; // Enable the button in the banner
 
-      // Remove favorite when clicking the heart in the banner
-      cloneBtn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        await removeFavorite(user.id, id);
-        favoriteSet.delete(id);
-        updateBanner();
-      });
-    }
-
-    container.appendChild(clone);
+  // Remove favorite when clicking the heart in the banner
+  cloneBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    await removeFavorite(user.id, id);
+    updateBanner();
   });
+}
+// ...existing code...
+
+      container.appendChild(clone);
+    });
+  }
 
   // Update original buttons after banner update
   updateOriginalFavoriteButtons(favoriteSet);
 }
+// ...existing code...
 
   // Bind click handlers to original quiz sections
   document.querySelectorAll('.quiz-section').forEach(sec => {
