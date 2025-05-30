@@ -608,14 +608,14 @@ textarea {
   right: 0.5rem;
   width: 1.5rem;
   height: 1.5rem;
-  background: none;
+  background: green;
   border: none;
   padding: 0;
   cursor: pointer;           /* always show hand */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 100000;
 }
 
 /* heart colors */
