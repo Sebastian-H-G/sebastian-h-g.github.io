@@ -608,8 +608,10 @@ textarea {
     align-items: center;
     flex-direction: column;
     height: 100%;
+    font-weight: bold;
     color: #666;
     font-size: 1.2rem;
+    margin: 15px auto; 
 }
 .favorite-btn {
   position: absolute;
