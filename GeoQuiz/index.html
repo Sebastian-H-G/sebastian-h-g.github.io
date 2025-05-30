@@ -1327,40 +1327,107 @@ async function removeFavorite(userId, sectionId) {
   if (error) console.error('removeFavorite:', error);
 }
 
+// Helper to update original favorite buttons
+function updateOriginalFavoriteButtons(favoriteSet) {
+  document.querySelectorAll('.quiz-section').forEach(sec => {
+    const secId = sec.id;
+    const btn = sec.querySelector('.favorite-btn');
+    if (!secId || !btn) return;
+    if (favoriteSet.has(secId)) {
+      btn.classList.add('favorited');
+    } else {
+      btn.classList.remove('favorited');
+    }
+  });
+}
 
-// 2️⃣ Render favorites under the banner
-async function renderFavorites(userId) {
-  const favs = await fetchFavorites(userId);
+// Render favorites under the banner
+async function updateBanner() {
+  // Get current user
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return;
+
+  const favs = await fetchFavorites(user.id); // Always fetch latest from DB
+  const favoriteSet = new Set(favs);
+
   const container = document.getElementById('favorites-container');
   container.innerHTML = '';
 
   if (favs.length === 0) {
-    container.innerHTML = '<p>No favorites yet. ⭐ Click a heart to add one!</p>';
-    return;
+    container.innerHTML = '<p id="no-favs">No favorites yet. ⭐ Click a heart to add one!</p>';
+  } else {
+    favoriteSet.forEach(id => {
+      const orig = document.getElementById(id);
+      if (!orig) return;
+
+      const clone = orig.cloneNode(true);
+      clone.id = `fav_${id}`;
+      clone.style.cursor = 'pointer';
+
+      const cloneBtn = clone.querySelector('.favorite-btn');
+      if (cloneBtn) {
+        cloneBtn.classList.add('favorited');
+        cloneBtn.disabled = false; // Enable the button in the banner
+
+        // Remove favorite when clicking the heart in the banner
+        cloneBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          await removeFavorite(user.id, id);
+          updateBanner();
+        });
+      }
+
+      container.appendChild(clone);
+    });
   }
 
-  favs.forEach(id => {
-    const orig = document.getElementById(id);
-    if (!orig) return;
+  // Update original buttons after banner update
+  updateOriginalFavoriteButtons(favoriteSet);
+}
 
-    const clone = orig.cloneNode(true);
-    container.appendChild(clone);
+// Initialize favorites and handle button clicks
+async function initFavorites() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return;
 
-    // Add the 'favorited' class to the cloned button
-    const cloneBtn = clone.querySelector('.favorite-btn');
-    if (cloneBtn) {
-      cloneBtn.classList.add('favorited'); // show filled heart
-      cloneBtn.disabled = true;            // disable button in the clone
+  // 1️⃣ Fetch existing favorites
+  let favs = await fetchFavorites(user.id);
 
-      // Allow removal by clicking the clone
-      clone.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        await removeFavorite(userId, id);
-        clone.querySelector('.favorite-btn').classList.remove('favorited');
-        updateBanner();  // Update the banner after removal
-      });
-    }
+  // 2️⃣ Seed defaults ONLY if the user has never had favorites before
+  // Use a flag in localStorage (or Supabase profile if you want it cross-device)
+  const seededKey = `favoritesSeeded_${user.id}`;
+  if (favs.length === 0 && !localStorage.getItem(seededKey)) {
+    await Promise.all(DEFAULT_FAVORITES.map(id => addFavorite(user.id, id)));
+    favs = await fetchFavorites(user.id);
+    localStorage.setItem(seededKey, 'true');
+  }
+
+  // In‐memory set:
+  const favoriteSet = new Set(favs);
+
+  // Bind click handlers to original quiz sections
+  document.querySelectorAll('.quiz-section').forEach(sec => {
+    const secId = sec.id;
+    const btn   = sec.querySelector('.favorite-btn');
+    if (!secId || !btn) return;
+
+    // Set initial state
+    if (favoriteSet.has(secId)) btn.classList.add('favorited');
+
+    // Remove previous event listeners by resetting onclick
+    btn.onclick = null;
+
+    btn.addEventListener('click', async () => {
+      if (btn.classList.contains('favorited')) {
+        await removeFavorite(user.id, secId);
+      } else {
+        await addFavorite(user.id, secId);
+      }
+      updateBanner();
+    });
   });
+
+  updateBanner();  // initial render
 }
 
 
@@ -1400,6 +1467,7 @@ async function initFavorites() {
 }
 
 // ...existing code...
+// ...existing code...
 async function updateBanner() {
   const favs = await fetchFavorites(user.id); // Always fetch latest from DB
   const favoriteSet = new Set(favs);
@@ -1419,19 +1487,18 @@ async function updateBanner() {
       clone.style.cursor = 'pointer';
 
       const cloneBtn = clone.querySelector('.favorite-btn');
-// ...existing code...
-if (cloneBtn) {
-  cloneBtn.classList.add('favorited'); // Always add the class
-  cloneBtn.disabled = false; // Enable the button in the banner
+      if (cloneBtn) {
+        // Always add the class, regardless of the original
+        cloneBtn.classList.add('favorited');
+        cloneBtn.disabled = false; // Enable the button in the banner
 
-  // Remove favorite when clicking the heart in the banner
-  cloneBtn.addEventListener('click', async (e) => {
-    e.stopPropagation();
-    await removeFavorite(user.id, id);
-    updateBanner();
-  });
-}
-// ...existing code...
+        // Remove favorite when clicking the heart in the banner
+        cloneBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          await removeFavorite(user.id, id);
+          updateBanner();
+        });
+      }
 
       container.appendChild(clone);
     });
@@ -1440,6 +1507,7 @@ if (cloneBtn) {
   // Update original buttons after banner update
   updateOriginalFavoriteButtons(favoriteSet);
 }
+// ...existing code...
 // ...existing code...
 
   // Bind click handlers to original quiz sections
