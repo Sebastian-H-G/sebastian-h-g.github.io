@@ -602,6 +602,15 @@ textarea {
     font-size: 2rem;
     margin: 10px;
 }
+#no-favs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    color: #666;
+    font-size: 1.2rem;
+}
 .favorite-btn {
   position: absolute;
   top: 1rem;

@@ -1408,7 +1408,7 @@ async function updateBanner() {
   container.innerHTML = '';
 
   if (favs.length === 0) {
-    container.innerHTML = '<p>No favorites yet. ⭐ Click a heart to add one!</p>';
+    container.innerHTML = '<p id="no-favs">No favorites yet. ⭐ Click a heart to add one!</p>';
   } else {
     favoriteSet.forEach(id => {
       const orig = document.getElementById(id);
