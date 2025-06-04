@@ -466,7 +466,7 @@ function renderQuestion() {
           feedbackEl.textContent = '❌ Enter a numeric guess.';
           return;
         }
-        userAnswerDisplay = val.toLocaleString('en‐US');
+        userAnswerDisplay = val.toLocaleString('en-US');
         // ±5% tolerance
         const diff = Math.abs(val - population);
         if (diff / population <= 0.05) userCorrect = true;
