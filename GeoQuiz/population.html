@@ -331,94 +331,113 @@ async function populateContinents() {
     // ─────────────────────────────────────────────────────────────────────────────
     // 8) Render One Question Based on Current Filters & Mode
     // ─────────────────────────────────────────────────────────────────────────────
-    function renderQuestion() {
-      feedbackEl.textContent = '';
+// ...existing code...
+function renderQuestion() {
+  feedbackEl.textContent = '';
 
-      // If quiz is over, show final results
-      if (questionCount >= TOTAL_QUESTIONS) {
-        questionScreen.classList.add('hidden');
-        scoreScreen.classList.remove('hidden');
-        finalScoreText.textContent = `You got ${score} out of ${TOTAL_QUESTIONS} correct.`;
-        return;
-      }
+  // If quiz is over, show final results
+  if (questionCount >= TOTAL_QUESTIONS) {
+    questionScreen.classList.add('hidden');
+    scoreScreen.classList.remove('hidden');
+    finalScoreText.textContent = `You got ${score} out of ${TOTAL_QUESTIONS} correct.`;
+    return;
+  }
 
-      // Pick a random country
-      const mode = modeSelect.value;
-      const country = pickRandomCountry();
-      const name = country.name;
-      const population = country.population;
+  // Guard: If no countries, show error and return
+  if (!countriesData || countriesData.length === 0) {
+    questionScreen.classList.add('hidden');
+    scoreScreen.classList.remove('hidden');
+    finalScoreText.textContent = `No countries available for this filter.`;
+    return;
+  }
 
-      // For higher/lower mode: figure out referencePop
-      let referencePop = null;
-      if (mode === 'higherlower') {
-        if (questionCount === 0) {
-          // First question: pick any random reference from the same pool
-          const randomRef = countriesData[Math.floor(Math.random() * countriesData.length)];
-          referencePop = randomRef.population;
-        } else {
-          // Use last question's population
-          referencePop = currentQuestion.population;
-        }
-      }
+  // Pick a random country
+  const mode = modeSelect.value;
+  const country = pickRandomCountry();
+  if (!country) {
+    questionScreen.classList.add('hidden');
+    scoreScreen.classList.remove('hidden');
+    finalScoreText.textContent = `No country found.`;
+    return;
+  }
+  const name = country.name;
+  const population = country.population;
 
-      currentQuestion = { name, population, mode, referencePop };
-
-      // Display country name
-      countryNameEl.textContent = name;
-      countEl.textContent = questionCount + 1;
-
-      // Clear previous answer area
-      answerArea.innerHTML = '';
-
-      // Build question UI based on mode
-      if (mode === 'multiple') {
-        questionTextEl.textContent = 'Select the correct population:';
-        const options = generateMultipleChoiceOptions(population);
-        const choicesDiv = document.createElement('div');
-        choicesDiv.classList.add('choices');
-        options.forEach((opt) => {
-          const btn = document.createElement('button');
-          btn.textContent = opt.toLocaleString('en-US');
-          btn.dataset.value = opt;
-          btn.addEventListener('click', () => {
-            Array.from(choicesDiv.children).forEach((c) => c.classList.remove('selected'));
-            btn.classList.add('selected');
-          });
-          choicesDiv.appendChild(btn);
-        });
-        answerArea.appendChild(choicesDiv);
-      }
-      else if (mode === 'guess') {
-        questionTextEl.textContent = 'Enter your guess for the population:';
-        const input = document.createElement('input');
-        input.type = 'number';
-        input.placeholder = 'e.g. 83,166,711';
-        input.id = 'guess-input';
-        answerArea.appendChild(input);
-      }
-      else if (mode === 'higherlower') {
-        questionTextEl.textContent = `Will ${name} have a higher or lower population than the reference?`;
-        const refDisplay = document.createElement('div');
-        refDisplay.textContent = `Reference Pop: ${referencePop.toLocaleString('en-US')}`;
-        refDisplay.style.marginBottom = '8px';
-        answerArea.appendChild(refDisplay);
-
-        ['higher', 'lower'].forEach((hl) => {
-          const btn = document.createElement('button');
-          btn.textContent = hl.charAt(0).toUpperCase() + hl.slice(1);
-          btn.dataset.value = hl;
-          btn.addEventListener('click', () => {
-            Array.from(answerArea.querySelectorAll('button')).forEach((c) => c.classList.remove('selected'));
-            btn.classList.add('selected');
-          });
-          answerArea.appendChild(btn);
-        });
-      }
-
-      // Show question screen, hide final results (if it was visible)
-      questionScreen.classList.remove('hidden');
-      scoreScreen.classList.add('hidden');
+  // For higher/lower mode: figure out referencePop
+  let referencePop = null;
+  if (mode === 'higherlower') {
+    if (questionCount === 0) {
+      // First question: pick any random reference from the same pool
+      const randomRef = countriesData[Math.floor(Math.random() * countriesData.length)];
+      referencePop = randomRef.population;
+    } else if (currentQuestion) {
+      // Use last question's population
+      referencePop = currentQuestion.population;
+    } else {
+      // Fallback if currentQuestion is null
+      referencePop = countriesData[0].population;
     }
+  }
+
+  currentQuestion = { name, population, mode, referencePop };
+
+  // Display country name
+  countryNameEl.textContent = name;
+  countEl.textContent = questionCount + 1;
+
+  // Clear previous answer area
+  answerArea.innerHTML = '';
+
+  // Build question UI based on mode
+  if (mode === 'multiple') {
+    questionTextEl.textContent = 'Select the correct population:';
+    const options = generateMultipleChoiceOptions(population);
+    const choicesDiv = document.createElement('div');
+    choicesDiv.classList.add('choices');
+    options.forEach((opt) => {
+      const btn = document.createElement('button');
+      btn.textContent = opt.toLocaleString('en-US');
+      btn.dataset.value = opt;
+      btn.addEventListener('click', () => {
+        Array.from(choicesDiv.children).forEach((c) => c.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+      choicesDiv.appendChild(btn);
+    });
+    answerArea.appendChild(choicesDiv);
+  }
+  else if (mode === 'guess') {
+    questionTextEl.textContent = 'Enter your guess for the population:';
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.placeholder = 'e.g. 83,166,711';
+    input.id = 'guess-input';
+    answerArea.appendChild(input);
+  }
+  else if (mode === 'higherlower') {
+    questionTextEl.textContent = `Will ${name} have a higher or lower population than the reference?`;
+    const refDisplay = document.createElement('div');
+    refDisplay.textContent = `Reference Pop: ${referencePop.toLocaleString('en-US')}`;
+    refDisplay.style.marginBottom = '8px';
+    answerArea.appendChild(refDisplay);
+
+    ['higher', 'lower'].forEach((hl) => {
+      const btn = document.createElement('button');
+      btn.textContent = hl.charAt(0).toUpperCase() + hl.slice(1);
+      btn.dataset.value = hl;
+      btn.addEventListener('click', () => {
+        Array.from(answerArea.querySelectorAll('button')).forEach((c) => c.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+      answerArea.appendChild(btn);
+    });
+  }
+
+  // Show question screen, hide final results (if it was visible)
+  questionScreen.classList.remove('hidden');
+  scoreScreen.classList.add('hidden');
+}
+// ...existing code...
 
     // ─────────────────────────────────────────────────────────────────────────────
     // 9) Handle Answer Submission
