@@ -193,7 +193,7 @@
     // ─────────────────────────────────────────────────────────────────────────────
     const SUPABASE_URL = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
-    const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // ─────────────────────────────────────────────────────────────────────────────
     // 2) DOM References
@@ -228,7 +228,7 @@
     // ─────────────────────────────────────────────────────────────────────────────
     async function populateContinents() {
       // Get distinct 'continent' values from `countries` table
-      const { data: rows, error } = await supabase
+      const { data: rows, error } = await sb
         .from('countries')
         .select('continent', { distinct: true, order: { continent: 'asc' } });
 
@@ -272,7 +272,7 @@
       }
 
       // Build Supabase query
-      let query = supabase
+      let query = sb
         .from('countries')
         .select('id, name, population, continent')
         .gte('population', minPop)
