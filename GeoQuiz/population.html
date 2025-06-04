@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Population Quiz (with Continents)</title>
+
+  <!-- Supabase JS v2 (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.34.0/dist/umd/supabase.min.js"></script>
+
+  <style>
+    /* ─────── Basic Reset & Layout ─────── */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background: #f5f5f5;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    /* ─────── Container ─────── */
+    #quiz-container {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 480px;
+      width: 100%;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    /* ─────── Selectors Row ─────── */
+    .selectors {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    /* Three selects side by side: each ~32% width */
+    .selectors select {
+      width: 32%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background: #fafafa;
+    }
+
+    /* ─────── Question & Inputs ─────── */
+    #question-screen {
+      display: none; /* Shown once quiz starts */
+      flex-direction: column;
+      align-items: center;
+    }
+    #country-name {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    #question-text {
+      margin-bottom: 15px;
+    }
+    #answer-area {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    #answer-area input[type="number"],
+    #answer-area input[type="text"] {
+      width: calc(100% - 16px);
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    #answer-area .choices {
+      display: flex;
+      flex-direction: column;
+    }
+    #answer-area .choices button {
+      padding: 10px;
+      margin: 5px 0;
+      background: #e0e0e0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #answer-area .choices button:hover {
+      background: #d0d0d0;
+    }
+    #submit-btn {
+      padding: 10px 20px;
+      background: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #submit-btn:hover {
+      background: #45a049;
+    }
+
+    /* ─────── Feedback & Score ─────── */
+    #feedback {
+      margin-top: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+    #score-screen {
+      display: none;
+      text-align: center;
+    }
+    #score {
+      font-size: 1.1rem;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    #next-question-btn,
+    #restart-btn {
+      padding: 8px 16px;
+      background: #2196f3;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin: 5px;
+    }
+    #next-question-btn:hover,
+    #restart-btn:hover {
+      background: #1976d2;
+    }
+
+    /* ─────── Hidden Utility Class ─────── */
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <h1>Population Quiz</h1>
+  <div id="quiz-container">
+    <!-- ─── Difficulty, Mode & Continent Selectors ─── -->
+    <div class="selectors">
+      <select id="difficulty-select">
+        <option value="easy">Easy (&ge;100 M)</option>
+        <option value="medium">Medium (10 M–100 M)</option>
+        <option value="hard">Hard (&lt;10 M)</option>
+      </select>
+
+      <select id="mode-select">
+        <option value="multiple">Multiple Choice</option>
+        <option value="guess">Guess the Number</option>
+        <option value="higherlower">Higher / Lower</option>
+      </select>
+
+      <select id="continent-select">
+        <!-- Will be populated dynamically -->
+        <option value="all">All Continents</option>
+      </select>
+    </div>
+
+    <!-- ─── Question Screen (shown during quiz) ─── -->
+    <div id="question-screen" class="hidden">
+      <div id="country-name"></div>
+      <div id="question-text"></div>
+      <div id="answer-area"></div>
+      <button id="submit-btn">Submit</button>
+      <div id="feedback"></div>
+      <div id="score">Score: <span id="current-score">0</span> / <span id="question-count">0</span></div>
+    </div>
+
+    <!-- ─── Final Results Screen ─── -->
+    <div id="score-screen" class="hidden">
+      <h2>Quiz Complete!</h2>
+      <p id="final-score-text"></p>
+      <button id="restart-btn">Restart Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 1) Initialize Supabase
+    // ─────────────────────────────────────────────────────────────────────────────
+    const SUPABASE_URL = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
+    const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 2) DOM References
+    // ─────────────────────────────────────────────────────────────────────────────
+    const difficultySelect = document.getElementById('difficulty-select');
+    const modeSelect = document.getElementById('mode-select');
+    const continentSelect = document.getElementById('continent-select');
+
+    const questionScreen = document.getElementById('question-screen');
+    const countryNameEl = document.getElementById('country-name');
+    const questionTextEl = document.getElementById('question-text');
+    const answerArea = document.getElementById('answer-area');
+    const submitBtn = document.getElementById('submit-btn');
+    const feedbackEl = document.getElementById('feedback');
+    const scoreEl = document.getElementById('current-score');
+    const countEl = document.getElementById('question-count');
+    const scoreScreen = document.getElementById('score-screen');
+    const finalScoreText = document.getElementById('final-score-text');
+    const restartBtn = document.getElementById('restart-btn');
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 3) Quiz State
+    // ─────────────────────────────────────────────────────────────────────────────
+    let countriesData = [];      // Holds filtered countries based on difficulty+continent
+    let currentQuestion = null;   // { name, population, mode, referencePop? }
+    let score = 0;
+    let questionCount = 0;
+    const TOTAL_QUESTIONS = 10;
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 4) Fetch Distinct Continents & Populate Continent Select
+    // ─────────────────────────────────────────────────────────────────────────────
+    async function populateContinents() {
+      // Get distinct 'continent' values from `countries` table
+      const { data: rows, error } = await supabase
+        .from('countries')
+        .select('continent', { distinct: true, order: { continent: 'asc' } });
+
+      if (error) {
+        console.error('Error fetching continents:', error);
+        return;
+      }
+      // Remove any duplicates & sort alphabetically (Supabase distinct + order should do this)
+      const continents = rows
+        .map((r) => r.continent)
+        .filter((c) => c !== null && c !== undefined);
+
+      // Clear existing (except "All Continents")
+      continentSelect.querySelectorAll('option:not([value="all"])').forEach((opt) => opt.remove());
+
+      // Append each continent
+      continents.forEach((cont) => {
+        const opt = document.createElement('option');
+        opt.value = cont;
+        opt.textContent = cont;
+        continentSelect.appendChild(opt);
+      });
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 5) Fetch Countries Based on Difficulty & Continent
+    // ─────────────────────────────────────────────────────────────────────────────
+    async function fetchCountriesByFilters(diff, continent) {
+      // Determine min/max population based on difficulty
+      let minPop, maxPop;
+      if (diff === 'easy') {
+        minPop = 100_000_000;
+        maxPop = Infinity;
+      } else if (diff === 'medium') {
+        minPop = 10_000_000;
+        maxPop = 100_000_000;
+      } else {
+        // hard
+        minPop = 0;
+        maxPop = 10_000_000;
+      }
+
+      // Build Supabase query
+      let query = supabase
+        .from('countries')
+        .select('id, name, population, continent')
+        .gte('population', minPop)
+        .limit(1000); // adjust or paginate if you have >1000 rows per difficulty group
+
+      if (maxPop !== Infinity) {
+        query = query.lte('population', maxPop);
+      }
+
+      // Filter by continent if not "all"
+      if (continent && continent !== 'all') {
+        query = query.eq('continent', continent);
+      }
+
+      const { data, error } = await query;
+      if (error) {
+        console.error('Error fetching countries:', error);
+        return [];
+      }
+      return data;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 6) Pick a Random Country from the Pool
+    // ─────────────────────────────────────────────────────────────────────────────
+    function pickRandomCountry() {
+      const idx = Math.floor(Math.random() * countriesData.length);
+      return countriesData[idx];
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 7) Generate Multiple‐Choice Options (±20% Variance)
+    // ─────────────────────────────────────────────────────────────────────────────
+    function generateMultipleChoiceOptions(correctPopulation) {
+      const decoys = new Set();
+      while (decoys.size < 3) {
+        const variance = 0.2; // ±20%
+        const factor = 1 + (Math.random() * 2 * variance - variance);
+        let val = Math.round(correctPopulation * factor);
+        if (val !== correctPopulation && !decoys.has(val)) {
+          decoys.add(val);
+        }
+      }
+      const allOptions = [correctPopulation, ...Array.from(decoys)];
+      return allOptions.sort(() => Math.random() - 0.5);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 8) Render One Question Based on Current Filters & Mode
+    // ─────────────────────────────────────────────────────────────────────────────
+    function renderQuestion() {
+      feedbackEl.textContent = '';
+
+      // If quiz is over, show final results
+      if (questionCount >= TOTAL_QUESTIONS) {
+        questionScreen.classList.add('hidden');
+        scoreScreen.classList.remove('hidden');
+        finalScoreText.textContent = `You got ${score} out of ${TOTAL_QUESTIONS} correct.`;
+        return;
+      }
+
+      // Pick a random country
+      const mode = modeSelect.value;
+      const country = pickRandomCountry();
+      const name = country.name;
+      const population = country.population;
+
+      // For higher/lower mode: figure out referencePop
+      let referencePop = null;
+      if (mode === 'higherlower') {
+        if (questionCount === 0) {
+          // First question: pick any random reference from the same pool
+          const randomRef = countriesData[Math.floor(Math.random() * countriesData.length)];
+          referencePop = randomRef.population;
+        } else {
+          // Use last question's population
+          referencePop = currentQuestion.population;
+        }
+      }
+
+      currentQuestion = { name, population, mode, referencePop };
+
+      // Display country name
+      countryNameEl.textContent = name;
+      countEl.textContent = questionCount + 1;
+
+      // Clear previous answer area
+      answerArea.innerHTML = '';
+
+      // Build question UI based on mode
+      if (mode === 'multiple') {
+        questionTextEl.textContent = 'Select the correct population:';
+        const options = generateMultipleChoiceOptions(population);
+        const choicesDiv = document.createElement('div');
+        choicesDiv.classList.add('choices');
+        options.forEach((opt) => {
+          const btn = document.createElement('button');
+          btn.textContent = opt.toLocaleString('en‐US');
+          btn.dataset.value = opt;
+          btn.addEventListener('click', () => {
+            Array.from(choicesDiv.children).forEach((c) => c.classList.remove('selected'));
+            btn.classList.add('selected');
+          });
+          choicesDiv.appendChild(btn);
+        });
+        answerArea.appendChild(choicesDiv);
+      }
+      else if (mode === 'guess') {
+        questionTextEl.textContent = 'Enter your guess for the population:';
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.placeholder = 'e.g. 83,166,711';
+        input.id = 'guess-input';
+        answerArea.appendChild(input);
+      }
+      else if (mode === 'higherlower') {
+        questionTextEl.textContent = `Will ${name} have a higher or lower population than the reference?`;
+        const refDisplay = document.createElement('div');
+        refDisplay.textContent = `Reference Pop: ${referencePop.toLocaleString('en‐US')}`;
+        refDisplay.style.marginBottom = '8px';
+        answerArea.appendChild(refDisplay);
+
+        ['higher', 'lower'].forEach((hl) => {
+          const btn = document.createElement('button');
+          btn.textContent = hl.charAt(0).toUpperCase() + hl.slice(1);
+          btn.dataset.value = hl;
+          btn.addEventListener('click', () => {
+            Array.from(answerArea.querySelectorAll('button')).forEach((c) => c.classList.remove('selected'));
+            btn.classList.add('selected');
+          });
+          answerArea.appendChild(btn);
+        });
+      }
+
+      // Show question screen, hide final results (if it was visible)
+      questionScreen.classList.remove('hidden');
+      scoreScreen.classList.add('hidden');
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 9) Handle Answer Submission
+    // ─────────────────────────────────────────────────────────────────────────────
+    submitBtn.addEventListener('click', () => {
+      if (!currentQuestion) return;
+
+      const { population, mode, referencePop } = currentQuestion;
+      let userCorrect = false;
+      let userAnswerDisplay = '';
+
+      if (mode === 'multiple') {
+        const selectedBtn = answerArea.querySelector('button.selected');
+        if (!selectedBtn) {
+          feedbackEl.textContent = '❌ Please select one option.';
+          return;
+        }
+        const val = Number(selectedBtn.dataset.value);
+        userAnswerDisplay = val.toLocaleString('en‐US');
+        if (val === population) userCorrect = true;
+      }
+      else if (mode === 'guess') {
+        const input = document.getElementById('guess-input');
+        const val = Number(input.value);
+        if (!val) {
+          feedbackEl.textContent = '❌ Enter a numeric guess.';
+          return;
+        }
+        userAnswerDisplay = val.toLocaleString('en‐US');
+        // ±5% tolerance
+        const diff = Math.abs(val - population);
+        if (diff / population <= 0.05) userCorrect = true;
+      }
+      else if (mode === 'higherlower') {
+        const selectedBtn = answerArea.querySelector('button.selected');
+        if (!selectedBtn) {
+          feedbackEl.textContent = '❌ Please choose Higher or Lower.';
+          return;
+        }
+        const choice = selectedBtn.dataset.value; // "higher" or "lower"
+        userAnswerDisplay = choice.charAt(0).toUpperCase() + choice.slice(1);
+        if ((choice === 'higher' && population > referencePop) ||
+            (choice === 'lower' && population < referencePop)) {
+          userCorrect = true;
+        }
+      }
+
+      // Show feedback & update score
+      if (userCorrect) {
+        feedbackEl.textContent = `✅ Correct! (${population.toLocaleString('en‐US')})`;
+        score++;
+      } else {
+        feedbackEl.textContent = `❌ Wrong. You answered ${userAnswerDisplay}. Correct: ${population.toLocaleString('en‐US')}.`;
+      }
+
+      scoreEl.textContent = score;
+      questionCount++;
+
+      // Delay before next question (so user sees feedback)
+      setTimeout(() => {
+        renderQuestion();
+      }, 1500);
+    });
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 10) Reset Quiz (when filters change or on page load)
+    // ─────────────────────────────────────────────────────────────────────────────
+    async function resetQuiz() {
+      score = 0;
+      questionCount = 0;
+      scoreEl.textContent = 0;
+      countEl.textContent = 0;
+      feedbackEl.textContent = '';
+
+      const diff = difficultySelect.value;
+      const cont = continentSelect.value;
+
+      // Fetch new pool of countries filtered by difficulty+continent
+      countriesData = await fetchCountriesByFilters(diff, cont);
+
+      // If no countries found, show a message
+      if (!countriesData || countriesData.length === 0) {
+        questionScreen.classList.add('hidden');
+        scoreScreen.classList.remove('hidden');
+        finalScoreText.textContent = `No countries found for “${cont}” at difficulty “${diff}.”`;
+        return;
+      }
+
+      // Otherwise start the first question
+      renderQuestion();
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 11) Event Listeners for Filter Changes
+    // ─────────────────────────────────────────────────────────────────────────────
+    difficultySelect.addEventListener('change', resetQuiz);
+    modeSelect.addEventListener('change', resetQuiz);
+    continentSelect.addEventListener('change', resetQuiz);
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 12) Restart Quiz Button (shown on final screen)
+    // ─────────────────────────────────────────────────────────────────────────────
+    restartBtn.addEventListener('click', () => {
+      questionScreen.classList.remove('hidden');
+      scoreScreen.classList.add('hidden');
+      resetQuiz();
+    });
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // 13) On Page Load: Populate Continents, then Reset Quiz
+    // ─────────────────────────────────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', async () => {
+      await populateContinents();
+      // Ensure "All Continents" is at the top
+      continentSelect.value = 'all';
+      resetQuiz();
+    });
+  </script>
+</body>
+</html>
