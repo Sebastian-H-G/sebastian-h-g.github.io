@@ -226,32 +226,40 @@
     // ─────────────────────────────────────────────────────────────────────────────
     // 4) Fetch Distinct Continents & Populate Continent Select
     // ─────────────────────────────────────────────────────────────────────────────
-    async function populateContinents() {
-      // Get distinct 'continent' values from `countries` table
-      const { data: rows, error } = await sb
-        .from('countries')
-        .select('continent', { distinct: true, order: { continent: 'asc' } });
+// ─────────────────────────────────────────────────────────────────────────────
+// Fetch all continent values, dedupe in JS, then populate the <select>
+// ─────────────────────────────────────────────────────────────────────────────
+async function populateContinents() {
+  // 1) Fetch every row’s continent (no DISTINCT here)
+  const { data: rows, error } = await sb
+    .from('countries')
+    .select('continent');
 
-      if (error) {
-        console.error('Error fetching continents:', error);
-        return;
-      }
-      // Remove any duplicates & sort alphabetically (Supabase distinct + order should do this)
-      const continents = rows
-        .map((r) => r.continent)
-        .filter((c) => c !== null && c !== undefined);
+  if (error) {
+    console.error('Error fetching continents:', error);
+    return;
+  }
 
-      // Clear existing (except "All Continents")
-      continentSelect.querySelectorAll('option:not([value="all"])').forEach((opt) => opt.remove());
+  // 2) Extract, filter out null/undefined, and dedupe via a Set
+  const allContinents = rows
+    .map(r => r.continent)
+    .filter(c => c !== null && c !== undefined);
 
-      // Append each continent
-      continents.forEach((cont) => {
-        const opt = document.createElement('option');
-        opt.value = cont;
-        opt.textContent = cont;
-        continentSelect.appendChild(opt);
-      });
-    }
+  const uniqueContinents = Array.from(new Set(allContinents))
+    .sort((a, b) => a.localeCompare(b)); // alphabetically
+
+  // 3) Clear any existing options except "All Continents"
+  continentSelect.querySelectorAll('option:not([value="all"])')
+    .forEach(opt => opt.remove());
+
+  // 4) Append one <option> per unique continent
+  uniqueContinents.forEach(cont => {
+    const opt = document.createElement('option');
+    opt.value = cont;
+    opt.textContent = cont;
+    continentSelect.appendChild(opt);
+  });
+}
 
     // ─────────────────────────────────────────────────────────────────────────────
     // 5) Fetch Countries Based on Difficulty & Continent
