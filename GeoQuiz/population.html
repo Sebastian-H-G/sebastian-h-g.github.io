@@ -370,7 +370,7 @@
         choicesDiv.classList.add('choices');
         options.forEach((opt) => {
           const btn = document.createElement('button');
-          btn.textContent = opt.toLocaleString('en‐US');
+          btn.textContent = opt.toLocaleString('en-US');
           btn.dataset.value = opt;
           btn.addEventListener('click', () => {
             Array.from(choicesDiv.children).forEach((c) => c.classList.remove('selected'));
@@ -391,7 +391,7 @@
       else if (mode === 'higherlower') {
         questionTextEl.textContent = `Will ${name} have a higher or lower population than the reference?`;
         const refDisplay = document.createElement('div');
-        refDisplay.textContent = `Reference Pop: ${referencePop.toLocaleString('en‐US')}`;
+        refDisplay.textContent = `Reference Pop: ${referencePop.toLocaleString('en-US')}`;
         refDisplay.style.marginBottom = '8px';
         answerArea.appendChild(refDisplay);
 
@@ -429,7 +429,7 @@
           return;
         }
         const val = Number(selectedBtn.dataset.value);
-        userAnswerDisplay = val.toLocaleString('en‐US');
+        userAnswerDisplay = val.toLocaleString('en-US');
         if (val === population) userCorrect = true;
       }
       else if (mode === 'guess') {
@@ -460,10 +460,10 @@
 
       // Show feedback & update score
       if (userCorrect) {
-        feedbackEl.textContent = `✅ Correct! (${population.toLocaleString('en‐US')})`;
+        feedbackEl.textContent = `✅ Correct! (${population.toLocaleString('en-US')})`;
         score++;
       } else {
-        feedbackEl.textContent = `❌ Wrong. You answered ${userAnswerDisplay}. Correct: ${population.toLocaleString('en‐US')}.`;
+        feedbackEl.textContent = `❌ Wrong. You answered ${userAnswerDisplay}. Correct: ${population.toLocaleString('en-US')}.`;
       }
 
       scoreEl.textContent = score;
