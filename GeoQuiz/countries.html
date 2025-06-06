@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Countries Table</title>
+
+  <!-- 1) Supabase JS (v2.x) from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+  <!-- 2) CSS: table styling + column‐toggle controls -->
+  <style>
+    /* ----- Page & Container ----- */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      margin: 0;
+      padding: 1rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+      color: #2c3e50;
+    }
+    .table-container {
+      max-width: 100%;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      overflow-x: auto;
+    }
+
+    /* ----- Column‐Toggle Controls ----- */
+    #column-visibility-controls {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    #column-visibility-controls label {
+      font-size: 0.9rem;
+      user-select: none;
+      cursor: pointer;
+      background-color: #ecf0f1;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    #column-visibility-controls label:hover {
+      background-color: #d0d7dd;
+    }
+    #column-visibility-controls input[type="checkbox"] {
+      margin-right: 0.3rem;
+      cursor: pointer;
+    }
+
+    /* ----- Table Styling ----- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: auto;
+      min-width: 800px; /* ensure horizontal scroll on narrow viewports */
+    }
+    thead {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+    }
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+    th {
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      white-space: nowrap;
+    }
+    th .sort-indicator {
+      margin-left: 0.5rem;
+      font-size: 0.8rem;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    th:hover .sort-indicator {
+      opacity: 1;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f9fafb;
+    }
+    tbody tr:hover {
+      background-color: #eef2f6;
+    }
+    td {
+      border-bottom: 1px solid #e0e4ea;
+      white-space: nowrap;
+    }
+
+    /* ----- Scrollbar Styling (optional) ----- */
+    .table-container::-webkit-scrollbar {
+      height: 8px;
+    }
+    .table-container::-webkit-scrollbar-thumb {
+      background-color: rgba(44, 62, 80, 0.2);
+      border-radius: 4px;
+    }
+    .table-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* ----- Responsive: Make the header sticky if you want ----- */
+    /* 
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    */
+  </style>
+</head>
+<body>
+
+  <h1>Countries</h1>
+
+  <!-- 3) Column‐Toggle Controls: will be populated via JS -->
+  <div id="column-visibility-controls">
+    <!-- JavaScript will insert a checkbox + label for each column here -->
+  </div>
+
+  <div class="table-container">
+    <table id="countries-table">
+      <thead>
+        <!-- JavaScript will build this -->
+      </thead>
+      <tbody>
+        <!-- JavaScript will build this -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 4) JavaScript: fetch, render, sort, and show/hide logic -->
+  <script>
+    // 4.1) Supabase credentials (replace with your own)
+    const SUPABASE_URL    = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // 4.2) Define the columns we want (excluding 'id' from display)
+    const allColumns = [
+      'id',
+      'name',
+      'capital',
+      'population',
+      'subregion',
+      'official_name',
+      'continent',
+      'area_sq_km',
+      'latitude',
+      'longitude',
+      'borders',
+      'official_languages',
+      'timezone',
+      'currency_name',
+      'currency_code',
+      'gdp',
+      'government_type',
+      'independence_date',
+      'independent_from',
+      'un_member',
+      'nato_member',
+      'eu_member',
+      'domain',
+      'calling_code',
+      'driving_side'
+    ];
+
+    // These are the columns we actually show in the table (all except 'id'):
+    const displayColumns = allColumns.filter(col => col !== 'id');
+
+    let countriesData = [];     // Holds the fetched rows
+    let currentSort   = { column: null, ascending: true };
+
+    /** Convert a snake_case column name into a human‐readable label */
+    function toReadable(col) {
+      return col
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    }
+
+    // 4.3) Build the “Show/Hide Columns” checkboxes dynamically
+    function buildColumnToggles() {
+      const container = document.getElementById('column-visibility-controls');
+      // Prefix text
+      const prefix = document.createElement('span');
+      prefix.textContent = 'Show/Hide Columns: ';
+      prefix.style.fontWeight = '500';
+      container.appendChild(prefix);
+
+      displayColumns.forEach(col => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = col;
+        checkbox.classList.add('col-toggle');
+        checkbox.checked = true; // start all visible
+        checkbox.addEventListener('change', updateColumnVisibility);
+
+        label.appendChild(checkbox);
+        label.insertAdjacentText('beforeend', toReadable(col));
+        container.appendChild(label);
+      });
+    }
+
+    // 4.4) Show or hide entire columns based on checkbox states
+    function updateColumnVisibility() {
+      displayColumns.forEach(col => {
+        const isChecked = document.querySelector(`input.col-toggle[value="${col}"]`).checked;
+        const allCells = document.querySelectorAll(`[data-col="${col}"]`);
+        allCells.forEach(cell => {
+          cell.style.display = isChecked ? '' : 'none';
+        });
+      });
+    }
+
+    // 4.5) Sort the `countriesData` array in place
+    function sortData() {
+      const { column, ascending } = currentSort;
+      if (!column) return;
+
+      countriesData.sort((a, b) => {
+        const valA = a[column];
+        const valB = b[column];
+        // Handle nullish/undefined
+        if (valA == null && valB == null) return 0;
+        if (valA == null) return ascending ? -1 : 1;
+        if (valB == null) return ascending ? 1 : -1;
+
+        // Numeric comparison if both are numbers
+        if (typeof valA === 'number' && typeof valB === 'number') {
+          return ascending ? valA - valB : valB - valA;
+        }
+
+        // Otherwise string compare (case‑insensitive)
+        const sA = String(valA).toLowerCase();
+        const sB = String(valB).toLowerCase();
+        if (sA < sB) return ascending ? -1 : 1;
+        if (sA > sB) return ascending ? 1 : -1;
+        return 0;
+      });
+    }
+
+    // 4.6) Build the <thead> (with clickable <th> for each column)
+    function buildTableHeader() {
+      const thead = document.querySelector('#countries-table thead');
+      thead.innerHTML = ''; // clear
+
+      const row = document.createElement('tr');
+      displayColumns.forEach(col => {
+        const th = document.createElement('th');
+        th.textContent = toReadable(col);
+        th.setAttribute('data-col', col);
+
+        // ▲/▼ indicator span
+        const indicator = document.createElement('span');
+        indicator.classList.add('sort-indicator');
+        indicator.textContent = '⇅';
+        th.appendChild(indicator);
+
+        // On click: toggle sort for this column
+        th.addEventListener('click', () => {
+          if (currentSort.column === col) {
+            currentSort.ascending = !currentSort.ascending;
+          } else {
+            currentSort.column = col;
+            currentSort.ascending = true;
+          }
+          renderTable();
+        });
+
+        row.appendChild(th);
+      });
+      thead.appendChild(row);
+    }
+
+    // 4.7) Build the <tbody> rows from `countriesData`
+    function buildTableBody() {
+      const tbody = document.querySelector('#countries-table tbody');
+      tbody.innerHTML = ''; // clear
+
+      countriesData.forEach(item => {
+        const tr = document.createElement('tr');
+        displayColumns.forEach(col => {
+          const td = document.createElement('td');
+          td.setAttribute('data-col', col);
+
+          // Show empty string if value is null/undefined
+          td.textContent = item[col] != null ? item[col] : '';
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    // 4.8) Update the sort arrows (▲/▼/⇅) in the header
+    function updateSortIndicators() {
+      const ths = document.querySelectorAll('#countries-table thead th');
+      ths.forEach(th => {
+        const col = th.getAttribute('data-col');
+        const indicator = th.querySelector('.sort-indicator');
+        if (currentSort.column !== col) {
+          indicator.textContent = '⇅';
+        } else {
+          indicator.textContent = currentSort.ascending ? '▲' : '▼';
+        }
+      });
+    }
+
+    // 4.9) Main render: sort → (re)build header if first time → rebuild body → update arrows → enforce column visibility
+    function renderTable() {
+      // 1) Sort our data array
+      sortData();
+
+      // 2) Build header (only once; if it’s empty)
+      const thead = document.querySelector('#countries-table thead');
+      if (thead.children.length === 0) {
+        buildTableHeader();
+      }
+
+      // 3) Build the rows
+      buildTableBody();
+
+      // 4) Update arrow icons
+      updateSortIndicators();
+
+      // 5) Show/hide columns according to checkboxes
+      updateColumnVisibility();
+    }
+
+    // 4.10) Fetch data from Supabase, store it, then render
+    async function fetchCountries() {
+      // Select all needed columns (we retrieve 'id' but ignore it for display)
+      const { data, error } = await sb
+        .from('countries')
+        .select(`
+          id,
+          name,
+          capital,
+          population,
+          subregion,
+          official_name,
+          continent,
+          area_sq,
+          latitude,
+          longitude,
+          borders,
+          official_languages,
+          timezone,
+          currency_name,
+          currency_code,
+          gdp,
+          government_type,
+          independence_date,
+          independent_from,
+          un_member,
+          nato_member,
+          eu_member,
+          domain,
+          calling_code,
+          driving_side
+        `);
+
+      if (error) {
+        console.error('Error fetching countries:', error);
+        return;
+      }
+      countriesData = data;  // array of objects
+      renderTable();
+    }
+
+    // 4.11) On page load: build toggles, then fetch & render
+    document.addEventListener('DOMContentLoaded', () => {
+      buildColumnToggles();
+      fetchCountries();
+    });
+  </script>
+</body>
+</html>
