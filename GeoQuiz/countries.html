@@ -421,13 +421,13 @@ td {
       countriesData = data;  // array of objects
       countriesData.forEach(row => {
         if (row.official_languages) {
-          row.official_languages = row.official_languages.split(',').join(', ');
+          row.official_languages = row.official_languages.join(', ');
         }
         if (row.borders) {
-          row.borders = row.borders.split(',').join(', ');
+          row.borders = row.borders.join(', ');
         }
         if (row.timezone) {
-          row.timezone = row.timezone.split(',').join(', ');
+          row.timezone = row.timezone.join(', ');
         }
       });
       renderTable();
