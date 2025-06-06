@@ -10,115 +10,164 @@
 
   <!-- 2) CSS: table styling + column‐toggle controls -->
   <style>
-    /* ----- Page & Container ----- */
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f5f7fa;
-      color: #333;
-      margin: 0;
-      padding: 1rem;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 1rem;
-      font-size: 1.8rem;
-      color: #2c3e50;
-    }
-    .table-container {
-      max-width: 100%;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      overflow-x: auto;
-    }
+   /* --------------------------------------
+   1) Make header a subtle gradient
+   -------------------------------------- */
+thead {
+  background: linear-gradient(45deg, #34495e, #2c3e50);
+  color: #ecf0f1;
+}
 
-    /* ----- Column‐Toggle Controls ----- */
-    #column-visibility-controls {
-      margin-bottom: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: center;
-    }
-    #column-visibility-controls label {
-      font-size: 0.9rem;
-      user-select: none;
-      cursor: pointer;
-      background-color: #ecf0f1;
-      padding: 0.3rem 0.6rem;
-      border-radius: 4px;
-      transition: background-color 0.2s;
-    }
-    #column-visibility-controls label:hover {
-      background-color: #d0d7dd;
-    }
-    #column-visibility-controls input[type="checkbox"] {
-      margin-right: 0.3rem;
-      cursor: pointer;
-    }
+/* --------------------------------------
+   2) Refined font + spacing
+   -------------------------------------- */
+body {
+  font-family: 'Inter', sans-serif; /* you can import from Google Fonts */
+  background-color: #f0f2f5;
+  color: #2c3e50;
+  margin: 0;
+  padding: 1rem;
+}
 
-    /* ----- Table Styling ----- */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: auto;
-      min-width: 800px; /* ensure horizontal scroll on narrow viewports */
-    }
-    thead {
-      background-color: #2c3e50;
-      color: #ecf0f1;
-    }
-    th, td {
-      padding: 0.75rem 1rem;
-      text-align: left;
-    }
-    th {
-      cursor: pointer;
-      position: relative;
-      user-select: none;
-      white-space: nowrap;
-    }
-    th .sort-indicator {
-      margin-left: 0.5rem;
-      font-size: 0.8rem;
-      opacity: 0.6;
-      transition: opacity 0.2s;
-    }
-    th:hover .sort-indicator {
-      opacity: 1;
-    }
-    tbody tr:nth-child(even) {
-      background-color: #f9fafb;
-    }
-    tbody tr:hover {
-      background-color: #eef2f6;
-    }
-    td {
-      border-bottom: 1px solid #e0e4ea;
-      white-space: nowrap;
-    }
+/* Slightly narrower container, centered */
+.table-container {
+  max-width: 1100px;
+  margin: 1rem auto;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  overflow-x: auto;
+}
 
-    /* ----- Scrollbar Styling (optional) ----- */
-    .table-container::-webkit-scrollbar {
-      height: 8px;
-    }
-    .table-container::-webkit-scrollbar-thumb {
-      background-color: rgba(44, 62, 80, 0.2);
-      border-radius: 4px;
-    }
-    .table-container::-webkit-scrollbar-track {
-      background: transparent;
-    }
+/* --------------------------------------
+   3) Table layout tweaks for wrapping
+   -------------------------------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto; /* allows columns to shrink/grow */
+  min-width: 800px;    /* allows horizontal scroll on very small screens */
+}
 
-    /* ----- Responsive: Make the header sticky if you want ----- */
-    /* 
-    thead th {
-      position: sticky;
-      top: 0;
-      z-index: 2;
-    }
-    */
+/* Make TH and TD wrap their contents */
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  white-space: normal;            /* allow line breaks */
+  word-break: normal;
+  overflow-wrap: break-word;         /* wrap long words/URLs */
+}
+
+
+   th[data-col="official_languages"], td[data-col="official_languages"] {
+     max-width: 180px;
+   }
+   th[data-col="borders"], td[data-col="borders"] {
+     max-width: 180px;
+   }
+
+
+/* --------------------------------------
+   4) Header cells (th) style refinement
+   -------------------------------------- */
+th {
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  background-color: rgba(255, 255, 255, 0.08);
+  /* Slight bottom border to distinguish from rows */
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
+}
+
+th:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+th .sort-indicator {
+  margin-left: 0.4rem;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+th:hover .sort-indicator {
+  opacity: 1;
+}
+
+/* --------------------------------------
+   5) Body rows: zebra + hover effect
+   -------------------------------------- */
+tbody tr:nth-child(even) {
+  background-color: #fbfcfd;
+}
+
+tbody tr:hover {
+  background-color: #eef2f6;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Subtle bottom border for each cell */
+td {
+  border-bottom: 1px solid #e0e4ea;
+  font-size: 0.9rem;
+  color: #34495e;
+}
+
+/* --------------------------------------
+   6) Column‐toggle controls refinement
+   -------------------------------------- */
+#column-visibility-controls {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+#column-visibility-controls span {
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+#column-visibility-controls label {
+  font-size: 0.9rem;
+  user-select: none;
+  cursor: pointer;
+  background-color: #ecf0f1;
+  padding: 0.35rem 0.75rem;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+#column-visibility-controls label:hover {
+  background-color: #d0d7dd;
+}
+
+#column-visibility-controls input[type="checkbox"] {
+  margin-right: 0.3rem;
+  cursor: pointer;
+}
+
+/* --------------------------------------
+   7) Scrollbar (WebKit browsers) styling
+   -------------------------------------- */
+.table-container::-webkit-scrollbar {
+  height: 7px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: rgba(44, 62, 80, 0.25);
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
   </style>
 </head>
 <body>
@@ -370,6 +419,17 @@
         return;
       }
       countriesData = data;  // array of objects
+      countriesData.forEach(row => {
+        if (row.official_languages) {
+          row.official_languages = row.official_languages.split(',').join(', ');
+        }
+        if (row.borders) {
+          row.borders = row.borders.split(',').join(', ');
+        }
+        if (row.timezone) {
+          row.timezone = row.timezone.split(',').join(', ');
+        }
+      });
       renderTable();
     }
 
