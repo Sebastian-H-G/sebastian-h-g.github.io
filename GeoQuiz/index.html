@@ -1386,26 +1386,19 @@ async function updateBanner() {
       clone.id = `fav_${id}`;
       clone.style.cursor = 'pointer';
 
-      const cloneBtn = clone.querySelector('.favorite-btn');
-      if (cloneBtn) {
+      // ⭐ FIX: Add 'favorited' to ALL .favorite-btn in the clone
+      clone.querySelectorAll('.favorite-btn').forEach(cloneBtn => {
         cloneBtn.classList.add('favorited');
-        cloneBtn.disabled = false; // Enable the button in the banner
-
+        cloneBtn.disabled = false;
         // Remove favorite when clicking the heart in the banner
         cloneBtn.addEventListener('click', async (e) => {
           e.stopPropagation();
           await removeFavorite(user.id, id);
           updateBanner();
         });
-      }
+      });
 
       container.appendChild(clone);
-    });
-
-    // After rendering all favorites, force all hearts in #favorites-container to filled
-    container.querySelectorAll('section .favorite-btn').forEach(btn => {
-      btn.classList.add('favorited');
-      // REMOVE direct opacity/style changes here too!
     });
   }
 
