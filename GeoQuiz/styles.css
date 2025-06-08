@@ -65,9 +65,9 @@ header .logo img {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 #logo {
-  margin: 0 auto;
+  margin: 0 auto 10px auto;
     position: relative; /* Needed for absolute positioning of overlay */
-  display: inline-block;
+
 }
 
 #logo .profile-overlay {
@@ -410,7 +410,7 @@ button:hover {
   margin: 0;
   float: right;
   line-height: 1;
-  font-size: 1.5rem;
+  font-size: 3rem;
   color: black;
   border: none;
   background: none;
@@ -517,7 +517,7 @@ button:hover {
 }
 /* report.css */
 .report-form {
-  width: 100%;
+  width: 90%;
   margin: 2rem auto;
   padding: 2rem;
   border: 1px solid #ddd;
