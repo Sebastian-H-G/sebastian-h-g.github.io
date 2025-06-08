@@ -285,9 +285,10 @@ button {
   
   <div id="site-content">
     <header>
-        <div id="logo" class="logo">
-            <img src="Logos/Geography.webp" alt="Optimized"   >
-        </div>
+<div id="logo" class="logo" style="position: relative; display: inline-block;">
+  <img src="Logos/Geography.webp" alt="Optimized">
+  <img src="Bilder/neutral_profile.jpg" alt="Profile" class="profile-overlay">
+</div>
         
          <h1 class="wave-text">Welcome to the Geography Quiz!</h1>
     
@@ -554,7 +555,7 @@ button {
             </div>
             <a href="us.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
         </section>
-        <section id="usa" class="quiz-section" data-tags="us, usa, us states capitals, capitals" data-aos="fade-up">
+        <section id="usa-capitals" class="quiz-section" data-tags="us, usa, us states capitals, capitals" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
               <path class="heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#ccc" stroke-width="2"/>
@@ -602,7 +603,7 @@ button {
                 </div>
                 <a href="mexico.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
             </section>
-            <section id="mexico" class="quiz-section" data-tags="mexico, states capitals, capitales estados, capitales de los estados de mexico" data-aos="fade-up">
+            <section id="mexico-capitals" class="quiz-section" data-tags="mexico, states capitals, capitales estados, capitales de los estados de mexico" data-aos="fade-up">
               <button class="favorite-btn" aria-label="Toggle favorite">
                 <svg class="heart-icon" width="24" height="24">
                   <path class="heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#ccc" stroke-width="2"/>
@@ -686,7 +687,22 @@ button {
             </div>
             <a href="Capitals_Quizzes.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
         </section>
-    
+            <section id="worldcountries" class="quiz-section" data-aos="fade-up">
+          <button class="favorite-btn" aria-label="Toggle favorite">
+            <svg class="heart-icon" width="24" height="24">
+              <path class="heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#ccc" stroke-width="2"/>
+              <path class="heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff6b81" opacity="0"/>
+            </svg>
+          </button>
+            <div class="quiz-content">
+                <img src="Logos/worldcountries2.webp" alt="Optimized" class="quiz-logo"   >
+                <div>
+                    <h2>Countries of the World</h2>
+                    <p>How many countries can you name? As you answer, the map will be filled in.</p>
+                </div>
+            </div>
+            <a href="worldcountries.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
+        </section>
         <section id="flag-quiz" class="quiz-section" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
             <svg class="heart-icon" width="24" height="24">
@@ -735,22 +751,6 @@ button {
                 </div>
             </div>
             <a href="worldcountries_map_click.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
-        </section>
-        <section id="worldcountries" class="quiz-section" data-aos="fade-up">
-          <button class="favorite-btn" aria-label="Toggle favorite">
-            <svg class="heart-icon" width="24" height="24">
-              <path class="heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#ccc" stroke-width="2"/>
-              <path class="heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff6b81" opacity="0"/>
-            </svg>
-          </button>
-            <div class="quiz-content">
-                <img src="Logos/worldcountries2.webp" alt="Optimized" class="quiz-logo"   >
-                <div>
-                    <h2>Countries of the World</h2>
-                    <p>How many countries can you name? As you answer, the map will be filled in.</p>
-                </div>
-            </div>
-            <a href="worldcountries.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
         </section>
         <section id="worldcountries_by_border" class="quiz-section" data-tags="world countries, borders, border, 90 seconds, map, world, countries" data-aos="fade-up">
           <button class="favorite-btn" aria-label="Toggle favorite">
@@ -993,7 +993,7 @@ button {
         </div>
         <a href="Germany.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="germany" class="quiz-section" data-aos="fade-up">
+    <section id="germany-capitals" class="quiz-section" data-aos="fade-up">
       <button class="favorite-btn" aria-label="Toggle favorite">
         <svg class="heart-icon" width="24" height="24">
           <path class="heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#ccc" stroke-width="2"/>
@@ -1025,7 +1025,7 @@ button {
         </div>
         <a href="mexico.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="mexico" class="quiz-section" data-aos="fade-up">
+    <section id="mexico-capitals" class="quiz-section" data-aos="fade-up">
       <button class="favorite-btn" aria-label="Toggle favorite">
         <svg class="heart-icon" width="24" height="24">
           <path class="heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#ccc" stroke-width="2"/>
@@ -1057,7 +1057,7 @@ button {
         </div>
         <a href="us.html" onclick="delayLink(event, this)" class="quiz-link">Start Quiz</a>
     </section>
-    <section id="usa" class="quiz-section" data-aos="fade-up">
+    <section id="usa-capitals" class="quiz-section" data-aos="fade-up">
       <button class="favorite-btn" aria-label="Toggle favorite">
         <svg class="heart-icon" width="24" height="24">
           <path class="heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#ccc" stroke-width="2"/>
@@ -1097,10 +1097,10 @@ button {
             </svg>
           </button>
             <div class="quiz-content">
-                <img src="Logos/Memory.webp" alt="Optimized" class="quiz-logo"   >
+                <img src="Logos/database.png" alt="Optimized" class="quiz-logo"   >
                 <div>
-                    <h2>View all Data</h2>
-                    <p>Test your memory with geography-based challenges.</p>
+                    <h2>Countries and Region Database</h2>
+                    <p>From capitals to currencies - how well do you know the world? Dive in and explore every corner of the globe!</p>
                 </div>
             </div>
             <a href="countries.html" onclick="delayLink(event, this)" class="quiz-link">Go there</a>
@@ -1358,6 +1358,10 @@ function updateOriginalFavoriteButtons(favoriteSet) {
 }
 
 // Render favorites under the banner
+// ...existing code...
+// Render favorites under the banner
+// ...existing code...
+// Render favorites under the banner
 async function updateBanner() {
   // Get current user
   const { data: { user } } = await sb.auth.getUser();
@@ -1385,6 +1389,18 @@ async function updateBanner() {
         cloneBtn.classList.add('favorited');
         cloneBtn.disabled = false; // Enable the button in the banner
 
+        // Always show filled heart and hide outline in the banner
+        const heartFilled = cloneBtn.querySelector('.heart-filled');
+        if (heartFilled) {
+          heartFilled.setAttribute('opacity', '1');
+          heartFilled.style.display = '';
+        }
+        const heartOutline = cloneBtn.querySelector('.heart-outline');
+        if (heartOutline) {
+          heartOutline.setAttribute('opacity', '0');
+          heartOutline.style.display = 'none';
+        }
+
         // Remove favorite when clicking the heart in the banner
         cloneBtn.addEventListener('click', async (e) => {
           e.stopPropagation();
@@ -1394,13 +1410,30 @@ async function updateBanner() {
       }
 
       container.appendChild(clone);
+      // ...inside updateBanner(), after container.appendChild(clone) loop...
+
+// After rendering all favorites, force all hearts in #favorites-container to filled
+container.querySelectorAll('section .favorite-btn').forEach(btn => {
+  btn.classList.add('favorited');
+  const heartFilled = btn.querySelector('.heart-filled');
+  if (heartFilled) {
+    heartFilled.setAttribute('opacity', '1');
+    heartFilled.style.display = '';
+  }
+  const heartOutline = btn.querySelector('.heart-outline');
+  if (heartOutline) {
+    heartOutline.setAttribute('opacity', '0');
+    heartOutline.style.display = 'none';
+  }
+});
     });
   }
 
   // Update original buttons after banner update
   updateOriginalFavoriteButtons(favoriteSet);
 }
-
+// ...existing code...
+// ...existing code...
 // Initialize favorites and handle button clicks
 async function initFavorites() {
   const { data: { user } } = await sb.auth.getUser();
@@ -1484,45 +1517,7 @@ async function initFavorites() {
 
 // ...existing code...
 // ...existing code...
-async function updateBanner() {
-  const favs = await fetchFavorites(user.id); // Always fetch latest from DB
-  const favoriteSet = new Set(favs);
 
-  const container = document.getElementById('favorites-container');
-  container.innerHTML = '';
-
-  if (favs.length === 0) {
-    container.innerHTML = '<p id="no-favs">No favorites yet. ⭐ Click a heart to add one!</p>';
-  } else {
-    favoriteSet.forEach(id => {
-      const orig = document.getElementById(id);
-      if (!orig) return;
-
-      const clone = orig.cloneNode(true);
-      clone.id = `fav_${id}`;
-      clone.style.cursor = 'pointer';
-
-      const cloneBtn = clone.querySelector('.favorite-btn');
-      if (cloneBtn) {
-        // Always add the class, regardless of the original
-        cloneBtn.classList.add('favorited');
-        cloneBtn.disabled = false; // Enable the button in the banner
-
-        // Remove favorite when clicking the heart in the banner
-        cloneBtn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          await removeFavorite(user.id, id);
-          updateBanner();
-        });
-      }
-
-      container.appendChild(clone);
-    });
-  }
-
-  // Update original buttons after banner update
-  updateOriginalFavoriteButtons(favoriteSet);
-}
 // ...existing code...
 // ...existing code...
 

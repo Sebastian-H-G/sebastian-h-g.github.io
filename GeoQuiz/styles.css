@@ -66,6 +66,20 @@ header .logo img {
 }
 #logo {
   margin: 0 auto;
+    position: relative; /* Needed for absolute positioning of overlay */
+  display: inline-block;
+}
+
+#logo .profile-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28px;   /* Adjust size as needed */
+  height: 28px;
+  border-radius: 50%; /* Makes it circular */
+  border: 2px solid #fff; /* Optional: white border */
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  background: #fff;
 }
 header .logo img:hover {
     transform: scale(1.05);
@@ -386,7 +400,7 @@ button:hover {
     overflow-y: auto;  /* Enable scrolling inside the modal if content overflows */
 }
 #close-profile {
-  position: absolute;
+  position: sticky;
   top: 1rem;
   right: 1rem;
 
@@ -394,8 +408,8 @@ button:hover {
   width: auto;
   padding: 0;
   margin: 0;
+  float: right;
   line-height: 1;
-
   font-size: 1.5rem;
   color: black;
   border: none;
@@ -431,7 +445,7 @@ button:hover {
 
  /* Container styling */
     .results-container {
-      max-width: 800px;
+      width: 95%;
       margin: 2rem auto;
       padding: 1rem;
       background: #fff;
@@ -492,7 +506,7 @@ button:hover {
 
 .filter-container {
   margin-bottom: 1rem;
-  text-align: right;
+  text-align: left;
 }
 
 #quizFilter {
@@ -503,9 +517,9 @@ button:hover {
 }
 /* report.css */
 .report-form {
-  max-width: 480px;
+  width: 100%;
   margin: 2rem auto;
-  padding: 1.5rem;
+  padding: 2rem;
   border: 1px solid #ddd;
   border-radius: 6px;
   font-family: sans-serif;
@@ -736,6 +750,7 @@ height: auto;
   align-items: center;
   justify-content: center;
   max-width: 1200px;
+  margin: 0 auto;
   width: 100%;
   padding: 0 20px;
   position: relative; /* Ensure positioning context for pseudo-element */
