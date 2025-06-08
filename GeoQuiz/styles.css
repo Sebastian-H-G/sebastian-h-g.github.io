@@ -52,6 +52,9 @@ header {
     background: linear-gradient(to right, #002f5f, #00bfff, #87cefa);
     padding: 20px 0;
     text-align: center;
+      display: flex;
+  flex-direction: column;
+  align-items: center;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

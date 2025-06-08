@@ -7,10 +7,10 @@ const supabase          = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ...existing code...
 const QUIZ_LOGOS = {
-  "Countries of the World Quiz": "Logos/worldcountries.webp",
-  "World Countries Empty Map": "Logos/worldcountries.webp",
-  "World Countries by Border": "Logos/worldcountries.webp",
-  "World Countries Map Click": "Logos/worldcountries.webp",
+  "Countries of the World Quiz": "Logos/worldcountries2.webp",
+  "World Countries Empty Map": "Logos/worldcountries2.webp",
+  "World Countries by Border": "Logos/worldcountries2.webp",
+  "World Countries Map Click": "Logos/worldcountries2.webp",
   "Countries of Africa": "Logos/africa.png",
   "Countries of Europe": "Logos/europe.webp",
   "Countries of Asia": "Logos/asia.webp",
