@@ -388,6 +388,8 @@ button:hover {
 }
 #profile-wrapper {
   background: #fff;
+  display: flex;
+  flex-direction: column;
   color: black;
   border-radius: 12px;
   box-shadow: 0 16px 48px rgba(0,0,0,0.2);
@@ -434,14 +436,12 @@ button:hover {
 }
 #close-profile {
   position: sticky;
-  top: 0.2rem;
-  right: 0.2rem;
-
-  /* override the generic button reset */
-  width: auto;
+  top: 0;
+  margin-left: auto;
+  display: block;
+  z-index: 10;
   padding: 0;
-  margin: 0;
-  float: right;
+  width: auto;
   line-height: 1;
   font-size: 2.8rem;
   color: black;
