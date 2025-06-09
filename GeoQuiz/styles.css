@@ -683,6 +683,12 @@ button:hover {
   display: block;
   margin-bottom: 1rem;
 }
+.report-form label > select,
+.report-form label > textarea {
+  margin-top: 0.5em;
+  display: block;
+}
+
 .report-form select,
 .report-form textarea {
   width: 100%;
