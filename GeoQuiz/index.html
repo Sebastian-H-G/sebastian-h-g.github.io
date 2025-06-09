@@ -324,7 +324,7 @@ button {
     <header>
 <div id="logo" class="logo" style="position: relative;">
   <img src="Logos/Geography.webp" alt="Optimized">
-  <img src="Bilder/neutral_profile.jpg" alt="Profile" class="profile-overlay">
+  <img id="headerAvatar" src="Bilder/neutral_profile.jpg" alt="Profile" class="profile-overlay">
 </div>
         
          <h1 class="wave-text">Welcome to the Geography Quiz!</h1>
@@ -1356,18 +1356,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let selectedFile = null;
 
+   // --- PASTE HERE ---
+  function updateAllAvatars(url) {
+    document.getElementById('modalAvatarPreview').src = url;
+    document.getElementById('avatarPreview').src = url;
+    document.getElementById('headerAvatar').src = url;
+  }
   // Preview selected image
-  avatarInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      selectedFile = file;
-      avatarPreview.src = URL.createObjectURL(file);
-      statusText.textContent = '';
-    } else {
-      statusText.textContent = 'Please select a valid image.';
-      selectedFile = null;
-    }
-  });
+avatarInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file && file.type.startsWith('image/')) {
+    selectedFile = file;
+    const url = URL.createObjectURL(file);
+    avatarPreview.src = url;
+    statusText.textContent = '';
+    // Also update the profile and header avatars
+    const modalAvatar = document.getElementById('modalAvatarPreview');
+    if (modalAvatar) modalAvatar.src = url;
+    const headerAvatar = document.getElementById('headerAvatar');
+    if (headerAvatar) headerAvatar.src = url;
+  } else {
+    statusText.textContent = 'Please select a valid image.';
+    selectedFile = null;
+  }
+});
 
   // Upload flow
   uploadBtn.addEventListener('click', async () => {
@@ -1439,12 +1451,21 @@ document.addEventListener('DOMContentLoaded', () => {
       .update({ avatar_url: publicUrl })
       .eq('id', user.id);
 
-    if (dbErr) {
-      console.error('DB UPDATE error:', dbErr);
-      statusText.textContent = `Database error: ${dbErr.message}`;
-    } else {
-      statusText.textContent = 'Avatar updated!';
-    }
+    // ...existing code...
+if (dbErr) {
+  console.error('DB UPDATE error:', dbErr);
+  statusText.textContent = `Database error: ${dbErr.message}`;
+} else {
+  // After successful upload:
+  statusText.textContent = 'Avatar updated!';
+  // Update all avatars with the new public URL
+  const modalAvatar = document.getElementById('modalAvatarPreview');
+  if (modalAvatar) modalAvatar.src = publicUrl;
+  const avatarPreview = document.getElementById('avatarPreview');
+  if (avatarPreview) avatarPreview.src = publicUrl;
+  const headerAvatar = document.getElementById('headerAvatar');
+  if (headerAvatar) headerAvatar.src = publicUrl;
+}
 
     uploadBtn.disabled = false;
   });
@@ -1774,15 +1795,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // When avatar is changed, update both previews
-  avatarInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      const url = URL.createObjectURL(file);
-      avatarPreview.src = url;
-      modalAvatarPreview.src = url;
-    }
-  });
 
   // After successful upload, update avatar in profile
   const uploadBtn = document.getElementById('uploadBtn');
