@@ -391,8 +391,9 @@ button:hover {
   border-radius: 12px;
   box-shadow: 0 16px 48px rgba(0,0,0,0.2);
   padding: 2rem 1.5rem;
-  max-width: 500px;
-  width: 90vw;
+  width: 85vw;
+  height: 85vh;
+  overflow-y: auto;
   position: relative;
   transform: translateY(100vh) translateZ(0);
   opacity: 0;
