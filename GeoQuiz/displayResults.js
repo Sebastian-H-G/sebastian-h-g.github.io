@@ -28,59 +28,69 @@ const QUIZ_LOGOS = {
   // Add more as needed
 };
 // ...existing code...
+// Helper to render results
+async function renderResults(session) {
+  const loadingElem = document.getElementById('loading');
+  const table = document.getElementById('resultsTable');
+  const tbody = table.querySelector('tbody');
+  tbody.innerHTML = ""; // Clear previous results
 
-async function init() {
-  // 1) Enforce login
-  const { data: { session } } = await supabase.auth.getSession();
-if (!session) {
-  document.getElementById('loading').textContent = 'Bitte zuerst einloggen.';
-  return;
-}
-
-
-  // 2) Fetch results for the current user
-const { data, error } = await supabase
-  .from('quiz_results_with_name')
-  .select('quiz_name, attained_score, attainable_score, completed, gave_up, played_at')
-  .order('played_at', { ascending: false });
-    console.log('Fetched results:', { data, error });
-
-  if (error) {
-    console.error('Error loading results:', error);
-    document.getElementById('loading').textContent = 'Fehler beim Laden der Ergebnisse.';
+  if (!session) {
+    loadingElem.textContent = 'Bitte zuerst einloggen.';
+    table.style.display = 'none';
     return;
   }
 
-  // 3) Render
-  document.getElementById('loading').style.display = 'none';
-  const table = document.getElementById('resultsTable');
-  const tbody = table.querySelector('tbody');
+  // Fetch results for the current user
+  const { data, error } = await supabase
+    .from('quiz_results_with_name')
+    .select('quiz_name, attained_score, attainable_score, completed, gave_up, played_at')
+    .order('played_at', { ascending: false });
+
+  if (error) {
+    console.error('Error loading results:', error);
+    loadingElem.textContent = 'Fehler beim Laden der Ergebnisse.';
+    table.style.display = 'none';
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    loadingElem.textContent = 'Noch keine Ergebnisse.';
+    table.style.display = 'none';
+    return;
+  }
+
+  loadingElem.style.display = 'none';
   table.style.display = '';
 
-// ...existing code...
-data.forEach(row => {
-  const tr = document.createElement('tr');
-  const logo = QUIZ_LOGOS[row.quiz_name] || "Logos/Geography.webp"; // fallback image
+  data.forEach(row => {
+    const tr = document.createElement('tr');
+    const logo = QUIZ_LOGOS[row.quiz_name] || "Logos/Geography.webp"; // fallback image
 
-  tr.innerHTML = `
-    <td>
-      <img src="${logo}" alt="" style="width:28px;height:28px;vertical-align:middle;margin-right:8px;border-radius:5px;">
-      ${row.quiz_name}
-    </td>
-    <td>${row.attained_score} / ${row.attainable_score}</td>
-    <td>${row.completed ? '✔️' : '❌'}</td>
-    <td>${row.gave_up ? '❌' : '/'}</td>
-    <td>${new Date(row.played_at).toLocaleString()}</td>
-  `;
+    tr.innerHTML = `
+      <td>
+        <img src="${logo}" alt="" style="width:28px;height:28px;vertical-align:middle;margin-right:8px;border-radius:5px;">
+        ${row.quiz_name}
+      </td>
+      <td>${row.attained_score} / ${row.attainable_score}</td>
+      <td>${row.completed ? '✔️' : '❌'}</td>
+      <td>${row.gave_up ? '❌' : '/'}</td>
+      <td>${new Date(row.played_at).toLocaleString()}</td>
+    `;
 
-  tbody.appendChild(tr);
-});
-// ...existing code...
-
-  if (data.length === 0) {
-    document.getElementById('loading').textContent = 'Noch keine Ergebnisse.';
-    table.style.display = 'none';
-  }
+    tbody.appendChild(tr);
+  });
 }
 
-window.addEventListener('DOMContentLoaded', init);
+// Listen for auth state changes and DOMContentLoaded
+window.addEventListener('DOMContentLoaded', () => {
+  // Listen for auth state changes (handles login after page load)
+  supabase.auth.onAuthStateChange((event, session) => {
+    renderResults(session);
+  });
+
+  // Also check immediately in case session is already available (e.g. after refresh)
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    renderResults(session);
+  });
+});
