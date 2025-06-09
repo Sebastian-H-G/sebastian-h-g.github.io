@@ -244,17 +244,30 @@ button {
     <p><strong>Username:</strong> <span id="pUsername"></span></p>
     </div>
 
-    <div class="profile-info">
-     <div class="upload-card">
-    <h2>Upload Your Avatar</h2>
-    <div class="preview-wrapper">
-      <img id="avatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar Preview" />
-    </div>
-    <input type="file" id="avatarInput" accept="image/*" />
-    <button id="uploadBtn">Upload</button>
-    <p id="status"></p>
+<div class="profile-info">
+  <div class="avatar-display" id="openAvatarModal">
+    <img id="modalAvatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar" />
+    <img id="editPen" src="Bilder/pen.jpg" alt="Edit" class="edit-pen" />
   </div>
+</div>
+<!-- ...existing code... -->
+
+<!-- Place this modal at the end of <body> (before </body>) -->
+<div id="avatarModal" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <span class="close-modal" id="closeAvatarModal">&times;</span>
+    <div class="upload-card">
+      <h2>Upload Your Avatar</h2>
+      <div class="preview-wrapper">
+        <img id="avatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar Preview" />
+      </div>
+      <input type="file" id="avatarInput" accept="image/*" />
+      <button id="uploadBtn">Upload</button>
+      <p id="status"></p>
     </div>
+  </div>
+</div>
+
     <div class="profile-info">
       <button onclick="handleLogout()">Log Out</button>
     </div>
@@ -1725,7 +1738,63 @@ quizFilterInput.addEventListener('input', function () {
 });
 
   </script>
+<script>
+// filepath: c:\Users\sebas\OneDrive\Documents\GitHub\Sebastian-H-G.github.io\sebastian-h-g.github.io\GeoQuiz\index.html
+// ...existing code...
+document.addEventListener('DOMContentLoaded', () => {
+  // Modal logic
+  const avatarDisplay = document.getElementById('openAvatarModal');
+  const modal = document.getElementById('avatarModal');
+  const closeBtn = document.getElementById('closeAvatarModal');
+  const modalAvatarPreview = document.getElementById('modalAvatarPreview');
+  const avatarPreview = document.getElementById('avatarPreview');
+  const avatarInput = document.getElementById('avatarInput');
+  const editPen = document.getElementById('editPen');
 
+  // Open modal when avatar or pen is clicked
+  avatarDisplay.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // Sync modal avatar with current avatar
+    avatarPreview.src = modalAvatarPreview.src;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+
+  // Close modal
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  });
+
+  // Close modal when clicking outside content
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
+
+  // When avatar is changed, update both previews
+  avatarInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const url = URL.createObjectURL(file);
+      avatarPreview.src = url;
+      modalAvatarPreview.src = url;
+    }
+  });
+
+  // After successful upload, update avatar in profile
+  const uploadBtn = document.getElementById('uploadBtn');
+  const statusText = document.getElementById('status');
+  uploadBtn.addEventListener('click', () => {
+    // After upload logic, if successful:
+    // modalAvatarPreview.src = avatarPreview.src;
+    // Optionally close modal here if you want
+  });
+});
+// ...existing code...
+</script>
 <script>
     function toggleQuizSections(event) {
         const section = event.currentTarget;
