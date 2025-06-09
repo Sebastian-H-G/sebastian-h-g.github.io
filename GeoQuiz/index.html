@@ -275,27 +275,7 @@ button {
     </div>
 
 
-    <!-- report.html -->
-<form id="report-form" class="report-form">
-  <h2>Report a Bug / Send Feedback</h2>
-  <label>
-    Type:
-    <select name="type" required>
-      <option value="">–– choose ––</option>
-      <option value="bug">🐞 Bug</option>
-      <option value="feedback">💡 Feedback</option>
-    </select>
-  </label>
 
-  <label>
-    Your Message:
-    <textarea name="message" rows="6" placeholder="Describe what happened…" required></textarea>
-  </label>
-
-  <button type="submit">Submit Report</button>
-
-  <p id="form-status" class="status"></p>
-</form>
 
     <div class="results-container">
     <h1>Your Quiz Results</h1>
@@ -317,6 +297,29 @@ button {
       <tbody></tbody>
     </table>
   </div>
+
+      <!-- report.html -->
+<form id="report-form" class="report-form">
+  <h2>Report a Bug / Send Feedback</h2>
+  <label>
+    Type:
+    <select name="type" required>
+      <option value="">–– choose ––</option>
+      <option value="bug">🐞 Bug</option>
+      <option value="feedback">💡 Feedback</option>
+    </select>
+  </label>
+
+  <label>
+    Your Message:
+    <textarea name="message" rows="6" placeholder="Describe what happened…" required></textarea>
+  </label>
+
+  <button type="submit">Submit Report</button>
+
+  <p id="form-status" class="status"></p>
+</form>
+
   </div>
 </div>
 
@@ -1707,44 +1710,38 @@ async function initFavorites() {
 }
 
 
-  // 8️⃣ Overlay/profile toggling UI
+// ...existing code...
+// 8️⃣ Overlay/profile toggling UI
+const profile = document.getElementById('profile');
+const body = document.body;
+
 document.getElementById('logo').addEventListener('click', (e) => {
   e.stopPropagation();
-  const prof = document.getElementById('profile');
-  const body = document.body;
-  
-  // Toggle profile visibility
-  if (prof.style.display === 'flex') {
-    prof.style.display = 'none';
-    body.style.overflow = 'auto'; // Re-enable vertical scrolling
+  if (profile.classList.contains('open')) {
+    profile.classList.remove('open');
+    body.style.overflow = 'auto';
   } else {
-    prof.style.display = 'flex';
-    body.style.overflow = 'hidden'; // Disable vertical scrolling
+    profile.classList.add('open');
+    body.style.overflow = 'hidden';
   }
 });
 
 document.getElementById('close-profile').addEventListener('click', () => {
-  const prof = document.getElementById('profile');
-  const body = document.body;
-  
-  prof.style.display = 'none';
-  body.style.overflow = 'auto'; // Re-enable vertical scrolling
+  profile.classList.remove('open');
+  body.style.overflow = 'auto';
 });
 
 document.addEventListener('click', (e) => {
-  const prof = document.getElementById('profile');
-  const body = document.body;
-
-  // Close profile if clicked outside of it
   if (
-    window.getComputedStyle(prof).display === 'flex' &&
+    profile.classList.contains('open') &&
     !document.getElementById('profile-wrapper').contains(e.target) &&
     !document.getElementById('logo').contains(e.target)
   ) {
-    prof.style.display = 'none';
-    body.style.overflow = 'auto'; // Re-enable vertical scrolling
+    profile.classList.remove('open');
+    body.style.overflow = 'auto';
   }
 });
+// ...existing code...
 </script>
 
   <script type="module" src="displayResults.js" defer></script>

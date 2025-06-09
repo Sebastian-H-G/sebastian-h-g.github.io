@@ -367,19 +367,52 @@ button:hover {
     margin: 0 auto 2rem auto;
   }
 }
+/* --- Add to your <style> section or styles.css --- */
 #profile {
-    position: fixed; /* Use fixed to stay centered even on scroll */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;  
-    display: none;
-    z-index: 100000;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    backdrop-filter: blur(5px); /* Optional: adds a blur effect to the background */
-    justify-content: center; /* Center horizontally */
-    align-items: center;     /* Center vertically */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0);
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 1000;
+  transition: background 0.5s;
+}
+#profile.open {
+  background: rgba(0,0,0,0.5);
+  visibility: visible;
+  pointer-events: all;
+}
+#profile-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+  padding: 2rem 1.5rem;
+  max-width: 500px;
+  width: 90vw;
+  position: relative;
+  transform: translateY(100vh) translateZ(0);
+  opacity: 0;
+}
+#profile.open #profile-wrapper {
+  animation: slideZ 1.2s cubic-bezier(.7,1.7,.5,1) forwards;
+}
+@keyframes slideZ {
+  0% {
+    transform: translateY(100vh) translateZ(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(50vh) translateZ(-120px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) translateZ(80px);
+    opacity: 1;
+  }
 }
 /* Hide scrollbar for Webkit browsers (Chrome, Safari, etc.) */
 #profile-wrapper::-webkit-scrollbar {
@@ -391,17 +424,7 @@ button:hover {
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
 }
-#profile-wrapper {
-    background: #fff;
-    border-radius: 12px;
-    width: 70vw;
-    height: 70vh;
-    margin: 20vw auto;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-    padding: 2rem;
-    position: relative;
-    overflow-y: auto;  /* Enable scrolling inside the modal if content overflows */
-}
+
 #profile-wrapper h2 {
     font-size: 1.75rem;
     color: #2c3e50;
