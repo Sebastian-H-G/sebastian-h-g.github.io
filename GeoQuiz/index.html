@@ -1197,7 +1197,7 @@ button {
   function showApp(user) {
     document.getElementById('auth-container').style.display = 'none';
     document.getElementById('site-content').style.display = 'block';
-    document.getElementById('profile').style.display = 'none';
+  document.getElementById('profile').classList.remove('open'); // <-- use class, not display
     loadProfile(user);
     initFavorites();
   }
@@ -1205,7 +1205,7 @@ button {
   function showAuth() {
     document.getElementById('auth-container').style.display = 'flex';
     document.getElementById('site-content').style.display = 'none';
-    document.getElementById('profile').style.display = 'none';
+  document.getElementById('profile').classList.remove('open'); // <-- use class, not display
   }
 
   // 3️⃣ Register new users
