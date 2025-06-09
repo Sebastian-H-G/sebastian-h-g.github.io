@@ -388,11 +388,12 @@ button:hover {
 }
 #profile-wrapper {
   background: #fff;
+  color: black;
   border-radius: 12px;
   box-shadow: 0 16px 48px rgba(0,0,0,0.2);
   padding: 2rem 1.5rem;
   width: 85vw;
-  height: 85vh;
+  max-height: 85vh;
   overflow-y: auto;
   position: relative;
   transform: translateY(100vh) translateZ(0);
@@ -836,9 +837,7 @@ gap: 20px;
 max-width: 100px;
 height: auto;
 }
-#profile-wrapper {
-    color: black;
-  }
+
 /* Default state */
 .quiz-link {
     display: block;
