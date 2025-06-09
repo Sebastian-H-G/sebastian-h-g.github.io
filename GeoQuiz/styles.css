@@ -402,6 +402,11 @@ button:hover {
     position: relative;
     overflow-y: auto;  /* Enable scrolling inside the modal if content overflows */
 }
+#profile-wrapper h2 {
+    font-size: 1.75rem;
+    color: #2c3e50;
+    text-align: center;
+}
 #close-profile {
   position: sticky;
   top: 0.2rem;
@@ -420,6 +425,13 @@ button:hover {
   cursor: pointer;
 }
 
+#profile-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
 
 /* Animation for showing the quiz sections */
 @keyframes slideDown {
