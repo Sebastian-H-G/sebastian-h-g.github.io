@@ -518,6 +518,66 @@ button:hover {
   border-radius: 8px;
   font-size: 1rem;
 }
+
+
+/* profile image.css */
+.upload-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 320px;
+}
+
+.upload-card h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.preview-wrapper {
+  width: 128px;
+  height: 128px;
+  margin: 0 auto 1rem;
+  border: 2px dashed #ccc;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#avatarInput {
+  display: block;
+  margin: 1rem auto;
+}
+
+#uploadBtn {
+  background: #0070f3;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#uploadBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#status {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
 /* report.css */
 .report-form {
   width: 90%;

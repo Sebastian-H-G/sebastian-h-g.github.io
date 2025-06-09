@@ -232,11 +232,36 @@ button {
 
 <div id="profile">
   <div id="profile-wrapper">    
+
     <button id="close-profile">&times;</button>
+
     <h2>Your Profile</h2>
+
+    <div id="profile-content">
+    
+    <div class="profile-info">
     <p><strong>Email:</strong> <span id="pEmail"></span></p>
     <p><strong>Username:</strong> <span id="pUsername"></span></p>
-    <button onclick="handleLogout()">Log Out</button>
+    </div>
+    <div class="profile-info">
+      
+  <div class="upload-card">
+    <h2>Upload Your Avatar</h2>
+    <div class="preview-wrapper">
+      <img id="avatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar Preview" />
+    </div>
+    <input type="file" id="avatarInput" accept="image/*" />
+    <button id="uploadBtn">Upload</button>
+    <p id="status"></p>
+  </div>
+
+    </div>
+    <div class="profile-info">
+      <button onclick="handleLogout()">Log Out</button>
+    </div>
+    </div>
+
+
     <!-- report.html -->
 <form id="report-form" class="report-form">
   <h2>Report a Bug / Send Feedback</h2>
@@ -1305,6 +1330,97 @@ if (reportForm) {
 }
 
 
+
+// ───────────────
+// PROFILE IMAGE UPLOAD LOGIC
+// ───────────────
+
+// ...existing code...
+document.addEventListener('DOMContentLoaded', () => {
+  const avatarInput    = document.getElementById('avatarInput');
+  const avatarPreview  = document.getElementById('avatarPreview');
+  const uploadBtn      = document.getElementById('uploadBtn');
+  const statusText     = document.getElementById('status');
+
+  let selectedFile = null;
+
+  // Preview file when selected
+  avatarInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      selectedFile = file;
+      avatarPreview.src = URL.createObjectURL(file);
+      statusText.textContent = '';
+    } else {
+      statusText.textContent = 'Please select a valid image.';
+      selectedFile = null;
+    }
+  });
+
+  // Upload flow
+  uploadBtn.addEventListener('click', async () => {
+    if (!selectedFile) {
+      statusText.textContent = 'No file selected.';
+      return;
+    }
+    uploadBtn.disabled = true;
+    statusText.textContent = 'Uploading…';
+
+    // 1) Get current user
+    const { data: { user }, error: userErr } = await sb.auth.getUser();
+    if (userErr || !user) {
+      statusText.textContent = 'You must be logged in.';
+      uploadBtn.disabled = false;
+      return;
+    }
+
+    // 2) Build a unique filename
+    const fileExt = selectedFile.name.split('.').pop();
+    const fileName = `${user.id}.${Date.now()}.${fileExt}`;
+
+    // 3) Upload to Storage
+    const { data: uploadData, error: uploadErr } = await sb
+      .storage
+      .from('avatars')
+      .upload(fileName, selectedFile, { upsert: true });
+
+    if (uploadErr) {
+      statusText.textContent = `Upload error: ${uploadErr.message}`;
+      uploadBtn.disabled = false;
+      return;
+    }
+
+    // 4) Get public URL
+    const { data: { publicUrl }, error: urlErr } = sb
+      .storage
+      .from('avatars')
+      .getPublicUrl(uploadData.path);
+
+    if (urlErr) {
+      statusText.textContent = `URL error: ${urlErr.message}`;
+      uploadBtn.disabled = false;
+      return;
+    }
+
+    // 5) Upsert into profiles table
+    const { error: dbErr } = await sb
+      .from('profiles')
+      .upsert({ id: user.id, avatar_url: publicUrl });
+
+    if (dbErr) {
+      statusText.textContent = `Database error: ${dbErr.message}`;
+    } else {
+      statusText.textContent = 'Avatar updated!';
+    }
+    uploadBtn.disabled = false;
+  });
+});
+// ...existing code...
+
+
+
+
+
 // ───────────────
 // FAVORITES LOGIC (using section `id` attribute)
 // ───────────────
@@ -1382,23 +1498,29 @@ async function updateBanner() {
       const orig = document.getElementById(id);
       if (!orig) return;
 
-      const clone = orig.cloneNode(true);
-      clone.id = `fav_${id}`;
-      clone.style.cursor = 'pointer';
+// ...inside updateBanner()...
+const clone = orig.cloneNode(true);
+clone.id = `fav_${id}`;
+clone.style.cursor = 'pointer';
 
-      // ⭐ FIX: Add 'favorited' to ALL .favorite-btn in the clone
-      clone.querySelectorAll('.favorite-btn').forEach(cloneBtn => {
-        cloneBtn.classList.add('favorited');
-        cloneBtn.disabled = false;
-        // Remove favorite when clicking the heart in the banner
-        cloneBtn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          await removeFavorite(user.id, id);
-          updateBanner();
-        });
-      });
+// Remove IDs from children to avoid duplicates
+clone.querySelectorAll('[id]').forEach(el => {
+  if (el !== clone) el.removeAttribute('id');
+});
 
-      container.appendChild(clone);
+// ⭐ FIX: Add 'favorited' to ALL .favorite-btn in the clone
+clone.querySelectorAll('.favorite-btn').forEach(cloneBtn => {
+  cloneBtn.classList.add('favorited');
+  cloneBtn.disabled = false;
+  // Remove favorite when clicking the heart in the banner
+  cloneBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    await removeFavorite(user.id, id);
+    updateBanner();
+  });
+});
+
+container.appendChild(clone);
     });
   }
 
