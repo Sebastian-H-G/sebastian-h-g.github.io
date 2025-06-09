@@ -1332,19 +1332,21 @@ if (reportForm) {
 
 
 // ───────────────
-// PROFILE IMAGE UPLOAD LOGIC
+// PROFILE IMAGE UPLOAD AVATAR LOGIC
 // ───────────────
 
 // ...existing code...
+
+
 document.addEventListener('DOMContentLoaded', () => {
-  const avatarInput    = document.getElementById('avatarInput');
-  const avatarPreview  = document.getElementById('avatarPreview');
-  const uploadBtn      = document.getElementById('uploadBtn');
-  const statusText     = document.getElementById('status');
+  const avatarInput   = document.getElementById('avatarInput');
+  const avatarPreview = document.getElementById('avatarPreview');
+  const uploadBtn     = document.getElementById('uploadBtn');
+  const statusText    = document.getElementById('status');
 
   let selectedFile = null;
 
-  // Preview file when selected
+  // Preview selected image
   avatarInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith('image/')) {
@@ -1367,7 +1369,11 @@ document.addEventListener('DOMContentLoaded', () => {
     statusText.textContent = 'Uploading…';
 
     // 1) Get current user
-    const { data: { user }, error: userErr } = await sb.auth.getUser();
+    const {
+      data: { user },
+      error: userErr
+    } = await sb.auth.getUser();
+
     if (userErr || !user) {
       statusText.textContent = 'You must be logged in.';
       uploadBtn.disabled = false;
@@ -1379,7 +1385,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileName = `${user.id}.${Date.now()}.${fileExt}`;
 
     // 3) Upload to Storage
-    const { data: uploadData, error: uploadErr } = await sb
+    const {
+      data: uploadData,
+      error: uploadErr
+    } = await sb
       .storage
       .from('avatars')
       .upload(fileName, selectedFile, { upsert: true });
@@ -1390,22 +1399,21 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // 4) Get public URL
-    const { data: { publicUrl }, error: urlErr } = sb
+    // 4) Get public URL (no error object here)
+    const { data } = sb
       .storage
       .from('avatars')
       .getPublicUrl(uploadData.path);
 
-    if (urlErr) {
-      statusText.textContent = `URL error: ${urlErr.message}`;
-      uploadBtn.disabled = false;
-      return;
-    }
+    const publicUrl = data.publicUrl;
 
     // 5) Upsert into profiles table
     const { error: dbErr } = await sb
       .from('profiles')
-      .upsert({ id: user.id, avatar_url: publicUrl });
+      .upsert({
+        id: user.id,           // 🔑 must include for RLS
+        avatar_url: publicUrl
+      });
 
     if (dbErr) {
       statusText.textContent = `Database error: ${dbErr.message}`;
