@@ -1335,8 +1335,6 @@ if (reportForm) {
 // ───────────────
 
 // ...existing code...
-
-
 document.addEventListener('DOMContentLoaded', () => {
   const avatarInput   = document.getElementById('avatarInput');
   const avatarPreview = document.getElementById('avatarPreview');
@@ -1374,6 +1372,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } = await sb.auth.getUser();
 
     if (userErr || !user) {
+      console.error('Auth error:', userErr);
       statusText.textContent = 'You must be logged in.';
       uploadBtn.disabled = false;
       return;
@@ -1393,32 +1392,47 @@ document.addEventListener('DOMContentLoaded', () => {
       .upload(fileName, selectedFile, { upsert: true });
 
     if (uploadErr) {
+      console.error('Storage upload error:', uploadErr);
       statusText.textContent = `Upload error: ${uploadErr.message}`;
       uploadBtn.disabled = false;
       return;
     }
 
-    // 4) Get public URL (no error object here)
-    const { data } = sb
+    // 4) Get public URL
+    const { data: urlData } = sb
       .storage
       .from('avatars')
       .getPublicUrl(uploadData.path);
+    const publicUrl = urlData.publicUrl;
 
-    const publicUrl = data.publicUrl;
+    // — DEBUG: verify user.id matches existing row
+    console.log('Signed-in user id:', user.id);
+    const { data: existing, error: fetchErr } = await sb
+      .from('profiles')
+      .select('id, avatar_url')
+      .eq('id', user.id)
+      .maybeSingle();
+    console.log('Existing profile row:', existing, 'fetchErr:', fetchErr);
 
-    // 5) Upsert into profiles table
+    if (fetchErr || !existing) {
+      statusText.textContent = 'Profile row not found—did you create it at signup?';
+      uploadBtn.disabled = false;
+      return;
+    }
+
+    // 5) UPDATE only the avatar_url on the existing row
     const { error: dbErr } = await sb
       .from('profiles')
-      .upsert({
-        id: user.id,           // 🔑 must include for RLS
-        avatar_url: publicUrl
-      });
+      .update({ avatar_url: publicUrl })
+      .eq('id', user.id);
 
     if (dbErr) {
+      console.error('DB UPDATE error:', dbErr);
       statusText.textContent = `Database error: ${dbErr.message}`;
     } else {
       statusText.textContent = 'Avatar updated!';
     }
+
     uploadBtn.disabled = false;
   });
 });
