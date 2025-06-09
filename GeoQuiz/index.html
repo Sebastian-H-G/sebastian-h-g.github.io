@@ -1256,20 +1256,26 @@ button {
   }
 
   // 5️⃣ Load and display user profile data
-  async function loadProfile(user) {
-    document.getElementById('pEmail').textContent = user.email;
-    const { data: profile, error } = await sb
-      .from('profiles')
-      .select('username')
-      .eq('id', user.id)
-      .single();
-    if (error) {
-      console.error('[loadProfile] error:', error);
-      document.getElementById('pUsername').textContent = '(error)';
-      return;
-    }
-    document.getElementById('pUsername').textContent = profile.username || '(no username)';
+async function loadProfile(user) {
+  document.getElementById('pEmail').textContent = user.email;
+  const { data: profile, error } = await sb
+    .from('profiles')
+    .select('username, avatar_url')
+    .eq('id', user.id)
+    .single();
+  if (error) {
+    console.error('[loadProfile] error:', error);
+    document.getElementById('pUsername').textContent = '(error)';
+    return;
   }
+  document.getElementById('pUsername').textContent = profile.username || '(no username)';
+  // Set avatar images if avatar_url exists
+  if (profile.avatar_url) {
+    document.getElementById('modalAvatarPreview').src = profile.avatar_url;
+    document.getElementById('avatarPreview').src = profile.avatar_url;
+    document.getElementById('headerAvatar').src = profile.avatar_url;
+  }
+}
 
   // 6️⃣ Logout users
   async function handleLogout() {
