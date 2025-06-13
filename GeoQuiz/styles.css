@@ -348,6 +348,96 @@ button {
 button:hover {
   opacity: 0.9;
 }
+    /* ─── Reset & Base ───────────────────────────────────────────────────────── */
+    * { margin:0; padding:0; box-sizing:border-box }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8f8f8; color: #333; padding: 2rem;
+    }
+
+    /* ─── Preview Row ────────────────────────────────────────────────────────── */
+    #badge-preview {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .preview-slot {
+      width: 80px; height: 80px;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .preview-slot img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      filter: grayscale(100%) brightness(0.5);
+      transition: filter .3s ease, transform .3s ease;
+    }
+    .preview-slot.unlocked img {
+      filter: none;
+    }
+    .preview-slot.unlocked img:hover {
+      transform: scale(1.05);
+    }
+
+    /* See All button */
+    #see-all {
+      padding: .5rem 1rem;
+      background: #0070f3; color:#fff;
+      border:none; border-radius:6px;
+      cursor:pointer; white-space: nowrap;
+      font-size: .9rem;
+    }
+
+    /* ─── Modal Base ─────────────────────────────────────────────────────────── */
+    .hidden { display:none }
+    #badge-modal .backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    #badge-modal .content {
+      position: fixed;
+      top:50%; left:50%;
+      transform: translate(-50%,-50%);
+      background: #fff; padding:1.5rem;
+      border-radius:8px;
+      max-width:90%; width:600px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+    }
+    .close-btn {
+      position:absolute; top:.5rem; right:.5rem;
+      background:none; border:none;
+      font-size:1.2rem; cursor:pointer;
+    }
+
+    /* ─── Full Grid in Modal ───────────────────────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
+      gap:1rem;
+      margin-top:1rem;
+    }
+    .grid .badge {
+      text-align:center;
+      position: relative;
+    }
+    .grid .badge img {
+      width:100%; height:100px;
+      object-fit: contain;
+      border-radius:6px;
+      filter: grayscale(100%) brightness(0.5);
+      transition: filter .3s ease;
+    }
+    .grid .badge.unlocked img {
+      filter: none;
+    }
+    .grid .badge-title {
+      margin-top:.5rem;
+      font-size:.85rem;
+      font-weight:600;
+    }
 /* For larger screens: display side by side */
 @media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
   #auth-container {
