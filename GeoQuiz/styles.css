@@ -1031,6 +1031,226 @@ height: auto;
   }
   
 
+    #site-content {
+        display: none;
+    }
+   @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+/* Styling for the search area */
+.containerSearch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+#searchContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 70%;
+    max-width: 400px;
+}
+
+#searchInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 40px 12px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background-color: #fff;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 0 #d0d0d0;
+}
+
+#searchInput::placeholder {
+    color: black;
+    opacity: 0.7;
+}
+
+#searchInput:focus {
+    outline: none;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 0 #d0d0d0;
+}
+
+#clearSearch {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: #666;
+    display: none;
+    transition: color 0.2s ease, transform 0.2s ease-in-out;
+}
+
+#clearSearch:hover {
+    color: red;
+    cursor: pointer;
+
+}
+
+#suggestions {
+        border: 1px solid #ccc;
+        max-height: 120px;
+        overflow-y: scroll;
+        position: absolute;
+        background: #fff;
+        margin-top: 5px;
+        border-radius: 12px;
+        width: 100%;
+        z-index: 100;
+        top: 100%;
+        left: 0;
+        overflow: hidden;
+        color: black;
+        display: none; /* Initially hidden */
+    }
+    .suggestion-item {
+        padding: 5px;
+        cursor: pointer;
+    }
+    
+    .dropdown {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+/* When "open", the dropdown expands to show its content */
+.dropdown.open {
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+}
+
+    /* Ensure the matching section is displayed */
+    .force-show {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    /* Ensure the footer is always visible */
+    footer {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    .no-results-message {
+    padding: 10px;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    border-radius: 7px;
+    margin: 2% 20% 0 20%;
+    background-color: red;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    display: none; /* Initially hidden */
+}
+
+.did-you-mean-message {
+    text-align: center;
+    padding: 20px;
+    background-color: rgb(80, 172, 195);
+    padding: 10px;
+    border-radius: 7px;
+    margin: 2% 20% 0 20%;
+    color: white;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 20px;
+    font-weight: bold;
+    display: none; /* Initially hidden */
+}
+button {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: currentColor; /* Ripple takes button text color */
+    opacity: 0.3; /* Start opacity */
+    transform: scale(0);
+    animation: ripple-animation 700ms ease-out;
+    pointer-events: none;
+  }
+
+  @keyframes ripple-animation {
+    to {
+      transform: scale(6); /* bigger spread */
+      opacity: 0;
+    }
+  }
+      /* Modal overlay */
+    .user-msg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    /* Modal box */
+    .user-msg-box {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      text-align: center;
+      animation: user-msg-fade-in 0.3s ease;
+      position: relative;
+    }
+
+    /* Close button */
+    .user-msg-close-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #888;
+    }
+
+    .user-msg-close-btn:hover {
+      color: #333;
+    }
+
+    @keyframes user-msg-fade-in {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
 @media only screen and (max-width: 810px) and (max-height: 1080px) and (orientation: portrait) {
 	.wave-text {
 		font-size: 1.8rem;
@@ -1106,6 +1326,7 @@ nav ul li a i{
 	background: #062768;
 }
 }
+
 
 
 

@@ -28,181 +28,7 @@
 <link rel="apple-touch-icon" sizes="114x114" href="Logos/Geography-114x114.webp">
 <link rel="apple-touch-icon" sizes="152x152" href="Logos/Geography-152x152.webp">
 <link rel="apple-touch-icon" sizes="180x180" href="Logos/Geography-180x180.webp">
-<style>
-    #site-content {
-        display: none;
-    }
-   @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .animate-fade-in-up {
-      animation: fadeInUp 0.5s ease-out forwards;
-    }
-/* Styling for the search area */
-.containerSearch {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 0;
-    margin-bottom: 30px;
-}
 
-#searchContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 70%;
-    max-width: 400px;
-}
-
-#searchInput {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 12px 40px 12px 15px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    background-color: #fff;
-    color: black;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 0 #d0d0d0;
-}
-
-#searchInput::placeholder {
-    color: black;
-    opacity: 0.7;
-}
-
-#searchInput:focus {
-    outline: none;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 0 #d0d0d0;
-}
-
-#clearSearch {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    font-size: 18px;
-    color: #666;
-    display: none;
-    transition: color 0.2s ease, transform 0.2s ease-in-out;
-}
-
-#clearSearch:hover {
-    color: red;
-    cursor: pointer;
-
-}
-
-#suggestions {
-        border: 1px solid #ccc;
-        max-height: 120px;
-        overflow-y: scroll;
-        position: absolute;
-        background: #fff;
-        margin-top: 5px;
-        border-radius: 12px;
-        width: 100%;
-        z-index: 100;
-        top: 100%;
-        left: 0;
-        overflow: hidden;
-        color: black;
-        display: none; /* Initially hidden */
-    }
-    .suggestion-item {
-        padding: 5px;
-        cursor: pointer;
-    }
-    
-    .dropdown {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-}
-
-/* When "open", the dropdown expands to show its content */
-.dropdown.open {
-    max-height: none !important;
-    overflow: visible !important;
-    display: block !important;
-}
-
-    /* Ensure the matching section is displayed */
-    .force-show {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-    /* Ensure the footer is always visible */
-    footer {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-    .no-results-message {
-    padding: 10px;
-    text-align: center;
-    color: white;
-    padding: 20px;
-    border-radius: 7px;
-    margin: 2% 20% 0 20%;
-    background-color: red;
-    font-weight: bold;
-    font-size: 20px;
-    font-family: 'Courier New', Courier, monospace;
-    display: none; /* Initially hidden */
-}
-
-.did-you-mean-message {
-    text-align: center;
-    padding: 20px;
-    background-color: rgb(80, 172, 195);
-    padding: 10px;
-    border-radius: 7px;
-    margin: 2% 20% 0 20%;
-    color: white;
-    font-family:'Courier New', Courier, monospace;
-    font-size: 20px;
-    font-weight: bold;
-    display: none; /* Initially hidden */
-}
-button {
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-  }
-
-  .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: currentColor; /* Ripple takes button text color */
-    opacity: 0.3; /* Start opacity */
-    transform: scale(0);
-    animation: ripple-animation 700ms ease-out;
-    pointer-events: none;
-  }
-
-  @keyframes ripple-animation {
-    to {
-      transform: scale(6); /* bigger spread */
-      opacity: 0;
-    }
-  }
-</style>
 </head>
 <body class="page-exit">
 
@@ -322,7 +148,12 @@ button {
 
   </div>
 </div>
-
+  <div id="user-msg-modal" class="user-msg-overlay">
+    <div class="user-msg-box">
+      <button class="user-msg-close-btn" onclick="closeUserMessageModal()">×</button>
+      <div id="user-msg-content">This is a private message.</div>
+    </div>
+  </div>
   
   <div id="site-content">
     <header>
@@ -1200,6 +1031,8 @@ button {
   document.getElementById('profile').classList.remove('open'); // <-- use class, not display
     loadProfile(user);
     initFavorites();
+    // Run on page load
+    showUserMessage();
   }
 
   function showAuth() {
@@ -1482,6 +1315,50 @@ if (dbErr) {
 });
 // ...existing code...
 
+
+// ───────────────
+// MESSAGE MODAL LOGIC
+// ───────────────
+
+
+async function showUserMessage() {
+      const { data: { user }, error } = await sb.auth.getUser();
+
+      if (error || !user) {
+        console.error("User not logged in", error);
+        return;
+      }
+
+      const { data: messages, error: msgError } = await sb
+        .from('user_messages')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('read', false)
+        .order('created_at', { ascending: false });
+
+      if (msgError) {
+        console.error("Error fetching messages", msgError);
+        return;
+      }
+
+      if (messages.length > 0) {
+        const message = messages[0];
+
+        // Show modal
+        document.getElementById('user-msg-content').innerHTML = message.message;
+        document.getElementById('user-msg-modal').style.display = 'flex';
+
+        // Mark message as read
+        await sb
+          .from('user_messages')
+          .update({ read: true })
+          .eq('id', message.id);
+      }
+    }
+
+    function closeUserMessageModal() {
+      document.getElementById('user-msg-modal').style.display = 'none';
+    }
 
 
 
