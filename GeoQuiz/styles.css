@@ -454,8 +454,7 @@ button:hover {
 /* --- Add to your <style> section or styles.css --- */
 #profile {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  inset: 0; /* covers top, right, bottom, left */
   display: flex;
   align-items: center;
   justify-content: center;
