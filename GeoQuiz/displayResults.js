@@ -43,7 +43,7 @@ async function renderResults(session) {
 
   // Fetch results for the current user
   const userId = session.user.id;
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from('quiz_results_with_name')
     .select('quiz_name, attained_score, attainable_score, completed, gave_up, played_at')
     .eq('user_id', userId) // <-- Only this user's results
