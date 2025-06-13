@@ -350,32 +350,59 @@ button:hover {
 }
 
     /* ─── Preview Row ────────────────────────────────────────────────────────── */
-    #badge-preview {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .preview-slot {
-      width: 80px; height: 80px;
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-      flex-shrink: 0;
-    }
-    .preview-slot img {
-      width: 100%; height: 100%;
-      object-fit: contain;
-      filter: grayscale(100%) brightness(0.5);
-      transition: filter .3s ease, transform .3s ease;
-    }
-    .preview-slot.unlocked img {
-      filter: none;
-    }
-    .preview-slot.unlocked img:hover {
-      transform: scale(1.05);
-    }
-
+/* ...existing code... */
+#badge-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+#badge-preview .badge-header-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+#badge-preview h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  order: 2;
+}
+#badge-preview #see-all {
+  order: 1;
+  margin: 0;
+  padding: .5rem 1rem;
+  background: #0070f3;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: .9rem;
+}
+#badge-preview .preview-slots-row {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+@media (max-width: 600px) {
+  #badge-preview .preview-slots-row {
+    gap: 0.5rem;
+  }
+  #badge-preview .badge-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+}
+/* ...existing code... */
     /* See All button */
     #see-all {
       padding: .5rem 1rem;
@@ -387,19 +414,29 @@ button:hover {
 
     /* ─── Modal Base ─────────────────────────────────────────────────────────── */
     .hidden { display:none }
-    #badge-modal .backdrop {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5);
-    }
-    #badge-modal .content {
-      position: fixed;
-      top:50%; left:50%;
-      transform: translate(-50%,-50%);
-      background: #fff; padding:1.5rem;
-      border-radius:8px;
-      max-width:90%; width:600px;
-      box-shadow: 0 4px 12px rgba(0,0,0,.2);
-    }
+#badge-modal .backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px); /* Add blur effect */
+  z-index: 10001;
+}
+/* Center modal content */
+#badge-modal .content {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 90%; width: 600px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.25);
+  z-index: 10002;
+}
+/* Ensure modal is above everything */
+#badge-modal {
+  z-index: 10000;
+}
     .close-btn {
       position:absolute; top:.5rem; right:.5rem;
       background:none; border:none;
@@ -452,11 +489,12 @@ button:hover {
   }
 }
 /* --- Add to your <style> section or styles.css --- */
+/* ...existing code... */
 #profile {
   position: fixed;
-  inset: 0; /* covers top, right, bottom, left */
+  inset: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* <-- changed from center */
   justify-content: center;
   background: rgba(0,0,0,0);
   visibility: hidden;
@@ -481,26 +519,24 @@ button:hover {
   max-height: 85vh;
   overflow-y: auto;
   position: relative;
-  transform: translateY(100vh) translateZ(0);
+  margin-top: 40px; /* <-- add this for spacing from the top */
+  transform: translateY(-40px) translateZ(0); /* optional: subtle slide from above */
   opacity: 0;
 }
 #profile.open #profile-wrapper {
-  animation: slideZ 1.2s cubic-bezier(.7,1.7,.5,1) forwards;
+  animation: slideZTop 1.2s cubic-bezier(.7,1.7,.5,1) forwards;
 }
-@keyframes slideZ {
+@keyframes slideZTop {
   0% {
-    transform: translateY(100vh) translateZ(0);
+    transform: translateY(-40px) translateZ(0);
     opacity: 0;
   }
-  50% {
-    transform: translateY(50vh) translateZ(-120px);
-    opacity: 1;
-  }
   100% {
-    transform: translateY(0) translateZ(80px);
+    transform: translateY(0) translateZ(0);
     opacity: 1;
   }
 }
+/* ...existing code... */
 /* Hide scrollbar for Webkit browsers (Chrome, Safari, etc.) */
 #profile-wrapper::-webkit-scrollbar {
   display: none;

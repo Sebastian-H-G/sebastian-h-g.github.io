@@ -123,12 +123,17 @@
       <tbody></tbody>
     </table>
   </div>
-  <div id="badge-preview">
+<div id="badge-preview">
+  <div class="badge-header-row">
+    <h2>Your Badges</h2>
+    <button id="see-all">See All</button>
+  </div>
+  <div class="preview-slots-row">
     <div class="preview-slot" id="slot-0"></div>
     <div class="preview-slot" id="slot-1"></div>
     <div class="preview-slot" id="slot-2"></div>
-    <button id="see-all">See All</button>
   </div>
+</div>
 
   <!-- 2) Modal for all badges -->
   <div id="badge-modal" class="hidden">
@@ -1453,13 +1458,21 @@ async function showUserMessage() {
     }
 
     // ── Open / Close modal
-    seeAllBtn.addEventListener('click', () => {
-      modal.classList.remove('hidden')
-      // Refresh data on open in case new badges were earned
-      loadBadges()
-    })
-    backdrop.addEventListener('click', () => modal.classList.add('hidden'))
-    closeBtnBadges.addEventListener('click', () => modal.classList.add('hidden'))
+// ...existing code...
+seeAllBtn.addEventListener('click', () => {
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden'; // Disable scroll
+  loadBadges();
+});
+backdrop.addEventListener('click', () => {
+  modal.classList.add('hidden');
+  document.body.style.overflow = ''; // Enable scroll
+});
+closeBtnBadges.addEventListener('click', () => {
+  modal.classList.add('hidden');
+  document.body.style.overflow = ''; // Enable scroll
+});
+// ...existing code...
 // ───────────────
 // FAVORITES LOGIC (using section `id` attribute)
 // ───────────────
