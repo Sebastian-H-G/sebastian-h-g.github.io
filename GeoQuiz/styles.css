@@ -378,6 +378,7 @@ button:hover {
       border-radius: 999px;
       overflow: hidden;
       user-select: none;
+      margin: 0 auto;
       width: 100%;
       max-width: 525px; /* optional max width */
     }
@@ -434,7 +435,8 @@ button:hover {
     .content {
       position: relative;
       margin-top: 2rem;
-      height: 200px;
+      height: 100%;
+      width: 100%;
       overflow: hidden;
     }
     .content > .pane {
@@ -675,10 +677,9 @@ button:hover {
 #close-profile {
   position: sticky;
   top: 0;
-  margin-left: auto;
-  display: block;
+  float: right;      /* Ensures it aligns right in the flex/flow */
   z-index: 10;
-  padding: 0;
+  padding: 0.2em 0.7em;
   width: auto;
   line-height: 1;
   font-size: 2.8rem;
@@ -686,6 +687,7 @@ button:hover {
   border: none;
   background: none;
   cursor: pointer;
+  margin: 0;
 }
 
 #profile-content {
