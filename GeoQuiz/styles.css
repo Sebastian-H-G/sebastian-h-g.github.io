@@ -379,7 +379,8 @@ button:hover {
       overflow: hidden;
       user-select: none;
       margin: 0 auto;
-      width: 65%;
+      width: 100%;
+      max-width: 800px; /* Limit width for larger screens */
     }
 
     /* Individual pills */
