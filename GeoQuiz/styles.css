@@ -380,9 +380,9 @@ button:hover {
       user-select: none;
       margin: 0 auto;
       box-sizing: border-box;
-      min-height: 10%;
-      max-height: 10%;
-      height: 10%; /* Ensure consistent height */
+      min-height: 12%;
+      max-height: 12%;
+      height: 12%; /* Ensure consistent height */
       width: 100%;
       max-width: 800px; /* Limit width for larger screens */
     }
@@ -405,6 +405,10 @@ button:hover {
       padding: 8px 16px;
       margin: 0 8px 0 0 /* right margin for spacing */ !important;
       min-height: var(--pill-touch);
+          user-select: auto;
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
       transition: color 0.2s;
     }
     .pill-segment:last-child { margin-right: 0; }
@@ -425,8 +429,8 @@ button:hover {
     /* Moving indicator */
     .pill-indicator {
       position: absolute;
-      top: 10px; left: 12px;
-      height: calc(100% - 18px);
+      top: 8px; left: 10px;
+      height: calc(100% - 16px);
       background: var(--pill-accent);
       border-radius: 999px;
       transition:
