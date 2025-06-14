@@ -348,6 +348,125 @@ button {
 button:hover {
   opacity: 0.9;
 }
+:root {
+      --pill-bg: rgba(60,60,67,0.12);
+      --pill-accent: #0a84ff;
+      --pill-text: #1c1c1e;
+      --pill-text-active: #ffffff;
+
+      /* Pill indicator animation */
+      --pill-transition-duration: 0.5s;
+      --pill-transition-ease: cubic-bezier(0.4,0,0.2,1);
+
+      /* Content fade/slide */
+      --content-transition-duration: 0.8s;
+      --content-transition-ease: cubic-bezier(0.25,0.1,0.25,1);
+
+      /* Touch-target size */
+      --pill-touch: 48px;
+    }
+
+
+
+    /* Pill container */
+    .pill-segmented {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      background: var(--pill-bg);
+      padding: 6px 8px;
+      border-radius: 999px;
+      overflow: hidden;
+      user-select: none;
+      width: 100%;
+      max-width: 525px; /* optional max width */
+    }
+
+    /* Individual pills */
+    .pill-segment {
+      position: relative;
+      z-index: 3;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 999px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--pill-text);
+      cursor: pointer;
+      padding: 8px 16px;
+      margin-right: 8px;
+      min-height: var(--pill-touch);
+      transition: color 0.2s;
+    }
+    .pill-segment:last-child { margin-right: 0; }
+    .pill-segment.active { color: var(--pill-text-active); }
+
+    /* Hide only the text on small screens */
+    @media (max-width: 600px) {
+      .pill-segment {
+        padding: 12px;       /* bigger tap area */
+        margin-right: 4px;
+      }
+      .pill-segment:last-child { margin-right: 0; }
+      .pill-text {
+        display: none;
+      }
+    }
+
+    /* Moving indicator */
+    .pill-indicator {
+      position: absolute;
+      top: 6px; left: 8px;
+      height: calc(100% - 12px);
+      background: var(--pill-accent);
+      border-radius: 999px;
+      transition:
+        transform var(--pill-transition-duration) var(--pill-transition-ease),
+        width     var(--pill-transition-duration) var(--pill-transition-ease);
+      z-index: 2;
+    }
+
+    /* Content area */
+    .content {
+      position: relative;
+      margin-top: 2rem;
+      height: 200px;
+      overflow: hidden;
+    }
+    .content > .pane {
+      position: absolute;
+      inset: 0;
+      padding: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition:
+        opacity var(--content-transition-duration) var(--content-transition-ease),
+        transform var(--content-transition-duration) var(--content-transition-ease);
+      pointer-events: none;
+    }
+    .content > .pane.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* SVG icon styling – larger on all screens */
+    .icon {
+      width: 2em;
+      height: 2em;
+      fill: currentColor;
+    }
+
+
+
+
+
+
+
 
     /* ─── Preview Row ────────────────────────────────────────────────────────── */
 /* ...existing code... */

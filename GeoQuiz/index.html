@@ -59,51 +59,92 @@
 <div id="profile">
   <div id="profile-wrapper">    
 
+
+
+<div id="pillControl" class="pill-segmented">
+    <div class="pill-indicator"></div>
+
+    <!-- First pill is now active by default -->
+    <button class="pill-segment active" data-index="0" aria-label="Home">
+  <svg class="icon" viewBox="0 -960 960 960" width="24" height="24" fill="currentColor">
+    <path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Z"/>
+  </svg>
+      <span class="pill-text">Profile</span>
+    </button>
+
+    <button class="pill-segment" data-index="1" aria-label="Explore">
+     <svg class="icon" viewBox="0 -960 960 960" width="24" height="24" fill="currentColor">
+    <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z"/>
+  </svg>
+      <span class="pill-text">Results</span>
+    </button>
+
+    <button class="pill-segment" data-index="2" aria-label="For You">
+<svg class="icon" viewBox="0 -960 960 960" width="24" height="24" fill="currentColor">
+    <path d="m368-336 112-84 110 84-42-136 112-88H524l-44-136-44 136H300l110 88-42 136ZM480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q104-33 172-132t68-220v-189l-240-90-240 90v189q0 121 68 220t172 132Z"/>
+  </svg>
+      <span class="pill-text">Achievements</span>
+    </button>
+
+    <button class="pill-segment" data-index="3" aria-label="Search">
+  <svg class="icon" viewBox="0 -960 960 960" width="24" height="24" fill="currentColor">
+    <path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Z"/>
+  </svg>
+      <span class="pill-text">Settings</span>
+    </button>
+  </div>
+
     <button id="close-profile">&times;</button>
 
-    <h2>Your Profile</h2>
 
-    <div id="profile-content">
-    
-<div class="profile-info">
-  <div class="avatar-display" id="openAvatarModal">
-    <img id="modalAvatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar" />
-    <img id="editPen" src="Bilder/pen.png" alt="Edit" class="edit-pen" />
-  </div>
-</div>
 
-    <div class="profile-info">
-    <p><strong>Email:</strong> <span id="pEmail"></span></p>
-    <p><strong>Username:</strong> <span id="pUsername"></span></p>
+
+<!-- Content Panes -->
+  <div class="content">
+    <div class="pane active" data-index="0">
+        <h2>Your Profile</h2>
+        <div id="profile-content">
+          
+        <div class="profile-info">
+        <div class="avatar-display" id="openAvatarModal">
+          <img id="modalAvatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar" />
+          <img id="editPen" src="Bilder/pen.png" alt="Edit" class="edit-pen" />
+        </div>
+        </div>
+          <div class="profile-info">
+          <p><strong>Email:</strong> <span id="pEmail"></span></p>
+          <p><strong>Username:</strong> <span id="pUsername"></span></p>
+          </div>
+
+        <!-- Place this modal at the end of <body> (before </body>) -->
+        <div id="avatarModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+          <span class="close-modal" id="closeAvatarModal">&times;</span>
+          <div class="upload-card">
+            <h2>Upload Your Avatar</h2>
+            <div class="preview-wrapper">
+              <img id="avatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar Preview" />
+            </div>
+            <input type="file" id="avatarInput" accept="image/*" />
+            <button id="uploadBtn">Upload</button>
+            <p id="status"></p>
+          </div>
+        </div>
+        </div>
+
+          <div class="profile-info">
+            <button onclick="handleLogout()">Log Out</button>
+          </div>
+          </div>
+
     </div>
 
 
 
-<!-- Place this modal at the end of <body> (before </body>) -->
-<div id="avatarModal" class="modal-overlay" style="display:none;">
-  <div class="modal-content">
-    <span class="close-modal" id="closeAvatarModal">&times;</span>
-    <div class="upload-card">
-      <h2>Upload Your Avatar</h2>
-      <div class="preview-wrapper">
-        <img id="avatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar Preview" />
-      </div>
-      <input type="file" id="avatarInput" accept="image/*" />
-      <button id="uploadBtn">Upload</button>
-      <p id="status"></p>
-    </div>
-  </div>
-</div>
-
-    <div class="profile-info">
-      <button onclick="handleLogout()">Log Out</button>
-    </div>
-    </div>
 
 
-
-
-    <div class="results-container">
+<div class="pane" data-index="1">
+          <div class="results-container">
     <h1>Your Quiz Results</h1>
     <div class="filter-container">
   <label for="quizFilter">Filter by Quiz:</label>
@@ -123,7 +164,16 @@
       <tbody></tbody>
     </table>
   </div>
-<div id="badge-preview">
+    </div>
+
+
+
+
+
+
+
+    <div class="pane" data-index="2">
+     <div id="badge-preview">
   <div class="badge-header-row">
     <h2>Your Badges</h2>
     <button id="see-all">See All</button>
@@ -133,9 +183,14 @@
     <div class="preview-slot" id="slot-1"></div>
     <div class="preview-slot" id="slot-2"></div>
   </div>
+    </div>
 </div>
 
-      <!-- report.html -->
+
+
+    <div class="pane" data-index="3">
+      <h2>Settings</h2>
+            <!-- report.html -->
 <form id="report-form" class="report-form">
   <h2>Report a Bug / Send Feedback</h2>
   <label  class="form-label">
@@ -157,19 +212,23 @@
   <p id="form-status" class="status"></p>
 </form>
 
+    </div>
+
+
+
   </div>
+
+
+
+
 </div>
 
 
-  <!-- 2) Modal for all badges -->
-  <div id="badge-modal" class="hidden">
-    <div class="backdrop"></div>
-    <div class="content">
-      <button class="close-btn">&times;</button>
-      <h2>Your Badges</h2>
-      <div class="grid" id="all-badges-grid"></div>
-    </div>
   </div>
+
+
+
+
   <div id="user-msg-modal" class="user-msg-overlay">
     <div class="user-msg-box">
       <button class="user-msg-close-btn" onclick="closeUserMessageModal()">×</button>
@@ -1031,7 +1090,53 @@
       </footer>
     
     </div>
+<script>
+   // Pill Control Script
+    (function() {
+      const pills     = Array.from(document.querySelectorAll('.pill-segment'));
+      const indicator = document.querySelector('.pill-indicator');
+      const panes     = Array.from(document.querySelectorAll('.content .pane'));
+      const container = document.getElementById('pillControl');
 
+      function moveIndicator(target, instant = false) {
+        const cR  = container.getBoundingClientRect();
+        const tR  = target.getBoundingClientRect();
+        const pad = parseFloat(getComputedStyle(container).paddingLeft);
+        const left  = tR.left - cR.left - pad;
+        const width = tR.width;
+
+        if (instant) {
+          indicator.style.transition = 'none';
+          indicator.style.transform  = `translateX(${left}px)`;
+          indicator.style.width      = `${width}px`;
+          void indicator.offsetWidth;
+          indicator.style.transition = '';
+        } else {
+          indicator.style.transform = `translateX(${left}px)`;
+          indicator.style.width     = `${width}px`;
+        }
+      }
+
+      function activate(index, instant = false) {
+        // Pills
+        pills.forEach(btn => btn.classList.toggle('active', btn.dataset.index === index));
+        // Panes
+        panes.forEach(p  => p.classList.toggle('active', p.dataset.index === index));
+        // Indicator
+        const activeBtn = pills.find(b => b.dataset.index === index);
+        moveIndicator(activeBtn, instant);
+      }
+
+      // INITIAL SETUP
+      window.addEventListener('load',  () => activate('0', true));
+      window.addEventListener('resize',() => activate(document.querySelector('.pill-segment.active').dataset.index, true));
+
+      // CLICK HANDLERS
+      pills.forEach(btn => {
+        btn.addEventListener('click', () => activate(btn.dataset.index));
+      });
+    })();
+  </script>
 <!-- Include Supabase JS client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
