@@ -1501,45 +1501,49 @@ if (dbErr) {
 // MESSAGE MODAL LOGIC
 // ───────────────
 
-
+// ...existing code...
 async function showUserMessage() {
-      const { data: { user }, error } = await sb.auth.getUser();
+  const { data: { user }, error } = await sb.auth.getUser();
 
-      if (error || !user) {
-        console.error("User not logged in", error);
-        return;
-      }
+  if (error || !user) {
+    console.error("User not logged in", error);
+    return;
+  }
 
-      const { data: messages, error: msgError } = await sb
-        .from('user_messages')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('read', false)
-        .order('created_at', { ascending: false });
+  const { data: messages, error: msgError } = await sb
+    .from('user_messages')
+    .select('*')
+    .eq('user_id', user.id)
+    .eq('read', false)
+    .order('created_at', { ascending: false });
 
-      if (msgError) {
-        console.error("Error fetching messages", msgError);
-        return;
-      }
+  if (msgError) {
+    console.error("Error fetching messages", msgError);
+    return;
+  }
 
-      if (messages.length > 0) {
-        const message = messages[0];
+  if (messages && messages.length > 0) {
+    const message = messages[0];
 
-        // Show modal
-        document.getElementById('user-msg-content').innerHTML = message.message;
-        document.getElementById('user-msg-modal').style.display = 'flex';
+    // Show modal
+    document.getElementById('user-msg-content').innerHTML = message.message;
+    document.getElementById('user-msg-modal').style.display = 'flex';
 
-        // Mark message as read
-        await sb
-          .from('user_messages')
-          .update({ read: true })
-          .eq('id', message.id);
-      }
+    // Mark message as read (with error check)
+    const { error: updateErr } = await sb
+      .from('user_messages')
+      .update({ read: true })
+      .eq('id', message.id);
+
+    if (updateErr) {
+      console.error("Failed to mark message as read:", updateErr);
     }
+  }
+}
 
-    function closeUserMessageModal() {
-      document.getElementById('user-msg-modal').style.display = 'none';
-    }
+function closeUserMessageModal() {
+  document.getElementById('user-msg-modal').style.display = 'none';
+}
 
 
 // ───────────────
