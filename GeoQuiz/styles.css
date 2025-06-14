@@ -437,8 +437,8 @@ button:hover {
       margin-top: 2rem;
       height: 100%;
       width: 100%;
-      overflow-y auto;
-    }
+}
+
     .content > .pane {
       position: absolute;
       inset: 0;
@@ -466,10 +466,14 @@ button:hover {
 
 
 
-
-
-
-
+.pane {
+    overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.pane::-webkit-scrollbar {
+  display: none;
+}
     /* ─── Preview Row ────────────────────────────────────────────────────────── */
 /* ...existing code... */
 #badge-preview {
