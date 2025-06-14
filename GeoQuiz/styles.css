@@ -371,7 +371,7 @@ button:hover {
     /* Pill container */
     .pill-segmented {
       position: relative;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       background: var(--pill-bg);
       padding: 6px 8px;
