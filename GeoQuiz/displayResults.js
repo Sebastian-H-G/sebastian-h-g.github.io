@@ -47,7 +47,8 @@ async function renderResults(session) {
     .from('quiz_results_with_name')
     .select('quiz_name, attained_score, attainable_score, completed, gave_up, played_at')
     .eq('user_id', userId) // <-- Only this user's results
-    .order('played_at', { ascending: false });
+    .order('played_at', { ascending: false })
+    .distinct();
 
   if (error) {
     console.error('Error loading results:', error);
