@@ -379,6 +379,9 @@ button:hover {
       overflow: hidden;
       user-select: none;
       margin: 0 auto;
+      box-sizing: border-box;
+      min-height: 70px;
+      height: 100px; /* Ensure consistent height */
       width: 100%;
       max-width: 800px; /* Limit width for larger screens */
     }
@@ -434,8 +437,9 @@ button:hover {
     /* Content area */
     .content {
       position: relative;
+       flex: 1 1 auto;
+  min-height: 0;
       margin-top: 2rem;
-      height: 100%;
       width: 100%;
 }
 
@@ -638,6 +642,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   color: black;
+  align-items: stretch;;
   border-radius: 12px;
   box-shadow: 0 16px 48px rgba(0,0,0,0.2);
   padding: 2rem 1.5rem;
