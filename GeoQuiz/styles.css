@@ -380,8 +380,9 @@ button:hover {
       user-select: none;
       margin: 0 auto;
       box-sizing: border-box;
-      min-height: 70px;
-      height: 100px; /* Ensure consistent height */
+      min-height: 10%;
+      max-height: 10%;
+      height: 10%; /* Ensure consistent height */
       width: 100%;
       max-width: 800px; /* Limit width for larger screens */
     }

@@ -1090,50 +1090,95 @@
     </div>
 <script>
    // Pill Control Script
-    (function() {
-      const pills     = Array.from(document.querySelectorAll('.pill-segment'));
-      const indicator = document.querySelector('.pill-indicator');
-      const panes     = Array.from(document.querySelectorAll('.content .pane'));
-      const container = document.getElementById('pillControl');
+(function(){
+    const container = document.getElementById('pillControl');
+    const pills     = Array.from(container.querySelectorAll('.pill-segment'));
+    const indicator = container.querySelector('.pill-indicator');
+    const panes     = Array.from(document.querySelectorAll('.pane'));
 
-      function moveIndicator(target, instant = false) {
-        const cR  = container.getBoundingClientRect();
-        const tR  = target.getBoundingClientRect();
-        const pad = parseFloat(getComputedStyle(container).paddingLeft);
-        const left  = tR.left - cR.left - pad;
-        const width = tR.width;
+    let startX=0, baseLeft=0, baseW=0, dragging=false;
 
-        if (instant) {
-          indicator.style.transition = 'none';
-          indicator.style.transform  = `translateX(${left}px)`;
-          indicator.style.width      = `${width}px`;
-          void indicator.offsetWidth;
-          indicator.style.transition = '';
-        } else {
-          indicator.style.transform = `translateX(${left}px)`;
-          indicator.style.width     = `${width}px`;
-        }
+    function moveIndicator(btn, instant=false){
+      const cR = container.getBoundingClientRect();
+      const bR = btn.getBoundingClientRect();
+      const pad = parseFloat(getComputedStyle(container).paddingLeft);
+      const left = bR.left - cR.left - pad;
+      const width = bR.width;
+      if(instant){
+        indicator.style.transition = 'none';
+        indicator.style.transform  = `translateX(${left}px)`;
+        indicator.style.width      = `${width}px`;
+        void indicator.offsetWidth;
+        indicator.style.transition = '';
+      } else {
+        indicator.style.transform = `translateX(${left}px)`;
+        indicator.style.width     = `${width}px`;
       }
+    }
 
-      function activate(index, instant = false) {
-        // Pills
-        pills.forEach(btn => btn.classList.toggle('active', btn.dataset.index === index));
-        // Panes
-        panes.forEach(p  => p.classList.toggle('active', p.dataset.index === index));
-        // Indicator
-        const activeBtn = pills.find(b => b.dataset.index === index);
-        moveIndicator(activeBtn, instant);
-      }
+    function activate(idx, instant=false){
+      pills.forEach(b=>b.classList.toggle('active', b.dataset.index===idx));
+      panes.forEach(p=>p.classList.toggle('active', p.dataset.index===idx));
+      const btn = pills.find(b=>b.dataset.index===idx);
+      moveIndicator(btn, instant);
+    }
 
-      // INITIAL SETUP
-      window.addEventListener('load',  () => activate('0', true));
-      window.addEventListener('resize',() => activate(document.querySelector('.pill-segment.active').dataset.index, true));
+    // initial
+    window.addEventListener('load', ()=> activate('0', true));
+    window.addEventListener('resize', ()=> {
+      const cur = container.querySelector('.pill-segment.active').dataset.index;
+      activate(cur, true);
+    });
 
-      // CLICK HANDLERS
-      pills.forEach(btn => {
-        btn.addEventListener('click', () => activate(btn.dataset.index));
+    // tap
+    pills.forEach(btn=>{
+      btn.addEventListener('click', ()=> activate(btn.dataset.index));
+    });
+
+    // drag/swipe
+    container.addEventListener('pointerdown', e=>{
+      dragging = true;
+      startX   = e.clientX;
+      const st  = getComputedStyle(indicator);
+      const m   = /translateX\(([-\d.]+)px\)/.exec(st.transform);
+      baseLeft  = m?parseFloat(m[1]):0;
+      baseW     = parseFloat(st.width);
+      container.setPointerCapture(e.pointerId);
+      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointerup',   onUp);
+      document.addEventListener('pointercancel', onUp);
+    });
+
+    function onMove(e){
+      if(!dragging) return;
+      const dx = e.clientX - startX;
+      const pad = parseFloat(getComputedStyle(container).paddingLeft);
+      let x = baseLeft + dx;
+      const max = container.scrollWidth - pad*2 - baseW;
+      indicator.style.transform = `translateX(${Math.min(Math.max(0,x), max)}px)`;
+    }
+
+    function onUp(e){
+      if(!dragging) return;
+      dragging = false;
+      container.releasePointerCapture(e.pointerId);
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerup',   onUp);
+      document.removeEventListener('pointercancel', onUp);
+
+      // snap to nearest
+      const indR = indicator.getBoundingClientRect();
+      const centerX = indR.left + indR.width/2;
+      let closest=pills[0], minD=Infinity;
+      pills.forEach(b=>{
+        const bR = b.getBoundingClientRect();
+        const c  = bR.left + bR.width/2;
+        const d  = Math.abs(c - centerX);
+        if(d<minD){ minD=d; closest=b; }
       });
-    })();
+      activate(closest.dataset.index);
+    }
+  })();
   </script>
 <!-- Include Supabase JS client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
