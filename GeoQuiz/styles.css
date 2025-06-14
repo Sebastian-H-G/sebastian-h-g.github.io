@@ -637,7 +637,7 @@ button:hover {
   box-shadow: 0 16px 48px rgba(0,0,0,0.2);
   padding: 2rem 1.5rem;
   width: 85vw;
-  max-height: 85vh;
+  height: 85vh;
   overflow-y: auto;
   position: relative;
   margin-top: 40px; /* <-- add this for spacing from the top */
@@ -675,9 +675,9 @@ button:hover {
     text-align: center;
 }
 #close-profile {
-  position: sticky;
-  top: 0;
-  float: right;      /* Ensures it aligns right in the flex/flow */
+  position: absolute;      /* <-- absolute, not sticky */
+  top: 12px;               /* distance from top */
+  right: 18px;             /* distance from right */
   z-index: 10;
   padding: 0.2em 0.7em;
   width: auto;
