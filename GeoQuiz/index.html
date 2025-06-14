@@ -172,19 +172,9 @@
 
 
     <div class="pane" data-index="2">
-     <div id="badge-preview">
-  <div class="badge-header-row">
-    <h2>Your Badges</h2>
-    <button id="see-all">See All</button>
-  </div>
-  <div class="preview-slots-row">
-    <div class="preview-slot" id="slot-0"></div>
-    <div class="preview-slot" id="slot-1"></div>
-    <div class="preview-slot" id="slot-2"></div>
-  </div>
+      <h2>Your Badges</h2>
+      <div class="grid" id="all-badges-grid"></div>
     </div>
-</div>
-
 
 
     <div class="pane" data-index="3">
@@ -216,15 +206,6 @@
 </div>
  </div>
 
-  <!-- 2) Modal for all badges -->
-  <div id="badge-modal" class="hidden">
-    <div class="backdrop"></div>
-    <div class="content">
-      <button class="close-btn">&times;</button>
-      <h2>Your Badges</h2>
-      <div class="grid" id="all-badges-grid"></div>
-    </div>
-  </div>
 
 
   <div id="user-msg-modal" class="user-msg-overlay">
@@ -1534,93 +1515,44 @@ async function showUserMessage() {
 // ───────────────
 // BADGES LOGIC
 // ───────────────
-    // ── DOM Refs
-    const slots = [
-      document.getElementById('slot-0'),
-      document.getElementById('slot-1'),
-      document.getElementById('slot-2')
-    ]
-    const seeAllBtn   = document.getElementById('see-all')
-    const modal       = document.getElementById('badge-modal')
-    const backdrop    = modal.querySelector('.backdrop')
-    const closeBtnBadges    = modal.querySelector('.close-btn')
-    const grid        = document.getElementById('all-badges-grid')
+const grid = document.getElementById('all-badges-grid');
 
-    // ── State
-    let allBadges   = []  // [{ id, name, icon_url }]
-    let earnedIds   = []  // [ badge_id ]
-    let recentThree = []  // last 3 earned badges
+// State
+let allBadges   = [];  // [{ id, name, icon_url }]
+let earnedIds   = [];  // [ badge_id ]
 
-    // ── Fetch data
-    async function loadBadges() {
-      // 1) Get full list of badges
-      let { data: badges } = await sb
-        .from('badges')
-        .select('id, name, icon_url')
-      allBadges = badges || []
+// Fetch data and render grid
+async function loadBadges() {
+  // 1) Get full list of badges
+  let { data: badges } = await sb
+    .from('badges')
+    .select('id, name, icon_url');
+  allBadges = badges || [];
 
-      // 2) Get user's earned badges with earned_at
-      let { data: userbs } = await sb
-        .from('user_badges')
-        .select('badge_id, earned_at')
-        .eq('user_id', sb.auth.getUser()?.id)
-        .order('earned_at', { ascending: false })
-      
-      earnedIds = (userbs||[]).map(r => r.badge_id)
-      recentThree = (userbs||[]).slice(0,3).map(r => r.badge_id)
+  // 2) Get user's earned badges
+  let { data: userbs } = await sb
+    .from('user_badges')
+    .select('badge_id')
+    .eq('user_id', sb.auth.getUser()?.id);
 
-      renderPreview()
-      renderAllBadgesGrid()
-    }
+  earnedIds = (userbs || []).map(r => r.badge_id);
 
-    // ── Render the 3‑badge preview
-    function renderPreview() {
-      // If fewer than 3 earned, pad with unearned
-      const previewIds = [...recentThree]
-      while (previewIds.length < 3 && allBadges.length > previewIds.length) {
-        const next = allBadges[ previewIds.length ].id
-        previewIds.push(next)
-      }
+  renderAllBadgesGrid();
+}
 
-      previewIds.forEach((badgeId, idx) => {
-        const badge = allBadges.find(b => b.id === badgeId)
-        const slot  = slots[idx]
-        slot.innerHTML = badge
-          ? `<img src="${badge.icon_url}" alt="${badge.name}"/>`
-          : ''
-        slot.classList.toggle('unlocked', earnedIds.includes(badgeId))
-      })
-    }
-
-    // ── Render the full grid in modal
-    function renderAllBadgesGrid() {
-      grid.innerHTML = ''
-      allBadges.forEach(b => {
-        const div = document.createElement('div')
-        div.className = 'badge' + (earnedIds.includes(b.id) ? ' unlocked' : '')
-        div.innerHTML = `
-          <img src="${b.icon_url}" alt="${b.name}"/>
-          <div class="badge-title">${b.name}</div>
-        `
-        grid.append(div)
-      })
-    }
-
-    // ── Open / Close modal
-// ...existing code...
-seeAllBtn.addEventListener('click', () => {
-  modal.classList.remove('hidden');
-  document.body.style.overflow = 'hidden'; // Disable scroll
-  loadBadges();
-});
-backdrop.addEventListener('click', () => {
-  modal.classList.add('hidden');
-  document.body.style.overflow = ''; // Enable scroll
-});
-closeBtnBadges.addEventListener('click', () => {
-  modal.classList.add('hidden');
-  document.body.style.overflow = ''; // Enable scroll
-});
+// Render the full grid
+function renderAllBadgesGrid() {
+  grid.innerHTML = '';
+  allBadges.forEach(b => {
+    const div = document.createElement('div');
+    div.className = 'badge' + (earnedIds.includes(b.id) ? ' unlocked' : '');
+    div.innerHTML = `
+      <img src="${b.icon_url}" alt="${b.name}"/>
+      <div class="badge-title">${b.name}</div>
+    `;
+    grid.append(div);
+  });
+}
 // ...existing code...
 // ───────────────
 // FAVORITES LOGIC (using section `id` attribute)
