@@ -1078,48 +1078,63 @@
   const panes     = Array.from(document.querySelectorAll('.pane'));
 
   let startX=0, baseLeft=0, baseW=0, dragging=false, dragStarted=false;
-  const DRAG_THRESHOLD = 3; // px
+  const DRAG_THRESHOLD = 1; // More sensitive
 
-  function moveIndicator(btn, instant=false){
+  // --- Helper: get left/width for a pill button ---
+  function getIndicatorPos(btn) {
     const cR = container.getBoundingClientRect();
     const bR = btn.getBoundingClientRect();
     const pad = parseFloat(getComputedStyle(container).paddingLeft);
     const left = bR.left - cR.left - pad;
     const width = bR.width;
+    return { left, width };
+  }
+
+  // --- Move indicator with smooth transition ---
+  function moveIndicator(btn, instant=false){
+    const { left, width } = getIndicatorPos(btn);
     if(instant){
       indicator.style.transition = 'none';
       indicator.style.transform  = `translateX(${left}px)`;
       indicator.style.width      = `${width}px`;
       void indicator.offsetWidth;
-      indicator.style.transition = '';
+      indicator.style.transition = 'transform 0.35s cubic-bezier(.4,1.4,.4,1),width 0.25s';
     } else {
+      indicator.style.transition = 'transform 0.35s cubic-bezier(.4,1.4,.4,1),width 0.25s';
       indicator.style.transform = `translateX(${left}px)`;
       indicator.style.width     = `${width}px`;
     }
   }
 
+  // --- Activate pill and pane ---
   function activate(idx, instant=false){
     pills.forEach(b=>b.classList.toggle('active', b.dataset.index===idx));
     panes.forEach(p=>p.classList.toggle('active', p.dataset.index===idx));
     const btn = pills.find(b=>b.dataset.index===idx);
-    moveIndicator(btn, instant);
+    if (btn) moveIndicator(btn, instant);
   }
 
-  // initial
-  window.addEventListener('load', ()=> activate('0', true));
-  window.addEventListener('resize', ()=> {
+  // --- Initial: activate current pill (not always 0) ---
+  window.addEventListener('load', ()=>{
+    // Find .pill-segment.active or fallback to 0
+    const active = container.querySelector('.pill-segment.active');
+    const idx = active ? active.dataset.index : '0';
+    activate(idx, true);
+  });
+  window.addEventListener('resize', ()=>{
     const cur = container.querySelector('.pill-segment.active').dataset.index;
     activate(cur, true);
   });
 
-  // tap
+  // --- Tap ---
   pills.forEach(btn=>{
-    btn.addEventListener('click', ()=> activate(btn.dataset.index));
+    btn.addEventListener('click', ()=>{
+      activate(btn.dataset.index, false);
+    });
   });
 
-  // drag/swipe with threshold
+  // --- Drag/swipe with threshold ---
   container.addEventListener('pointerdown', e=>{
-    // Only start drag if not on a pill button (or always allow, but threshold will prevent accidental drags)
     dragging = true;
     dragStarted = false;
     startX   = e.clientX;
@@ -1127,6 +1142,7 @@
     const m   = /translateX\(([-\d.]+)px\)/.exec(st.transform);
     baseLeft  = m?parseFloat(m[1]):0;
     baseW     = parseFloat(st.width);
+    indicator.style.transition = 'none'; // Remove transition for live drag
     container.setPointerCapture(e.pointerId);
     document.addEventListener('pointermove', onMove);
     document.addEventListener('pointerup',   onUp);
@@ -1139,11 +1155,12 @@
     if (!dragStarted && Math.abs(dx) > DRAG_THRESHOLD) {
       dragStarted = true;
     }
-    if (!dragStarted) return; // Don't move indicator until threshold passed
+    if (!dragStarted) return;
     const pad = parseFloat(getComputedStyle(container).paddingLeft);
     let x = baseLeft + dx;
     const max = container.scrollWidth - pad*2 - baseW;
     indicator.style.transform = `translateX(${Math.min(Math.max(0,x), max)}px)`;
+    indicator.style.width = `${baseW}px`;
   }
 
   function onUp(e){
@@ -1154,9 +1171,10 @@
     document.removeEventListener('pointerup',   onUp);
     document.removeEventListener('pointercancel', onUp);
 
-    if (!dragStarted) return; // If it was just a click, let the button handler do its thing
+    // Snap to nearest only if drag actually started
+    if (!dragStarted) return;
 
-    // snap to nearest
+    // Animate to nearest pill
     const indR = indicator.getBoundingClientRect();
     const centerX = indR.left + indR.width/2;
     let closest=pills[0], minD=Infinity;
@@ -1166,9 +1184,10 @@
       const d  = Math.abs(c - centerX);
       if(d<minD){ minD=d; closest=b; }
     });
-    activate(closest.dataset.index);
+    activate(closest.dataset.index, false);
   }
 })();
+// ...existing code...
 // ...existing code...
   </script>
 <!-- Include Supabase JS client -->
