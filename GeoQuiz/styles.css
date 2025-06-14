@@ -380,9 +380,9 @@ button:hover {
       user-select: none;
       margin: 0 auto;
       box-sizing: border-box;
-      min-height: 12%;
-      max-height: 12%;
-      height: 12%; /* Ensure consistent height */
+      min-height: 10%;
+      max-height: 10%;
+      height: 10%; /* Ensure consistent height */
       width: 100%;
       max-width: 800px; /* Limit width for larger screens */
     }
@@ -399,7 +399,7 @@ button:hover {
       gap: 6px;
       border-radius: 999px;
       font-weight: 500;
-      font-size: 0.9rem;
+      font-size: 1.2rem;
       color: var(--pill-text);
       cursor: pointer;
       padding: 8px 16px;
