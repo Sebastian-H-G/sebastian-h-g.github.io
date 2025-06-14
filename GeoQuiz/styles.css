@@ -437,7 +437,7 @@ button:hover {
       margin-top: 2rem;
       height: 100%;
       width: 100%;
-      overflow: hidden;
+      overflow-y auto;
     }
     .content > .pane {
       position: absolute;
