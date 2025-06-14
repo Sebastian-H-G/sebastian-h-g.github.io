@@ -425,8 +425,8 @@ button:hover {
     /* Moving indicator */
     .pill-indicator {
       position: absolute;
-      top: 6px; left: 8px;
-      height: calc(100% - 12px);
+      top: 10px; left: 12px;
+      height: calc(100% - 18px);
       background: var(--pill-accent);
       border-radius: 999px;
       transition:
