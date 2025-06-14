@@ -47,8 +47,7 @@ async function renderResults(session) {
     .from('quiz_results_with_name')
     .select('quiz_name, attained_score, attainable_score, completed, gave_up, played_at')
     .eq('user_id', userId) // <-- Only this user's results
-    .order('played_at', { ascending: false })
-    .distinct();
+    .order('played_at', { ascending: false });
 
   if (error) {
     console.error('Error loading results:', error);
@@ -62,11 +61,20 @@ async function renderResults(session) {
     table.style.display = 'none';
     return;
   }
+  // Remove duplicates by quiz_name + played_at (or another unique key)
+const seen = new Set();
+const uniqueData = data.filter(row => {
+  const key = row.quiz_name + '|' + row.played_at;
+  if (seen.has(key)) return false;
+  seen.add(key);
+  return true;
+});
 
+// ...existing code...
   loadingElem.style.display = 'none';
   table.style.display = '';
 
-  data.forEach(row => {
+  uniqueData.forEach(row => { // <-- use uniqueData here!
     const tr = document.createElement('tr');
     const logo = QUIZ_LOGOS[row.quiz_name] || "Logos/Geography.webp"; // fallback image
 
@@ -83,6 +91,7 @@ async function renderResults(session) {
 
     tbody.appendChild(tr);
   });
+// ...existing code...
 }
 
 // Listen for auth state changes and DOMContentLoaded
