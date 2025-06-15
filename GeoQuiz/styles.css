@@ -378,7 +378,7 @@ button:hover {
       border-radius: 999px;
       overflow: hidden;
       user-select: none;
-      margin: 0 auto;
+      margin: 2% auto 0 auto;
       box-sizing: border-box;
       min-height: 10%;
       max-height: 10%;
@@ -599,9 +599,9 @@ button:hover {
     text-align: center;
 }
 #close-profile {
-  position: sticky;      /* <-- absolute, not sticky */
-  top: 12px;              /* distance from top */
-  right: 18px;             /* distance from right */
+  position: fixed;      /* <-- absolute, not sticky */
+  top: 0;              /* distance from top */
+  right: 0;             /* distance from right */
   z-index: 10;
   padding: 0.2em 0.7em;
   width: auto;

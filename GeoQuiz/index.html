@@ -1140,20 +1140,26 @@
   });
 
   // --- Drag/swipe with threshold ---
-  container.addEventListener('pointerdown', e=>{
-    dragging = true;
-    dragStarted = false;
-    startX   = e.clientX;
-    const st  = getComputedStyle(indicator);
-    const m   = /translateX\(([-\d.]+)px\)/.exec(st.transform);
-    baseLeft  = m?parseFloat(m[1]):0;
-    baseW     = parseFloat(st.width);
-    indicator.style.transition = 'none'; // Remove transition for live drag
-    container.setPointerCapture(e.pointerId);
-    document.addEventListener('pointermove', onMove);
-    document.addEventListener('pointerup',   onUp);
-    document.addEventListener('pointercancel', onUp);
-  });
+// ...existing code...
+container.addEventListener('pointerdown', e => {
+  // Always sync indicator to the current active pill before drag
+  const btn = pills.find(b => b.classList.contains('active'));
+  if (btn) moveIndicator(btn, true);
+
+  dragging = true;
+  dragStarted = false;
+  startX = e.clientX;
+  const st = getComputedStyle(indicator);
+  const m = /translateX\(([-\d.]+)px\)/.exec(st.transform);
+  baseLeft = m ? parseFloat(m[1]) : 0;
+  baseW = parseFloat(st.width);
+  indicator.style.transition = 'none'; // Remove transition for live drag
+  container.setPointerCapture(e.pointerId);
+  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointerup', onUp);
+  document.addEventListener('pointercancel', onUp);
+});
+// ...existing code...
 
   function onMove(e){
     if(!dragging) return;
