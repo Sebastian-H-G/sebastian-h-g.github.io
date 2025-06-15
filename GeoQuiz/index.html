@@ -1915,12 +1915,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Close modal when clicking outside content
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.style.display = 'none';
-      document.body.style.overflow = '';
-    }
-  });
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) {
+    e.stopPropagation(); // Prevent bubbling to document
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+});
 
 
   // After successful upload, update avatar in profile
