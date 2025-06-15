@@ -2,7 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<!-- ...existing code... -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<!-- ...existing code... -->
     <meta name="theme-color">
     <title>GeoQuiz</title> 
     <!-- Include Swiper's CSS and JS -->
@@ -1526,6 +1528,7 @@ async function showUserMessage() {
     return;
   }
 
+  // Fetch unread messages (make sure 'read' is a boolean in your DB)
   const { data: messages, error: msgError } = await sb
     .from('user_messages')
     .select('*')
@@ -1546,13 +1549,19 @@ async function showUserMessage() {
     document.getElementById('user-msg-modal').style.display = 'flex';
 
     // Mark message as read (with error check)
-    const { error: updateErr } = await sb
+    // Use .single() to ensure the update is executed and awaited properly
+    const { data: updated, error: updateErr } = await sb
       .from('user_messages')
       .update({ read: true })
-      .eq('id', message.id);
+      .eq('id', message.id)
+      .select()
+      .single();
 
     if (updateErr) {
       console.error("Failed to mark message as read:", updateErr);
+    } else {
+      // Optionally, update the local message object to reflect the change
+      message.read = true;
     }
   }
 }
@@ -1560,6 +1569,7 @@ async function showUserMessage() {
 function closeUserMessageModal() {
   document.getElementById('user-msg-modal').style.display = 'none';
 }
+// ...existing code...
 
 
 // ───────────────
