@@ -399,7 +399,7 @@ button:hover {
       gap: 6px;
       border-radius: 999px;
       font-weight: 500;
-      font-size: 1.2rem;
+      font-size: 1rem;
       color: var(--pill-text);
       cursor: pointer;
       padding: 8px 16px;
@@ -447,7 +447,14 @@ button:hover {
       margin-top: 2rem;
       width: 100%;
 }
-
+.pane-content-heading {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  text-align: center;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+}
 .content > .pane {
   position: relative;
   display: none;
@@ -701,7 +708,7 @@ button:hover {
  /* Container styling */
     .results-container {
       width: 95%;
-      margin: 1rem auto 2rem auto;
+      margin: 0 auto 2rem auto;
       padding: 1rem;
       background: #fff;
       border-radius: 8px;

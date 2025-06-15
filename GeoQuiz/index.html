@@ -15,6 +15,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" href="styles.css">
 	
@@ -103,7 +106,7 @@
 <!-- Content Panes -->
   <div class="content">
     <div class="pane active" data-index="0">
-        <h2>Your Profile</h2>
+        <h1 class="pane-content-heading">Your Profile</h1>
         <div id="profile-content">
           
         <div class="profile-info">
@@ -146,7 +149,7 @@
 
 <div class="pane" data-index="1">
           <div class="results-container">
-    <h1>Your Quiz Results</h1>
+    <h1 class="pane-content-heading">Your Quiz Results</h1>
     <div class="filter-container">
   <label for="quizFilter">Filter by Quiz:</label>
   <input type="text" id="quizFilter" placeholder="Start typing quiz name...">
@@ -174,13 +177,13 @@
 
 
     <div class="pane" data-index="2">
-      <h2>Your Badges</h2>
+      <h1 class="pane-content-heading">Your Badges</h1>
       <div class="grid" id="all-badges-grid"></div>
     </div>
 
 
     <div class="pane" data-index="3">
-      <h2>Settings</h2>
+      <h1 class="pane-content-heading">Settings</h1>
             <!-- report.html -->
 <form id="report-form" class="report-form">
   <h2>Report a Bug / Send Feedback</h2>
