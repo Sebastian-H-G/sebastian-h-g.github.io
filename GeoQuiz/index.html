@@ -1069,110 +1069,109 @@
       </footer>
     
     </div>
-<script>
-  // ...existing code...
-// ...existing code...
+
+    <script>
 (function(){
   const container = document.getElementById('pillControl');
   const pills     = Array.from(container.querySelectorAll('.pill-segment'));
   const indicator = container.querySelector('.pill-indicator');
   const panes     = Array.from(document.querySelectorAll('.pane'));
 
-  let startX=0, baseLeft=0, baseW=0, dragging=false, dragStarted=false;
-  const DRAG_THRESHOLD = 1; // More sensitive
-
-  // Track the current active index
+  let startX = 0,
+      baseLeft = 0,
+      baseW = 0,
+      dragging = false,
+      dragStarted = false;
+  const DRAG_THRESHOLD = 1;
   let currentIdx = '0';
 
-  // --- Helper: get left/width for a pill button ---
+  // get left & width of a pill relative to container
   function getIndicatorPos(btn) {
-    const cR = container.getBoundingClientRect();
-    const bR = btn.getBoundingClientRect();
+    const cR  = container.getBoundingClientRect();
+    const bR  = btn.getBoundingClientRect();
     const pad = parseFloat(getComputedStyle(container).paddingLeft);
-    const left = bR.left - cR.left - pad;
-    const width = bR.width;
-    return { left, width };
+    return {
+      left: bR.left - cR.left - pad,
+      width: bR.width
+    };
   }
 
-  // --- Move indicator with smooth transition ---
+  // move the indicator under a pill
   function moveIndicator(btn, instant=false){
     const { left, width } = getIndicatorPos(btn);
     if(instant){
+      // jump
       indicator.style.transition = 'none';
       indicator.style.transform  = `translateX(${left}px)`;
       indicator.style.width      = `${width}px`;
-      void indicator.offsetWidth;
-      indicator.style.transition = 'transform 0.35s cubic-bezier(.4,1.4,.4,1),width 0.25s';
+      void indicator.offsetWidth; // force reflow
+      indicator.style.transition = 'transform 0.35s cubic-bezier(.4,1.4,.4,1), width 0.25s';
     } else {
-      indicator.style.transition = 'transform 0.35s cubic-bezier(.4,1.4,.4,1),width 0.25s';
-      indicator.style.transform = `translateX(${left}px)`;
-      indicator.style.width     = `${width}px`;
+      // animated
+      indicator.style.transition = 'transform 0.35s cubic-bezier(.4,1.4,.4,1), width 0.25s';
+      indicator.style.transform  = `translateX(${left}px)`;
+      indicator.style.width      = `${width}px`;
     }
   }
 
-  // --- Activate pill and pane ---
+  // activate pill+pane
   function activate(idx, instant=false){
-    currentIdx = idx; // <-- Track the active index
-    pills.forEach(b=>b.classList.toggle('active', b.dataset.index===idx));
-    panes.forEach(p=>p.classList.toggle('active', p.dataset.index===idx));
-    const btn = pills.find(b=>b.dataset.index===idx);
-    if (btn) moveIndicator(btn, instant);
+    currentIdx = idx; // ← remember it!
+    pills.forEach(b => b.classList.toggle('active', b.dataset.index===idx));
+    panes.forEach(p => p.classList.toggle('active', p.dataset.index===idx));
+    const btn = pills.find(b => b.dataset.index===idx);
+    if(btn) moveIndicator(btn, instant);
   }
 
-  // --- Initial: activate current pill (not always 0) ---
+  // initial & on resize
   window.addEventListener('load', ()=>{
-    // Find .pill-segment.active or fallback to 0
     const active = container.querySelector('.pill-segment.active');
-    const idx = active ? active.dataset.index : '0';
-    currentIdx = idx;
+    const idx    = active ? active.dataset.index : '0';
     activate(idx, true);
   });
-  window.addEventListener('resize', ()=>{
-    const cur = container.querySelector('.pill-segment.active').dataset.index;
-    activate(cur, true);
-  });
+  window.addEventListener('resize', ()=> activate(currentIdx, true));
 
-  // --- Tap ---
+  // click to activate
   pills.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      activate(btn.dataset.index, false);
-    });
+    btn.addEventListener('click', ()=> activate(btn.dataset.index, false));
   });
 
-  // --- Drag/swipe with threshold ---
-// ...existing code...
-container.addEventListener('pointerdown', e => {
-  // Always sync indicator to the current active pill before drag
-  const btn = pills.find(b => b.classList.contains('active'));
-  if (btn) moveIndicator(btn, true);
+  // ——— DRAG / SWIPE ———
+  container.addEventListener('pointerdown', e=>{
+    // sync indicator position
+    const activeBtn = pills.find(b=>b.dataset.index===currentIdx);
+    if(activeBtn) moveIndicator(activeBtn, true);
 
-  dragging = true;
-  dragStarted = false;
-  startX = e.clientX;
-  const st = getComputedStyle(indicator);
-  const m = /translateX\(([-\d.]+)px\)/.exec(st.transform);
-  baseLeft = m ? parseFloat(m[1]) : 0;
-  baseW = parseFloat(st.width);
-  indicator.style.transition = 'none'; // Remove transition for live drag
-  container.setPointerCapture(e.pointerId);
-  document.addEventListener('pointermove', onMove);
-  document.addEventListener('pointerup', onUp);
-  document.addEventListener('pointercancel', onUp);
-});
-// ...existing code...
+    dragging = true;
+    dragStarted = false;
+    startX = e.clientX;
+
+    // measure actual starting X
+    const indR  = indicator.getBoundingClientRect();
+    const cR    = container.getBoundingClientRect();
+    const pad   = parseFloat(getComputedStyle(container).paddingLeft);
+    baseLeft    = indR.left - cR.left - pad;
+    baseW       = indR.width;
+
+    indicator.style.transition = 'none';
+    container.setPointerCapture(e.pointerId);
+    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointerup',   onUp);
+    document.addEventListener('pointercancel', onUp);
+  });
 
   function onMove(e){
     if(!dragging) return;
     const dx = e.clientX - startX;
-    if (!dragStarted && Math.abs(dx) > DRAG_THRESHOLD) {
-      dragStarted = true;
-    }
-    if (!dragStarted) return;
+    if(!dragStarted && Math.abs(dx) > DRAG_THRESHOLD) dragStarted = true;
+    if(!dragStarted) return;
+
     const pad = parseFloat(getComputedStyle(container).paddingLeft);
-    let x = baseLeft + dx;
     const max = container.scrollWidth - pad*2 - baseW;
-    indicator.style.transform = `translateX(${Math.min(Math.max(0,x), max)}px)`;
-    indicator.style.width = `${baseW}px`;
+    let x = Math.min(Math.max(0, baseLeft + dx), max);
+
+    indicator.style.transform = `translateX(${x}px)`;
+    indicator.style.width     = `${baseW}px`;
   }
 
   function onUp(e){
@@ -1183,25 +1182,30 @@ container.addEventListener('pointerdown', e => {
     document.removeEventListener('pointerup',   onUp);
     document.removeEventListener('pointercancel', onUp);
 
-    // Snap to nearest only if drag actually started
-    if (!dragStarted) return;
+    if(!dragStarted) return;
 
-    // Animate to nearest pill
-    const indR = indicator.getBoundingClientRect();
+    // snap to nearest pill
+    const indR    = indicator.getBoundingClientRect();
     const centerX = indR.left + indR.width/2;
-    // Use the current active pill as the default for closest
-    let closest = pills.find(b => b.dataset.index === currentIdx) || pills[0], minD = Infinity;
+    let closest   = pills.find(b=>b.dataset.index===currentIdx);
+    let minD      = Infinity;
+
     pills.forEach(b=>{
       const bR = b.getBoundingClientRect();
       const c  = bR.left + bR.width/2;
       const d  = Math.abs(c - centerX);
-      if(d<minD){ minD=d; closest=b; }
+      if(d < minD){
+        minD    = d;
+        closest = b;
+      }
     });
+
     activate(closest.dataset.index, false);
   }
 })();
+</script>
 
-  </script>
+
 <!-- Include Supabase JS client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
