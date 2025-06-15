@@ -451,7 +451,7 @@ button:hover {
 .content > .pane {
   position: relative;
   display: none;
-  padding: 1rem;
+  padding: 1rem 2rem;
   opacity: 0;
   transform: translateY(20px);
   transition:
@@ -489,8 +489,8 @@ button:hover {
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
-      gap:1rem;
-      margin-top:1rem;
+      gap: 2rem;
+      margin: 2.5rem auto;
     }
     .grid .badge {
       text-align:center;
