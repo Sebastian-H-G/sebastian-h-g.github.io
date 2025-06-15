@@ -594,14 +594,32 @@ function checkCountry(countryName) {
 
 async function onQuizComplete() {
   try {
-    const result = await saveQuizResult({
+    // 1) Save the quiz result
+    const { data: savedResult, error } = await saveQuizResult({
       quizId,
       attainedScore,
       attainableScore,
       completed,
-        gave_up
+      gave_up
     });
-    console.log('Result saved:', result);
+    if (error) throw error;
+    console.log('Result saved:', savedResult);
+
+    // 2) Run badge checks
+    //    We need to pass exactly the shape checkAndAwardBadges() expects:
+    await checkAndAwardBadges({
+      quizId:     savedResult.quiz,
+      attained:   savedResult.attained_score,
+      attainable: savedResult.attainable_score,
+      completed:  savedResult.completed,
+      gaveUp:     savedResult.gave_up,
+      playedAt:   savedResult.played_at || new Date().toISOString(),
+      // If you track timing, add these two; otherwise omit them
+      timeTaken:  savedResult.time_taken,
+      timeAllowed:savedResult.time_allowed
+    });
+
+    // 3) Then update your UI (e.g. show results + any new badges)
   } catch (err) {
     console.error('Save failed:', err.message);
   }
