@@ -842,6 +842,8 @@ button:hover {
 }
 
 /* report.css */
+
+/* report.css */
 .report-form {
   width: 90%;
   margin: 2rem auto;
@@ -852,10 +854,19 @@ button:hover {
   background: #fafafa;
 }
 .report-form h2 {
-  margin-bottom: 1rem;
-  font-size: 1.4rem;
+  font-size: 1rem;
 }
-.report-form label {
+#label-select-type {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+#label-select-type select {
+ width: auto;
+}
+#label-message{
   display: block;
   margin-bottom: 1rem;
 }
