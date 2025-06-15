@@ -1519,16 +1519,14 @@ if (dbErr) {
 // MESSAGE MODAL LOGIC
 // ───────────────
 
-// ...existing code...
 async function showUserMessage() {
   const { data: { user }, error } = await sb.auth.getUser();
-
   if (error || !user) {
     console.error("User not logged in", error);
     return;
   }
 
-  // Fetch unread messages (make sure 'read' is a boolean in your DB)
+  // 1. Fetch unread messages
   const { data: messages, error: msgError } = await sb
     .from('user_messages')
     .select('*')
@@ -1541,36 +1539,29 @@ async function showUserMessage() {
     return;
   }
 
-  if (messages && messages.length > 0) {
-    const message = messages[0];
+  if (!messages || messages.length === 0) {
+    // no messages to show
+    return;
+  }
 
-    // Show modal
-    document.getElementById('user-msg-content').innerHTML = message.message;
-    document.getElementById('user-msg-modal').style.display = 'flex';
+  const message = messages[0];
 
-    // Mark message as read (with error check)
-    // Use .single() to ensure the update is executed and awaited properly
-    const { data: updated, error: updateErr } = await sb
-      .from('user_messages')
-      .update({ read: true })
-      .eq('id', message.id)
-      .select()
-      .single();
+  // 2. Show modal
+  document.getElementById('user-msg-content').innerHTML = message.message;
+  document.getElementById('user-msg-modal').style.display = 'flex';
 
-    if (updateErr) {
-      console.error("Failed to mark message as read:", updateErr);
-    } else {
-      // Optionally, update the local message object to reflect the change
-      message.read = true;
-    }
+  // 3. Mark as read *without* .single()
+  const { data: updatedRows, error: updateErr } = await sb
+    .from('user_messages')
+    .update({ read: true })
+    .eq('id', message.id);
+
+  if (updateErr) {
+    console.error("Failed to mark message as read:", updateErr);
+  } else {
+    console.log(`Marked message ${message.id} as read.`);
   }
 }
-
-function closeUserMessageModal() {
-  document.getElementById('user-msg-modal').style.display = 'none';
-}
-// ...existing code...
-
 
 // ───────────────
 // BADGES LOGIC
