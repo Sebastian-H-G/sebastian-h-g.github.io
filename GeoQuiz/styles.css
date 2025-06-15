@@ -60,7 +60,7 @@ header {
 }
 
 header .logo img {
-    max-width: 150px;
+    max-width: 120px;
     height: auto;
     border-radius: 10px;
     margin: 0 auto;
@@ -77,8 +77,8 @@ header .logo img {
   position: absolute;
   bottom: -8px;
   right: -10px;
-  width: 38px;   /* Adjust size as needed */
-  height: 38px;
+  width: 45px;   /* Adjust size as needed */
+  height: 45px;
   border-radius: 50%; /* Makes it circular */
   border: 2px solid #fff; /* Optional: white border */
   box-shadow: 0 1px 4px rgba(0,0,0,0.2);
