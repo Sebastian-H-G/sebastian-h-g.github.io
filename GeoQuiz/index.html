@@ -1071,6 +1071,7 @@
     </div>
 <script>
   // ...existing code...
+// ...existing code...
 (function(){
   const container = document.getElementById('pillControl');
   const pills     = Array.from(container.querySelectorAll('.pill-segment'));
@@ -1079,6 +1080,9 @@
 
   let startX=0, baseLeft=0, baseW=0, dragging=false, dragStarted=false;
   const DRAG_THRESHOLD = 1; // More sensitive
+
+  // Track the current active index
+  let currentIdx = '0';
 
   // --- Helper: get left/width for a pill button ---
   function getIndicatorPos(btn) {
@@ -1108,6 +1112,7 @@
 
   // --- Activate pill and pane ---
   function activate(idx, instant=false){
+    currentIdx = idx; // <-- Track the active index
     pills.forEach(b=>b.classList.toggle('active', b.dataset.index===idx));
     panes.forEach(p=>p.classList.toggle('active', p.dataset.index===idx));
     const btn = pills.find(b=>b.dataset.index===idx);
@@ -1119,6 +1124,7 @@
     // Find .pill-segment.active or fallback to 0
     const active = container.querySelector('.pill-segment.active');
     const idx = active ? active.dataset.index : '0';
+    currentIdx = idx;
     activate(idx, true);
   });
   window.addEventListener('resize', ()=>{
@@ -1177,7 +1183,8 @@
     // Animate to nearest pill
     const indR = indicator.getBoundingClientRect();
     const centerX = indR.left + indR.width/2;
-    let closest=pills[0], minD=Infinity;
+    // Use the current active pill as the default for closest
+    let closest = pills.find(b => b.dataset.index === currentIdx) || pills[0], minD = Infinity;
     pills.forEach(b=>{
       const bR = b.getBoundingClientRect();
       const c  = bR.left + bR.width/2;
@@ -1187,8 +1194,7 @@
     activate(closest.dataset.index, false);
   }
 })();
-// ...existing code...
-// ...existing code...
+
   </script>
 <!-- Include Supabase JS client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
