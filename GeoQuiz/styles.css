@@ -72,17 +72,23 @@ header .logo img {
     position: relative; /* Needed for absolute positioning of overlay */
 
 }
-
-#logo .profile-overlay {
+#open-profile {
   position: absolute;
-  bottom: -8px;
-  right: -16px;
-  width: 45px;   /* Adjust size as needed */
-  height: 45px;
-  border-radius: 50%; /* Makes it circular */
-  border: 2px solid #fff; /* Optional: white border */
-  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  background: #fff;
+  top: 20px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  cursor: pointer;
+  z-index: 10; /* Ensure it stays above other elements */
+}
+.profile-overlay {
+  width: 60px; /* Adjust size as needed */
+  height: 60px; /* Adjust size as needed */
+  border-radius: 50%;
+  object-fit: cover;  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.profile-overlay:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 header .logo img:hover {
     transform: scale(1.05);
@@ -146,16 +152,7 @@ header h1 {
 .wave-text span:nth-child(18) { animation-delay: 1.7s; }
 .wave-text span:nth-child(19) { animation-delay: 1.8s; }
 .wave-text span:nth-child(20) { animation-delay: 1.9s; }
-.wave-text span:nth-child(21) { animation-delay: 2s; }
-.wave-text span:nth-child(22) { animation-delay: 2.1s; }
-.wave-text span:nth-child(23) { animation-delay: 2.2s; }
-.wave-text span:nth-child(24) { animation-delay: 2.3s; }
-.wave-text span:nth-child(25) { animation-delay: 2.4s; }
-.wave-text span:nth-child(26) { animation-delay: 2.5s; }
-.wave-text span:nth-child(27) { animation-delay: 2.6s; }
-.wave-text span:nth-child(28) { animation-delay: 2.7s; }
-.wave-text span:nth-child(29) { animation-delay: 2.8s; }
-.wave-text span:nth-child(30) { animation-delay: 2.9s; }
+
 /* Add more delays if you have more letters */
 
 nav ul {
@@ -203,9 +200,9 @@ nav ul li a:hover {
 
 /* Swiper Container */
 .swiper-container {
-    width: 90%;
-    height: 530px; /* Adjusted height to accommodate text below the image */
-    margin: 100px auto 75px auto;
+    width: 80%;
+    height: 330px; /* Adjusted height to accommodate text below the image */
+    margin: 150px auto 75px auto;
     position: relative;
 }
 
@@ -369,23 +366,24 @@ button:hover {
 
 
     /* Pill container */
-    .pill-segmented {
-      position: relative;
-      display: flex;
-      align-items: center;
-      background: var(--pill-bg);
-      padding: 6px 8px;
-      border-radius: 999px;
-      overflow: hidden;
-      user-select: none;
-      margin: 2% auto 0 auto;
-      box-sizing: border-box;
-      min-height: 8%;
-      max-height: 8%;
-      height: 8%; /* Ensure consistent height */
-      width: 100%;
-      max-width: 800px; /* Limit width for larger screens */
-    }
+/* ...existing code... */
+.pill-segmented {
+  position: fixed;           /* Make it fixed */
+  top: 0;                    /* Stick to the top */
+  left: 0;
+  width: 100vw;              /* Full viewport width */
+  z-index: 1002;             /* Above most content */
+  background: rgba(255,255,255,0.7); /* Semi-transparent for blur effect */
+  backdrop-filter: blur(16px);       /* Blurry background */
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  margin: 0 !important;
+  border-radius: 0;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  /* ...rest of your styles... */
+}  
 
     /* Individual pills */
     .pill-segment {
@@ -539,55 +537,78 @@ button:hover {
 }
 /* --- Add to your <style> section or styles.css --- */
 /* ...existing code... */
+/* ...existing code... */
 #profile {
   position: fixed;
   inset: 0;
   display: flex;
-  align-items: flex-start; /* <-- changed from center */
+  align-items: flex-start;
   justify-content: center;
   background: rgba(0,0,0,0);
   visibility: hidden;
   pointer-events: none;
   z-index: 1000;
-  transition: background 0.5s;
+  transition: background 0.5s cubic-bezier(.4,1.4,.4,1);
+  /* Add backdrop blur for a glassy effect */
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
 }
 #profile.open {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.45);
   visibility: visible;
   pointer-events: all;
+  /* Animate in the blur */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.5s cubic-bezier(.4,1.4,.4,1), backdrop-filter 0.7s cubic-bezier(.4,1.4,.4,1);
 }
+
 #profile-wrapper {
   background: #fff;
   display: flex;
   flex-direction: column;
   color: black;
   align-items: stretch;
-  border-radius: 0;           /* Remove rounded corners */
-  box-shadow: none;           /* Remove shadow */
-  padding: 0;                 /* Remove padding */
-  width: 100vw;               /* Full viewport width */
-  height: 100vh;              /* Full viewport height */
-  margin: 0;                  /* Remove margin */
+  box-shadow: 0 16px 48px 0 rgba(0,0,0,0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
   position: relative;
   top: 0;
   left: 0;
-  transform: none;            /* Remove translateY */
+  transform: scale(0.92) translateY(-40px);
   opacity: 0;
+  transition:
+    opacity 0.5s cubic-bezier(.4,1.4,.4,1),
+    transform 0.7s cubic-bezier(.4,1.4,.4,1);
   overflow-y: auto;
+  will-change: transform, opacity;
 }
 #profile.open #profile-wrapper {
-  animation: slideZTop 1.2s cubic-bezier(.7,1.7,.5,1) forwards;
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  animation: profilePopIn 0.7s cubic-bezier(.4,1.4,.4,1);
 }
-@keyframes slideZTop {
+
+@keyframes profilePopIn {
   0% {
-    transform: translateY(-40px) translateZ(0);
     opacity: 0;
+    transform: scale(0.92) translateY(-40px);
+    box-shadow: 0 0 0 0 rgba(0,0,0,0.0);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.04) translateY(8px);
+    box-shadow: 0 24px 64px 0 rgba(0,0,0,0.18);
   }
   100% {
-    transform: translateY(0) translateZ(0);
     opacity: 1;
+    transform: scale(1) translateY(0);
+    box-shadow: 0 16px 48px 0 rgba(0,0,0,0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10);
   }
 }
+/* ...existing code... */
 /* ...existing code... */
 /* Hide scrollbar for Webkit browsers (Chrome, Safari, etc.) */
 #profile-wrapper::-webkit-scrollbar {
@@ -604,23 +625,23 @@ button:hover {
     font-size: 1.75rem;
     color: #2c3e50;
     text-align: center;
-}
+} 
 #close-profile {
-  position: fixed;      /* <-- absolute, not sticky */
-  top: 0;              /* distance from top */
-  right: 0;             /* distance from right */
-  z-index: 10;
+  position: fixed;       /* Fixed position keeps it visible on scroll */
+  top: 0.5em;            /* Distance from the top */
+  right: 0.5em;          /* Distance from the right */
+  z-index: 1000;         /* Ensure it's above other elements */
   padding: 0.2em 0.7em;
   width: auto;
   line-height: 1;
   font-size: 2.8rem;
   color: black;
-  float: right;
   border: none;
   background: none;
   cursor: pointer;
   margin: 0;
 }
+
 
 #profile-content {
     display: flex;
@@ -720,11 +741,7 @@ button:hover {
       background: #fff;
       border-radius: 8px;
     }
-    .results-container h1 {
-      font-size: 1.75rem;
-      margin-bottom: 0.5rem;
-      text-align: center;
-    }
+
     /* Table styling */
     #resultsTable {
       width: 100%;
