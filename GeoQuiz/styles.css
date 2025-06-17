@@ -571,7 +571,7 @@ button:hover {
 }
 
 #profile-wrapper {
-  background: #fff;
+  background-image: url("Bilder/earth.png");
   display: flex;
   flex-direction: column;
   color: black;
