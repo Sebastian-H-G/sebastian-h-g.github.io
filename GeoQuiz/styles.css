@@ -346,7 +346,6 @@ button:hover {
   opacity: 0.9;
 }
 :root {
-      --pill-bg: rgba(60,60,67,0.12);
       --pill-accent: #0a84ff;
       --pill-text: #1c1c1e;
       --pill-text-active: #ffffff;
@@ -373,7 +372,7 @@ button:hover {
   left: 0;
   width: 100%;              /* Full viewport width */
   z-index: 1002;             /* Above most content */
-  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
   margin: 2% auto 0 auto;
   border-radius: 999px;
   padding: 6px 8px;
@@ -383,7 +382,10 @@ button:hover {
   max-height: 8%;
   display: flex;
   overflow: hidden;
-  background: var(--pill-bg);
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(2px);          /* more blur */
+  -webkit-backdrop-filter: blur(2px);  /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.2);
   align-items: center;
   /* ...rest of your styles... */
 }  
