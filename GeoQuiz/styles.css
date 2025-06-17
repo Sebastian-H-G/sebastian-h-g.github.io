@@ -373,7 +373,6 @@ button:hover {
   width: 100%; 
   max-width: 800px;             /* Full viewport width */
   z-index: 1002;             /* Above most content */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
   margin: 2% auto 0 auto;
   border-radius: 999px;
   padding: 6px 8px;
@@ -384,9 +383,6 @@ button:hover {
   height: 8%;
   display: flex;
   overflow: hidden;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(2px);          /* more blur */
-  -webkit-backdrop-filter: blur(2px);  /* Safari support */
   border: 1px solid rgba(255, 255, 255, 0.2);
   align-items: center;
   /* ...rest of your styles... */
@@ -571,10 +567,7 @@ button:hover {
 }
 
 #profile-wrapper {
-  background-image: url("Bilder/earth.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  background: #fff;
   display: flex;
   flex-direction: column;
   color: black;
