@@ -370,7 +370,8 @@ button:hover {
   position: sticky;           /* Make it fixed */
   top: 0;                    /* Stick to the top */
   left: 0;
-  width: 100%;              /* Full viewport width */
+  width: 100%; 
+  max-width: 800px;             /* Full viewport width */
   z-index: 1002;             /* Above most content */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
   margin: 2% auto 0 auto;
@@ -380,6 +381,7 @@ button:hover {
   user-select: none;
   min-height: 8%;
   max-height: 8%;
+  height: 8%;
   display: flex;
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.1);
