@@ -383,6 +383,7 @@ button:hover {
   max-height: 8%;
   height: 8%;
   display: flex;
+  background-color: #fff;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.2);
   align-items: center;
@@ -402,6 +403,7 @@ button:hover {
       border-radius: 999px;
       font-weight: 500;
       font-size: 1rem;
+      font-weight: bold;
       color: var(--pill-text);
       cursor: pointer;
       padding: 8px 16px;
@@ -415,12 +417,6 @@ button:hover {
     }
     .pill-segment:last-child { margin-right: 0; }
     .pill-segment.active { color: var(--pill-text-active); }
-
-    .pill-text {
-      color: var(--pill-text);
-        mix-blend-mode: difference;
-        isolation: isolate;
-    }
     /* Hide only the text on small screens */
     @media (max-width: 600px) {
       .pill-segment {
