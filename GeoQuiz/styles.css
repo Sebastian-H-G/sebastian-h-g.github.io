@@ -572,6 +572,9 @@ button:hover {
 
 #profile-wrapper {
   background-image: url("Bilder/earth.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
   color: black;
