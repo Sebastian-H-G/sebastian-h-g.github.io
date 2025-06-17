@@ -415,6 +415,11 @@ button:hover {
     .pill-segment:last-child { margin-right: 0; }
     .pill-segment.active { color: var(--pill-text-active); }
 
+    .pill-text {
+      color: var(--pill-text);
+        mix-blend-mode: difference;
+        isolation: isolate;
+    }
     /* Hide only the text on small screens */
     @media (max-width: 600px) {
       .pill-segment {
