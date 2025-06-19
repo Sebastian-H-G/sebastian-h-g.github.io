@@ -1578,42 +1578,49 @@ function closeUserMessageModal() {
 // ───────────────
 const grid = document.getElementById('all-badges-grid');
 
-// State
-let allBadges   = [];  // [{ id, name, icon_url }]
-let earnedIds   = [];  // [ badge_id ]
+let allBadges = [];  // [{ id, name, icon_url }]
+let earnedIds = [];  // [ badge_id ]
 
-// Fetch data and render grid
 async function loadBadges() {
-  // 1) Get full list of badges
-  let { data: badges } = await sb
+  // 1) Get all badge definitions
+  const { data: badges } = await sb
     .from('badges')
     .select('id, name, icon_url');
   allBadges = badges || [];
 
-  // 2) Get user's earned badges
-  let { data: userbs } = await sb
+  // 2) Get current user
+  const { data: { user }, error } = await sb.auth.getUser();
+  if (!user) {
+    console.warn("No user session found");
+    return;
+  }
+
+  // 3) Get earned badges
+  const { data: userbs } = await sb
     .from('user_badges')
     .select('badge_id')
-    .eq('user_id', sb.auth.getUser()?.id);
+    .eq('user_id', user.id);
 
   earnedIds = (userbs || []).map(r => r.badge_id);
 
   renderAllBadgesGrid();
 }
 
-// Render the full grid
 function renderAllBadgesGrid() {
   grid.innerHTML = '';
+
   allBadges.forEach(b => {
+    const unlocked = earnedIds.includes(b.id);
     const div = document.createElement('div');
-    div.className = 'badge' + (earnedIds.includes(b.id) ? ' unlocked' : '');
+    div.className = 'badge ' + (unlocked ? 'unlocked' : 'locked');
     div.innerHTML = `
-      <img src="${b.icon_url}" alt="${b.name}"/>
+      <img src="${b.icon_url}" alt="${b.name}" title="${b.name}" />
       <div class="badge-title">${b.name}</div>
     `;
     grid.append(div);
   });
 }
+
 // ...existing code...
 // ───────────────
 // FAVORITES LOGIC (using section `id` attribute)

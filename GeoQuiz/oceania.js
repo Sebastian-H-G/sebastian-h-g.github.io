@@ -1,4 +1,5 @@
 import { saveQuizResult } from './saveQuizResults.js';
+import { checkAndAwardBadges } from './badges.js';
 const countryMappings = 
 {
     "Australia": ["Australien"],
