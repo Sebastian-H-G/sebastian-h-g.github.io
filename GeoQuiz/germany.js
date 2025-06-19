@@ -111,6 +111,7 @@ if (countries.map(c => c.toLowerCase()).includes(normalizedCountryName.toLowerCa
 async function onQuizComplete() {
   try {
     // 1) Save the quiz result
+    console.log('onQuizComplete: starting saveQuizResult...');
     const { data: savedResult, error } = await saveQuizResult({
       quizId,
       attainedScore,
@@ -119,10 +120,21 @@ async function onQuizComplete() {
       gave_up
     });
     if (error) throw error;
-    console.log('Result saved:', savedResult);
+    console.log('onQuizComplete: Result saved:', savedResult);
 
     // 2) Run badge checks
-    //    We need to pass exactly the shape checkAndAwardBadges() expects:
+    console.log('onQuizComplete: invoking checkAndAwardBadges with:', {
+      quizId:     savedResult.quiz,
+      attained:   savedResult.attained_score,
+      attainable: savedResult.attainable_score,
+      completed:  savedResult.completed,
+      gaveUp:     savedResult.gave_up,
+      playedAt:   savedResult.played_at || new Date().toISOString(),
+      timeTaken:  savedResult.time_taken,
+      timeAllowed:savedResult.time_allowed
+    });
+
+    const startTime = performance.now();
     await checkAndAwardBadges({
       quizId:     savedResult.quiz,
       attained:   savedResult.attained_score,
@@ -130,16 +142,19 @@ async function onQuizComplete() {
       completed:  savedResult.completed,
       gaveUp:     savedResult.gave_up,
       playedAt:   savedResult.played_at || new Date().toISOString(),
-      // If you track timing, add these two; otherwise omit them
       timeTaken:  savedResult.time_taken,
       timeAllowed:savedResult.time_allowed
     });
+    const duration = (performance.now() - startTime).toFixed(1);
+    console.log(`onQuizComplete: checkAndAwardBadges completed in ${duration}ms`);
 
     // 3) Then update your UI (e.g. show results + any new badges)
+    console.log('onQuizComplete: done. Updating UI...');
   } catch (err) {
-    console.error('Save failed:', err.message);
+    console.error('onQuizComplete: Save failed or badge check error:', err);
   }
 }
+
 document.addEventListener('DOMContentLoaded', () => {
 let countdownInterval;
 let pauseCount = 0;
