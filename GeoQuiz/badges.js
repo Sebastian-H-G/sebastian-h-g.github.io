@@ -8,8 +8,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { persistSession: true, autoRefreshToken: true }
 });
 
-
-// ⏺ Predeclare all badge IDs
+// Predeclare all badge IDs
 const BADGE_IDS = {
   safeBet:           'd08d8896-5d97-48ce-91a8-289e35a4997d',
   earlyBird:         '3e3a1562-8973-4328-9f18-d8678a31a1d8',
