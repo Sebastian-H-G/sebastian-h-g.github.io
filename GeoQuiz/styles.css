@@ -506,6 +506,7 @@ button:hover {
   text-align: center;
   position: relative;
   transition: transform 0.2s ease;
+  overflow: hidden;
 }
 
 .grid .badge:hover {
@@ -526,18 +527,34 @@ button:hover {
   filter: none;
 }
 
-/* Locked badge lock icon overlay */
+
+/* Add a blurred overlay for locked badges */
+.grid .badge.locked::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.5); /* White semi-transparent overlay */
+  backdrop-filter: blur(6px);        /* Blur effect */
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 12px;
+}
+
+/* Locked badge lock icon overlay - make it bigger and more visible */
 .grid .badge.locked::after {
   content: "🔒";
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1.8rem;
-  color: rgba(0, 0, 0, 0.5);
+  font-size: 3rem; /* Bigger lock */
+  color: #222;
+  text-shadow: 0 2px 8px rgba(255,255,255,0.7), 0 0 2px #fff;
+  z-index: 2;
   pointer-events: none;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
 }
-
 
 .grid .badge-title {
   margin-top: 0.5rem;
