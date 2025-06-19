@@ -1,4 +1,6 @@
 import { saveQuizResult } from './saveQuizResults.js';
+import { checkAndAwardBadges } from './badges.js';
+
 // ...existing code...
 const countryMappings = {
     "Baden-Württemberg": ["Baden-Württemberg"],

@@ -107,7 +107,7 @@ async function userCompletedAny(userId, quizIds) {
  *   timeAllowed?: number
  * }
  */
-async function checkAndAwardBadges(ctx) {
+export async function checkAndAwardBadges(ctx) {
   const { quizId, attained, attainable, completed, gaveUp = false, playedAt, timeTaken, timeAllowed } = ctx;
   const { data: { user } } = await sb.auth.getUser();
   if (!user) return;
