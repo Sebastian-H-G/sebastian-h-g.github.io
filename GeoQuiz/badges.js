@@ -28,7 +28,8 @@ const BADGE_IDS = {
   desert:            '2cb1c3f5-e98e-456b-ab64-d27e2f84dae6',
   globalMaster:      '6a6ee4a4-1818-4719-be17-39b94f871bf5',
   seafarer:          '11e95ccc-995f-4fe3-8233-ec12fe8c6fe2',
-  ultimateGeo:       '4c4d0255-1ff9-4d0e-b0f7-d666f4b409cb'
+  ultimateGeo:       '4c4d0255-1ff9-4d0e-b0f7-d666f4b409cb',
+  firstQuiz:         'bc61abcb-0e8b-429e-9b4c-ca6c4958a912'
 };
 
 // ⏺ Define quiz categories with arrays of quiz IDs
@@ -142,6 +143,18 @@ export async function checkAndAwardBadges(ctx) {
     await awardBadge(BADGE_IDS.onFire);
   }
 
+
+    // 🆕 First Quiz: completed your first quiz
+  if (completed) {
+    const { count: firstCount } = await sb
+      .from('quiz_results')
+      .select('id', { count: 'exact', head: true })
+      .eq('player', userId)
+      .eq('completed', true);
+    if (firstCount === 1) {
+      await awardBadge(BADGE_IDS.firstQuiz);
+    }
+  }
   // 4) 10 Down & 5) 25 Strong
   const { count: doneCount } = await sb
     .from('quiz_results')
