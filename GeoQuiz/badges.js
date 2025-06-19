@@ -1,11 +1,13 @@
-// /js/badges.js
+// badges.js
 
-// 1️⃣ Initialize Supabase client (UMD build must be loaded first)
-const SUPABASE_URL      = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const SUPABASE_URL = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { persistSession: true, autoRefreshToken: true }
 });
+
 
 // ⏺ Predeclare all badge IDs
 const BADGE_IDS = {
