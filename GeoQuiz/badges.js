@@ -230,6 +230,3 @@ export async function checkAndAwardBadges(ctx) {
     await awardBadge(BADGE_IDS.ultimateGeo);
   }
 }
-
-// 4️⃣ Expose for your pages
-globalThis.checkAndAwardBadges = checkAndAwardBadges;
