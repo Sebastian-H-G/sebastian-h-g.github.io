@@ -1234,6 +1234,7 @@
   function showApp(user) {
     document.getElementById('auth-container').style.display = 'none';
     document.getElementById('site-content').style.display = 'block';
+    document.body.classList.remove('auth-bg'); // Remove auth background
   document.getElementById('profile').classList.remove('open'); // <-- use class, not display
     loadProfile(user);
     initFavorites();
@@ -1245,6 +1246,7 @@
   function showAuth() {
     document.getElementById('auth-container').style.display = 'flex';
     document.getElementById('site-content').style.display = 'none';
+    document.body.classList.add('auth-bg'); // Add auth background
   document.getElementById('profile').classList.remove('open'); // <-- use class, not display
   }
 
