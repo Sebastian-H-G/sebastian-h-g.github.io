@@ -6,27 +6,52 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { persistSession: true, autoRefreshToken: true }
 });
-
-// 2️⃣ Helper: award a badge if not already earned
+// 2️⃣ Helper: award a badge if not already earned, with debug logging
 async function awardBadge(badgeId) {
+  // 1) Ensure we have a logged‑in user
   const { data: { user }, error: userErr } = await sb.auth.getUser();
-  if (userErr || !user) return false;
+  if (userErr || !user) {
+    console.error('awardBadge(): no user session', userErr);
+    return false;
+  }
   const userId = user.id;
 
-  const { data: exists } = await sb
+  // 2) Check if the badge is already earned
+  const { data: exists, error: existsErr } = await sb
     .from('user_badges')
     .select('id')
     .eq('user_id', userId)
     .eq('badge_id', badgeId)
     .limit(1)
     .maybeSingle();
-  if (exists) return false;
 
-  const { error: insertErr } = await sb
+  if (existsErr) {
+    console.error('awardBadge(): error checking existing badge', existsErr);
+    return false;
+  }
+  if (exists) {
+    console.log(`awardBadge(): user ${userId} already has badge ${badgeId}`);
+    return false;
+  }
+
+  // 3) Insert the new badge row
+  const { data: inserted, error: insertErr } = await sb
     .from('user_badges')
-    .insert({ user_id: userId, badge_id: badgeId, earned_at: new Date().toISOString() });
+    .insert({
+      user_id:   userId,
+      badge_id:  badgeId,
+      earned_at: new Date().toISOString()
+    })
+    .select()    // return the inserted row
+    .single();
 
-  return !insertErr;
+  if (insertErr) {
+    console.error('awardBadge(): insert failed', insertErr);
+    return false;
+  }
+
+  console.log('awardBadge(): successfully awarded', inserted);
+  return true;
 }
 
 // 3️⃣ Main badge logic
