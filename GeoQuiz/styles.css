@@ -494,10 +494,11 @@ button:hover {
 .pane::-webkit-scrollbar {
   display: none;
 }
-   .grid {
+
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Bigger min width */
+  gap: 3rem;
   margin: 2.5rem auto;
 }
 
@@ -513,9 +514,9 @@ button:hover {
 
 .grid .badge img {
   width: 100%;
-  height: 100px;
+  height: 160px; /* Bigger badge image */
   object-fit: contain;
-  border-radius: 6px;
+  border-radius: 12px;
   filter: grayscale(100%) brightness(0.5);
   transition: filter 0.3s ease;
 }
@@ -529,12 +530,14 @@ button:hover {
 .grid .badge.locked::after {
   content: "🔒";
   position: absolute;
-  top: 6px;
-  right: 6px;
-  font-size: 1.2rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
   color: rgba(0, 0, 0, 0.5);
   pointer-events: none;
 }
+
 
 .grid .badge-title {
   margin-top: 0.5rem;
