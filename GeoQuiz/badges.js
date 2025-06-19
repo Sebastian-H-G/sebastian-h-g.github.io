@@ -6,6 +6,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { persistSession: true, autoRefreshToken: true }
 });
+
 // 2️⃣ Helper: award a badge if not already earned, with debug logging
 async function awardBadge(badgeId) {
   // 1) Ensure we have a logged‑in user
@@ -82,7 +83,7 @@ async function checkAndAwardBadges(ctx) {
   const { data: { user } } = await sb.auth.getUser();
   if (!user) return;
   const userId = user.id;
-  const hour = new Date(playedAt).getHours();
+  const hour   = new Date(playedAt).getHours();
 
   // Quiz ID categories (fill in your IDs)
   const FLAG_QUIZ_IDS     = ['1ea67bf9-6155-48d0-865e-c36c7a667698', '5debf2f5-8ff8-4432-b77f-e1dfca21ce66'];
@@ -182,12 +183,12 @@ async function checkAndAwardBadges(ctx) {
   // 17) Global Grandmaster
   const { count: allDone } = await sb
     .from('quiz_results')
-    .select('quiz', { count: 'exact', head: true })
+    .select('quiz',   { count: 'exact', head: true })
     .eq('player', userId)
     .eq('completed', true);
   const { count: totalQuizzes } = await sb
     .from('quizzes')
-    .select('id', { count: 'exact', head: true });
+    .select('id',    { count: 'exact', head: true });
   if (allDone >= totalQuizzes) await awardBadge('<GLOBAL_MASTER_BADGE_ID>');
 
   // 18) Seafarer

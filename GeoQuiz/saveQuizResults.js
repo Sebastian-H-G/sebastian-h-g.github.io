@@ -1,10 +1,9 @@
-// quizApi.js
+// saveQuizResult.js
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
 
 const SUPABASE_URL      = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
-export const supabase    = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const supabase   = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // 1) Hide the page until we know auth status
 console.log('[quizApi] Hiding page until auth is verified');
@@ -45,6 +44,7 @@ supabase.auth.onAuthStateChange((event, session) => {
  * @param {number} params.attainableScore
  * @param {boolean} params.completed
  * @param {boolean} params.gave_up - whether the user gave up on the quiz
+ * @returns {Promise<{data: Object, error: Error|null}>}
  */
 export async function saveQuizResult({
   quizId,
@@ -77,7 +77,7 @@ export async function saveQuizResult({
   const userId = session.user.id;
   console.log('[quizApi] Inserting quiz result for user:', userId);
 
-  // Perform the insert
+  // Perform the insert, select back the single row
   const { data, error } = await supabase
     .from('quiz_results')
     .insert([{
@@ -86,8 +86,11 @@ export async function saveQuizResult({
       attained_score:   attainedScore,
       attainable_score: attainableScore,
       completed:        completed,
-      gave_up:         gave_up
-    }]);
+      gave_up:          gave_up,
+      played_at:        new Date().toISOString()
+    }])
+    .select()    // <<-- ADDED to fetch the inserted row
+    .single();   // <<-- ADDED so data is one object, not an array
 
   console.log('[quizApi] Insert response:', { data, error });
   if (error) {
@@ -96,5 +99,5 @@ export async function saveQuizResult({
   }
 
   console.log('[quizApi] Quiz result saved successfully:', data);
-  return data;
+  return { data, error: null };
 }
