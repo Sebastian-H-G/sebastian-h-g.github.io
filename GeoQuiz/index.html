@@ -1609,7 +1609,15 @@ async function loadBadges() {
 function renderAllBadgesGrid() {
   grid.innerHTML = '';
 
-  allBadges.forEach(b => {
+  // Sort: unlocked first, then locked
+  const sorted = [...allBadges].sort((a, b) => {
+    const aUnlocked = earnedIds.includes(a.id);
+    const bUnlocked = earnedIds.includes(b.id);
+    if (aUnlocked === bUnlocked) return 0;
+    return aUnlocked ? -1 : 1; // unlocked first
+  });
+
+  sorted.forEach(b => {
     const unlocked = earnedIds.includes(b.id);
     const div = document.createElement('div');
     div.className = 'badge ' + (unlocked ? 'unlocked' : 'locked');
