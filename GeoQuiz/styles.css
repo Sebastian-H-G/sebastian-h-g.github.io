@@ -516,7 +516,7 @@ body.auth-bg {
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Bigger min width */
   gap: 3rem;
   padding: 20px;
-  margin: 2.5rem auto;
+  margin: 2.5rem auto 3rem auto;
 }
 
 .grid .badge {
@@ -905,13 +905,13 @@ body.auth-bg {
   color: #333;
 }
 
-/* report.css */
+
 
 /* report.css */
 .report-form {
   width: 90%;
   margin: 2rem auto;
-  padding: 2rem;
+  padding: 2rem 3rem 2rem 2rem;
   border: 1px solid #ddd;
   border-radius: 6px;
   font-family: sans-serif;
@@ -970,6 +970,70 @@ body.auth-bg {
 textarea {
   resize: none; /* Disable resizing */
 }
+
+
+/* badge-modal.css */
+/* Modal */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+}
+
+/* Modal content */
+.badge-modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 15% auto;
+  width: 70%; /* Adjust width as needed */
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button */
+.badge-modal-close-btn {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  cursor: pointer;
+}
+
+.badge-modal-close-btn:hover,
+.badge-modal-close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 3D animation for the badge */
+#modal-badge {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 50%;
+  animation: rotateBadge 5s infinite linear;
+}
+
+/* 3D rotate animation */
+@keyframes rotateBadge {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
 
 #quiz-sections {
     overflow: hidden;
@@ -1556,9 +1620,29 @@ nav ul li a i{
 	  top: 3%;
     position: absolute;
   }
-
+  .pill-segmented {
+	max-width: 80%;
+}
+	#close-profile {
+		top: 0;
+		right: -15px;
+	}
+  .grid {
+	gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Bigger min width */
+  padding: 5px;
+  margin: 1rem auto 2rem auto;
+}
+	.grid .badge img {
+		height: 120px;
+	}
+  .report-form { 
+    max-width: 320px;
+  }
 
 }
+
+
 
 
 
