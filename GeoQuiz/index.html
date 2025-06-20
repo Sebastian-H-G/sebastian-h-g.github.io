@@ -226,7 +226,10 @@
   <div id="badge-modal" class="modal">
     <div class="badge-modal-content">
       <span class="badge-modal-close-btn">&times;</span>
-      <canvas id="badgeCanvas"></canvas>
+      <div class="badge-canvas-container">
+  <canvas id="badgeCanvas"></canvas>
+</div>
+
       <div class="badge-info">
         <h2 id="modal-badge-title"></h2>
         <p id="modal-badge-description"></p>
@@ -1600,7 +1603,7 @@ function closeUserMessageModal() {
   let renderer, scene, camera, controls, badgeMesh, animationId;
   let wiggleStep = 0;
   const baseYaw = -Math.PI / 2;   // centers the texture
-  const WIGGLE_AMPLITUDE = 0.3;   // radians
+  const WIGGLE_AMPLITUDE = 0.5;   // radians
   const WIGGLE_SPEED     = 0.01;  // smaller = slower
 
   // 1) Load badges & render grid
@@ -1675,11 +1678,12 @@ function closeUserMessageModal() {
     init3D(badge.icon_url);
   }
 
-  closeBtn.onclick = () => {
-    modal.classList.remove('visible');
-    if (animationId) cancelAnimationFrame(animationId);
-    // optionally: clean up scene
-  };
+closeBtn.onclick = (e) => {
+  e.stopPropagation(); // Prevent bubbling to document
+  modal.classList.remove('visible');
+  if (animationId) cancelAnimationFrame(animationId);
+  // optionally: clean up scene
+};
 
   // 3) THREE.JS INIT & ANIMATION
 // ...existing code...
@@ -1728,7 +1732,6 @@ function init3D(textureURL) {
   }
 
   // Load texture & build cylinder 
-  // Bob Andrews
   new THREE.TextureLoader().load(textureURL, tex => {
     const geom = new THREE.CylinderGeometry(1, 1, 0.2, 64);
     const mat = new THREE.MeshStandardMaterial({ map: tex });
@@ -2045,7 +2048,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Modal logic
   const avatarDisplay = document.getElementById('openAvatarModal');
   const modal = document.getElementById('avatarModal');
-  const closeBtn = document.getElementById('closeAvatarModal');
+  const closeBtnAvatar = document.getElementById('closeAvatarModal');
   const modalAvatarPreview = document.getElementById('modalAvatarPreview');
   const avatarPreview = document.getElementById('avatarPreview');
   const avatarInput = document.getElementById('avatarInput');
@@ -2062,7 +2065,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Close modal
 // ...existing code...
-closeBtn.addEventListener('click', (e) => {
+closeBtnAvatar.addEventListener('click', (e) => {
   e.stopPropagation(); // Prevent bubbling to document
   modal.style.display = 'none';
   document.body.style.overflow = '';

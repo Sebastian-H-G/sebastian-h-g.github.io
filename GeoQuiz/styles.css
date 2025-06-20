@@ -1053,7 +1053,11 @@ textarea {
   object-fit: contain;
   border-radius: 50%;
 }
-
+.badge-canvas-container {
+  width: 300px;
+  height: 300px;
+  margin-bottom: 1rem;
+}
 /* Ensure the Three.js canvas fills its container */
 #badgeCanvas {
   width: 100%;
