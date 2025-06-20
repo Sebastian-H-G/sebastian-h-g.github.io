@@ -971,67 +971,98 @@ textarea {
 
 
 /* badge-modal.css */
-/* Modal */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 99999999999999999999999; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
-}
+/* badge-modal.css */
+    /* Modal */
+    .modal {
+      display: flex;              /* Changed from none */
+      opacity: 0;                 /* Start invisible */
+      pointer-events: none;       /* Don't allow clicks when hidden */
+      transition: opacity 0.3s ease;
+      position: fixed;
+      z-index: 99999999999999999999999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
+    }
 
-/* Modal content */
-.badge-modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  color: black;
-  margin: 15% auto;
-  width: 70%; /* Adjust width as needed */
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+    /* Show class (added via JS) */
+    .modal.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
-/* Close button */
-.badge-modal-close-btn {
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
-  position: absolute;
-  top: 10px;
-  right: 25px;
-  cursor: pointer;
-}
+    /* Modal content */
+    .badge-modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      color: black;
+      position: relative;
+      display: flex;
+      height: 50vh;
+      width: 60%;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
 
-.badge-modal-close-btn:hover,
-.badge-modal-close-btn:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
 
+    /* Animate modal content in */
+    .modal.visible .badge-modal-content {
+      transform: scale(1);
+    }
+
+    #modal-badge-description {
+      margin: 0;
+    }
+
+    /* Close button */
+    .badge-modal-close-btn {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      position: absolute;
+      top: 10px;
+      right: 25px;
+      cursor: pointer;
+    }
+
+    .badge-modal-close-btn:hover,
+    .badge-modal-close-btn:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* 3D animation for the badge */
 /* 3D animation for the badge */
 #modal-badge {
   width: 100px;
   height: 100px;
   object-fit: contain;
   border-radius: 50%;
-  animation: rotateBadge 5s infinite linear;
 }
 
-/* 3D rotate animation */
-@keyframes rotateBadge {
-  0% {
-    transform: rotateY(0deg);
-  }
-  100% {
-    transform: rotateY(360deg);
-  }
+/* Ensure the Three.js canvas fills its container */
+#badgeCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: rotate(-180deg);
 }
+
+
+
 
 
 #quiz-sections {
