@@ -1651,6 +1651,7 @@ function closeUserMessageModal() {
       .select('name, description, icon_url')
       .eq('id', badgeId)
       .single();
+      console.log('Badge:', badge); // <--- Add this line
     const { data: { user } } = await sb.auth.getUser();
     const { data: ub } = await sb
       .from('user_badges')
