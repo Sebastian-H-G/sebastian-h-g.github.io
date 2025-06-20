@@ -343,8 +343,7 @@ body.auth-bg {
   border-color: #3498db;
   outline: none;
 }
-
- .auth-box button {
+button {
   margin-top: 1rem;
   padding: 0.75rem;
   font-weight: bold;
@@ -357,8 +356,7 @@ body.auth-bg {
   color: #fff;
   transition: opacity 0.2s ease;
 }
-
-.auth-box button:hover {
+button:hover {
   opacity: 0.9;
 }
 :root {
