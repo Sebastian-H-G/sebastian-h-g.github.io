@@ -1600,11 +1600,11 @@ function closeUserMessageModal() {
   const closeBtn = modal.querySelector('.badge-modal-close-btn');
 
   let allBadges = [], earnedIds = [];
-  let renderer, scene, camera, controls, badgeMesh, animationId;
-  let wiggleStep = 0;
-  const baseYaw = -Math.PI / 2;   // centers the texture
-  const WIGGLE_AMPLITUDE = 0.6;   // radians
-  const WIGGLE_SPEED     = 0.02;  // smaller = slower
+    let renderer, scene, camera, controls, badgeMesh, animationId;
+    let wiggleStep = 0;
+    const baseYaw = 0;
+    const WIGGLE_AMPLITUDE = 0.7;
+    const WIGGLE_SPEED = 0.02;
 
   // 1) Load badges & render grid
   async function loadBadges() {
@@ -1685,75 +1685,107 @@ closeBtn.onclick = (e) => {
   // optionally: clean up scene
 };
 
+// ...existing code...
+// Close badge modal when clicking outside the content
+document.getElementById('badge-modal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    this.classList.remove('visible');
+    if (animationId) cancelAnimationFrame(animationId);
+  }
+});
+// ...existing code...
+
   // 3) THREE.JS INIT & ANIMATION
 // ...existing code...
-function init3D(textureURL) {
-  const canvas = document.getElementById('badgeCanvas');
+ function init3D(textureURL) {
+      const canvas = document.getElementById('badgeCanvas');
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setClearColor(0xffffff, 1); // Use white for canvas background
 
-  // Ensure canvas has a visible size
-  canvas.width = canvas.clientWidth || 300;
-  canvas.height = canvas.clientHeight || 300;
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
+      camera.position.set(0, 0, 3);
 
-  // Create renderer once
-  if (!renderer) {
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  }
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
+      controls = new THREE.OrbitControls(camera, canvas);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.1;
+      controls.enablePan = false;
+      controls.enableZoom = false;
 
-  // Scene + camera
-  scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-  camera.position.set(0, 0, 3);
+      // Lights
+      scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+      const frontLight = new THREE.DirectionalLight(0xffffff, 1);
+      frontLight.position.set(2, 2, 2);
+      scene.add(frontLight);
+      const backLight = new THREE.DirectionalLight(0xffffff, 0.5);
+      backLight.position.set(0, 0, -2);
+      scene.add(backLight);
 
-  // OrbitControls: always re-create for new camera
-  if (controls) {
-    controls.dispose();
-  }
-  controls = new THREE.OrbitControls(camera, canvas);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.1;
-  controls.enablePan = false;
-  controls.enableZoom = false;
-  controls.update();
+      const loader = new THREE.TextureLoader();
+      loader.crossOrigin = 'anonymous';
+      loader.load(
+        textureURL,
+        texture => {
+          badgeMesh = new THREE.Group();
 
-  // Lights
-  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-  const dl = new THREE.DirectionalLight(0xffffff, 1);
-  dl.position.set(2, 2, 2);
-  scene.add(dl);
+          // Set a specific color for the circle backing
+          const circleColor = 0xffffff; // Change this to any color (e.g., 0xff0000 for red)
 
-  // Remove previous mesh if exists
-  if (badgeMesh) {
-    scene.remove(badgeMesh);
-    if (badgeMesh.geometry) badgeMesh.geometry.dispose();
-    if (badgeMesh.material) badgeMesh.material.dispose();
-    badgeMesh = null;
-  }
+          // Backing disc (colored background behind image)
+          const backingGeom = new THREE.CircleGeometry(1, 64);
+          const backingMat = new THREE.MeshBasicMaterial({ color: circleColor, side: THREE.DoubleSide });
+          const backing = new THREE.Mesh(backingGeom, backingMat);
+          backing.renderOrder = 0;
+          backing.material.depthWrite = true;
+          backing.material.depthTest = true;
+          backing.position.z = 0.099;
 
-  // Load texture & build cylinder 
-  new THREE.TextureLoader().load(textureURL, tex => {
-    const geom = new THREE.CylinderGeometry(1, 1, 0.2, 64);
-    const mat = new THREE.MeshStandardMaterial({ map: tex });
-    badgeMesh = new THREE.Mesh(geom, mat);
-    badgeMesh.rotation.set(0, 0, Math.PI / 2); // stand on edge
-    scene.add(badgeMesh);
-    wiggleStep = 0;
-    animate();
-  });
-}
+          // Front/back textured discs
+          const circleGeom = new THREE.CircleGeometry(1, 64);
+          const imgMat = new THREE.MeshStandardMaterial({
+            map: texture,
+            side: THREE.DoubleSide,
+            transparent: true
+          });
+          const front = new THREE.Mesh(circleGeom, imgMat);
+          front.position.z = 0.101;
+          const back = new THREE.Mesh(circleGeom, imgMat);
+          back.position.z = -0.101;
+          back.rotation.y = Math.PI;
 
+          // Edge cylinder
+          const edgeGeom = new THREE.CylinderGeometry(1, 1, 0.2, 64, 1, true);
+          const edgeMat = new THREE.MeshStandardMaterial({
+            color: 0x777777,
+            metalness: 0.2,
+            roughness: 0.8
+          });
+          const edge = new THREE.Mesh(edgeGeom, edgeMat);
+          edge.rotation.x = Math.PI / 2;
 
-  function animate() {
-    controls.update();
-    badgeMesh.rotation.y = baseYaw + Math.sin(wiggleStep) * WIGGLE_AMPLITUDE;
-    wiggleStep += WIGGLE_SPEED;
+          badgeMesh.add(edge, backing, front, back);
+          scene.add(badgeMesh);
+          animate();
+        },
+        undefined,
+        err => console.error('Texture load failed', err)
+      );
+    }
 
-    renderer.render(scene, camera);
-    if (modal.classList.contains('visible')) {
+    function animate() {
+      controls.update();
+      if (badgeMesh) {
+        badgeMesh.rotation.y = baseYaw + Math.sin(wiggleStep) * WIGGLE_AMPLITUDE;
+        wiggleStep += WIGGLE_SPEED;
+      }
+      renderer.render(scene, camera);
       animationId = requestAnimationFrame(animate);
     }
-  }
+
 
   // keep canvas full-size
   window.addEventListener('resize', () => {
