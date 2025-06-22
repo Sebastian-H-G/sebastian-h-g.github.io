@@ -1000,10 +1000,10 @@ textarea {
 
     /* Modal content */
     .badge-modal-content {
-      background-color: #fff;
+      background-color: #1a237e;
       padding: 20px;
       border-radius: 10px;
-      color: black;
+      color: white;
       position: relative;
       display: flex;
       height: 70vh;
