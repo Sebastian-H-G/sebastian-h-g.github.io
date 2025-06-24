@@ -1579,7 +1579,8 @@ button {
     .user-msg-box {
       background: white;
       color: black;
-      padding: 30px 40px;
+      padding: 70px 40px;
+      margin-top: 100px; /* Push down from top */
       border-radius: 12px;
       box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
       max-width: 400px;
