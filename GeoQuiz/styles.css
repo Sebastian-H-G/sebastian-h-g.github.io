@@ -395,6 +395,7 @@ button:hover {
   box-sizing: border-box;
   user-select: none;
   display: flex;
+	min-height: 8%;
   margin: 0 auto;
   background-color: #fff;
   overflow: hidden;
