@@ -94,15 +94,19 @@ const uniqueData = data.filter(row => {
 // ...existing code...
 }
 
-// Listen for auth state changes and DOMContentLoaded
+let alreadyRendered = false;
 window.addEventListener('DOMContentLoaded', () => {
-  // Listen for auth state changes (handles login after page load)
   supabase.auth.onAuthStateChange((event, session) => {
-    renderResults(session);
+    if (!alreadyRendered) {
+      renderResults(session);
+      alreadyRendered = true;
+    }
   });
 
-  // Also check immediately in case session is already available (e.g. after refresh)
   supabase.auth.getSession().then(({ data: { session } }) => {
-    renderResults(session);
+    if (!alreadyRendered) {
+      renderResults(session);
+      alreadyRendered = true;
+    }
   });
 });
