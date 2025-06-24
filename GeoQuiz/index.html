@@ -1701,13 +1701,20 @@ closeBtn.onclick = (e) => {
 // ...existing code...
 // Close badge modal when clicking outside the content
 // ...existing code...
-document.getElementById('badge-modal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    e.stopPropagation(); // Prevent bubbling to document (fix)
-    this.classList.remove('visible');
-    if (animationId) cancelAnimationFrame(animationId);
+// ...existing code...
+document.addEventListener('click', (e) => {
+  const badgeModal = document.getElementById('badge-modal');
+  if (
+    profile.classList.contains('open') &&
+    !document.getElementById('profile-wrapper').contains(e.target) &&
+    !document.getElementById('logo').contains(e.target) &&
+    !(badgeModal && badgeModal.contains(e.target)) // <-- Prevent closing if click is inside badge modal
+  ) {
+    profile.classList.remove('open');
+    body.style.overflow = 'auto';
   }
 });
+// ...existing code...
 // ...existing code...
 // ...existing code...
 
