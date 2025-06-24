@@ -383,7 +383,7 @@ button:hover {
 /* ...existing code... */
 .pill-segmented {
   position: sticky;           /* Make it fixed */
-  top: 2%;                    /* Stick to the top */
+  top: 0.5;                    /* Stick to the top */
   left: 0;
   width: 100%; 
   max-width: 800px;             /* Full viewport width */
@@ -394,10 +394,9 @@ button:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   user-select: none;
-  min-height: 8%;
-  max-height: 8%;
   height: 8%;
   display: flex;
+  margin: 0 auto;
   background-color: #fff;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -617,8 +616,8 @@ button:hover {
   align-items: stretch;
   box-shadow: 0 16px 48px 0 rgba(0,0,0,0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10);
   padding: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   margin: 0;
   position: relative;
   top: 0;
@@ -1679,7 +1678,7 @@ nav ul li a i{
 		height: 120px;
 	}
   .report-form { 
-    max-width: 320px;
+    max-width: 350px;
   }
 
 }
