@@ -394,7 +394,6 @@ button:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   user-select: none;
-  height: 8%;
   display: flex;
   margin: 0 auto;
   background-color: #fff;
@@ -1564,8 +1563,8 @@ button {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
       display: none;
       align-items: center;
