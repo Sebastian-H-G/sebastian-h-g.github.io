@@ -383,7 +383,7 @@ button:hover {
 /* ...existing code... */
 .pill-segmented {
   position: sticky;           /* Make it fixed */
-  top: 2%;                    /* Stick to the top */
+  top: 1%;                    /* Stick to the top */
   left: 0;
   width: 100%; 
   max-width: 800px;             /* Full viewport width */
@@ -395,7 +395,6 @@ button:hover {
   box-sizing: border-box;
   user-select: none;
   display: flex;
-	min-height: 8%;
   margin: 0 auto;
   background-color: #fff;
   overflow: hidden;
@@ -581,16 +580,27 @@ button:hover {
 /* --- Add to your <style> section or styles.css --- */
 /* ...existing code... */
 /* ...existing code... */
-/* ...existing code... */
-
-/* peter shawx */
-
-/* Update #profile-wrapper to be a modal */
-#profile-wrapper {
+#profile {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  display: flex;
+  align-items: center;      /* Center vertically */
+  justify-content: center;  /* Center horizontally */
+  background: rgba(0,0,0,0.45);
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 1000;
+  transition: background 0.5s cubic-bezier(.4,1.4,.4,1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+#profile.open {
+  visibility: visible;
+  pointer-events: all;
+}
+
+#profile-wrapper {
+  position: relative;
   background: #d1f0f6;
   display: flex;
   flex-direction: column;
@@ -598,26 +608,32 @@ button:hover {
   align-items: stretch;
   box-shadow: 0 16px 48px 0 rgba(0,0,0,0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10);
   padding: 0;
+  width: 95vw;
+  max-width: 700px;
+  max-height: 90vh;
   margin: 0;
-  min-height: 8%;
-  opacity: 0;
-  pointer-events: none;
+  border-radius: 18px;
+  opacity: 1;
   transform: scale(0.92) translateY(-40px);
   transition:
     opacity 0.5s cubic-bezier(.4,1.4,.4,1),
     transform 0.7s cubic-bezier(.4,1.4,.4,1);
-  overflow-y: auto;
-  z-index: 1000;
+  overflow: hidden; /* Prevent modal itself from scrolling */
   will-change: transform, opacity;
 }
-#profile-wrapper.open {
+#profile.open #profile-wrapper {
   opacity: 1;
-  pointer-events: auto;
   transform: scale(1) translateY(0);
   animation: profilePopIn 0.7s cubic-bezier(.4,1.4,.4,1);
 }
 
-/* ...existing code... */
+/* Make only the content area scrollable if needed */
+#profile-wrapper .content {
+  overflow-y: auto;
+  max-height: 70vh; /* Adjust as needed */
+  padding: 2rem 1rem 1rem 1rem;
+  min-height: 0;
+}
 @keyframes profilePopIn {
   0% {
     opacity: 0;
@@ -654,10 +670,10 @@ button:hover {
     text-align: center;
 } 
 #close-profile {
-  position: absolute;       /* Fixed position keeps it visible on scroll */
+  position: fixed;       /* Fixed position keeps it visible on scroll */
   top: 0.5em;            /* Distance from the top */
   right: 0.5em;          /* Distance from the right */
-  z-index: 1099991;         /* Ensure it's above other elements */
+  z-index: 1000;         /* Ensure it's above other elements */
   padding: 0.2em 0.7em;
   width: auto;
   line-height: 1;
@@ -1706,7 +1722,6 @@ nav ul li a i{
 	background: #062768;
 }
 }
-
 
 
 
