@@ -583,7 +583,7 @@ button:hover {
 /* ...existing code... */
 /* ...existing code... */
 
-/* Bob Andrews */
+/* peter shaw */
 
 /* Update #profile-wrapper to be a modal */
 #profile-wrapper {
@@ -654,10 +654,10 @@ button:hover {
     text-align: center;
 } 
 #close-profile {
-  position: fixed;       /* Fixed position keeps it visible on scroll */
+  position: absolute;       /* Fixed position keeps it visible on scroll */
   top: 0.5em;            /* Distance from the top */
   right: 0.5em;          /* Distance from the right */
-  z-index: 1000;         /* Ensure it's above other elements */
+  z-index: 1099991;         /* Ensure it's above other elements */
   padding: 0.2em 0.7em;
   width: auto;
   line-height: 1;
