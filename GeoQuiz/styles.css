@@ -580,34 +580,16 @@ button:hover {
 /* --- Add to your <style> section or styles.css --- */
 /* ...existing code... */
 /* ...existing code... */
-#profile {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  align-items: flex-start;
-  justify-content: center;
-  background: rgba(0,0,0,0);
-  visibility: hidden;
-  pointer-events: none;
-  z-index: 1000;
-  transition: background 0.5s cubic-bezier(.4,1.4,.4,1);
-  /* Add backdrop blur for a glassy effect */
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
-}
-#profile.open {
-  background: rgba(0,0,0,0.45);
-  visibility: visible;
-  pointer-events: all;
-  /* Animate in the blur */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: background 0.5s cubic-bezier(.4,1.4,.4,1), backdrop-filter 0.7s cubic-bezier(.4,1.4,.4,1);
-}
+/* ...existing code... */
 
+/* Remove #profile and #profile.open rules */
+
+/* Update #profile-wrapper to be a modal */
 #profile-wrapper {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
   background: #d1f0f6;
   display: flex;
   flex-direction: column;
@@ -615,28 +597,26 @@ button:hover {
   align-items: stretch;
   box-shadow: 0 16px 48px 0 rgba(0,0,0,0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10);
   padding: 0;
-  width: 100%;
-  height: 100vh;
   margin: 0;
-  position: relative;
-  top: 0;
   min-height: 8%;
-  left: 0;
-  transform: scale(0.92) translateY(-40px);
   opacity: 0;
+  pointer-events: none;
+  transform: scale(0.92) translateY(-40px);
   transition:
     opacity 0.5s cubic-bezier(.4,1.4,.4,1),
     transform 0.7s cubic-bezier(.4,1.4,.4,1);
   overflow-y: auto;
-  flex: 1 1 auto;
+  z-index: 1000;
   will-change: transform, opacity;
 }
-#profile.open #profile-wrapper {
+#profile-wrapper.open {
   opacity: 1;
+  pointer-events: auto;
   transform: scale(1) translateY(0);
   animation: profilePopIn 0.7s cubic-bezier(.4,1.4,.4,1);
 }
 
+/* ...existing code... */
 @keyframes profilePopIn {
   0% {
     opacity: 0;

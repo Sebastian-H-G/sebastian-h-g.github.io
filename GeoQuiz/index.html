@@ -63,8 +63,7 @@
   </div>
 </div>
 
-<div id="profile">
-  <button id="close-profile">&times;</button>
+<button id="close-profile">&times;</button>
   <div id="profile-wrapper">    
 
 
@@ -196,7 +195,7 @@
 </div>
 </div>
 </div>
- </div>
+
 
 
 
@@ -2052,35 +2051,39 @@ async function initFavorites() {
 
 // ...existing code...
 // 8️⃣ Overlay/profile toggling UI
-const profile = document.getElementById('profile');
+// ...existing code...
+
+const profileWrapper = document.getElementById('profile-wrapper');
+const closeProfileBtn = document.getElementById('close-profile');
 const body = document.body;
 
 document.getElementById('open-profile').addEventListener('click', (e) => {
   e.stopPropagation();
-  if (profile.classList.contains('open')) {
-    profile.classList.remove('open');
+  if (profileWrapper.classList.contains('open')) {
+    profileWrapper.classList.remove('open');
     body.style.overflow = 'auto';
   } else {
-    profile.classList.add('open');
+    profileWrapper.classList.add('open');
     body.style.overflow = 'hidden';
   }
 });
 
-document.getElementById('close-profile').addEventListener('click', () => {
-  profile.classList.remove('open');
+closeProfileBtn.addEventListener('click', () => {
+  profileWrapper.classList.remove('open');
   body.style.overflow = 'auto';
 });
 
 document.addEventListener('click', (e) => {
   if (
-    profile.classList.contains('open') &&
-    !document.getElementById('profile-wrapper').contains(e.target) &&
+    profileWrapper.classList.contains('open') &&
+    !profileWrapper.contains(e.target) &&
     !document.getElementById('logo').contains(e.target)
   ) {
-    profile.classList.remove('open');
+    profileWrapper.classList.remove('open');
     body.style.overflow = 'auto';
   }
 });
+// ...existing code...
 // ...existing code...
 </script>
 
