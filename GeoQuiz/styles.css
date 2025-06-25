@@ -584,7 +584,7 @@ button:hover {
   position: fixed;
   inset: 0;
   display: flex;
-  align-items: center;      /* Center vertically */
+  align-items: flex-start;      /* Center vertically */
   justify-content: center;  /* Center horizontally */
   background: rgba(0,0,0,0.45);
   visibility: hidden;
@@ -608,17 +608,18 @@ button:hover {
   align-items: stretch;
   box-shadow: 0 16px 48px 0 rgba(0,0,0,0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10);
   padding: 0;
-  width: 95vw;
-  max-width: 700px;
-  max-height: 90vh;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
   margin: 0;
-  border-radius: 18px;
+  border-radius: 0; /* Remove border-radius for full coverage */
   opacity: 1;
   transform: scale(0.92) translateY(-40px);
   transition:
     opacity 0.5s cubic-bezier(.4,1.4,.4,1),
     transform 0.7s cubic-bezier(.4,1.4,.4,1);
-  overflow: hidden; /* Prevent modal itself from scrolling */
+  overflow-y: auto; /* Allow scrolling inside the modal */
   will-change: transform, opacity;
 }
 #profile.open #profile-wrapper {
