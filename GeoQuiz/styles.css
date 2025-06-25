@@ -383,7 +383,7 @@ button:hover {
 /* ...existing code... */
 .pill-segmented {
   position: sticky;           /* Make it fixed */
-  top: 1%;                    /* Stick to the top */
+  top: 2%;                    /* Stick to the top */
   left: 0;
   width: 100%; 
   max-width: 800px;             /* Full viewport width */
@@ -395,6 +395,7 @@ button:hover {
   box-sizing: border-box;
   user-select: none;
   display: flex;
+	min-height: 8%;
   margin: 0 auto;
   background-color: #fff;
   overflow: hidden;
