@@ -2054,15 +2054,36 @@ async function initFavorites() {
 // 8️⃣ Overlay/profile toggling UI
 const profile = document.getElementById('profile');
 const body = document.body;
+const wrapper = document.getElementById('profile-wrapper');
+
 
 document.getElementById('open-profile').addEventListener('click', (e) => {
   e.stopPropagation();
+
   if (profile.classList.contains('open')) {
+    // —— Close logic (you already have this) ——
     profile.classList.remove('open');
     body.style.overflow = 'auto';
+
+    // reset any inline styles we added on open
+    wrapper.style.position = '';
+    wrapper.style.top      = '';
+    wrapper.style.height   = '';
   } else {
+    // —— Open logic with scroll‐pinning —— 
+    const scrollY   = window.scrollY;
+    const viewportH = window.innerHeight;
+
     profile.classList.add('open');
     body.style.overflow = 'hidden';
+
+    // Pin the wrapper at your current scroll position,
+    // and make it exactly the height of the viewport
+    wrapper.style.position = 'absolute';
+    wrapper.style.top      = scrollY + 'px';
+    wrapper.style.left     = '0';
+    wrapper.style.right    = '0';
+    wrapper.style.height   = viewportH + 'px';
   }
 });
 

@@ -36,7 +36,7 @@ async function renderResults(session) {
   tbody.innerHTML = ""; // Clear previous results
 
   if (!session) {
-    loadingElem.textContent = 'Bitte zuerst einloggen.';
+    loadingElem.textContent = 'Bitte zuerst einloggen oder versuchen Sie die Seite erneut zu laden.';
     table.style.display = 'none';
     return;
   }
