@@ -395,6 +395,8 @@ button:hover {
   box-sizing: border-box;
   user-select: none;
   display: flex;
+  min-height: 8%;
+  height: 8%;
   margin: 0 auto;
   background-color: #fff;
   overflow: hidden;
@@ -1719,7 +1721,7 @@ nav ul li a i{
     }
 
     .quiz-link:active {
-        box-shadow: 0 2px 0 #0C7A65; /* Adjust shadow for active state */
+        box-shadow: 0 2px 0 #0C7A65; /* Adjust shadow for active state bob andrews*/
     }
 .footer {
 	background: #062768;
