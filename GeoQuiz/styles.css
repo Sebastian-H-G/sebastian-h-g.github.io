@@ -712,9 +712,12 @@ button:hover {
 
 .profile-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* ✅ Always 3 columns */
   gap: 12px;
+  min-width: 420px; /* Optional: prevent shrinking too much */
+  overflow-x: auto; /* ✅ Scroll if container too narrow */
 }
+
 
 .profile-card {
   background: #f8f8f8;
@@ -728,6 +731,7 @@ button:hover {
 .profile-card .icon {
   font-size: 20px;
   display: block;
+  margin: 0 auto;
 }
 
 .profile-card .value {
