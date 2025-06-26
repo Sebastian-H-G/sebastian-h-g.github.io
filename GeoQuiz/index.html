@@ -1308,6 +1308,7 @@
 
   // 4️⃣ Login existing users
   async function handleLogin() {
+    console.log('[handleLogin] logging in...');
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
 
@@ -1404,9 +1405,10 @@ async function loadProfile(user) {
     showAuth();
     alert('Logged out');
   }
-
+// help this is peter shaw nothing to do with the code
   // 7️⃣ Auth state handler (initial load & token refreshes)
   sb.auth.onAuthStateChange((event, session) => {
+    console.log('Auth state changed:', event, session);
     if (session && session.user) {
       // Ensure user has a profile record
       (async () => {
