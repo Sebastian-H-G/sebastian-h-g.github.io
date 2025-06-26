@@ -119,8 +119,12 @@
         </div>
         </div>
           <div class="profile-info">
-          <p><strong>Email:</strong> <span id="pEmail"></span></p>
-          <p><strong>Username:</strong> <span id="pUsername"></span></p>
+          <div><strong>Email:</strong> <span id="pEmail"></span></div>
+          <div><strong>Username:</strong> <span id="pUsername"></span></div>
+          <div>Joined: <span id="pJoinDate"></span></div>
+  <div>Last active: <span id="pLastActive"></span></div>
+  <div>Total quizzes done: <span id="pTotalQuizzes"></span></div>
+  <div>Perfect quizzes done: <span id="pPerfectQuizzes"></span></div>
           </div>
 
           <div class="profile-info">
@@ -1063,7 +1067,6 @@
             <a href="countries.html" onclick="delayLink(event, this)" class="quiz-link">Go there</a>
         </section>
     </div>
-    
     </main>
 
     <div id="message">
@@ -1316,26 +1319,83 @@
     // onAuthStateChange will handle success
   }
 
-  // 5️⃣ Load and display user profile data
+// 5️⃣ Load and display user profile & activity data
 async function loadProfile(user) {
+  // 1) Email is already on the user object
   document.getElementById('pEmail').textContent = user.email;
-  const { data: profile, error } = await sb
-    .from('profiles')
-    .select('username, avatar_url')
-    .eq('id', user.id)
-    .single();
-  if (error) {
-    console.error('[loadProfile] error:', error);
+
+  // 2) Kick off all of our queries simultaneously
+  const [
+    { data: profile, error: profileErr },
+    authRes,
+    totalRes,
+    perfectRes
+  ] = await Promise.all([
+    // – pull username, avatar_url & created_at from your profiles table
+    sb
+      .from('profiles')
+      .select('username, avatar_url, created_at')
+      .eq('id', user.id)
+      .single(),
+
+    // – pull the Auth user to get last_sign_in_at
+    sb.auth.getUser(),
+
+    // – count all quiz_results rows for this user
+    sb
+      .from('quiz_results')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id),
+
+    // – count only those with completed = true
+    sb
+      .from('quiz_results')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .eq('completed', true),
+  ]);
+
+  // 3) Handle errors early
+  if (profileErr) {
+    console.error('[loadProfile] profiles fetch error:', profileErr);
     document.getElementById('pUsername').textContent = '(error)';
     return;
   }
-  document.getElementById('pUsername').textContent = profile.username || '(no username)';
-  // Set avatar images if avatar_url exists
-  if (profile.avatar_url) {
-    document.getElementById('modalAvatarPreview').src = profile.avatar_url;
-    document.getElementById('avatarPreview').src = profile.avatar_url;
-    document.getElementById('headerAvatar').src = profile.avatar_url;
+
+  // 4) Destructure the auth response
+  const { data: { user: authUser } = {}, error: authErr } = authRes;
+  if (authErr) {
+    console.warn('[loadProfile] could not fetch auth user:', authErr);
   }
+
+  // 5) Render everything:
+  // – Username & avatar
+  document.getElementById('pUsername').textContent =
+    profile.username || '(no username)';
+  if (profile.avatar_url) {
+    ['modalAvatarPreview','avatarPreview','headerAvatar']
+      .forEach(el => document.getElementById(el).src = profile.avatar_url);
+  }
+
+  // – Join Date (from profiles.created_at)
+  document.getElementById('pJoinDate').textContent =
+    profile.created_at
+      ? new Date(profile.created_at).toLocaleDateString()
+      : '(no join date)';
+
+  // – Last Active (if we got it)
+  if (authUser?.last_sign_in_at) {
+    document.getElementById('pLastActive').textContent =
+      new Date(authUser.last_sign_in_at).toLocaleString();
+  } else {
+    document.getElementById('pLastActive').textContent = '(n/a)';
+  }
+
+  // – Quiz counts
+  const totalCount   = totalRes.count   ?? 0;
+  const perfectCount = perfectRes.count ?? 0;
+  document.getElementById('pTotalQuizzes').textContent = totalCount;
+  document.getElementById('pPerfectQuizzes').textContent = perfectCount;
 }
 
   // 6️⃣ Logout users
@@ -1697,25 +1757,29 @@ closeBtn.onclick = (e) => {
   // optionally: clean up scene
 };
 
-// ...existing code...
-// Close badge modal when clicking outside the content
-// ...existing code...
-// ...existing code...
 document.addEventListener('click', (e) => {
   const badgeModal = document.getElementById('badge-modal');
+  const isBadgeModalVisible = badgeModal && badgeModal.classList.contains('visible');
+  const clickedInsideProfile = document.getElementById('profile-wrapper').contains(e.target);
+  const clickedLogo = document.getElementById('logo').contains(e.target);
+  const clickedBadgeModal = badgeModal && badgeModal.contains(e.target);
+
+  // Only close profile if:
+  // - profile is open
+  // - NOT clicking inside profile-wrapper or logo
+  // - NOT clicking inside badge modal (when visible)
+  // - badge modal is NOT visible, OR click is NOT inside badge modal
   if (
     profile.classList.contains('open') &&
-    !document.getElementById('profile-wrapper').contains(e.target) &&
-    !document.getElementById('logo').contains(e.target) &&
-    !(badgeModal && badgeModal.contains(e.target)) // <-- Prevent closing if click is inside badge modal
+    !clickedInsideProfile &&
+    !clickedLogo &&
+    (!isBadgeModalVisible || !clickedBadgeModal)
   ) {
     profile.classList.remove('open');
     body.style.overflow = 'auto';
   }
 });
-// ...existing code...
-// ...existing code...
-// ...existing code...
+
 
   // 3) THREE.JS INIT & ANIMATION
 // ...existing code...
@@ -2052,33 +2116,42 @@ async function initFavorites() {
 
 // ...existing code...
 // 8️⃣ Overlay/profile toggling UI
-const profile = document.getElementById('profile');
-const body = document.body;
-const wrapper = document.getElementById('profile-wrapper');
+// 1) Grab your close button
+const closeBtn = document.getElementById('close-profile');
 
+// 2) Immediately pin it to the viewport on script load
+//    (this writes inline styles that beat any CSS specificity issues)
+closeBtn.style.position = 'fixed';
+closeBtn.style.top      = '1rem';
+closeBtn.style.right    = '1rem';
+closeBtn.style.zIndex   = '1001';
+
+// 3) Your existing open/close logic (without touching closeBtn anymore)
+const profile = document.getElementById('profile');
+const wrapper = document.getElementById('profile-wrapper');
+const body    = document.body;
 
 document.getElementById('open-profile').addEventListener('click', (e) => {
   e.stopPropagation();
 
   if (profile.classList.contains('open')) {
-    // —— Close logic (you already have this) ——
+    // — Close —
     profile.classList.remove('open');
     body.style.overflow = 'auto';
 
-    // reset any inline styles we added on open
     wrapper.style.position = '';
     wrapper.style.top      = '';
+    wrapper.style.left     = '';
+    wrapper.style.right    = '';
     wrapper.style.height   = '';
   } else {
-    // —— Open logic with scroll‐pinning —— 
+    // — Open with scroll‐pinning —
     const scrollY   = window.scrollY;
     const viewportH = window.innerHeight;
 
     profile.classList.add('open');
     body.style.overflow = 'hidden';
 
-    // Pin the wrapper at your current scroll position,
-    // and make it exactly the height of the viewport
     wrapper.style.position = 'absolute';
     wrapper.style.top      = scrollY + 'px';
     wrapper.style.left     = '0';
@@ -2086,6 +2159,7 @@ document.getElementById('open-profile').addEventListener('click', (e) => {
     wrapper.style.height   = viewportH + 'px';
   }
 });
+
 
 document.getElementById('close-profile').addEventListener('click', () => {
   profile.classList.remove('open');
