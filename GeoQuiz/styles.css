@@ -639,27 +639,21 @@ button:hover {
   animation: popInFlip 0.9s cubic-bezier(.175,.885,.32,1.275) both;
 }
 
- @keyframes popInFlip {
+  @keyframes popInFlip {
       0% {
         opacity: 0;
         transform: perspective(800px) rotateX(90deg) scale(0.75);
-        box-shadow: 0 0 0 rgba(0,0,0,0);
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
       }
       50% {
         opacity: 1;
-        transform: perspective(800px) rotateX(-10deg) scale(1.1);
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      }
-      70% {
-        transform: perspective(800px) rotateX(5deg) scale(0.95);
-      }
-      90% {
-        transform: perspective(800px) rotateX(0deg) scale(1.02);
+        transform: perspective(800px) rotateX(-5deg) scale(1.04);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       }
       100% {
         opacity: 1;
         transform: perspective(800px) rotateX(0deg) scale(1);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
       }
     }
 /* ...existing code... */
@@ -704,6 +698,59 @@ button:hover {
     justify-content: center;
     gap: 20px;
 }
+
+.profile-stats {
+  font-family: sans-serif;
+  min-width: 50vw;
+  padding: 1rem;
+  margin: auto;
+}
+
+.profile-stats h3 {
+  margin-bottom: 1rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.profile-card {
+  background: #f8f8f8;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.profile-card .icon {
+  font-size: 20px;
+  display: block;
+}
+
+.profile-card .value {
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 4px;
+  min-height: 20px;
+  word-break: break-word; /* ✅ Break long strings like emails */
+  white-space: normal;     /* ✅ Allow wrapping */
+}
+
+.profile-card .value span {
+  display: inline;         /* ✅ Let the span wrap normally */
+  word-break: break-word;
+  white-space: normal;
+}
+
+
+.profile-card .label {
+  font-size: 12px;
+  color: #666;
+}
+
 .avatar-display {
   position: relative;
   display: inline-block;
@@ -1157,58 +1204,29 @@ textarea {
   background: none;
   border: none;
   padding: 0;
-  cursor: pointer;
+  cursor: pointer;           /* always show hand */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100000;
 }
 
-/* Heart colors */
-.heart-outline { stroke: #ccc; transition: stroke 0.2s; }
+/* heart colors */
+.heart-outline { stroke: #ccc; }
 .heart-filled  { fill: #ff6b81; }
 
-/* Default: hide filled, show outline */
-.heart-filled {
-  opacity: 0;
-  transform: scale(0.7);
-  transition: opacity 0.2s, transform 0.25s cubic-bezier(.4,1.4,.4,1);
-  will-change: opacity, transform;
-}
+/* default: hide filled, show outline */
+.heart-filled { opacity: 0; transition: opacity 0.2s; }
 
-/* Hovered outline */
+/* hovered outline */
 .favorite-btn:hover .heart-outline {
   stroke: #ff6b81;
 }
 
-/* Favorited: swap visibility and animate */
-.favorite-btn.favorited .heart-outline {
-  opacity: 0;
-}
-.favorite-btn.favorited .heart-filled {
-  opacity: 1;
-  animation: heart-pop 0.35s cubic-bezier(.4,1.4,.4,1);
-  transform: scale(1.2);
-}
+/* favorited: swap visibility */
+.favorite-btn.favorited .heart-outline { opacity: 0; }
+.favorite-btn.favorited .heart-filled  { opacity: 1; }
 
-/* Unfavorited: animate out */
-.favorite-btn:not(.favorited) .heart-filled {
-  opacity: 0;
-  animation: heart-unpop 0.25s cubic-bezier(.4,1.4,.4,1);
-  transform: scale(0.7);
-}
-
-@keyframes heart-pop {
-  0%   { transform: scale(0.7); opacity: 0; }
-  60%  { transform: scale(1.3); opacity: 1; }
-  80%  { transform: scale(0.95); }
-  100% { transform: scale(1.2); opacity: 1; }
-}
-
-@keyframes heart-unpop {
-  0%   { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(0.7); opacity: 0; }
-}
 .quiz-section {
   background-color: white;
   margin: 40px 7%;
