@@ -2166,16 +2166,7 @@ document.getElementById('close-profile').addEventListener('click', () => {
   body.style.overflow = 'auto';
 });
 
-document.addEventListener('click', (e) => {
-  if (
-    profile.classList.contains('open') &&
-    !document.getElementById('profile-wrapper').contains(e.target) &&
-    !document.getElementById('logo').contains(e.target)
-  ) {
-    profile.classList.remove('open');
-    body.style.overflow = 'auto';
-  }
-});
+
 // ...existing code...
 </script>
 
@@ -2204,7 +2195,7 @@ quizFilterInput.addEventListener('input', function () {
 document.addEventListener('DOMContentLoaded', () => {
   // Modal logic
   const avatarDisplay = document.getElementById('openAvatarModal');
-  const modal = document.getElementById('avatarModal');
+  const avatarModal = document.getElementById('avatarModal');
   const closeBtnAvatar = document.getElementById('closeAvatarModal');
   const modalAvatarPreview = document.getElementById('modalAvatarPreview');
   const avatarPreview = document.getElementById('avatarPreview');
@@ -2216,7 +2207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.stopPropagation();
     // Sync modal avatar with current avatar
     avatarPreview.src = modalAvatarPreview.src;
-    modal.style.display = 'flex';
+    avatarModal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   });
 
@@ -2224,16 +2215,16 @@ document.addEventListener('DOMContentLoaded', () => {
 // ...existing code...
 closeBtnAvatar.addEventListener('click', (e) => {
   e.stopPropagation(); // Prevent bubbling to document
-  modal.style.display = 'none';
+  avatarModal.style.display = 'none';
   document.body.style.overflow = '';
 });
 // ...existing code...
 
   // Close modal when clicking outside content
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) {
+avatarModal.addEventListener('click', (e) => {
+  if (e.target === avatarModal) {
     e.stopPropagation(); // Prevent bubbling to document
-    modal.style.display = 'none';
+    avatarModal.style.display = 'none';
     document.body.style.overflow = '';
   }
 });
