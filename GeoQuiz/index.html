@@ -1660,7 +1660,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const grid = document.getElementById('all-badges-grid');
   const modal = document.getElementById('badge-modal');
-  const closeBtn = modal.querySelector('.badge-modal-close-btn');
+  const closeBtnBadge = modal.querySelector('.badge-modal-close-btn');
 
   let allBadges = [], earnedIds = [];
     let renderer, scene, camera, controls, badgeMesh, animationId;
@@ -1741,7 +1741,7 @@ document.addEventListener('DOMContentLoaded', () => {
     init3D(badge.icon_url);
   }
 
-closeBtn.onclick = (e) => {
+closeBtnBadge.onclick = (e) => {
   e.stopPropagation(); // Prevent bubbling to document
   modal.classList.remove('visible');
   if (animationId) cancelAnimationFrame(animationId);
