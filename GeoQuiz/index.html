@@ -1323,7 +1323,8 @@
 // 5️⃣ Load and display user profile & activity data
 async function loadProfile(user) {
   // 1) Email is already on the user object
-  document.getElementById('pEmail').textContent = user.email;
+  const pEmail = document.getElementById('pEmail');
+  if (pEmail) pEmail.textContent = user.email;
 
   // 2) Kick off all of our queries simultaneously
   const [
@@ -1332,71 +1333,59 @@ async function loadProfile(user) {
     totalRes,
     perfectRes
   ] = await Promise.all([
-    // – pull username, avatar_url & created_at from your profiles table
-    sb
-      .from('profiles')
-      .select('username, avatar_url, created_at')
-      .eq('id', user.id)
-      .single(),
-
-    // – pull the Auth user to get last_sign_in_at
+    sb.from('profiles').select('username, avatar_url, created_at').eq('id', user.id).single(),
     sb.auth.getUser(),
-
-    // – count all quiz_results rows for this user
-    sb
-      .from('quiz_results')
-      .select('id', { count: 'exact', head: true })
-      .eq('user_id', user.id),
-
-    // – count only those with completed = true
-    sb
-      .from('quiz_results')
-      .select('id', { count: 'exact', head: true })
-      .eq('user_id', user.id)
-      .eq('completed', true),
+    sb.from('quiz_results').select('id', { count: 'exact', head: true }).eq('user_id', user.id),
+    sb.from('quiz_results').select('id', { count: 'exact', head: true }).eq('user_id', user.id).eq('completed', true),
   ]);
 
-  // 3) Handle errors early
   if (profileErr) {
     console.error('[loadProfile] profiles fetch error:', profileErr);
-    document.getElementById('pUsername').textContent = '(error)';
+    const pUsername = document.getElementById('pUsername');
+    if (pUsername) pUsername.textContent = '(error)';
     return;
   }
 
-  // 4) Destructure the auth response
   const { data: { user: authUser } = {}, error: authErr } = authRes;
   if (authErr) {
     console.warn('[loadProfile] could not fetch auth user:', authErr);
   }
 
-  // 5) Render everything:
-  // – Username & avatar
-  document.getElementById('pUsername').textContent =
-    profile.username || '(no username)';
+  // Username & avatar
+  const pUsername = document.getElementById('pUsername');
+  if (pUsername) pUsername.textContent = profile.username || '(no username)';
   if (profile.avatar_url) {
-    ['modalAvatarPreview','avatarPreview','headerAvatar']
-      .forEach(el => document.getElementById(el).src = profile.avatar_url);
+    ['modalAvatarPreview','avatarPreview','headerAvatar'].forEach(el => {
+      const elem = document.getElementById(el);
+      if (elem) elem.src = profile.avatar_url;
+    });
   }
 
-  // – Join Date (from profiles.created_at)
-  document.getElementById('pJoinDate').textContent =
-    profile.created_at
+  // Join Date
+  const pJoinDate = document.getElementById('pJoinDate');
+  if (pJoinDate) {
+    pJoinDate.textContent = profile.created_at
       ? new Date(profile.created_at).toLocaleDateString()
       : '(no join date)';
-
-  // – Last Active (if we got it)
-  if (authUser?.last_sign_in_at) {
-    document.getElementById('pLastActive').textContent =
-      new Date(authUser.last_sign_in_at).toLocaleString();
-  } else {
-    document.getElementById('pLastActive').textContent = '(n/a)';
   }
 
-  // – Quiz counts
+  // Last Active
+  const pLastActive = document.getElementById('pLastActive');
+  if (pLastActive) {
+    if (authUser?.last_sign_in_at) {
+      pLastActive.textContent = new Date(authUser.last_sign_in_at).toLocaleString();
+    } else {
+      pLastActive.textContent = '(n/a)';
+    }
+  }
+
+  // Quiz counts
   const totalCount   = totalRes.count   ?? 0;
   const perfectCount = perfectRes.count ?? 0;
-  document.getElementById('pTotalQuizzes').textContent = totalCount;
-  document.getElementById('pPerfectQuizzes').textContent = perfectCount;
+  const pTotalQuizzes = document.getElementById('pTotalQuizzes');
+  if (pTotalQuizzes) pTotalQuizzes.textContent = totalCount;
+  const pPerfectQuizzes = document.getElementById('pPerfectQuizzes');
+  if (pPerfectQuizzes) pPerfectQuizzes.textContent = perfectCount;
 }
 
   // 6️⃣ Logout users
