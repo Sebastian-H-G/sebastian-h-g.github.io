@@ -1413,7 +1413,7 @@ async function loadProfile(user) {
   const pPerfectQuizzes = document.getElementById('pPerfectQuizzes');
   if (pPerfectQuizzes) pPerfectQuizzes.textContent = perfectCount;
 
-  // ── NEW: Activity-Streak Calculation (Last 100 Days) ───────────────────
+// ── NEW: Activity-Streak Calculation (Last 100 Days) ───────────────────
 const hundredDaysAgo = new Date();
 hundredDaysAgo.setDate(hundredDaysAgo.getDate() - 100);
 
@@ -1447,15 +1447,26 @@ if (!resultsErr && Array.isArray(results)) {
       break;
     }
   }
+
+  // 4) Update the streak in the 'profiles' table
+  const { error: updateErr } = await sb
+    .from('profiles')
+    .update({ streak })
+    .eq('id', user.id);
+
+  if (updateErr) {
+    console.error('[loadProfile] Failed to update streak in profiles:', updateErr);
+  }
 } else {
   console.error('[loadProfile] quiz_results fetch error:', resultsErr);
 }
 
-// 4) Write it into your <span id="pstreak">
+// 5) Write it into your <span id="pstreak">
 const pStreak = document.getElementById('pstreak');
 if (pStreak) {
   pStreak.textContent = streak;
 }
+
 }
 
 
