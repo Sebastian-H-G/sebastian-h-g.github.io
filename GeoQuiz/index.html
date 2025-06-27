@@ -120,17 +120,16 @@
         </div>
           <div class="profile-info">
   <div class="profile-stats">
-  <h3>Profile</h3>
   <div class="profile-grid">
-    <div class="profile-card">
-      <span class="icon">📧</span>
-      <div class="value"><span id="pEmail"></span></div>
-      <div class="label">Email</div>
-    </div>
     <div class="profile-card">
       <span class="icon">👤</span>
       <div class="value"><span id="pUsername"></span></div>
       <div class="label">Username</div>
+    </div>
+    <div class="profile-card">
+      <span class="icon">🔥</span>
+      <div class="value"><span id="pstreak"></span></div>
+      <div class="label">Streak</div>
     </div>
     <div class="profile-card">
       <span class="icon">📅</span>
@@ -156,10 +155,7 @@
 </div>
 
           </div>
-
-          <div class="profile-info">
-            <button onclick="handleLogout()">Log Out</button>
-          </div>
+ <button onclick="handleLogout()">Log Out</button>
           </div>
 
     </div>
@@ -1353,8 +1349,8 @@
 // 5️⃣ Load and display user profile & activity data
 async function loadProfile(user) {
   // 1) Email is already on the user object
-  const pEmail = document.getElementById('pEmail');
-  if (pEmail) pEmail.textContent = user.email;
+   // const pEmail = document.getElementById('pEmail');
+  //  if (pEmail) pEmail.textContent = user.email;
 
   // 2) Kick off all of our queries simultaneously
   const [
@@ -1416,7 +1412,52 @@ async function loadProfile(user) {
   if (pTotalQuizzes) pTotalQuizzes.textContent = totalCount;
   const pPerfectQuizzes = document.getElementById('pPerfectQuizzes');
   if (pPerfectQuizzes) pPerfectQuizzes.textContent = perfectCount;
+
+  // ── NEW: Activity-Streak Calculation (Last 100 Days) ───────────────────
+const hundredDaysAgo = new Date();
+hundredDaysAgo.setDate(hundredDaysAgo.getDate() - 100);
+
+// 1) Fetch quiz timestamps from the last 100 days
+const { data: results, error: resultsErr } = await sb
+  .from('quiz_results')
+  .select('created_at')
+  .eq('player', user.id)
+  .gte('created_at', hundredDaysAgo.toISOString()); // Limit to 100 days
+
+let streak = 0;
+if (!resultsErr && Array.isArray(results)) {
+  // 2) Build a set of distinct "YYYY-MM-DD" days
+  const daysSet = new Set(
+    results
+      .map(r => new Date(r.created_at).toISOString().split('T')[0])
+      .filter(Boolean)
+  );
+
+  // 3) Starting from today, walk backward
+  let cursor = new Date();
+  const isoToday = cursor.toISOString().split('T')[0];
+  streak = daysSet.has(isoToday) ? 1 : 0;
+
+  while (true) {
+    cursor.setDate(cursor.getDate() - 1);
+    const iso = cursor.toISOString().split('T')[0];
+    if (daysSet.has(iso)) {
+      streak += 1;
+    } else {
+      break;
+    }
+  }
+} else {
+  console.error('[loadProfile] quiz_results fetch error:', resultsErr);
 }
+
+// 4) Write it into your <span id="pstreak">
+const pStreak = document.getElementById('pstreak');
+if (pStreak) {
+  pStreak.textContent = streak;
+}
+}
+
 
   // 6️⃣ Logout users
   async function handleLogout() {
@@ -1655,6 +1696,7 @@ async function showUserMessage() {
   // 2. Show modal
   document.getElementById('user-msg-content').innerHTML = message.message;
   document.getElementById('user-msg-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
 
   // 3. Mark as read *without* .single()
   const { data: updatedRows, error: updateErr } = await sb
@@ -1670,6 +1712,7 @@ async function showUserMessage() {
 }
 function closeUserMessageModal() {
   document.getElementById('user-msg-modal').style.display = 'none';
+  document.body.style.overflow = '';
 }
 
 // After your closeUserMessageModal() function, add this:
@@ -1777,7 +1820,14 @@ closeBtnBadge.onclick = (e) => {
   if (animationId) cancelAnimationFrame(animationId);
   // optionally: clean up scene
 };
-
+modal.addEventListener('click', function(e) {
+  // Only close if the overlay itself was clicked, not the modal content or its children
+  if (e.target === modal) {
+    modal.classList.remove('visible');
+    if (animationId) cancelAnimationFrame(animationId);
+    // Optionally: clean up scene here if needed
+  }
+});
 document.addEventListener('click', (e) => {
   const badgeModal = document.getElementById('badge-modal');
   const isBadgeModalVisible = badgeModal && badgeModal.classList.contains('visible');
@@ -2222,6 +2272,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const avatarPreview = document.getElementById('avatarPreview');
   const avatarInput = document.getElementById('avatarInput');
   const editPen = document.getElementById('editPen');
+  const modalContent = avatarModal.querySelector('.modal-content');
 
   // Open modal when avatar or pen is clicked
   avatarDisplay.addEventListener('click', (e) => {
@@ -2231,7 +2282,11 @@ document.addEventListener('DOMContentLoaded', () => {
     avatarModal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   });
-
+  if (modalContent) {
+    modalContent.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
   // Close modal
 // ...existing code...
 closeBtnAvatar.addEventListener('click', (e) => {
