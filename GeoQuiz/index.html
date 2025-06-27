@@ -1420,16 +1420,16 @@ hundredDaysAgo.setDate(hundredDaysAgo.getDate() - 100);
 // 1) Fetch quiz timestamps from the last 100 days
 const { data: results, error: resultsErr } = await sb
   .from('quiz_results')
-  .select('created_at')
+  .select('played_at')
   .eq('player', user.id)
-  .gte('created_at', hundredDaysAgo.toISOString()); // Limit to 100 days
+  .gte('played_at', hundredDaysAgo.toISOString()); // Limit to 100 days
 
 let streak = 0;
 if (!resultsErr && Array.isArray(results)) {
   // 2) Build a set of distinct "YYYY-MM-DD" days
   const daysSet = new Set(
     results
-      .map(r => new Date(r.created_at).toISOString().split('T')[0])
+      .map(r => new Date(r.played_at).toISOString().split('T')[0])
       .filter(Boolean)
   );
 
@@ -1697,7 +1697,7 @@ async function showUserMessage() {
   // 0.5 Fetch profile for username (and others if you want)
   const { data: profile, error: profileErr } = await sb
     .from('profiles')
-    .select('username, email, avatar_url')
+    .select('username, avatar_url')
     .eq('id', user.id)
     .single();
   if (profileErr) {
@@ -1724,7 +1724,6 @@ async function showUserMessage() {
   const rawHTML = message.message || '';
   const personalizedHTML = renderTemplate(rawHTML, {
     username: profile.username || '(no username)',
-    email: profile.email || '(no email)',
     // you can add more: avatar_url: profile.avatar_url || ''
   });
 
