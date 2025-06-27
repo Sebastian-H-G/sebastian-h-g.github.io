@@ -1661,55 +1661,81 @@ if (dbErr) {
 });
 // ...existing code...
 
+// ──────────────────────────────────────────────────
+// Helper: simple templating for {{placeholders}}
+// ──────────────────────────────────────────────────
+function renderTemplate(html, vars) {
+  return Object.entries(vars).reduce(
+    (acc, [key, val]) =>
+      acc.replace(new RegExp(`{{${key}}}`, 'g'), val),
+    html
+  );
+}
 
-// ───────────────
-// MESSAGE MODAL LOGIC (per supabase)
-// ───────────────
-
+// ──────────────────────────────────────────────────
+// MESSAGE MODAL LOGIC (Supabase) w/ helper & safety
+// ──────────────────────────────────────────────────
 async function showUserMessage() {
-  const { data: { user }, error } = await sb.auth.getUser();
-  if (error || !user) {
-    console.error("User not logged in", error);
+  // 0. Get current user
+  const { data: { user }, error: authErr } = await sb.auth.getUser();
+  if (authErr || !user) {
+    console.error("User not logged in", authErr);
+    return;
+  }
+
+  // 0.5 Fetch profile for username (and others if you want)
+  const { data: profile, error: profileErr } = await sb
+    .from('profiles')
+    .select('username, email, avatar_url')
+    .eq('id', user.id)
+    .single();
+  if (profileErr) {
+    console.error("Error fetching profile", profileErr);
     return;
   }
 
   // 1. Fetch unread messages
-  const { data: messages, error: msgError } = await sb
+  const { data: messages, error: msgErr } = await sb
     .from('user_messages')
     .select('*')
     .eq('user_id', user.id)
     .eq('read', false)
     .order('created_at', { ascending: false });
-
-  if (msgError) {
-    console.error("Error fetching messages", msgError);
+  if (msgErr) {
+    console.error("Error fetching messages", msgErr);
     return;
   }
-
-  if (!messages || messages.length === 0) {
-    // no messages to show
-    return;
-  }
+  if (!messages || messages.length === 0) return;
 
   const message = messages[0];
 
-  // 2. Show modal
-  document.getElementById('user-msg-content').innerHTML = message.message;
+  // 2. Render template with placeholders, safely
+  const rawHTML = message.message || '';
+  const personalizedHTML = renderTemplate(rawHTML, {
+    username: profile.username || '(no username)',
+    email: profile.email || '(no email)',
+    // you can add more: avatar_url: profile.avatar_url || ''
+  });
+
+  const contentEl = document.getElementById('user-msg-content');
+  contentEl.innerHTML = personalizedHTML;
   document.getElementById('user-msg-modal').style.display = 'flex';
   document.body.style.overflow = 'hidden';
 
-  // 3. Mark as read *without* .single()
-  const { data: updatedRows, error: updateErr } = await sb
+  // 3. Mark message as read
+  const { error: updateErr } = await sb
     .from('user_messages')
     .update({ read: true })
     .eq('id', message.id);
-
   if (updateErr) {
     console.error("Failed to mark message as read:", updateErr);
   } else {
     console.log(`Marked message ${message.id} as read.`);
   }
 }
+
+// ... your closeUserMessageModal() + DOMContentLoaded handler unchanged
+
 function closeUserMessageModal() {
   document.getElementById('user-msg-modal').style.display = 'none';
   document.body.style.overflow = '';
