@@ -1449,14 +1449,15 @@ if (!resultsErr && Array.isArray(results)) {
   }
 
   // 4) Update the streak in the 'profiles' table
-  const { error: updateErr } = await sb
-    .from('profiles')
-    .update({ streak })
-    .eq('id', user.id);
+const { error: updateErr } = await sb
+  .from('profiles')
+  .update({ streak_count: streak })  // Change this line to use the correct column name
+  .eq('id', user.id);
 
-  if (updateErr) {
-    console.error('[loadProfile] Failed to update streak in profiles:', updateErr);
-  }
+if (updateErr) {
+  console.error('[loadProfile] Failed to update streak_count in profiles:', updateErr);
+}
+
 } else {
   console.error('[loadProfile] quiz_results fetch error:', resultsErr);
 }
