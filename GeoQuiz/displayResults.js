@@ -31,7 +31,7 @@ const QUIZ_LOGOS = {
   "Memory": "Logos/Memory.webp",
   "USA States": "Logos/USA.JPEG",
   "USA States Capitals": "Logos/us-capitals.webp",
-  "Deutschland Bundesländer": "Logos/Germany.JPEG",
+  "Germany States": "Logos/Germany.JPEG",
   "Deutschland Bundesländer Hauptstädte": "Logos/de-capitals.webp",
   "Estados de México": "Logos/Mexico.JPEG",
   "Capitales de los Estados de México": "Logos/mx-capitals.webp",

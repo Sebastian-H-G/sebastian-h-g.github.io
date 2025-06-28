@@ -2560,24 +2560,25 @@ async function onQuizComplete() {
 /*********************************************************************
  * Show All Flags Button: show all flags in a grid
  *********************************************************************/
- function showAllFlags() {
+// ...existing code...
+function showAllFlags() {
   flagContainer.style.margin = "20px auto 100px auto";
   flagContainer.style.width = "100%"; // set width to 100%
-
-  // pull out all existing <svg> elements
-  const svgs = Array.from(flagContainer.querySelectorAll('svg'));
 
   // clear the container
   flagContainer.innerHTML = '';
 
-  svgs.forEach(originalSvg => {
+  // Only show flags in filteredFlagsData
+  filteredFlagsData.forEach(flag => {
+    const originalSvg = document.getElementById(flag.country);
+    if (!originalSvg) return;
+
     // Clone the SVG to strip interactivity
     const svg = originalSvg.cloneNode(true);
 
     // Remove interactivity from stripes
     svg.querySelectorAll(".stripe").forEach(stripe => {
       stripe.removeAttribute("data-cycle-index");
-
       // Replace with a clean clone to remove listeners
       const fresh = stripe.cloneNode(true);
       stripe.parentNode.replaceChild(fresh, stripe);
@@ -2586,15 +2587,9 @@ async function onQuizComplete() {
     svg.style.display = 'block';  // un‑hide
 
     // find its status emoji
-// ...inside showAllFlags...
-const f = filteredFlagsData.find(item => item.country === svg.id);
-let emoji = '';
-if (f) {
-  emoji = f.status === 'correct' ? '✅'
-        : f.status === 'skipped' ? '❌'
-        : '';
-}
-// ...existing code...
+    let emoji = '';
+    if (flag.status === 'correct') emoji = '✅';
+    else if (flag.status === 'skipped') emoji = '❌';
 
     // build wrapper + label
     const wrapper = document.createElement('div');
@@ -2609,13 +2604,14 @@ if (f) {
     flagContainer.appendChild(wrapper);
   });
 
-  countryNameElem.textContent     = "All Flags";
+  countryNameElem.textContent = "All Flags";
   widthElem.style.display = "none"; // hide width slider
-  messageElem.textContent     = `Final score: ${score}/${filteredFlagsData.length}.`;
+  messageElem.textContent = `Final score: ${score}/${filteredFlagsData.length}.`;
   progressElem.textContent = ""; // clear progress message
-  controlsElem.style.display      = "none";
-  body.style.backgroundColor      = "#f7f7f7";
+  controlsElem.style.display = "none";
+  body.style.backgroundColor = "#f7f7f7";
 }
+// ...existing code...
 
 
 window.showAllFlags = showAllFlags;
