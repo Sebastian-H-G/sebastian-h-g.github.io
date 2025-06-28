@@ -1857,14 +1857,17 @@ closeBtnBadge.onclick = (e) => {
   if (animationId) cancelAnimationFrame(animationId);
   // optionally: clean up scene
 };
+// ...existing code...
 modal.addEventListener('click', function(e) {
   // Only close if the overlay itself was clicked, not the modal content or its children
   if (e.target === modal) {
+    e.stopPropagation(); // <-- Add this line to prevent bubbling!
     modal.classList.remove('visible');
     if (animationId) cancelAnimationFrame(animationId);
     // Optionally: clean up scene here if needed
   }
 });
+// ...existing code...
 document.addEventListener('click', (e) => {
   const badgeModal = document.getElementById('badge-modal');
   const isBadgeModalVisible = badgeModal && badgeModal.classList.contains('visible');
@@ -2329,7 +2332,6 @@ document.addEventListener('DOMContentLoaded', () => {
 closeBtnAvatar.addEventListener('click', (e) => {
   e.stopPropagation(); // Prevent bubbling to document
   avatarModal.style.display = 'none';
-  document.body.style.overflow = '';
 });
 // ...existing code...
 
@@ -2338,7 +2340,6 @@ avatarModal.addEventListener('click', (e) => {
   if (e.target === avatarModal) {
     e.stopPropagation(); // Prevent bubbling to document
     avatarModal.style.display = 'none';
-    document.body.style.overflow = '';
   }
 });
 
