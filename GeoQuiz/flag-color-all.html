@@ -1358,7 +1358,7 @@
   <g class="stripe" data-index="0"><rect width="3" height="0.6667" fill="#CE1126"/></g>
   <g class="stripe" data-index="1"><rect y="0.6667" width="3" height="0.6667" fill="#FFFFFF"/></g>
   <g class="stripe" data-index="2"><rect y="1.3333" width="3" height="0.6667" fill="#000000"/></g>
-  <g class="not-hidden"><text x="1.5" y="1.0" text-anchor="middle" alignment-baseline="middle" font-size="0.3" fill="#007A3D" font-family="Arial">الله أكبر</text></g>
+  <g class="not-hidden"><text x="1.5" y="1.0" text-anchor="middle" alignment-baseline="middle" font-size="0.3" fill="#007A3D" font-family="Arial">???? ????</text></g>
 </svg>
 
 
@@ -2563,20 +2563,16 @@ async function onQuizComplete() {
 // Peter Shaw added a fart to this function
 function showAllFlags() {
   flagContainer.style.margin = "20px auto 100px auto";
-  flagContainer.style.width = "100%"; 
+  flagContainer.style.width = "100%";
   flagContainer.innerHTML = '';
 
   filteredFlagsData.forEach(flag => {
-    // Try to find the SVG in the DOM
+    // Find the SVG in the DOM (must be present in HTML)
     let originalSvg = document.getElementById(flag.country);
-
-    // If not found, skip (or you could show a placeholder)
     if (!originalSvg) return;
 
-    // Clone the SVG
+    // Clone and set correct colors
     const svg = originalSvg.cloneNode(true);
-
-    // Set correct colors for each stripe
     svg.querySelectorAll(".stripe").forEach((stripe, i) => {
       const shapes = stripe.querySelectorAll("rect, circle, path, polygon");
       shapes.forEach(shape => {
@@ -2585,7 +2581,6 @@ function showAllFlags() {
       });
       stripe.removeAttribute("data-cycle-index");
     });
-
     svg.style.display = 'block';
 
     // Status emoji
