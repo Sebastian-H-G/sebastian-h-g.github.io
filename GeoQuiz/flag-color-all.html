@@ -2564,15 +2564,20 @@ async function onQuizComplete() {
 function showAllFlags() {
   flagContainer.style.margin = "20px auto 100px auto";
   flagContainer.style.width = "100%";
+
+  // 1. Collect all needed SVGs first
+  const clones = [];
+  filteredFlagsData.forEach(flag => {
+    const originalSvg = document.getElementById(flag.country);
+    if (!originalSvg) return;
+    clones.push({ flag, svg: originalSvg.cloneNode(true) });
+  });
+
+  // 2. Now clear the container (removes SVGs from DOM)
   flagContainer.innerHTML = '';
 
-  filteredFlagsData.forEach(flag => {
-    // Find the SVG in the DOM (must be present in HTML)
-    let originalSvg = document.getElementById(flag.country);
-    if (!originalSvg) return;
-
-    // Clone and set correct colors
-    const svg = originalSvg.cloneNode(true);
+  // 3. Add the clones back, update colors and build UI
+  clones.forEach(({ flag, svg }) => {
     svg.querySelectorAll(".stripe").forEach((stripe, i) => {
       const shapes = stripe.querySelectorAll("rect, circle, path, polygon");
       shapes.forEach(shape => {
@@ -2583,12 +2588,10 @@ function showAllFlags() {
     });
     svg.style.display = 'block';
 
-    // Status emoji
     let emoji = '';
     if (flag.status === 'correct') emoji = '✅';
     else if (flag.status === 'skipped') emoji = '❌';
 
-    // Build wrapper + label
     const wrapper = document.createElement('div');
     wrapper.className = 'flag-item';
 
