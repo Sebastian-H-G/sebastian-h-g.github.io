@@ -97,7 +97,7 @@ const uniqueData = data.filter(row => {
       <td>${row.attained_score} / ${row.attainable_score}</td>
       <td>${row.completed ? '✔️' : '❌'}</td>
       <td>${row.gave_up ? '❌' : '/'}</td>
-      <td>${new Date(row.played_at).toLocaleString()}</td>
+      <td>${new Date(row.played_at).toLocaleString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
     `;
 
     tbody.appendChild(tr);

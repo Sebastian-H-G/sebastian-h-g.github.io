@@ -1399,7 +1399,13 @@ async function loadProfile(user) {
   const pLastActive = document.getElementById('pLastActive');
   if (pLastActive) {
     if (authUser?.last_sign_in_at) {
-      pLastActive.textContent = new Date(authUser.last_sign_in_at).toLocaleString();
+      pLastActive.textContent = new Date(authUser.last_sign_in_at).toLocaleString(undefined, {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
     } else {
       pLastActive.textContent = '(n/a)';
     }
