@@ -833,10 +833,15 @@ async function onQuizComplete() {
     svg.style.display = 'block';  // un‑hide
 
     // find its status emoji
-    const f = filteredFlagsData.find(item => item.country === svg.id);
-    const emoji = f.status === 'correct' ? '✅'
-                : f.status === 'skipped' ? '❌'
-                : '';
+// ...inside showAllFlags...
+const f = filteredFlagsData.find(item => item.country === svg.id);
+let emoji = '';
+if (f) {
+  emoji = f.status === 'correct' ? '✅'
+        : f.status === 'skipped' ? '❌'
+        : '';
+}
+// ...existing code...
 
     // build wrapper + label
     const wrapper = document.createElement('div');
