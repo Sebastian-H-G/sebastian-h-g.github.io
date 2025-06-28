@@ -2646,8 +2646,7 @@ function createConfetti() {
     const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
     
     const body = document.body;
-    const originalOverflow = body.style.overflow;
-    body.style.overflow = 'hidden'; // Prevent scrolling during animation
+    body.style.overflowX = 'hidden'; // Only hide horizontal scroll
 
     function createPiece() {
         const piece = document.createElement('div');
@@ -2664,9 +2663,8 @@ function createConfetti() {
         });
     }
 
-    // Adjust the number of confetti pieces
     const totalPieces = 700;
-    const interval = 5; // milliseconds
+    const interval = 5;
 
     let i = 0;
     let intervalId = setInterval(function() {
@@ -2674,11 +2672,7 @@ function createConfetti() {
         i++;
         if (i >= totalPieces) {
             clearInterval(intervalId);
-
-            // Restore scrolling after the animation ends
-            setTimeout(() => {
-                body.style.overflow = originalOverflow || 'auto';
-            }, 2000); // Wait for the last pieces to finish animating
+            // No need to restore overflowX
         }
     }, interval);
 }
