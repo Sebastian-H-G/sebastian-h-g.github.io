@@ -2171,8 +2171,9 @@
       </div>
     </div>
   </footer>
-  <script>
-
+  <script type="module">
+import { saveQuizResult } from './saveQuizResults.js';
+import { checkAndAwardBadges } from './badges.js';
 // ...existing code...
 // Get continent from URL
 function getContinentFromURL() {
@@ -2328,6 +2329,16 @@ if (selectedContinent && selectedContinent.toLowerCase() === "random") {
 
 shuffleArray(filteredFlagsData);
 
+// save Quiz result variables
+let attainableScore = filteredFlagsData.length;
+let attainedScore = 0;
+let completed = false;
+const quizId = "1ea67bf9-6155-48d0-865e-c36c7a667698"; // <-- real UUID
+let gave_up = false; // <-- Add this line
+// save quiz result
+
+
+
 let currentFlagIndex = 0;
 let score = 0;
 // This is the base (grey) color used for uncolored parts.
@@ -2449,6 +2460,7 @@ const controlsElem    = document.getElementById("controls");
     messageElem.textContent = "✅ Correct!";
     body.style.backgroundColor = "#d4edda";
     score++;
+    attainedScore = score; // <-- Add this line
     nextBtn.disabled = false;
     checkBtn.disabled = true;
     giveUpBtn.disabled = true;
@@ -2487,8 +2499,63 @@ const controlsElem    = document.getElementById("controls");
     progressElem.textContent = ""; // clear progress message
     nextBtn.disabled  = true;
     showAllFlags(); // show all flags
+    onQuizComplete(); // save results and check badges
+    completed = true; // mark quiz as completed
+
   }
 });
+
+
+
+
+async function onQuizComplete() {
+  try {
+    // 1) Save the quiz result
+    console.log('onQuizComplete: starting saveQuizResult...');
+    const { data: savedResult, error } = await saveQuizResult({
+      quizId,
+      attainedScore,
+      attainableScore,
+      completed,
+      gave_up
+    });
+    if (error) throw error;
+    console.log('onQuizComplete: Result saved:', savedResult);
+
+    // 2) Run badge checks
+    console.log('onQuizComplete: invoking checkAndAwardBadges with:', {
+      quizId:     savedResult.quiz,
+      attained:   savedResult.attained_score,
+      attainable: savedResult.attainable_score,
+      completed:  savedResult.completed,
+      gaveUp:     savedResult.gave_up,
+      playedAt:   savedResult.played_at || new Date().toISOString(),
+      timeTaken:  savedResult.time_taken,
+      timeAllowed:savedResult.time_allowed
+    });
+
+    const startTime = performance.now();
+    await checkAndAwardBadges({
+      quizId:     savedResult.quiz,
+      attained:   savedResult.attained_score,
+      attainable: savedResult.attainable_score,
+      completed:  savedResult.completed,
+      gaveUp:     savedResult.gave_up,
+      playedAt:   savedResult.played_at || new Date().toISOString(),
+      timeTaken:  savedResult.time_taken,
+      timeAllowed:savedResult.time_allowed
+    });
+    const duration = (performance.now() - startTime).toFixed(1);
+    console.log(`onQuizComplete: checkAndAwardBadges completed in ${duration}ms`);
+
+    // 3) Then update your UI (e.g. show results + any new badges)
+    console.log('onQuizComplete: done. Updating UI...');
+  } catch (err) {
+    console.error('onQuizComplete: Save failed or badge check error:', err);
+  }
+}
+
+
 /*********************************************************************
  * Show All Flags Button: show all flags in a grid
  *********************************************************************/

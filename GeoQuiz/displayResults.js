@@ -6,6 +6,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabase          = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ...existing code...
+// ...existing code...
 const QUIZ_LOGOS = {
   "Countries of the World Quiz": "Logos/worldcountries2.webp",
   "World Countries Empty Map": "Logos/worldcountries2.webp",
@@ -19,15 +20,25 @@ const QUIZ_LOGOS = {
   "Countries of Oceania": "Logos/oceania.webp",
   "Capital Quiz": "Logos/Capital.webp",
   "Flag Quiz": "Logos/Flag.webp",
+  "Flag Color Quiz": "Logos/flag-color.PNG",
+  "Map Quiz": "Logos/Map.webp",
+  "River Quiz": "Logos/River.webp",
+  "Mountain": "Logos/Mountain.webp",
+  "Population": "Logos/Population.webp",
+  "Deserts & Forests": "Logos/Desert&Forest.JPEG",
+  "Cities Quiz": "Logos/Cities.JPEG",
+  "Countries Shape Quiz": "Logos/shape.JPEG",
+  "Memory": "Logos/Memory.webp",
   "USA States": "Logos/USA.JPEG",
   "USA States Capitals": "Logos/us-capitals.webp",
   "Deutschland Bundesländer": "Logos/Germany.JPEG",
   "Deutschland Bundesländer Hauptstädte": "Logos/de-capitals.webp",
   "Estados de México": "Logos/Mexico.JPEG",
   "Capitales de los Estados de México": "Logos/mx-capitals.webp",
-  // Add more as needed
+  "Countries and Region Database": "Logos/database.png",
+  // Fallback for any quiz not listed above
 };
-// ...existing code...
+
 // Helper to render results
 async function renderResults(session) {
   const loadingElem = document.getElementById('loading');
