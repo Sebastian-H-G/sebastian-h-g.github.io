@@ -2157,7 +2157,7 @@
   <footer class="footer" data-aos="fade-up">
     <div class="footer-container">
       <div class="footer-logo">
-        <a href="index.html"><img src="Logos/flag-color.PNG" alt="Company Logo"></a>
+        <a href="flag-color.html"><img src="Logos/flag-color.PNG" alt="Company Logo"></a>
       </div>
       <div class="footer-info">
         <div class="footer-social">
@@ -2229,7 +2229,7 @@ widthRange.addEventListener('input', () => {
  *********************************************************************/
  const flagsData = [
   { country: "France", continent: "Europe", colors: ["blue", "white", "red"], status: null },
-  { country: "Italy", continent: "Europe", colors: ["green", "white", "red"], status: null },
+    { country: "Italy", continent: "Europe", colors: ["green", "white", "red"], status: null },
   { country: "Ireland", continent: "Europe", colors: ["green", "white", "orange"], status: null },
   { country: "Belgium", continent: "Europe", colors: ["black", "yellow", "red"], status: null },
   { country: "Germany", continent: "Europe", colors: ["black", "red", "gold"], status: null },
@@ -2302,6 +2302,7 @@ widthRange.addEventListener('input', () => {
   { country: "Argentina", continent: "South America", colors: ["#74acdf", "#fff", "#74acdf"], status: null },
   { country: "Australia", continent: "Oceania", colors: ["#00008B", "#fff", "red", "#fff", "red", "#fff"], status: null },
   { country: "Azerbaijan", continent: "Asia", colors: ["#3f9c35", "#ed2939", "#00b9e4", "#fff", "#ed2939", "#fff"], status: null },
+
 ];
 
 
@@ -2317,6 +2318,16 @@ function shuffleArray(array) {
 let filteredFlagsData = flagsData;
 if (selectedContinent && selectedContinent !== "all") {
   filteredFlagsData = flagsData.filter(f => f.continent === selectedContinent);
+}
+
+if (filteredFlagsData.length === 0) {
+  countryNameElem.textContent = "No flags available for this continent.";
+  flagContainer.innerHTML = "";
+  checkBtn.disabled = true;
+  nextBtn.disabled = true;
+  giveUpBtn.disabled = true;
+  progressElem.textContent = "";
+  return;
 }
 shuffleArray(filteredFlagsData);
 
