@@ -369,8 +369,7 @@
   
   <!-- Container for the current flag (SVG) -->
   <div id="flagContainer">
-
-    <!-- France -->
+    <!-- France -->
     <svg id="France" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" style="display:none;">
       <g class="stripe" data-index="0">
         <rect x="0" y="0" width="1" height="2" fill="blue" />
@@ -2316,11 +2315,16 @@ function shuffleArray(array) {
 }
 
 let filteredFlagsData = flagsData;
-if (selectedContinent && selectedContinent !== "all") {
+if (selectedContinent && selectedContinent.toLowerCase() === "random") {
+  // Shuffle and pick 10 random flags
+  filteredFlagsData = [...flagsData]; // clone so original isn't shuffled
+  shuffleArray(filteredFlagsData);
+  filteredFlagsData = filteredFlagsData.slice(0, 10);
+} else if (selectedContinent && selectedContinent !== "all") {
   filteredFlagsData = flagsData.filter(
     f => f.continent.toLowerCase().replace(/\s/g, '') === selectedContinent.toLowerCase().replace(/\s/g, '')
   );
-}
+} // else: all flags
 
 shuffleArray(filteredFlagsData);
 
