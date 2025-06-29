@@ -755,7 +755,12 @@ button:hover {
   filter: blur(0.5px) brightness(1.2);
   mix-blend-mode: lighten;
 }
-
+/* ...existing code... */
+.profile-card:active {
+  transform: translateY(5px) scale(0.98);
+  box-shadow: 0 1.5px 0 rgba(0, 0, 0, 0.18);
+}
+/* ...existing code... */
 .profile-card:hover::before {
   opacity: 1;
   animation: shimmer 0.7s linear 1;
@@ -949,7 +954,6 @@ button:hover {
   background: #fff;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   text-align: center;
   width: 320px;
 }
