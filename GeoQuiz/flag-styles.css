@@ -9,6 +9,7 @@
 }
 
 body {
+  user-select: none;
 	-webkit-overflow-scrolling: touch;
 	-webkit-user-select: none; /* Prevent text selection */
 	-webkit-touch-callout: none; /* Disable long-press action (share menu) */
