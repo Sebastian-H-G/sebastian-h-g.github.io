@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,16 +17,18 @@
       padding: 0;
       font-family: Arial, sans-serif;
     }
+
     body {
       background: #f5f5f5;
       color: #333;
+      overflow-x: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
     }
+
     h1 {
-      margin-bottom: 10px;
+      margin: 30px auto 0 auto;
       text-align: center;
     }
 
@@ -33,7 +36,7 @@
     #quiz-container {
       background: #fff;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       width: 80%;
       padding: 20px;
       margin-top: 20px;
@@ -45,59 +48,162 @@
       justify-content: space-between;
       margin-bottom: 20px;
     }
+
     /* Three selects side by side: each ~32% width */
     .selectors select {
       width: 32%;
       padding: 8px;
-      border-radius: 4px;
+      border-radius: 12px;
       border: 1px solid #ccc;
       background: #fafafa;
     }
 
+    .selectors select:focus {
+      border-color: #2196f3;
+      outline: none;
+      border-radius: 12px;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+
+    .selectors option {
+      text-align: center;
+    }
+
     /* ─────── Question & Inputs ─────── */
     #question-screen {
-      display: block; /* Shown once quiz starts */
+      display: block;
+      /* Shown once quiz starts */
       flex-direction: column;
       align-items: center;
     }
+
     #country-name {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       margin-bottom: 10px;
     }
+
     #question-text {
       margin-bottom: 15px;
+      font-size: 20px;
     }
+
     #answer-area {
       width: 100%;
-      margin-bottom: 15px;
+      margin: 0 auto 15px auto;
     }
+
     #answer-area input[type="number"],
     #answer-area input[type="text"] {
       width: calc(100% - 16px);
-      padding: 8px;
+      padding: 10px;
       border-radius: 4px;
+      font-size: 20px;
       border: 1px solid #ccc;
       margin-bottom: 10px;
     }
+
     #answer-area .choices {
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 15px;
       align-items: center;
     }
+
     #answer-area .choices button {
       padding: 20px;
-      background: #e0e0e0;
+      background: #ffb07c;
       flex: 1 1 calc(50% - 40px);
       border: none;
       border-radius: 4px;
+      font-size: 17px;
+      box-shadow: 0 6px 0 #cc7f4d;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.2s, transform 0.2s ease-in-out;
     }
-    #answer-area .choices button:hover {
-      background: #d0d0d0;
+
+    #answer-area .choices button:active {
+      transform: translateY(5px) scale(0.98);
+      box-shadow: 0 5px 0 #cc7f4d;
     }
+
+    #answer-area>button {
+      padding: 10px 20px;
+      background: #ffb07c;
+      border: none;
+      box-shadow: 0 6px 0 #cc7f4d;
+      border-radius: 4px;
+      margin: 20px 15px 10px 0;
+      font-size: 17px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s ease-in-out;
+    }
+
+    #answer-area>button:active {
+      transform: translateY(5px) scale(0.98);
+      box-shadow: 0 5px 0 #cc7f4d;
+    }
+
+#answer-area .choices button:hover {
+  background: linear-gradient(
+    110deg,
+    #ffb07c 0%,
+    #ffe0c1 40%,
+    #ffb07c 80%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 0.8s linear 1;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+    #answer-area .choices button.selected {
+      background: #2196f3;
+      color: #fff;
+      box-shadow: 0 5px 0 #1769aa;
+    }
+
+    #answer-area>button.selected {
+      background: #2196f3;
+      color: #fff;
+      box-shadow: 0 5px 0 #1769aa;
+    }
+
+    #answer-area .choices button.correct {
+      background: #4caf50 !important;
+      /* green */
+      box-shadow: 0 5px 0 #357a38;
+      color: #fff;
+    }
+
+    #answer-area .choices button.wrong {
+      background: #f44336 !important;
+      box-shadow: 0 5px 0 #aa2e25;
+      /* red */
+      color: #fff;
+    }
+
+    /* For higher/lower mode (if not in .choices) */
+    #answer-area>button.correct {
+      background: #4caf50 !important;
+      box-shadow: 0 5px 0 #357a38;
+      color: #fff;
+    }
+
+    #answer-area>button.wrong {
+      background: #f44336 !important;
+      box-shadow: 0 5px 0 #aa2e25;
+      /* red */
+      color: #fff;
+    }
+
     #submit-btn {
       padding: 10px 20px;
       background: #4caf50;
@@ -107,8 +213,15 @@
       cursor: pointer;
       transition: background 0.2s;
     }
+
     #submit-btn:hover {
       background: #45a049;
+    }
+
+    #question-score-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     /* ─────── Feedback & Score ─────── */
@@ -117,15 +230,23 @@
       font-weight: bold;
       text-align: center;
     }
+
     #score-screen {
       display: none;
       text-align: center;
     }
+
     #score {
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #B39DDB;
       font-size: 1.1rem;
+      color: #333333;
+      font-weight: bold;
       margin-top: 10px;
       margin-bottom: 20px;
     }
+
     #next-question-btn,
     #restart-btn {
       padding: 8px 16px;
@@ -137,6 +258,7 @@
       transition: background 0.2s;
       margin: 5px;
     }
+
     #next-question-btn:hover,
     #restart-btn:hover {
       background: #1976d2;
@@ -146,8 +268,103 @@
     .hidden {
       display: none !important;
     }
+
+    .footer {
+      background: linear-gradient(to right, #003c4e, #00bcd4);
+      /* Blue gradient */
+      color: #fff;
+      padding: 20px 0;
+      position: relative;
+      width: 100vw;
+      right: 0;
+      margin-right: 0;
+      left: 0;
+      overflow: hidden;
+      bottom: 0;
+      display: flex;
+      margin-top: 150px;
+      margin-bottom: 0;
+      justify-content: center;
+    }
+
+    .footer-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 1200px;
+      width: 100%;
+      padding: 0 20px;
+      position: relative;
+      /* Ensure positioning context for pseudo-element */
+      z-index: 1;
+      /* Ensure content is above the animation */
+    }
+
+    .footer-logo {
+      margin-right: 40px;
+      /* Space between logo and footer content */
+    }
+
+    .footer-logo img {
+      width: 120px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .footer-logo img:hover {
+      transform: scale(1.05);
+    }
+
+    .footer-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* Center all items horizontally */
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+
+    .footer-social a {
+      color: #fff;
+      font-size: 20px;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .footer-social a:hover {
+      transform: scale(1.2);
+      /* Hover scaling effect */
+    }
+
+    .footer-copyright {
+      font-size: 14px;
+      line-height: 24px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Animation - Floating Circles */
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 20%, transparent 20%) center/150px 150px;
+      opacity: 0.5;
+      animation: animateBg 8s linear infinite;
+      z-index: 0;
+      /* Ensure it's behind the footer content */
+    }
   </style>
 </head>
+
 <body>
   <h1>Population Quiz</h1>
   <div id="quiz-container">
@@ -173,12 +390,14 @@
 
     <!-- ─── Question Screen (shown during quiz) ─── -->
     <div id="question-screen" class="hidden">
-      <div id="country-name"></div>
+      <div id="question-score-wrapper">
+        <div id="country-name"></div>
+        <div id="score">Score: <span id="current-score">0</span> / <span id="question-count">0</span></div>
+      </div>
       <div id="question-text"></div>
       <div id="answer-area"></div>
       <button id="submit-btn">Submit</button>
       <div id="feedback"></div>
-      <div id="score">Score: <span id="current-score">0</span> / <span id="question-count">0</span></div>
     </div>
 
     <!-- ─── Final Results Screen ─── -->
@@ -188,7 +407,24 @@
       <button id="restart-btn">Restart Quiz</button>
     </div>
   </div>
-
+  <footer class="footer" data-aos="fade-up">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <a href="index.html"><img src="Logos/Population.webp" alt="Company Logo"></a>
+      </div>
+      <div class="footer-info">
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copyright">
+          <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
   <script>
     // ─────────────────────────────────────────────────────────────────────────────
     // 1) Initialize Supabase
@@ -228,40 +464,40 @@
     // ─────────────────────────────────────────────────────────────────────────────
     // 4) Fetch Distinct Continents & Populate Continent Select
     // ─────────────────────────────────────────────────────────────────────────────
-// ─────────────────────────────────────────────────────────────────────────────
-// Fetch all continent values, dedupe in JS, then populate the <select>
-// ─────────────────────────────────────────────────────────────────────────────
-async function populateContinents() {
-  // 1) Fetch every row’s continent (no DISTINCT here)
-  const { data: rows, error } = await sb
-    .from('countries')
-    .select('continent');
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Fetch all continent values, dedupe in JS, then populate the <select>
+    // ─────────────────────────────────────────────────────────────────────────────
+    async function populateContinents() {
+      // 1) Fetch every row’s continent (no DISTINCT here)
+      const { data: rows, error } = await sb
+        .from('countries')
+        .select('continent');
 
-  if (error) {
-    console.error('Error fetching continents:', error);
-    return;
-  }
+      if (error) {
+        console.error('Error fetching continents:', error);
+        return;
+      }
 
-  // 2) Extract, filter out null/undefined, and dedupe via a Set
-  const allContinents = rows
-    .map(r => r.continent)
-    .filter(c => c !== null && c !== undefined);
+      // 2) Extract, filter out null/undefined, and dedupe via a Set
+      const allContinents = rows
+        .map(r => r.continent)
+        .filter(c => c !== null && c !== undefined);
 
-  const uniqueContinents = Array.from(new Set(allContinents))
-    .sort((a, b) => a.localeCompare(b)); // alphabetically
+      const uniqueContinents = Array.from(new Set(allContinents))
+        .sort((a, b) => a.localeCompare(b)); // alphabetically
 
-  // 3) Clear any existing options except "All Continents"
-  continentSelect.querySelectorAll('option:not([value="all"])')
-    .forEach(opt => opt.remove());
+      // 3) Clear any existing options except "All Continents"
+      continentSelect.querySelectorAll('option:not([value="all"])')
+        .forEach(opt => opt.remove());
 
-  // 4) Append one <option> per unique continent
-  uniqueContinents.forEach(cont => {
-    const opt = document.createElement('option');
-    opt.value = cont;
-    opt.textContent = cont;
-    continentSelect.appendChild(opt);
-  });
-}
+      // 4) Append one <option> per unique continent
+      uniqueContinents.forEach(cont => {
+        const opt = document.createElement('option');
+        opt.value = cont;
+        opt.textContent = cont;
+        continentSelect.appendChild(opt);
+      });
+    }
 
     // ─────────────────────────────────────────────────────────────────────────────
     // 5) Fetch Countries Based on Difficulty & Continent
@@ -333,121 +569,124 @@ async function populateContinents() {
     // ─────────────────────────────────────────────────────────────────────────────
     // 8) Render One Question Based on Current Filters & Mode
     // ─────────────────────────────────────────────────────────────────────────────
-// ...existing code...
-function renderQuestion() {
-  feedbackEl.textContent = '';
+    // ...existing code...
+    function renderQuestion() {
+      feedbackEl.textContent = '';
+      submitBtn.disabled = false; // Re-enable button for next question
+      // If quiz is over, show final results
+      if (questionCount >= TOTAL_QUESTIONS) {
+        questionScreen.classList.add('hidden');
+        scoreScreen.classList.remove('hidden');
+        finalScoreText.textContent = `You got ${score} out of ${TOTAL_QUESTIONS} correct.`;
+        return;
+      }
 
-  // If quiz is over, show final results
-  if (questionCount >= TOTAL_QUESTIONS) {
-    questionScreen.classList.add('hidden');
-    scoreScreen.classList.remove('hidden');
-    finalScoreText.textContent = `You got ${score} out of ${TOTAL_QUESTIONS} correct.`;
-    return;
-  }
+      // Guard: If no countries, show error and return
+      if (!countriesData || countriesData.length === 0) {
+        questionScreen.classList.add('hidden');
+        scoreScreen.classList.remove('hidden');
+        finalScoreText.textContent = `No countries available for this filter.`;
+        return;
+      }
 
-  // Guard: If no countries, show error and return
-  if (!countriesData || countriesData.length === 0) {
-    questionScreen.classList.add('hidden');
-    scoreScreen.classList.remove('hidden');
-    finalScoreText.textContent = `No countries available for this filter.`;
-    return;
-  }
+      // Pick a random country
+      const mode = modeSelect.value;
+      const country = pickRandomCountry();
+      if (!country) {
+        questionScreen.classList.add('hidden');
+        scoreScreen.classList.remove('hidden');
+        finalScoreText.textContent = `No country found.`;
+        return;
+      }
+      const name = country.name;
+      const population = country.population;
+      const flag = country.flag || ''; // Fallback if flag is missing
 
-  // Pick a random country
-  const mode = modeSelect.value;
-  const country = pickRandomCountry();
-  if (!country) {
-    questionScreen.classList.add('hidden');
-    scoreScreen.classList.remove('hidden');
-    finalScoreText.textContent = `No country found.`;
-    return;
-  }
-  const name = country.name;
-  const population = country.population;
-  const flag = country.flag || ''; // Fallback if flag is missing
+      // For higher/lower mode: figure out referencePop
+      let referencePop = null;
+      if (mode === 'higherlower') {
+        if (questionCount === 0) {
+          // First question: pick any random reference from the same pool
+          const randomRef = countriesData[Math.floor(Math.random() * countriesData.length)];
+          referencePop = randomRef.population;
+        } else if (currentQuestion) {
+          // Use last question's population
+          referencePop = currentQuestion.population;
+        } else {
+          // Fallback if currentQuestion is null
+          referencePop = countriesData[0].population;
+        }
+      }
 
-  // For higher/lower mode: figure out referencePop
-  let referencePop = null;
-  if (mode === 'higherlower') {
-    if (questionCount === 0) {
-      // First question: pick any random reference from the same pool
-      const randomRef = countriesData[Math.floor(Math.random() * countriesData.length)];
-      referencePop = randomRef.population;
-    } else if (currentQuestion) {
-      // Use last question's population
-      referencePop = currentQuestion.population;
-    } else {
-      // Fallback if currentQuestion is null
-      referencePop = countriesData[0].population;
+      currentQuestion = { name, population, mode, referencePop };
+
+      // Display country name
+      countryNameEl.textContent = `${flag} ${name}`;
+      countEl.textContent = questionCount + 1;
+
+      // Clear previous answer area
+      answerArea.innerHTML = '';
+
+      // Build question UI based on mode
+      if (mode === 'multiple') {
+        questionTextEl.textContent = 'Select the correct population:';
+        const options = generateMultipleChoiceOptions(population);
+        const choicesDiv = document.createElement('div');
+        choicesDiv.classList.add('choices');
+        options.forEach((opt) => {
+          const btn = document.createElement('button');
+          btn.textContent = opt.toLocaleString('en-US');
+          btn.dataset.value = opt;
+          btn.addEventListener('click', () => {
+            Array.from(choicesDiv.children).forEach((c) => c.classList.remove('selected'));
+            btn.classList.add('selected');
+          });
+          choicesDiv.appendChild(btn);
+        });
+        answerArea.appendChild(choicesDiv);
+      }
+      else if (mode === 'guess') {
+        questionTextEl.textContent = 'Enter your guess for the population:';
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.placeholder = 'e.g. 83,166,711';
+        input.id = 'guess-input';
+        answerArea.appendChild(input);
+      }
+      else if (mode === 'higherlower') {
+        questionTextEl.textContent = `Will ${name} have a higher or lower population than the reference?`;
+        const refDisplay = document.createElement('div');
+        refDisplay.textContent = `Reference Pop: ${referencePop.toLocaleString('en-US')}`;
+        refDisplay.style.marginBottom = '8px';
+        refDisplay.style.fontSize = "20px";
+        answerArea.appendChild(refDisplay);
+
+        ['higher', 'lower'].forEach((hl) => {
+          const btn = document.createElement('button');
+          btn.textContent = hl.charAt(0).toUpperCase() + hl.slice(1);
+          btn.dataset.value = hl;
+          btn.addEventListener('click', () => {
+            Array.from(answerArea.querySelectorAll('button')).forEach((c) => c.classList.remove('selected'));
+            btn.classList.add('selected');
+          });
+          answerArea.appendChild(btn);
+        });
+      }
+
+      // Show question screen, hide final results (if it was visible)
+      questionScreen.classList.remove('hidden');
+      scoreScreen.classList.add('hidden');
     }
-  }
-
-  currentQuestion = { name, population, mode, referencePop };
-
-  // Display country name
- countryNameEl.textContent = `${flag} ${name}`;
-  countEl.textContent = questionCount + 1;
-
-  // Clear previous answer area
-  answerArea.innerHTML = '';
-
-  // Build question UI based on mode
-  if (mode === 'multiple') {
-    questionTextEl.textContent = 'Select the correct population:';
-    const options = generateMultipleChoiceOptions(population);
-    const choicesDiv = document.createElement('div');
-    choicesDiv.classList.add('choices');
-    options.forEach((opt) => {
-      const btn = document.createElement('button');
-      btn.textContent = opt.toLocaleString('en-US');
-      btn.dataset.value = opt;
-      btn.addEventListener('click', () => {
-        Array.from(choicesDiv.children).forEach((c) => c.classList.remove('selected'));
-        btn.classList.add('selected');
-      });
-      choicesDiv.appendChild(btn);
-    });
-    answerArea.appendChild(choicesDiv);
-  }
-  else if (mode === 'guess') {
-    questionTextEl.textContent = 'Enter your guess for the population:';
-    const input = document.createElement('input');
-    input.type = 'number';
-    input.placeholder = 'e.g. 83,166,711';
-    input.id = 'guess-input';
-    answerArea.appendChild(input);
-  }
-  else if (mode === 'higherlower') {
-    questionTextEl.textContent = `Will ${name} have a higher or lower population than the reference?`;
-    const refDisplay = document.createElement('div');
-    refDisplay.textContent = `Reference Pop: ${referencePop.toLocaleString('en-US')}`;
-    refDisplay.style.marginBottom = '8px';
-    answerArea.appendChild(refDisplay);
-
-    ['higher', 'lower'].forEach((hl) => {
-      const btn = document.createElement('button');
-      btn.textContent = hl.charAt(0).toUpperCase() + hl.slice(1);
-      btn.dataset.value = hl;
-      btn.addEventListener('click', () => {
-        Array.from(answerArea.querySelectorAll('button')).forEach((c) => c.classList.remove('selected'));
-        btn.classList.add('selected');
-      });
-      answerArea.appendChild(btn);
-    });
-  }
-
-  // Show question screen, hide final results (if it was visible)
-  questionScreen.classList.remove('hidden');
-  scoreScreen.classList.add('hidden');
-}
-// ...existing code...
+    // ...existing code...
 
     // ─────────────────────────────────────────────────────────────────────────────
     // 9) Handle Answer Submission
     // ─────────────────────────────────────────────────────────────────────────────
+    // ...existing code...
     submitBtn.addEventListener('click', () => {
       if (!currentQuestion) return;
 
+      submitBtn.disabled = true; // Disable button to prevent multiple clicks
       const { population, mode, referencePop } = currentQuestion;
       let userCorrect = false;
       let userAnswerDisplay = '';
@@ -461,6 +700,17 @@ function renderQuestion() {
         const val = Number(selectedBtn.dataset.value);
         userAnswerDisplay = val.toLocaleString('en-US');
         if (val === population) userCorrect = true;
+
+        // Mark correct and wrong answers
+        answerArea.querySelectorAll('button').forEach(btn => {
+          const btnVal = Number(btn.dataset.value);
+          btn.classList.remove('correct', 'wrong');
+          if (btnVal === population) {
+            btn.classList.add('correct');
+          } else if (btn === selectedBtn) {
+            btn.classList.add('wrong');
+          }
+        });
       }
       else if (mode === 'guess') {
         const input = document.getElementById('guess-input');
@@ -473,6 +723,16 @@ function renderQuestion() {
         // ±5% tolerance
         const diff = Math.abs(val - population);
         if (diff / population <= 0.05) userCorrect = true;
+
+        // Show correct/incorrect visually (optional: color input border)
+        input.classList.remove('correct', 'wrong');
+        if (userCorrect) {
+          input.style.borderColor = '#4caf50';
+          input.style.background = '#e8f5e9';
+        } else {
+          input.style.borderColor = '#f44336';
+          input.style.background = '#ffebee';
+        }
       }
       else if (mode === 'higherlower') {
         const selectedBtn = answerArea.querySelector('button.selected');
@@ -483,9 +743,22 @@ function renderQuestion() {
         const choice = selectedBtn.dataset.value; // "higher" or "lower"
         userAnswerDisplay = choice.charAt(0).toUpperCase() + choice.slice(1);
         if ((choice === 'higher' && population > referencePop) ||
-            (choice === 'lower' && population < referencePop)) {
+          (choice === 'lower' && population < referencePop)) {
           userCorrect = true;
         }
+
+        // Mark correct and wrong buttons
+        answerArea.querySelectorAll('button').forEach(btn => {
+          btn.classList.remove('correct', 'wrong');
+          const isCorrect =
+            (btn.dataset.value === 'higher' && population > referencePop) ||
+            (btn.dataset.value === 'lower' && population < referencePop);
+          if (isCorrect) {
+            btn.classList.add('correct');
+          } else if (btn === selectedBtn) {
+            btn.classList.add('wrong');
+          }
+        });
       }
 
       // Show feedback & update score
@@ -501,9 +774,17 @@ function renderQuestion() {
 
       // Delay before next question (so user sees feedback)
       setTimeout(() => {
+        // Reset guess input styles if needed
+        const guessInput = document.getElementById('guess-input');
+        if (guessInput) {
+          guessInput.style.borderColor = '';
+          guessInput.style.background = '';
+        }
         renderQuestion();
-      }, 1500);
+        submitBtn.disabled = false; // Re-enable button for next question
+      }, 1800);
     });
+    // ...existing code...
 
     // ─────────────────────────────────────────────────────────────────────────────
     // 10) Reset Quiz (when filters change or on page load)
@@ -560,4 +841,5 @@ function renderQuestion() {
     });
   </script>
 </body>
+
 </html>

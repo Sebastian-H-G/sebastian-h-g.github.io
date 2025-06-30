@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Countries and Region Table</title>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- 1) Supabase JS (v2.x) from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
@@ -26,13 +26,19 @@ body {
   background-color: #f0f2f5;
   color: #2c3e50;
   margin: 0;
-  padding: 1rem;
+  padding: 0;
+  overflow-x: hidden; /* prevent horizontal scroll */
 }
-
+h1 {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 2rem;
+  color: #2c3e50;
+}
 /* Slightly narrower container, centered */
 .table-container {
-  max-width: 1100px;
-  margin: 1rem auto;
+  max-width: 90%;
+  margin: 2rem auto;
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
@@ -46,7 +52,9 @@ table {
   width: 100%;
   border-collapse: collapse;
   table-layout: auto; /* allows columns to shrink/grow */
-  min-width: 800px;    /* allows horizontal scroll on very small screens */
+  min-width: 80%;    /* allows horizontal scroll on very small screens */
+  max-width: 100%; /* prevent overflow */
+  margin: 0 auto; /* center the table */
 }
 
 /* Make TH and TD wrap their contents */
@@ -127,6 +135,7 @@ td {
   flex-wrap: wrap;
   gap: 0.6rem;
   align-items: center;
+  justify-content: center;
 }
 
 #column-visibility-controls span {
@@ -138,7 +147,7 @@ td {
   font-size: 0.9rem;
   user-select: none;
   cursor: pointer;
-  background-color: #ecf0f1;
+  background-color: #c8d2d4;
   padding: 0.35rem 0.75rem;
   border-radius: 5px;
   transition: background-color 0.2s;
@@ -168,6 +177,98 @@ td {
 .table-container::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* --------------------------------------
+   8) Footer styles
+   -------------------------------------- */
+
+   
+.footer {
+ background: linear-gradient(to right, #4e003c, #ff69b4); /* Pink gradient */
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  width: 100vw;
+  right: 0;
+  margin-right: 0;
+   left: 0;
+  overflow: hidden;
+bottom: 0;
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* Ensure positioning context for pseudo-element */
+  z-index: 1; /* Ensure content is above the animation */
+}
+
+.footer-logo {
+  margin-right: 40px; /* Space between logo and footer content */
+}
+
+.footer-logo img {
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 3);
+  transition: transform 0.3s ease-in-out; 
+}
+
+.footer-logo img:hover {
+	transform: scale(1.05);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+  transform: scale(1.2); /* Hover scaling effect */
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation - Floating Circles */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 20%, transparent 20%) center/150px 150px;
+  opacity: 0.5;
+  animation: animateBg 8s linear infinite;
+  z-index: 0; /* Ensure it's behind the footer content */
+}
   </style>
 </head>
 <body>
@@ -189,7 +290,24 @@ td {
       </tbody>
     </table>
   </div>
-
+    <footer class="footer" data-aos="fade-up">
+            <div class="footer-container">
+              <div class="footer-logo">
+                <a href="index.html"><img src="Logos/database.png" alt="Company Logo"></a>
+              </div>
+              <div class="footer-info">
+                <div class="footer-social">
+                  <a href="#"><i class="fab fa-facebook-f"></i></a>
+                  <a href="#"><i class="fab fa-twitter"></i></a>
+                  <a href="#"><i class="fab fa-instagram"></i></a>
+                  <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="footer-copyright">
+                  <p>&copy; 2024 GEOQUIZ LTD GmbH & Co. KG <br> All Rights Reserved.</p>
+                </div>
+              </div>
+            </div>
+          </footer>
   <!-- 4) JavaScript: fetch, render, sort, and show/hide logic -->
   <script>
     // 4.1) Supabase credentials (replace with your own)
@@ -244,6 +362,11 @@ td {
       const prefix = document.createElement('span');
       prefix.textContent = 'Show/Hide Columns: ';
       prefix.style.fontWeight = '500';
+      prefix.style.textAlign = 'center';
+      prefix.style.width = '100%';
+      prefix.style.display = 'block'; // make it a block element
+      prefix.style.marginBottom = '0.5rem';
+      prefix.style.fontSize = '0.9rem';
       container.appendChild(prefix);
 
       displayColumns.forEach(col => {
