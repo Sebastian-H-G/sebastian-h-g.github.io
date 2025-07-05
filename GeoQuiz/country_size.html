@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Country Size Quiz</title>
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; }
+    .container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; position: relative; }
+
+    .start-screen { text-align: center; }
+    .start-screen h1 { font-size: 3rem; margin-bottom: 1rem; color: #333; animation: pop 1.2s ease-out; }
+    .selectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; max-width: 800px; margin: auto; }
+    select, button { padding: 0.75rem 1rem; border-radius: 8px; border: 2px solid #ccc; font-size: 1rem; transition: border-color 0.2s; }
+    select:focus, button:hover { border-color: #007bff; outline: none; }
+    button { background: #007bff; color: #fff; border: none; cursor: pointer; }
+    .start { grid-column: span 3; font-size: 1.25rem; }
+    @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+    .quiz-screen { display: none; flex-direction: column; align-items: center; width: 100%; max-width: 700px; position: relative; }
+    .question { font-size: 1.5rem; margin: 1rem 0; }
+    .options { list-style: none; width: 100%; padding: 0; }
+    .options li { margin: 0.5rem 0; position: relative; }
+    .options button { width: 100%; text-align: left; }
+    .feedback { margin: 1rem 0; font-weight: bold; }
+    .correct { background: #d4edda !important; border-color: #28a745 !important; }
+    .wrong { background: #f8d7da !important; border-color: #dc3545 !important; }
+
+    .controls { margin-top: 1rem; display: flex; gap: 1rem; width: 100%; }
+    .controls button { flex: 1; }
+    .guess-input { padding: 0.5rem; border: 2px solid #ccc; border-radius: 6px; width: 100%; font-size: 1rem; margin-bottom: 1rem; }
+
+    /* Play again and home buttons */
+    .top-buttons { position: absolute; top: 1rem; right: 1rem; display: flex; gap: 0.5rem; }
+    .top-buttons button { background: #28a745; }  
+    .top-buttons .home { background: #dc3545; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="start-screen">
+      <h1>🌍 Country Size Quiz 🌍</h1>
+      <div class="selectors">
+        <select id="gameType">
+          <option value="sort">Sort Countries</option>
+          <option value="multiple">Multiple Choice</option>
+          <option value="guess">Guess the Size</option>
+        </select>
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+        <select id="continent">
+          <option value="all">All Continents</option>
+          <option value="africa">Africa</option>
+          <option value="asia">Asia</option>
+          <option value="europe">Europe</option>
+          <option value="north america">North America</option>
+          <option value="south america">South America</option>
+          <option value="oceania">Oceania</option>
+        </select>
+        <button class="start">Start Quiz</button>
+      </div>
+    </div>
+    <div class="quiz-screen" id="quizScreen">
+      <div class="top-buttons">
+        <button class="play-again" id="playAgainBtn" style="display:none;">🔄 Play Again</button>
+        <button class="home" id="homeBtn">🏠 Home</button>
+      </div>
+      <div class="question" id="question"></div>
+      <ul class="options" id="options"></ul>
+      <input type="text" id="guessInput" class="guess-input" placeholder="Enter area in km²" />
+      <div class="controls">
+        <button id="submitBtn">Submit</button>
+        <button id="showSolBtn">Show Solution</button>
+        <button id="retryBtn" style="display:none;">Retry</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+  </div>
+  <script>
+        // ─────────────────────────────────────────────────────────────────────────────
+    // 1) Initialize Supabase
+    // ─────────────────────────────────────────────────────────────────────────────
+    const SUPABASE_URL = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const startBtn = document.querySelector('.start');
+    const startScreen = document.querySelector('.start-screen');
+    const quizScreen = document.getElementById('quizScreen');
+    const gameTypeEl = document.getElementById('gameType');
+    const difficultyEl = document.getElementById('difficulty');
+    const continentEl = document.getElementById('continent');
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const guessInput = document.getElementById('guessInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const showSolBtn = document.getElementById('showSolBtn');
+    const retryBtn = document.getElementById('retryBtn');
+    const playAgainBtn = document.getElementById('playAgainBtn');
+    const homeBtn = document.getElementById('homeBtn');
+    const feedbackEl = document.getElementById('feedback');
+
+    let countries = [], currentSet = [];
+
+    async function loadCountries() {
+      const { data, error } = await sb.from('countries').select('name, continent, area_sq_km');
+      if (error) console.error(error);
+      else countries = data;
+    }
+
+    function filterCountries() {
+      let arr = [...countries];
+      if (continentEl.value !== 'all') arr = arr.filter(c => c.continent.toLowerCase() === continentEl.value);
+      if (difficultyEl.value === 'easy') arr = arr.filter(c => c.area_sq_km > 1000000);
+      if (difficultyEl.value === 'hard') arr = arr.filter(c => c.area_sq_km < 500000);
+      return arr;
+    }
+
+    function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+
+    startBtn.addEventListener('click', async () => {
+      await loadCountries();
+      startScreen.style.display = 'none';
+      quizScreen.style.display = 'flex';
+      setupGame();
+    });
+
+    homeBtn.addEventListener('click', () => {
+      quizScreen.style.display = 'none';
+      startScreen.style.display = 'block';
+    });
+
+    playAgainBtn.addEventListener('click', () => {
+      if (gameTypeEl.value === 'sort') setupGame();
+    });
+
+    function setupGame() {
+      submitBtn.disabled = false;
+      guessInput.value = '';
+      feedbackEl.textContent = '';
+      submitBtn.style.display = 'inline-block';
+      showSolBtn.style.display = 'none';
+      retryBtn.style.display = 'none';
+      playAgainBtn.style.display = 'none';
+      clearQuiz();
+      const pool = filterCountries();
+      if (gameTypeEl.value === 'sort') {
+        showSolBtn.style.display = 'inline-block'; initSort(pool);
+      } else if (gameTypeEl.value === 'multiple') {
+        initMultiple(pool);
+      } else {
+        initGuess(pool);
+      }
+    }
+
+    function clearQuiz() {
+      optionsEl.innerHTML = '';
+      questionEl.textContent = '';
+      guessInput.style.display = 'none';
+    }
+
+    // SORT MODE
+    function initSort(pool) {
+      currentSet = shuffle(pool).slice(0, 10);
+      currentSet.forEach(c => {
+        const li = document.createElement('li'); li.textContent = c.name; li.draggable = true; optionsEl.appendChild(li);
+      });
+      enableDnD(); submitBtn.onclick = handleSortSubmit;
+      showSolBtn.onclick = showSortSolution;
+      retryBtn.onclick = retrySort;
+    }
+
+    function enableDnD() {
+      let dragSrc;
+      optionsEl.querySelectorAll('li').forEach(li => {
+        li.addEventListener('dragstart', () => dragSrc = li);
+        li.addEventListener('dragover', e => e.preventDefault());
+        li.addEventListener('drop', e => { e.preventDefault(); [li.textContent, dragSrc.textContent] = [dragSrc.textContent, li.textContent]; });
+      });
+    }
+
+    function handleSortSubmit() {
+      submitBtn.disabled = true;
+      optionsEl.querySelectorAll('li').forEach(li => li.draggable = false);
+      const sortedNames = [...currentSet].sort((a, b) => b.area_sq_km - a.area_sq_km).map(c => c.name);
+      revealColorsOnly(sortedNames);
+      retryBtn.style.display = 'inline-block';
+    }
+
+    function revealColorsOnly(sortedNames) {
+      optionsEl.querySelectorAll('li').forEach((li, i) => li.classList.add(li.textContent === sortedNames[i] ? 'correct' : 'wrong'));
+      playAgainBtn.style.display = 'inline-block';
+    }
+
+    function showSortSolution() {
+      const sorted = [...currentSet].sort((a, b) => b.area_sq_km - a.area_sq_km);
+      optionsEl.innerHTML = '';
+      sorted.forEach(c => {
+        const li = document.createElement('li'); li.textContent = `${c.name} (${c.area_sq_km.toLocaleString('en-US')} km²)`; li.classList.add('correct'); optionsEl.appendChild(li);
+      });
+      submitBtn.style.display = 'none'; showSolBtn.style.display = 'none'; retryBtn.style.display = 'none'; playAgainBtn.style.display = 'inline-block';
+    }
+
+    function retrySort() {
+      optionsEl.querySelectorAll('li').forEach(li => li.classList.remove('correct', 'wrong'));
+      optionsEl.querySelectorAll('li').forEach(li => li.draggable = true);
+      submitBtn.disabled = false; retryBtn.style.display = 'none';
+    }
+
+    // MULTIPLE CHOICE
+    function initMultiple(pool) {
+      const choices = shuffle(pool).slice(0, 4);
+      const answer = choices[Math.floor(Math.random() * 4)];
+      questionEl.textContent = `How large is ${answer.name}?`;
+      let selected;
+      choices.forEach(c => {
+        const li = document.createElement('li'); const btn = document.createElement('button'); btn.textContent = `${c.area_sq_km.toLocaleString('en-US')} km²`;
+        btn.onclick = () => { optionsEl.querySelectorAll('button').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selected = btn; };
+        li.appendChild(btn); optionsEl.appendChild(li);
+      });
+      submitBtn.style.display = 'inline-block';
+      submitBtn.onclick = () => {
+        if (!selected) return;
+        submitBtn.disabled = true;
+        optionsEl.querySelectorAll('button').forEach(btn => btn.classList.add(btn.textContent === `${answer.area_sq_km.toLocaleString('en-US')} km²` ? 'correct' : 'wrong'));
+        setTimeout(setupGame, 2000);
+      };
+    }
+
+guessInput.addEventListener("blur", (e) => {
+  const raw = e.target.value.replace(/[^\d]/g, "");
+  e.target.value = Number(raw).toLocaleString();
+});
+    guessInput.addEventListener("keypress", (e) => {
+  if (!/\d/.test(e.key)) e.preventDefault(); // Blocks non-digits
+});
+
+
+    // GUESS MODE
+    function initGuess(pool) {
+      const answer = shuffle(pool)[0];
+      questionEl.textContent = `Guess the area of ${answer.name} in km²:`;
+      guessInput.style.display = 'block';
+      guessInput.disabled = false;
+      submitBtn.style.display = 'inline-block';
+      submitBtn.disabled = false;
+      submitBtn.onclick = () => {
+        const val = Number(guessInput.value);
+        const diff = Math.abs(val - answer.area_sq_km);
+        feedbackEl.textContent = diff <= answer.area_sq_km * 0.15
+          ? `Nice! Actual: ${answer.area_sq_km.toLocaleString('en-US')} km².`
+          : `Too far! Actual: ${answer.area_sq_km.toLocaleString('en-US')} km².`;
+        guessInput.disabled = true;
+        submitBtn.disabled = true;
+        setTimeout(setupGame, 2000);
+      };
+    }
+  </script>
+</body>
+</html>

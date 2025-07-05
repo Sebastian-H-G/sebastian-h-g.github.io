@@ -52,7 +52,8 @@
     /* Three selects side by side: each ~32% width */
     .selectors select {
       width: 32%;
-      padding: 8px;
+      padding: 15px;
+      font-size: 18px;
       border-radius: 12px;
       border: 1px solid #ccc;
       background: #fafafa;
@@ -148,21 +149,22 @@
   background: linear-gradient(
     110deg,
     #ffb07c 0%,
-    #ffe0c1 40%,
-    #ffb07c 80%
+    #ffe0c1 50%,
+    #ffb07c 100%
   );
-  background-size: 200% 100%;
-  animation: shimmer 0.8s linear 1;
+  background-size: 150% 100%;
+  animation: shimmer 1.2s ease-in-out 1;
 }
 
 @keyframes shimmer {
   0% {
-    background-position: -200% 0;
+    background-position: 0% 0;
   }
   100% {
-    background-position: 200% 0;
+    background-position: 100% 0;
   }
 }
+
 
     #answer-area .choices button.selected {
       background: #2196f3;
@@ -204,27 +206,38 @@
       color: #fff;
     }
 
-    #submit-btn {
-      padding: 10px 20px;
-      background: #4caf50;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    #submit-btn:hover {
-      background: #45a049;
-    }
-
     #question-score-wrapper {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
-    /* ─────── Feedback & Score ─────── */
+    #submit-btn {
+      padding: 20px;
+      width: 100%;
+      font-size: 20px;
+      border: none;
+      color: white;
+      border-radius: 10px;
+      font-weight: bold;
+      box-shadow: 0 5px 0 #198f6b;
+      background-color: #20c997;
+      transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+    }
+    #submit-btn:active {
+      transform: translateY(5px) scale(0.98);
+      box-shadow: 0 4px 0 #198f6b;
+    }
+#submit-btn:hover {
+  background: linear-gradient(
+    110deg,
+    #20c997 0%,
+    #7be3c4 50%,
+    #20c997 100%
+  );
+  background-size: 150% 100%;
+  animation: shimmer 1.2s ease-in-out 1;
+}
+   /* ─────── Feedback & Score ─────── */
     #feedback {
       margin-top: 10px;
       font-weight: bold;
