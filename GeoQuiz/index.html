@@ -1769,14 +1769,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       // DOM Elements
-      const emailInput = document.getElementById('email');
-      const passInput = document.getElementById('password');
-      const signupBtn = document.getElementById('signup-btn');
-      const loginBtn = document.getElementById('login-btn');
-      const logoutBtn = document.getElementById('logout-btn');
-      const authSection = document.getElementById('auth-section');
-      const profileSection = document.getElementById('profile-section');
-      const userEmail = document.getElementById('user-email');
+    
       const profileAvatar = document.getElementById('profile-avatar');
 
       // DiceBear controls
@@ -1801,14 +1794,11 @@
       async function renderProfile() {
         const { data: { user } } = await sb.auth.getUser();
         if (!user) {
-          authSection.style.display = 'block';
-          profileSection.style.display = 'none';
+          
           return;
         }
-
-        authSection.style.display = 'none';
-        profileSection.style.display = 'block';
-        userEmail.textContent = user.email;
+        
+     
 
         // Fetch existing avatar_url
         const { data: profile } = await sb
@@ -1851,30 +1841,6 @@
         avatarPreview.src = url;
       }
 
-      // AUTH
-      signupBtn.addEventListener('click', async () => {
-        const { error } = await sb.auth.signUp({
-          email: emailInput.value,
-          password: passInput.value
-        });
-        if (error) return alert('Signup error: ' + error.message);
-        alert('Check your email to confirm');
-        renderProfile();
-      });
-
-      loginBtn.addEventListener('click', async () => {
-        const { error } = await sb.auth.signInWithPassword({
-          email: emailInput.value,
-          password: passInput.value
-        });
-        if (error) return alert('Login error: ' + error.message);
-        renderProfile();
-      });
-
-      logoutBtn.addEventListener('click', async () => {
-        await sb.auth.signOut();
-        renderProfile();
-      });
 
       // DiceBear controls
       styleSelect.addEventListener('change', () => updateAvatar(false));
