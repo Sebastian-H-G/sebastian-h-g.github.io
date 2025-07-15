@@ -2594,19 +2594,23 @@
       const avatarModal = document.getElementById('avatarModal');
       const closeBtnAvatar = document.getElementById('closeAvatarModal');
       const modalAvatarPreview = document.getElementById('modalAvatarPreview');
-      const avatarPreview = document.getElementById('avatarPreview');
       const avatarInput = document.getElementById('avatarInput');
       const editPen = document.getElementById('editPen');
       const modalContent = avatarModal.querySelector('.modal-content');
 
       // Open modal when avatar or pen is clicked
-      avatarDisplay.addEventListener('click', (e) => {
-        e.stopPropagation();
-        // Sync modal avatar with current avatar
-        avatarPreview.src = modalAvatarPreview.src;
-        avatarModal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-      });
+// ...existing code...
+avatarDisplay.addEventListener('click', (e) => {
+  e.stopPropagation();
+  // Sync modal avatar with header avatar
+  const headerAvatar = document.getElementById('headerAvatar');
+  if (headerAvatar && modalAvatarPreview) {
+    modalAvatarPreview.src = headerAvatar.src;
+  }
+  avatarModal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+});
+// ...existing code...
       if (modalContent) {
         modalContent.addEventListener('click', (e) => {
           e.stopPropagation();
