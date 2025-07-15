@@ -565,19 +565,37 @@
     // ─────────────────────────────────────────────────────────────────────────────
     // 7) Generate Multiple‐Choice Options (±20% Variance)
     // ─────────────────────────────────────────────────────────────────────────────
-    function generateMultipleChoiceOptions(correctPopulation) {
-      const decoys = new Set();
-      while (decoys.size < 3) {
-        const variance = 0.2; // ±20%
-        const factor = 1 + (Math.random() * 2 * variance - variance);
-        let val = Math.round(correctPopulation * factor);
-        if (val !== correctPopulation && !decoys.has(val)) {
-          decoys.add(val);
-        }
-      }
-      const allOptions = [correctPopulation, ...Array.from(decoys)];
-      return allOptions.sort(() => Math.random() - 0.5);
+// ...existing code...
+function generateMultipleChoiceOptions(correctPopulation) {
+  const decoys = new Set();
+  const variance = 0.4; // ±50%
+  const minDistance = 0.2; // 15% minimum distance
+
+  function isFarEnough(val, others) {
+    return others.every(
+      other => Math.abs(val - other) / correctPopulation >= minDistance
+    );
+  }
+
+  while (decoys.size < 3) {
+    const factor = 1 + (Math.random() * 2 * variance - variance);
+    let val = Math.round(correctPopulation * factor);
+
+    // Gather all existing options (correct + decoys)
+    const allSoFar = [correctPopulation, ...decoys];
+
+    if (
+      val !== correctPopulation &&
+      !decoys.has(val) &&
+      isFarEnough(val, allSoFar)
+    ) {
+      decoys.add(val);
     }
+  }
+  const allOptions = [correctPopulation, ...Array.from(decoys)];
+  return allOptions.sort(() => Math.random() - 0.5);
+}
+// ...existing code...
 
     // ─────────────────────────────────────────────────────────────────────────────
     // 8) Render One Question Based on Current Filters & Mode

@@ -105,19 +105,14 @@ const uniqueData = data.filter(row => {
 // ...existing code...
 }
 
-let alreadyRendered = false;
+// ...existing code...
 window.addEventListener('DOMContentLoaded', () => {
   supabase.auth.onAuthStateChange((event, session) => {
-    if (!alreadyRendered) {
-      renderResults(session);
-      alreadyRendered = true;
-    }
+    renderResults(session);
   });
 
   supabase.auth.getSession().then(({ data: { session } }) => {
-    if (!alreadyRendered) {
-      renderResults(session);
-      alreadyRendered = true;
-    }
+    renderResults(session);
   });
 });
+// ...existing code...
