@@ -1014,6 +1014,7 @@ button:hover {
   position: relative;
   min-width: 650px;
   margin-top: 50px;
+  max-height: 80vh;
   /* Add margin to push down from top */
   max-width: 95vw;
   display: flex;
@@ -1142,6 +1143,7 @@ button:hover {
 .upload-card {
   background: #fff;
   padding: 2rem;
+  color: black;
   border-radius: 8px;
   text-align: center;
   width: 320px;
@@ -1185,7 +1187,8 @@ button:hover {
   display: flex;
   flex-direction: row;
   gap: 1.5em;
-  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 2em;
 }
 
@@ -1196,7 +1199,8 @@ button:hover {
   flex: 1;
   display: flex;
   flex-direction: column;
-
+  min-height: 200px;
+  /* Ensures both options have the same height */
   min-width: 250px;
   /* Prevents being too narrow */
   padding: 1em;
