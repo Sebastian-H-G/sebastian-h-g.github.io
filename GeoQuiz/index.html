@@ -121,8 +121,8 @@
           <div id="profile-content">
 
             <div class="profile-info">
-              <div class="avatar-display" id="openAvatarModal">
-                <img id="modalAvatarPreview1" src="Bilder/neutral_profile.jpg" alt="Avatar" />
+              <div class="avatar-display" id="openAvatarModal"><img id="modalAvatarPreview1"
+                  src="https://api.dicebear.com/7.x/initials/svg?seed=default" alt="Avatar" />
                 <img id="editPen" src="Bilder/pen.png" alt="Edit" class="edit-pen" />
               </div>
             </div>
@@ -1802,16 +1802,15 @@
         if (!user) return;
         await sb.from('profiles').update({ avatar_mode: mode }).eq('id', user.id);
       }
-
       // Render profile + avatar logic
       async function renderProfile() {
         const { data: { user } } = await sb.auth.getUser();
         if (!user) return;
 
-        // Fetch existing avatar_url and avatar_mode
+        // Fetch existing avatar_url, avatar_mode, and dicebear_style
         const { data: profile } = await sb
           .from('profiles')
-          .select('avatar_url, avatar_mode')
+          .select('avatar_url, avatar_mode, dicebear_style')
           .eq('id', user.id)
           .single();
 
@@ -1823,22 +1822,33 @@
           avatarModeUpload.checked = currentMode === 'upload';
         }
 
-        if (currentMode === 'upload' && profile?.avatar_url) {
-          // Uploaded image
-          const url = profile.avatar_url;
-          if (profileAvatar) profileAvatar.src = url;
-          if (headerAvatar) headerAvatar.src = url;
-          if (avatarPreview) avatarPreview.src = url;
-          if (avatarPreview1) avatarPreview1.src = url;
-          if (styleSelect) styleSelect.disabled = true;
-          if (refreshBtn) refreshBtn.disabled = true;
+        // Pre‑select last‑used DiceBear style in dropdown
+        if (styleSelect && profile.dicebear_style) {
+          styleSelect.value = profile.dicebear_style;
+        }
+
+        if (profile?.avatar_url) {
+          // Use saved URL (either uploaded or DiceBear)
+          if (profileAvatar) profileAvatar.src = profile.avatar_url;
+          if (headerAvatar) headerAvatar.src = profile.avatar_url;
+          if (avatarPreview) avatarPreview.src = profile.avatar_url;
+          if (avatarPreview1) avatarPreview1.src = profile.avatar_url;
+
+          // Disable or enable controls based on mode
+          if (currentMode === 'upload') {
+            if (styleSelect) styleSelect.disabled = true;
+            if (refreshBtn) refreshBtn.disabled = true;
+          } else {
+            if (styleSelect) styleSelect.disabled = false;
+            if (refreshBtn) refreshBtn.disabled = false;
+          }
+
         } else {
-          // DiceBear
-          if (styleSelect) styleSelect.disabled = false;
-          if (refreshBtn) refreshBtn.disabled = false;
+          // No saved URL: generate a new DiceBear avatar
           await updateAvatar(false);
         }
       }
+
 
       // Draw DiceBear avatar; forceRandom=true yields new seed (except initials)
       async function updateAvatar(forceRandom = false) {
@@ -1858,7 +1868,12 @@
         if (avatarPreview1) avatarPreview1.src = url;
 
         // Save DiceBear mode and clear avatar_url in DB
-        await sb.from('profiles').update({ avatar_mode: 'dicebear', avatar_url: null }).eq('id', user.id);
+        await sb.from('profiles').update({
+          avatar_mode: 'dicebear',
+          avatar_url: url,             // save the DiceBear URL
+          dicebear_style: style        // save selected style
+        }).eq('id', user.id);
+
         if (avatarModeDicebear) avatarModeDicebear.checked = true;
         if (avatarModeUpload) avatarModeUpload.checked = false;
       }
