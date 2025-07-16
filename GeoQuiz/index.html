@@ -243,49 +243,60 @@
       <div id="user-msg-content">Message will be shown here.</div>
     </div>
   </div>
-  <div id="avatarModal" class="modal-overlay" style="display:none;">
-    <div class="modal-content">
-      <span class="close-modal" id="closeAvatarModal">&times;</span>
-      <div class="upload-card">
-        <h2>Choose or Upload Your Avatar</h2>
 
-        <!-- Avatar Mode Toggle -->
-        <div class="avatar-toggle" style="margin-bottom: 1em;">
+
+<div id="avatarModal" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <span class="close-modal" id="closeAvatarModal">&times;</span>
+    <div class="upload-card">
+      
+      <h2>Choose or Upload Your Avatar</h2>
+      <!-- Avatar Preview -->
+      <div class="preview-wrapper">
+        <img id="modalAvatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar Preview" />
+      </div>
+      <!-- Avatar Mode Toggle -->
+      <div class="avatar-toggle">
+        <div class="generated-avatar-option">
           <label>
             <input type="radio" name="avatarMode" id="avatarModeDicebear" value="dicebear" checked>
             Use Generated Avatar
           </label>
-          <label style="margin-left: 1em;">
+
+          <!-- Auto-generated Avatar Section -->
+          <div class="dicebear-section">
+            <div class="dicebear-controls">
+              <label for="avatar-style">Auto-generate style:</label>
+              <select id="avatar-style">
+                <option value="initials">Initials</option>
+                <option value="adventurer">Adventurer</option>
+                <option value="bottts">Bottts</option>
+                <option value="croodles">Croodles</option>
+                <option value="micah">Micah</option>
+              </select>
+              <button id="refresh-avatar" type="button">🔄 Refresh</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="upload-avatar-option" style="margin-top: 1em;">
+          <label>
             <input type="radio" name="avatarMode" id="avatarModeUpload" value="upload">
             Use Uploaded Image
           </label>
-        </div>
 
-        <!-- DiceBear Controls -->
-        <div class="dicebear-controls">
-          <label for="avatar-style">Auto‑generate style:</label>
-          <select id="avatar-style">
-            <option value="initials">Initials</option>
-            <option value="adventurer">Adventurer</option>
-            <option value="bottts">Bottts</option>
-            <option value="croodles">Croodles</option>
-            <option value="micah">Micah</option>
-          </select>
-          <button id="refresh-avatar" type="button">🔄 Refresh</button>
+          <!-- Upload Avatar Section -->
+          <div class="upload-section">
+            <input type="file" id="avatarInput" accept="image/*" />
+            <button id="uploadBtn" type="button">Upload</button>
+            <p id="status"></p>
+          </div>
         </div>
-
-        <!-- Preview -->
-        <div class="preview-wrapper">
-          <img id="modalAvatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar Preview" />
-        </div>
-
-        <!-- File Upload -->
-        <input type="file" id="avatarInput" accept="image/*" />
-        <button id="uploadBtn" type="button">Upload</button>
-        <p id="status"></p>
       </div>
     </div>
   </div>
+</div>
+
   <div id="badge-modal" class="modal">
     <div class="badge-modal-content">
       <span class="badge-modal-close-btn">&times;</span>
