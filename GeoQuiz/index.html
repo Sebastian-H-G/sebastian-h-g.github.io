@@ -122,7 +122,7 @@
 
             <div class="profile-info">
               <div class="avatar-display" id="openAvatarModal">
-                <img id="modalAvatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar" />
+                <img id="modalAvatarPreview1" src="Bilder/neutral_profile.jpg" alt="Avatar" />
                 <img id="editPen" src="Bilder/pen.png" alt="Edit" class="edit-pen" />
               </div>
             </div>
@@ -243,49 +243,49 @@
       <div id="user-msg-content">Message will be shown here.</div>
     </div>
   </div>
-<div id="avatarModal" class="modal-overlay" style="display:none;">
-  <div class="modal-content">
-    <span class="close-modal" id="closeAvatarModal">&times;</span>
-    <div class="upload-card">
-      <h2>Choose or Upload Your Avatar</h2>
+  <div id="avatarModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <span class="close-modal" id="closeAvatarModal">&times;</span>
+      <div class="upload-card">
+        <h2>Choose or Upload Your Avatar</h2>
 
-      <!-- Avatar Mode Toggle -->
-      <div class="avatar-toggle" style="margin-bottom: 1em;">
-        <label>
-          <input type="radio" name="avatarMode" id="avatarModeDicebear" value="dicebear" checked>
-          Use Generated Avatar
-        </label>
-        <label style="margin-left: 1em;">
-          <input type="radio" name="avatarMode" id="avatarModeUpload" value="upload">
-          Use Uploaded Image
-        </label>
+        <!-- Avatar Mode Toggle -->
+        <div class="avatar-toggle" style="margin-bottom: 1em;">
+          <label>
+            <input type="radio" name="avatarMode" id="avatarModeDicebear" value="dicebear" checked>
+            Use Generated Avatar
+          </label>
+          <label style="margin-left: 1em;">
+            <input type="radio" name="avatarMode" id="avatarModeUpload" value="upload">
+            Use Uploaded Image
+          </label>
+        </div>
+
+        <!-- DiceBear Controls -->
+        <div class="dicebear-controls">
+          <label for="avatar-style">Auto‑generate style:</label>
+          <select id="avatar-style">
+            <option value="initials">Initials</option>
+            <option value="adventurer">Adventurer</option>
+            <option value="bottts">Bottts</option>
+            <option value="croodles">Croodles</option>
+            <option value="micah">Micah</option>
+          </select>
+          <button id="refresh-avatar" type="button">🔄 Refresh</button>
+        </div>
+
+        <!-- Preview -->
+        <div class="preview-wrapper">
+          <img id="modalAvatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar Preview" />
+        </div>
+
+        <!-- File Upload -->
+        <input type="file" id="avatarInput" accept="image/*" />
+        <button id="uploadBtn" type="button">Upload</button>
+        <p id="status"></p>
       </div>
-
-      <!-- DiceBear Controls -->
-      <div class="dicebear-controls">
-        <label for="avatar-style">Auto‑generate style:</label>
-        <select id="avatar-style">
-          <option value="initials">Initials</option>
-          <option value="adventurer">Adventurer</option>
-          <option value="bottts">Bottts</option>
-          <option value="croodles">Croodles</option>
-          <option value="micah">Micah</option>
-        </select>
-        <button id="refresh-avatar" type="button">🔄 Refresh</button>
-      </div>
-
-      <!-- Preview -->
-      <div class="preview-wrapper">
-        <img id="modalAvatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar Preview" />
-      </div>
-
-      <!-- File Upload -->
-      <input type="file" id="avatarInput" accept="image/*" />
-      <button id="uploadBtn" type="button">Upload</button>
-      <p id="status"></p>
     </div>
   </div>
-</div>
   <div id="badge-modal" class="modal">
     <div class="badge-modal-content">
       <span class="badge-modal-close-btn">&times;</span>
@@ -1776,209 +1776,224 @@
     // ───────────────
     // PROFILE IMAGE UPLOAD AVATAR LOGIC
     // ───────────────
-document.addEventListener('DOMContentLoaded', () => {
-  // DOM Elements
-  const profileAvatar = document.getElementById('profile-avatar');
-  const styleSelect = document.getElementById('avatar-style');
-  const refreshBtn = document.getElementById('refresh-avatar');
-  const openModalBtn = document.getElementById('openAvatarModal');
-  const closeModalBtn = document.getElementById('closeAvatarModal');
-  const avatarModal = document.getElementById('avatarModal');
-  const avatarInput = document.getElementById('avatarInput');
-  const avatarPreview = document.getElementById('modalAvatarPreview');
-  const uploadBtn = document.getElementById('uploadBtn');
-  const statusText = document.getElementById('status');
-  const headerAvatar = document.getElementById('headerAvatar');
-  const avatarModeDicebear = document.getElementById('avatarModeDicebear');
-  const avatarModeUpload = document.getElementById('avatarModeUpload');
+    document.addEventListener('DOMContentLoaded', () => {
+      // DOM Elements
+      const profileAvatar = document.getElementById('profile-avatar');
+      const styleSelect = document.getElementById('avatar-style');
+      const refreshBtn = document.getElementById('refresh-avatar');
+      const openModalBtn = document.getElementById('openAvatarModal');
+      const closeModalBtn = document.getElementById('closeAvatarModal');
+      const avatarModal = document.getElementById('avatarModal');
+      const avatarInput = document.getElementById('avatarInput');
+      const avatarPreview = document.getElementById('modalAvatarPreview');
+      const avatarPreview1 = document.getElementById('modalAvatarPreview1');
+      const uploadBtn = document.getElementById('uploadBtn');
+      const statusText = document.getElementById('status');
+      const headerAvatar = document.getElementById('headerAvatar');
+      const avatarModeDicebear = document.getElementById('avatarModeDicebear');
+      const avatarModeUpload = document.getElementById('avatarModeUpload');
 
-  let selectedFile = null;
-  let currentMode = 'dicebear'; // default
+      let selectedFile = null;
+      let currentMode = 'dicebear'; // default
 
-  // Helper: Save avatar mode to DB
-  async function saveAvatarMode(mode) {
-    const { data: { user } } = await sb.auth.getUser();
-    if (!user) return;
-    await sb.from('profiles').update({ avatar_mode: mode }).eq('id', user.id);
-  }
-
-  // Render profile + avatar logic
-  async function renderProfile() {
-    const { data: { user } } = await sb.auth.getUser();
-    if (!user) return;
-
-    // Fetch existing avatar_url and avatar_mode
-    const { data: profile } = await sb
-      .from('profiles')
-      .select('avatar_url, avatar_mode')
-      .eq('id', user.id)
-      .single();
-
-    currentMode = profile?.avatar_mode || 'dicebear';
-
-    // Set toggle state
-    if (avatarModeDicebear && avatarModeUpload) {
-      avatarModeDicebear.checked = currentMode === 'dicebear';
-      avatarModeUpload.checked = currentMode === 'upload';
-    }
-
-    if (currentMode === 'upload' && profile?.avatar_url) {
-      // Uploaded image
-      const url = profile.avatar_url;
-      if (profileAvatar) profileAvatar.src = url;
-      if (headerAvatar) headerAvatar.src = url;
-      if (avatarPreview) avatarPreview.src = url;
-      if (styleSelect) styleSelect.disabled = true;
-      if (refreshBtn) refreshBtn.disabled = true;
-    } else {
-      // DiceBear
-      if (styleSelect) styleSelect.disabled = false;
-      if (refreshBtn) refreshBtn.disabled = false;
-      await updateAvatar(false);
-    }
-  }
-
-  // Draw DiceBear avatar; forceRandom=true yields new seed (except initials)
-  async function updateAvatar(forceRandom = false) {
-    const { data: { user } } = await sb.auth.getUser();
-    if (!user) return;
-
-    const style = styleSelect.value;
-    let seed = encodeURIComponent(user.email);
-    if (style !== 'initials' && forceRandom) {
-      seed = `${user.email}-${Math.random().toString(36).slice(2)}`;
-    }
-    const url = `https://api.dicebear.com/7.x/${style}/svg?seed=${seed}`;
-
-    if (profileAvatar) profileAvatar.src = url;
-    if (headerAvatar) headerAvatar.src = url;
-    if (avatarPreview) avatarPreview.src = url;
-
-    // Save DiceBear mode and clear avatar_url in DB
-    await sb.from('profiles').update({ avatar_mode: 'dicebear', avatar_url: null }).eq('id', user.id);
-    if (avatarModeDicebear) avatarModeDicebear.checked = true;
-    if (avatarModeUpload) avatarModeUpload.checked = false;
-  }
-
-  // DiceBear controls
-  if (styleSelect) styleSelect.addEventListener('change', () => updateAvatar(false));
-  if (refreshBtn) refreshBtn.addEventListener('click', () => updateAvatar(true));
-
-  // Toggle between modes
-  if (avatarModeDicebear) {
-    avatarModeDicebear.addEventListener('change', async () => {
-      if (avatarModeDicebear.checked) {
-        await updateAvatar(true);
-        if (styleSelect) styleSelect.disabled = false;
-        if (refreshBtn) refreshBtn.disabled = false;
-        await saveAvatarMode('dicebear');
-      }
-    });
-  }
-  if (avatarModeUpload) {
-    avatarModeUpload.addEventListener('change', async () => {
-      if (avatarModeUpload.checked) {
-        // If user has uploaded, show it; else, keep DiceBear
+      // Helper: Save avatar mode to DB
+      async function saveAvatarMode(mode) {
         const { data: { user } } = await sb.auth.getUser();
+        if (!user) return;
+        await sb.from('profiles').update({ avatar_mode: mode }).eq('id', user.id);
+      }
+
+      // Render profile + avatar logic
+      async function renderProfile() {
+        const { data: { user } } = await sb.auth.getUser();
+        if (!user) return;
+
+        // Fetch existing avatar_url and avatar_mode
         const { data: profile } = await sb
           .from('profiles')
-          .select('avatar_url')
+          .select('avatar_url, avatar_mode')
           .eq('id', user.id)
           .single();
-        if (profile?.avatar_url) {
-          if (profileAvatar) profileAvatar.src = profile.avatar_url;
-          if (headerAvatar) headerAvatar.src = profile.avatar_url;
-          if (avatarPreview) avatarPreview.src = profile.avatar_url;
+
+        currentMode = profile?.avatar_mode || 'dicebear';
+
+        // Set toggle state
+        if (avatarModeDicebear && avatarModeUpload) {
+          avatarModeDicebear.checked = currentMode === 'dicebear';
+          avatarModeUpload.checked = currentMode === 'upload';
+        }
+
+        if (currentMode === 'upload' && profile?.avatar_url) {
+          // Uploaded image
+          const url = profile.avatar_url;
+          if (profileAvatar) profileAvatar.src = url;
+          if (headerAvatar) headerAvatar.src = url;
+          if (avatarPreview) avatarPreview.src = url;
+          if (avatarPreview1) avatarPreview1.src = url;
           if (styleSelect) styleSelect.disabled = true;
           if (refreshBtn) refreshBtn.disabled = true;
-          await saveAvatarMode('upload');
         } else {
-          // No upload yet, fallback to DiceBear
-          avatarModeDicebear.checked = true;
+          // DiceBear
+          if (styleSelect) styleSelect.disabled = false;
+          if (refreshBtn) refreshBtn.disabled = false;
           await updateAvatar(false);
         }
       }
+
+      // Draw DiceBear avatar; forceRandom=true yields new seed (except initials)
+      async function updateAvatar(forceRandom = false) {
+        const { data: { user } } = await sb.auth.getUser();
+        if (!user) return;
+
+        const style = styleSelect.value;
+        let seed = encodeURIComponent(user.email);
+        if (style !== 'initials' && forceRandom) {
+          seed = `${user.email}-${Math.random().toString(36).slice(2)}`;
+        }
+        const url = `https://api.dicebear.com/7.x/${style}/svg?seed=${seed}`;
+
+        if (profileAvatar) profileAvatar.src = url;
+        if (headerAvatar) headerAvatar.src = url;
+        if (avatarPreview) avatarPreview.src = url;
+        if (avatarPreview1) avatarPreview1.src = url;
+
+        // Save DiceBear mode and clear avatar_url in DB
+        await sb.from('profiles').update({ avatar_mode: 'dicebear', avatar_url: null }).eq('id', user.id);
+        if (avatarModeDicebear) avatarModeDicebear.checked = true;
+        if (avatarModeUpload) avatarModeUpload.checked = false;
+      }
+
+      // DiceBear controls
+      if (styleSelect) styleSelect.addEventListener('change', () => updateAvatar(false));
+      if (refreshBtn) refreshBtn.addEventListener('click', () => updateAvatar(true));
+
+      // Toggle between modes
+      if (avatarModeDicebear) {
+        avatarModeDicebear.addEventListener('change', async () => {
+          if (avatarModeDicebear.checked) {
+            await updateAvatar(true);
+            if (styleSelect) styleSelect.disabled = false;
+            if (refreshBtn) refreshBtn.disabled = false;
+            await saveAvatarMode('dicebear');
+          }
+        });
+      }
+      if (avatarModeUpload) {
+        avatarModeUpload.addEventListener('change', async () => {
+          if (avatarModeUpload.checked) {
+            // If user has uploaded, show it; else, keep DiceBear
+            const { data: { user } } = await sb.auth.getUser();
+            const { data: profile } = await sb
+              .from('profiles')
+              .select('avatar_url')
+              .eq('id', user.id)
+              .single();
+            if (profile?.avatar_url) {
+              if (profileAvatar) profileAvatar.src = profile.avatar_url;
+              if (headerAvatar) headerAvatar.src = profile.avatar_url;
+              if (avatarPreview1) avatarPreview1.src = profile.avatar_url;
+              if (avatarPreview) avatarPreview.src = profile.avatar_url;
+              if (styleSelect) styleSelect.disabled = true;
+              if (refreshBtn) refreshBtn.disabled = true;
+              await saveAvatarMode('upload');
+            } else {
+              // No upload yet, fallback to DiceBear
+              avatarModeDicebear.checked = true;
+              await updateAvatar(false);
+            }
+          }
+        });
+      }
+
+      // OPEN/CLOSE UPLOAD MODAL
+      if (openModalBtn) openModalBtn.addEventListener('click', () => {
+        // existing:
+        avatarModal.style.display = 'block';
+        // add this:
+        const src = headerAvatar.src;
+        if (avatarPreview) avatarPreview.src = src;
+        if (avatarPreview1) avatarPreview1.src = src;
+      });
+
+      if (closeModalBtn) closeModalBtn.addEventListener('click', () => avatarModal.style.display = 'none');
+
+      // PREVIEW UPLOADED IMAGE
+      if (avatarInput) avatarInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+          selectedFile = file;
+          const blobUrl = URL.createObjectURL(file);
+          if (avatarPreview) avatarPreview.src = blobUrl;
+          if (avatarPreview1) avatarPreview1.src = blobUrl;
+          if (statusText) statusText.textContent = '';
+        } else {
+          selectedFile = null;
+          if (statusText) statusText.textContent = 'Please select a valid image.';
+        }
+      });
+
+      // UPLOAD TO STORAGE & PROFILE
+      if (uploadBtn) uploadBtn.addEventListener('click', async () => {
+        if (!selectedFile) {
+          if (statusText) statusText.textContent = 'No file selected.';
+          return;
+        }
+        uploadBtn.disabled = true;
+        if (statusText) statusText.textContent = 'Uploading…';
+
+        // ensure user
+        const { data: { user }, error: authErr } = await sb.auth.getUser();
+        if (authErr || !user) {
+          if (statusText) statusText.textContent = 'Login required.';
+          uploadBtn.disabled = false;
+          return;
+        }
+
+        // filename
+        const ext = selectedFile.name.split('.').pop();
+        const fileName = `${user.id}.${Date.now()}.${ext}`;
+
+        // storage upload
+        const { data: up, error: upErr } = await sb
+          .storage.from('avatars')
+          .upload(fileName, selectedFile, { upsert: true });
+        if (upErr) {
+          if (statusText) statusText.textContent = 'Upload error: ' + upErr.message;
+          uploadBtn.disabled = false;
+          return;
+        }
+
+        // public URL
+        const { data: urlData } = sb.storage.from('avatars').getPublicUrl(up.path);
+        const publicUrl = urlData.publicUrl;
+
+        // update profile row
+        const { error: dbErr } = await sb
+          .from('profiles')
+          .update({ avatar_url: publicUrl, avatar_mode: 'upload' })
+          .eq('id', user.id);
+
+        if (dbErr) {
+          if (statusText) statusText.textContent = 'DB error: ' + dbErr.message;
+        } else {
+          if (statusText) statusText.textContent = 'Avatar updated!';
+          // show it everywhere
+          if (profileAvatar) profileAvatar.src = publicUrl;
+          if (headerAvatar) headerAvatar.src = publicUrl;
+          if (avatarPreview) avatarPreview.src = publicUrl;
+          if (avatarPreview1) avatarPreview1.src = publicUrl;
+          if (styleSelect) styleSelect.disabled = true;
+          if (refreshBtn) refreshBtn.disabled = true;
+          if (avatarModeUpload) avatarModeUpload.checked = true;
+          if (avatarModeDicebear) avatarModeDicebear.checked = false;
+          avatarModal.style.display = 'none';
+        }
+        uploadBtn.disabled = false;
+      });
+
+      // INITIALIZE
+      renderProfile();
     });
-  }
-
-  // OPEN/CLOSE UPLOAD MODAL
-  if (openModalBtn) openModalBtn.addEventListener('click', () => avatarModal.style.display = 'block');
-  if (closeModalBtn) closeModalBtn.addEventListener('click', () => avatarModal.style.display = 'none');
-
-  // PREVIEW UPLOADED IMAGE
-  if (avatarInput) avatarInput.addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      selectedFile = file;
-      if (avatarPreview) avatarPreview.src = URL.createObjectURL(file);
-      if (statusText) statusText.textContent = '';
-    } else {
-      selectedFile = null;
-      if (statusText) statusText.textContent = 'Please select a valid image.';
-    }
-  });
-
-  // UPLOAD TO STORAGE & PROFILE
-  if (uploadBtn) uploadBtn.addEventListener('click', async () => {
-    if (!selectedFile) {
-      if (statusText) statusText.textContent = 'No file selected.';
-      return;
-    }
-    uploadBtn.disabled = true;
-    if (statusText) statusText.textContent = 'Uploading…';
-
-    // ensure user
-    const { data: { user }, error: authErr } = await sb.auth.getUser();
-    if (authErr || !user) {
-      if (statusText) statusText.textContent = 'Login required.';
-      uploadBtn.disabled = false;
-      return;
-    }
-
-    // filename
-    const ext = selectedFile.name.split('.').pop();
-    const fileName = `${user.id}.${Date.now()}.${ext}`;
-
-    // storage upload
-    const { data: up, error: upErr } = await sb
-      .storage.from('avatars')
-      .upload(fileName, selectedFile, { upsert: true });
-    if (upErr) {
-      if (statusText) statusText.textContent = 'Upload error: ' + upErr.message;
-      uploadBtn.disabled = false;
-      return;
-    }
-
-    // public URL
-    const { data: urlData } = sb.storage.from('avatars').getPublicUrl(up.path);
-    const publicUrl = urlData.publicUrl;
-
-    // update profile row
-    const { error: dbErr } = await sb
-      .from('profiles')
-      .update({ avatar_url: publicUrl, avatar_mode: 'upload' })
-      .eq('id', user.id);
-
-    if (dbErr) {
-      if (statusText) statusText.textContent = 'DB error: ' + dbErr.message;
-    } else {
-      if (statusText) statusText.textContent = 'Avatar updated!';
-      // show it everywhere
-      if (profileAvatar) profileAvatar.src = publicUrl;
-      if (headerAvatar) headerAvatar.src = publicUrl;
-      if (avatarPreview) avatarPreview.src = publicUrl;
-      if (styleSelect) styleSelect.disabled = true;
-      if (refreshBtn) refreshBtn.disabled = true;
-      if (avatarModeUpload) avatarModeUpload.checked = true;
-      if (avatarModeDicebear) avatarModeDicebear.checked = false;
-      avatarModal.style.display = 'none';
-    }
-    uploadBtn.disabled = false;
-  });
-
-  // INITIALIZE
-  renderProfile();
-});
     // ──────────────────────────────────────────────────
     // Helper: simple templating for {{placeholders}}
     // ──────────────────────────────────────────────────
@@ -2615,23 +2630,25 @@ document.addEventListener('DOMContentLoaded', () => {
       const avatarModal = document.getElementById('avatarModal');
       const closeBtnAvatar = document.getElementById('closeAvatarModal');
       const modalAvatarPreview = document.getElementById('modalAvatarPreview');
+      const modalAvatarPreview1 = document.getElementById('modalAvatarPreview1');
       const avatarInput = document.getElementById('avatarInput');
       const editPen = document.getElementById('editPen');
       const modalContent = avatarModal.querySelector('.modal-content');
 
       // Open modal when avatar or pen is clicked
-// ...existing code...
-avatarDisplay.addEventListener('click', (e) => {
-  e.stopPropagation();
-  // Sync modal avatar with header avatar
-  const headerAvatar = document.getElementById('headerAvatar');
-  if (headerAvatar && modalAvatarPreview) {
-    modalAvatarPreview.src = headerAvatar.src;
-  }
-  avatarModal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-});
-// ...existing code...
+      // ...existing code...
+      avatarDisplay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // Sync modal avatar with header avatar
+        const headerAvatar = document.getElementById('headerAvatar');
+        if (headerAvatar && modalAvatarPreview) {
+          modalAvatarPreview.src = headerAvatar.src;
+          modalAvatarPreview1.src = headerAvatar.src;
+        }
+        avatarModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+      // ...existing code...
       if (modalContent) {
         modalContent.addEventListener('click', (e) => {
           e.stopPropagation();
