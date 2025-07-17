@@ -97,24 +97,15 @@ header .logo img {
 }
 
 .profile-overlay {
-  width: 60px;
+  width: 80px;
   /* Adjust size as needed */
-  height: 60px;
+  height: 80px;
   /* Adjust size as needed */
   border-radius: 50%;
   object-fit: cover;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-overlay:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-header .logo img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
 
 header h1 {
   font-size: 2.5rem;
@@ -975,8 +966,6 @@ button:hover {
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #eee;
-  background: #f8f8f8;
 }
 
 .edit-pen {

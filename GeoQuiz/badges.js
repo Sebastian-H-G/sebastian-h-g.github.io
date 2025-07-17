@@ -29,7 +29,13 @@ const BADGE_IDS = {
   globalMaster:      '6a6ee4a4-1818-4719-be17-39b94f871bf5',
   seafarer:          '11e95ccc-995f-4fe3-8233-ec12fe8c6fe2',
   ultimateGeo:       '4c4d0255-1ff9-4d0e-b0f7-d666f4b409cb',
-  firstQuiz:         'bc61abcb-0e8b-429e-9b4c-ca6c4958a912'
+  firstQuiz:         'bc61abcb-0e8b-429e-9b4c-ca6c4958a912',
+  explorer:          '8260ace0-aa9b-4800-82d8-5c8a375f464c',
+  dailyDrifter:      '2fc07eb1-c0e2-4292-9151-bd90793790de',
+  risingStar:        '6e3b95fe-0577-4b92-b3d3-6b3ca4513248',
+  mastermind:        '5a9a1c48-c5b7-4762-b5d0-f56c602fa8bc',
+  champion:          'f88cca2d-b71a-4a47-ba2e-91660cac9e1a',
+  climber:           'fc5485d1-2786-4232-b567-452105fec685',
 };
 
 // ⏺ Define quiz categories with arrays of quiz IDs
@@ -243,4 +249,151 @@ export async function checkAndAwardBadges(ctx) {
   ) {
     await awardBadge(BADGE_IDS.ultimateGeo);
   }
+  // ────────────────────────────────────────────────────────────────────────────
+// 1) Explorer: tried quizzes in 3 different categories
+// ────────────────────────────────────────────────────────────────────────────
+{
+  // 1a) fetch all completed quiz IDs
+  const { data: played } = await sb
+    .from('quiz_results')
+    .select('quiz')
+    .eq('player', userId)
+    .eq('completed', true);
+  const quizIds = (played || []).map(r => r.quiz);
+
+  if (quizIds.length > 0) {
+    // 1b) fetch categories for those quizzes
+    const { data: quizzes } = await sb
+      .from('quizzes')
+      .select('category')
+      .in('id', quizIds);
+    const categories = new Set((quizzes || []).map(q => q.category));
+
+    if (categories.size >= 3) {
+      await awardBadge(BADGE_IDS.explorer);
+    }
+  }
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// 2) Rising Star: achieved a perfect score on *any* quiz
+// ────────────────────────────────────────────────────────────────────────────
+{
+  const { data: allResults } = await sb
+    .from('quiz_results')
+    .select('attained_score, attainable_score')
+    .eq('player', userId);
+
+  if ((allResults || []).some(r => r.attained_score === r.attainable_score)) {
+    await awardBadge(BADGE_IDS.risingStar);
+  }
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// 3) Mastermind: completed *all* quizzes in *any one* category
+// ────────────────────────────────────────────────────────────────────────────
+{
+  // 3a) get list of categories
+  const { data: allQuizzes } = await sb.from('quizzes').select('id, category');
+  const byCategory = {};
+  (allQuizzes || []).forEach(q => {
+    byCategory[q.category] = byCategory[q.category] || [];
+    byCategory[q.category].push(q.id);
+  });
+
+  // 3b) for each category, compare counts
+  await Promise.all(Object.entries(byCategory).map(async ([cat, ids]) => {
+    // total quizzes in this category
+    const total = ids.length;
+    // completed by user
+    const { count: done } = await sb
+      .from('quiz_results')
+      .select('id', { head: true, count: 'exact' })
+      .eq('player', userId)
+      .eq('completed', true)
+      .in('quiz', ids);
+
+    if (done >= total && total > 0) {
+      await awardBadge(BADGE_IDS.mastermind);
+    }
+  }));
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// 4) Champion: completed 5 quizzes in a row
+// ────────────────────────────────────────────────────────────────────────────
+{
+  const { data: recent5 } = await sb
+    .from('quiz_results')
+    .select('completed')
+    .eq('player', userId)
+    .order('played_at', { ascending: false })
+    .limit(5);
+
+  if (
+    recent5 &&
+    recent5.length === 5 &&
+    recent5.every(r => r.completed)
+  ) {
+    await awardBadge(BADGE_IDS.champion);
+  }
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// 5) The Climber: improved your score after retrying the *same* quiz
+// ────────────────────────────────────────────────────────────────────────────
+{
+  const { data: history } = await sb
+    .from('quiz_results')
+    .select('quiz, attained_score, played_at')
+    .eq('player', userId)
+    .order('played_at', { ascending: true });
+
+  // group by quizId
+  const byQuiz = {};
+  (history || []).forEach(r => {
+    byQuiz[r.quiz] = byQuiz[r.quiz] || [];
+    byQuiz[r.quiz].push(r.attained_score);
+  });
+
+  // check any quiz where max score > first score
+  const improved = Object.values(byQuiz).some(scores => {
+    return scores.length >= 2 && Math.max(...scores) > scores[0];
+  });
+  if (improved) {
+    await awardBadge(BADGE_IDS.climber);
+  }
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// 6) Daily Drifter: did *the same* quiz twice in one day, ≥3 hours apart
+// ────────────────────────────────────────────────────────────────────────────
+{
+  const { data: attempts } = await sb
+    .from('quiz_results')
+    .select('quiz, played_at')
+    .eq('player', userId)
+    .order('played_at', { ascending: true });
+
+  // bucket by quizId + calendar date
+  const bucket = {};
+  (attempts || []).forEach(r => {
+    const date = new Date(r.played_at).toISOString().slice(0, 10);
+    const key  = `${r.quiz}::${date}`;
+    bucket[key] = bucket[key] || [];
+    bucket[key].push(new Date(r.played_at).getTime());
+  });
+
+  // for any bucket, check min‑max difference ≥ 3h
+  const threeHours = 3 * 60 * 60 * 1000;
+  const drifter = Object.values(bucket).some(times => {
+    if (times.length < 2) return false;
+    const minT = Math.min(...times);
+    const maxT = Math.max(...times);
+    return (maxT - minT) >= threeHours;
+  });
+  if (drifter) {
+    await awardBadge(BADGE_IDS.dailyDrifter);
+  }
+}
 }
