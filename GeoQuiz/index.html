@@ -245,57 +245,57 @@
   </div>
 
 
-<div id="avatarModal" class="modal-overlay" style="display:none;">
-  <div class="modal-content">
-    <span class="close-modal" id="closeAvatarModal">&times;</span>
-    <div class="upload-card">
-      
-      <h2>Choose or Upload Your Avatar</h2>
-      <!-- Avatar Preview -->
-      <div class="preview-wrapper">
-        <img id="modalAvatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar Preview" />
-      </div>
-      <!-- Avatar Mode Toggle -->
-      <div class="avatar-toggle">
-        <div class="generated-avatar-option">
-          <label>
-            <input type="radio" name="avatarMode" id="avatarModeDicebear" value="dicebear" checked>
-            Use Generated Avatar
-          </label>
+  <div id="avatarModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <span class="close-modal" id="closeAvatarModal">&times;</span>
+      <div class="upload-card">
 
-          <!-- Auto-generated Avatar Section -->
-          <div class="dicebear-section">
-            <div class="dicebear-controls">
-              <label for="avatar-style">Auto-generate style:</label>
-              <select id="avatar-style">
-                <option value="initials">Initials</option>
-                <option value="adventurer">Adventurer</option>
-                <option value="bottts">Bottts</option>
-                <option value="croodles">Croodles</option>
-                <option value="micah">Micah</option>
-              </select>
-              <button id="refresh-avatar" type="button">🔄 Refresh</button>
+        <h2>Choose or Upload Your Avatar</h2>
+        <!-- Avatar Preview -->
+        <div class="preview-wrapper">
+          <img id="modalAvatarPreview" src="Bilder/neutral_profile.jpg" alt="Avatar Preview" />
+        </div>
+        <!-- Avatar Mode Toggle -->
+        <div class="avatar-toggle">
+          <div class="generated-avatar-option">
+            <label>
+              <input type="radio" name="avatarMode" id="avatarModeDicebear" value="dicebear" checked>
+              Use Generated Avatar
+            </label>
+
+            <!-- Auto-generated Avatar Section -->
+            <div class="dicebear-section">
+              <div class="dicebear-controls">
+                <label for="avatar-style">Auto-generate style:</label>
+                <select id="avatar-style">
+                  <option value="initials">Initials</option>
+                  <option value="adventurer">Adventurer</option>
+                  <option value="bottts">Bottts</option>
+                  <option value="croodles">Croodles</option>
+                  <option value="micah">Micah</option>
+                </select>
+                <button id="refresh-avatar" type="button">🔄 Refresh</button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="upload-avatar-option">
-          <label>
-            <input type="radio" name="avatarMode" id="avatarModeUpload" value="upload">
-            Use Uploaded Image
-          </label>
+          <div class="upload-avatar-option">
+            <label>
+              <input type="radio" name="avatarMode" id="avatarModeUpload" value="upload">
+              Use Uploaded Image
+            </label>
 
-          <!-- Upload Avatar Section -->
-          <div class="upload-section">
-            <input type="file" id="avatarInput" accept="image/*" />
-            <button id="uploadBtn" type="button">Upload</button>
-            <p id="status"></p>
+            <!-- Upload Avatar Section -->
+            <div class="upload-section">
+              <input type="file" id="avatarInput" accept="image/*" />
+              <button id="uploadBtn" type="button">Upload</button>
+              <p id="status"></p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
   <div id="badge-modal" class="modal">
     <div class="badge-modal-content">
@@ -1512,13 +1512,43 @@
     function showApp(user) {
       document.getElementById('auth-container').style.display = 'none';
       document.getElementById('site-content').style.display = 'block';
-      document.body.classList.remove('auth-bg'); // Remove auth background
-      document.getElementById('profile').classList.remove('open'); // <-- use class, not display
+      document.body.classList.remove('auth-bg');
+      document.getElementById('profile').classList.remove('open');
       loadProfile(user);
       initFavorites();
-      // Run on page load
       showUserMessage();
       loadBadges();
+
+      // Detect user timezone
+      const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      console.log('Detected time zone:', userTimeZone);
+
+      // Detect user location
+      navigator.geolocation.getCurrentPosition(async position => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        console.log('Detected location:', lat, lng);
+
+        // Update Supabase profile
+        await updateUserProfile(user.id, userTimeZone, lat, lng);
+      }, error => {
+        // Geolocation error or permission denied
+        console.warn('Could not get location, saving only time zone.');
+        updateUserProfile(user.id, userTimeZone, null, null);
+      });
+    }
+
+    async function updateUserProfile(userId, timeZone, latitude, longitude) {
+      const { data, error } = await supabase
+        .from('profiles')
+        .update({ time_zone: timeZone, latitude, longitude })
+        .eq('id', userId);
+
+      if (error) {
+        console.error('Error updating profile:', error);
+      } else {
+        console.log('Profile updated successfully', data);
+      }
     }
 
     function showAuth() {

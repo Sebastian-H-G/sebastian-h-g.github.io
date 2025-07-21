@@ -36,6 +36,15 @@ const BADGE_IDS = {
   mastermind:        '5a9a1c48-c5b7-4762-b5d0-f56c602fa8bc',
   champion:          'f88cca2d-b71a-4a47-ba2e-91660cac9e1a',
   climber:           'fc5485d1-2786-4232-b567-452105fec685',
+  hugo:              'a35c592c-f1aa-486b-8966-244caea27847',
+  streak3:           '733f62a5-56c5-41d5-92b0-39e9b940aa36',
+  streak5:           'f0c1f3c6-f759-4134-982b-c00881f318cb',
+  streak7:           '973a6175-1fc0-497f-b54b-33ec1b9c810b',
+  streak10:           '8b2aca2b-6b71-40b1-80c2-521152a0576e',
+  streak14:           '80c649a3-b7cc-49c1-801c-7f906a8376de',
+
+  weekendWarrior:   '6a75fedf-6ec3-4b51-96f8-d5eab34b0154',
+  insomniac:       '3f55896e-4a26-4b6e-8eb5-e67655e5d27a',
 };
 
 // ⏺ Define quiz categories with arrays of quiz IDs
@@ -90,6 +99,33 @@ async function awardBadge(badgeId) {
   return true;
 }
 
+async function getUserProfile(userId) {
+  const { data, error } = await sb
+    .from('profiles')
+    .select('time_zone, latitude, longitude')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    console.error('Error fetching user profile:', error);
+    return null;
+  }
+  return data;
+}
+
+
+
+function getHourInTimeZone(dateString, timeZone) {
+  const date = new Date(dateString);
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    hour: 'numeric',
+    hour12: false,
+  });
+  return parseInt(formatter.format(date), 10);
+}
+
+
 // Helper: check if user ever completed any given quiz IDs
 async function userCompletedAny(userId, quizIds) {
   if (!quizIds.length) return false;
@@ -120,7 +156,11 @@ export async function checkAndAwardBadges(ctx) {
   const { data: { user } } = await sb.auth.getUser();
   if (!user) return;
   const userId = user.id;
-  const hour   = new Date(playedAt).getHours();
+ 
+const profile = await getUserProfile(userId);
+const userTimeZone = profile?.time_zone || 'UTC';  // ✅ safe fallback
+const hour = getHourInTimeZone(playedAt, userTimeZone);
+
 
   // 1) Safe Bet: 3 passes in a row
   const last3 = await sb
@@ -396,4 +436,233 @@ export async function checkAndAwardBadges(ctx) {
     await awardBadge(BADGE_IDS.dailyDrifter);
   }
 }
+
+// ────────────────────────────────────────────────────────────────────────────
+// 7) The Hugo Badge: typed "hugo" into any input field
+// ────────────────────────────────────────────────────────────────────────────
+// 👂 Hugo badge: type "hugo" or "help me" anywhere
+document.addEventListener('input', async e => {
+  if (e.target.tagName.toLowerCase() !== 'input') return;
+  const val = e.target.value.trim().toLowerCase();
+  if (val === 'hugo' || val === 'help me') {
+    console.log('🧙 You typed a secret phrase — awarding Hugo badge...');
+    await awardBadge(BADGE_IDS.hugo);
+  }
+});
+// 3 Streak: completed 1 quiz per day for 3 consecutive days
+  {
+    const { data: results } = await sb
+      .from('quiz_results')
+      .select('played_at')
+      .eq('player', userId)
+      .eq('completed', true)
+      .order('played_at', { ascending: false });
+
+    if (results && results.length > 0) {
+      // Group by date string (e.g., "2025-07-21")
+      const daysPlayed = new Set(
+        results.map(r => new Date(r.played_at).toISOString().slice(0, 10))
+      );
+
+      const today = new Date();
+      let streak = 0;
+
+      for (let i = 0; i < 3; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const isoDate = date.toISOString().slice(0, 10);
+        if (daysPlayed.has(isoDate)) {
+          streak++;
+        } else {
+          break; // streak broken
+        }
+      }
+
+      if (streak === 3) {
+        await awardBadge(BADGE_IDS.streak3);
+      }
+    }
+  }
+  // 5 day streak
+    {
+    const { data: results } = await sb
+      .from('quiz_results')
+      .select('played_at')
+      .eq('player', userId)
+      .eq('completed', true)
+      .order('played_at', { ascending: false });
+
+    if (results && results.length > 0) {
+      // Group by date string (e.g., "2025-07-21")
+      const daysPlayed = new Set(
+        results.map(r => new Date(r.played_at).toISOString().slice(0, 10))
+      );
+
+      const today = new Date();
+      let streak = 0;
+
+      for (let i = 0; i < 5; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const isoDate = date.toISOString().slice(0, 10);
+        if (daysPlayed.has(isoDate)) {
+          streak++;
+        } else {
+          break; // streak broken
+        }
+      }
+
+      if (streak === 5) {
+        await awardBadge(BADGE_IDS.streak3);
+      }
+    }
+  }
+  // 7 day streak
+    {
+    const { data: results } = await sb
+      .from('quiz_results')
+      .select('played_at')
+      .eq('player', userId)
+      .eq('completed', true)
+      .order('played_at', { ascending: false });
+
+    if (results && results.length > 0) {
+      // Group by date string (e.g., "2025-07-21")
+      const daysPlayed = new Set(
+        results.map(r => new Date(r.played_at).toISOString().slice(0, 10))
+      );
+
+      const today = new Date();
+      let streak = 0;
+
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const isoDate = date.toISOString().slice(0, 10);
+        if (daysPlayed.has(isoDate)) {
+          streak++;
+        } else {
+          break; // streak broken
+        }
+      }
+
+      if (streak === 7) {
+        await awardBadge(BADGE_IDS.streak3);
+      }
+    }
+  }
+  // 10 day streak
+    {
+    const { data: results } = await sb
+      .from('quiz_results')
+      .select('played_at')
+      .eq('player', userId)
+      .eq('completed', true)
+      .order('played_at', { ascending: false });
+
+    if (results && results.length > 0) {
+      // Group by date string (e.g., "2025-07-21")
+      const daysPlayed = new Set(
+        results.map(r => new Date(r.played_at).toISOString().slice(0, 10))
+      );
+
+      const today = new Date();
+      let streak = 0;
+
+      for (let i = 0; i < 10; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const isoDate = date.toISOString().slice(0, 10);
+        if (daysPlayed.has(isoDate)) {
+          streak++;
+        } else {
+          break; // streak broken
+        }
+      }
+
+      if (streak === 10) {
+        await awardBadge(BADGE_IDS.streak3);
+      }
+    }
+  }
+  // 14 day streak
+    {
+    const { data: results } = await sb
+      .from('quiz_results')
+      .select('played_at')
+      .eq('player', userId)
+      .eq('completed', true)
+      .order('played_at', { ascending: false });
+
+    if (results && results.length > 0) {
+      // Group by date string (e.g., "2025-07-21")
+      const daysPlayed = new Set(
+        results.map(r => new Date(r.played_at).toISOString().slice(0, 10))
+      );
+
+      const today = new Date();
+      let streak = 0;
+
+      for (let i = 0; i < 14; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const isoDate = date.toISOString().slice(0, 10);
+        if (daysPlayed.has(isoDate)) {
+          streak++;
+        } else {
+          break; // streak broken
+        }
+      }
+
+      if (streak === 14) {
+        await awardBadge(BADGE_IDS.streak3);
+      }
+    }
+  }
+  
+
+
+
+
+  // 21) Weekend Warrior: completed 10 quizzes on a weekend (Saturday or Sunday)
+{
+  const { data: weekendResults, error } = await sb
+    .from('quiz_results')
+    .select('played_at')
+    .eq('player', userId)
+    .eq('completed', true);
+
+  if (!error && weekendResults) {
+    const weekendCount = weekendResults.reduce((count, r) => {
+      const day = new Date(r.played_at).getDay(); // 0 = Sunday, 6 = Saturday
+      return (day === 0 || day === 6) ? count + 1 : count;
+    }, 0);
+
+    if (weekendCount >= 10) {
+      await awardBadge(BADGE_IDS.weekendWarrior);
+    }
+  }
+}
+
+// INSOMNIAC PLAYER Completed a quiz between 2am and 5am
+{
+  const { data: nightQuizzes, error } = await sb
+    .from('quiz_results')
+    .select('played_at')
+    .eq('player', userId)
+    .eq('completed', true);
+
+  if (!error && nightQuizzes) {
+    const hasNightQuiz = nightQuizzes.some(r => {
+      const hour = new Date(r.played_at).getHours();
+      return hour >= 2 && hour < 5;
+    });
+
+    if (hasNightQuiz) {
+      await awardBadge(BADGE_IDS.insomniac);
+    }
+  }
+}
+
+
 }
