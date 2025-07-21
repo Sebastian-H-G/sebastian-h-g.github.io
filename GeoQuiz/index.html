@@ -1539,7 +1539,7 @@
     }
 
     async function updateUserProfile(userId, timeZone, latitude, longitude) {
-      const { data, error } = await supabase
+      const { data, error } = await sb
         .from('profiles')
         .update({ time_zone: timeZone, latitude, longitude })
         .eq('id', userId);
