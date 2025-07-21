@@ -437,18 +437,6 @@ const hour = getHourInTimeZone(playedAt, userTimeZone);
   }
 }
 
-// ────────────────────────────────────────────────────────────────────────────
-// 7) The Hugo Badge: typed "hugo" into any input field
-// ────────────────────────────────────────────────────────────────────────────
-// 👂 Hugo badge: type "hugo" or "help me" anywhere
-document.addEventListener('input', async e => {
-  if (e.target.tagName.toLowerCase() !== 'input') return;
-  const val = e.target.value.trim().toLowerCase();
-  if (val === 'hugo' || val === 'help me') {
-    console.log('🧙 You typed a secret phrase — awarding Hugo badge...');
-    await awardBadge(BADGE_IDS.hugo);
-  }
-});
 // 3 Streak: completed 1 quiz per day for 3 consecutive days
   {
     const { data: results } = await sb
@@ -665,4 +653,18 @@ document.addEventListener('input', async e => {
 }
 
 
+}
+
+
+// ────────────────────────────────────────────────────────────────────────────
+// 7) The Hugo Badge: typed "hugo" into any input field
+// ────────────────────────────────────────────────────────────────────────────
+export function setupLiveBadgeListeners() {
+  document.addEventListener('input', async e => {
+    if (e.target.tagName.toLowerCase() !== 'input') return;
+    const val = e.target.value.trim().toLowerCase();
+    if (val === 'hugo' || val === 'help me') {
+      await awardBadge(BADGE_IDS.hugo);
+    }
+  });
 }

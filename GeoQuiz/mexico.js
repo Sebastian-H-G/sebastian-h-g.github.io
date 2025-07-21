@@ -1,5 +1,6 @@
 import { saveQuizResult } from './saveQuizResults.js';
-import { checkAndAwardBadges } from './badges.js';
+import { checkAndAwardBadges, setupLiveBadgeListeners } from './badges.js';
+setupLiveBadgeListeners();
 const countryMappings = {
     "Aguascalientes": ["Aguascalientes"],
     "Baja California": ["Baja California", "Baja California Norte"],

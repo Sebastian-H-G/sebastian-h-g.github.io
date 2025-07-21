@@ -2174,13 +2174,15 @@
   </footer>
   <script type="module">
 import { saveQuizResult } from './saveQuizResults.js';
-import { checkAndAwardBadges } from './badges.js';
+import { checkAndAwardBadges, setupLiveBadgeListeners } from './badges.js';
+
 // ...existing code...
 // Get continent from URL
 function getContinentFromURL() {
   const params = new URLSearchParams(window.location.search);
   return params.get('continent'); // e.g. "asia"
 }
+
 const selectedContinent = getContinentFromURL();
 // ...existing code...
 
@@ -2224,6 +2226,7 @@ widthRange.addEventListener('input', () => {
 
 
 
+setupLiveBadgeListeners();
 /*********************************************************************
  * Data definition: an array that defines each flag by its country name 
  * and the allowed colors in the correct order.
