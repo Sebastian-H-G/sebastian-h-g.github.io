@@ -16,7 +16,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   container.id = 'notification-container';
   Object.assign(container.style, {
     position:      'fixed',
-    top:           '-1rem',
+    top:           '-3rem',
     left:          '50%',
     transform:     'translateX(-50%)',
     width:         '400px',
