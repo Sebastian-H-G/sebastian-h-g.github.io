@@ -688,8 +688,8 @@ export async function checkAndAwardBadges(ctx) {
     console.error('checkAndAwardBadges() unexpected error:', err);
   }
 }
+// ...existing code...
 
-// ────────────────────────────────────────────────────────────────────────────
 // 7) The Hugo Badge: typed "hugo" into any input field
 // ────────────────────────────────────────────────────────────────────────────
 export function setupLiveBadgeListeners() {
@@ -698,10 +698,12 @@ export function setupLiveBadgeListeners() {
       if (e.target.tagName.toLowerCase() !== 'input') return;
       const val = e.target.value.trim().toLowerCase();
       if (val === 'hugo' || val === 'help me') {
-        await awardBadge(BADGE_IDS.hugo);
+        const badge = await awardBadge(BADGE_IDS.hugo);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
       }
     } catch (err) {
       console.error('setupLiveBadgeListeners error:', err);
     }
   });
 }
+// ...existing
