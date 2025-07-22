@@ -11,7 +11,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 
 // ── notifier + styles setup ────────────────────────────────────────
 ;(function(){
-  // 1) create container (centered)
+  // 1) create container (centered at top)
   const container = document.createElement('div');
   container.id = 'notification-container';
   Object.assign(container.style, {
@@ -19,16 +19,16 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     top:           '1rem',
     left:          '50%',
     transform:     'translateX(-50%)',
-    width:         '300px',
+    width:         '400px',
     zIndex:        10000,
-    pointerEvents: 'none',
     display:       'flex',
     flexDirection: 'column',
     alignItems:    'center',
+    pointerEvents: 'none',
   });
   document.body.appendChild(container);
 
-  // 2) inject CSS for notifications
+  // 2) inject Apple‑style CSS
   const css = document.createElement('style');
   css.textContent = `
     #notification-container .notification {
@@ -37,12 +37,14 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       width: 100%;
       margin-bottom: 0.75rem;
       padding: 0.75rem 1rem;
-      background: linear-gradient(135deg, #2a2a2a, #1e1e1e);
-      color: #fff;
-      border-radius: 8px;
-      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      color: #000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-size: 0.95rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
       opacity: 0;
       transform: translateY(-20px);
       transition: opacity 0.4s ease, transform 0.4s ease;
@@ -56,13 +58,14 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       flex-shrink: 0;
       width: 40px;
       height: 40px;
-      border-radius: 4px;
+      border-radius: 8px;
       margin-right: 0.75em;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     #notification-container .notification .message {
       flex: 1;
-      line-height: 1.2;
+      line-height: 1.3;
     }
   `;
   document.head.appendChild(css);
@@ -79,14 +82,14 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       msg.appendChild(img);
     }
 
-    const span = document.createElement('div');
-    span.className = 'message';
-    span.textContent = message;
-    msg.appendChild(span);
+    const text = document.createElement('div');
+    text.className = 'message';
+    text.textContent = message;
+    msg.appendChild(text);
 
     container.appendChild(msg);
 
-    // animate in (slide down + fade in)
+    // slide down + fade in
     requestAnimationFrame(() => msg.classList.add('show'));
 
     // fade out + remove
