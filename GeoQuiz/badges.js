@@ -8,18 +8,17 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { persistSession: true, autoRefreshToken: true }
 });
 
-
-// ── notifier + styles setup ────────────────────────────────────────
+// ...existing code...
 ;(function(){
   // 1) create container (centered at top)
   const container = document.createElement('div');
   container.id = 'notification-container';
   Object.assign(container.style, {
     position:      'fixed',
-    top:           '-3rem',
+    top:           '-3rem', // closer to top
     left:          '50%',
     transform:     'translateX(-50%)',
-    width:         '400px',
+    width:         '420px',
     zIndex:        10000,
     display:       'flex',
     flexDirection: 'column',
@@ -28,52 +27,106 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   });
   document.body.appendChild(container);
 
-  // 2) inject Apple‑style CSS
+  // 2) inject Apple‑style CSS + glow + confetti
   const css = document.createElement('style');
   css.textContent = `
     #notification-container .notification {
       display: flex;
       align-items: center;
       width: 100%;
-      margin-bottom: 0.75rem;
-      padding: 0.75rem 1rem;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 12px;
+      margin-bottom: 0.5rem;
+      padding: 1.1rem 1.25rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(0, 0, 0, 0.13);
+      border-radius: 16px;
       color: #000;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 0.95rem;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      font-size: 1.18rem;
+      font-weight: 600;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 0 16px 2px #ffe066;
       opacity: 0;
-      transform: translateY(-20px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: translateY(-20px) scale(0.98);
+      transition: opacity 0.4s, transform 0.4s;
       pointer-events: auto;
+      animation: badge-glow 1.2s ease-in-out;
+      position: relative;
+      overflow: visible;
     }
     #notification-container .notification.show {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1.03);
     }
     #notification-container .notification img {
       flex-shrink: 0;
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      margin-right: 0.75em;
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      margin-right: 1em;
       object-fit: cover;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 18px rgba(255, 215, 0, 0.25), 0 0 0 4px #fff;
+      animation: badge-pop 0.7s cubic-bezier(.23,1.18,.62,1.11);
     }
     #notification-container .notification .message {
       flex: 1;
-      line-height: 1.3;
+      line-height: 1.4;
+      font-size: 1.18rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 2px 8px #fff8, 0 1px 0 #fff;
+    }
+    @keyframes badge-glow {
+      0% { box-shadow: 0 0 0 0 #ffe066, 0 8px 32px rgba(0,0,0,0.18);}
+      60% { box-shadow: 0 0 32px 12px #ffe066, 0 8px 32px rgba(0,0,0,0.18);}
+      100% { box-shadow: 0 0 16px 2px #ffe066, 0 8px 32px rgba(0,0,0,0.18);}
+    }
+    @keyframes badge-pop {
+      0% { transform: scale(0.7) rotate(-10deg);}
+      60% { transform: scale(1.15) rotate(6deg);}
+      100% { transform: scale(1) rotate(0);}
+    }
+    .confetti {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 10px; height: 18px;
+      border-radius: 3px;
+      opacity: 0.85;
+      will-change: transform, opacity;
+      animation: confetti-fall 1.2s linear forwards;
+    }
+    @keyframes confetti-fall {
+      0% { opacity: 1; transform: translateY(-20px) rotate(0deg);}
+      80% { opacity: 1;}
+      100% { opacity: 0; transform: translateY(80px) rotate(360deg);}
     }
   `;
   document.head.appendChild(css);
 
-  // 3) notify function
+  // 3) notify function with confetti
   window.notify = function(message, duration = 3500, imageUrl = null) {
     const msg = document.createElement('div');
     msg.className = 'notification';
+
+    // Confetti
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    for (let i = 0; i < 18; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.background = [
+        '#ffe066', '#f783ac', '#a3e635', '#38bdf8', '#fbbf24', '#f87171', '#a78bfa'
+      ][Math.floor(Math.random() * 7)];
+      piece.style.left = `${Math.random() * 95}%`;
+      piece.style.animationDelay = `${Math.random() * 0.3}s`;
+      piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+      confetti.appendChild(piece);
+    }
+    msg.appendChild(confetti);
 
     if (imageUrl) {
       const img = document.createElement('img');
@@ -99,6 +152,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     }, duration);
   };
 })();
+// ...existing code...
 
 
 
