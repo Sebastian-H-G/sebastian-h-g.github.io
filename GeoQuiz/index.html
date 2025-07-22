@@ -139,6 +139,12 @@
                     <div class="value"><span id="pstreak"></span></div>
                     <div class="label">Streak</div>
                   </div>
+                  <!-- Place after the current streak card in your profile-grid -->
+                  <div class="profile-card">
+                    <span class="icon">🏆</span>
+                    <div class="value"><span id="longest_streak"></span></div>
+                    <div class="label">Longest Streak</div>
+                  </div>
                   <div class="profile-card">
                     <span class="icon">📅</span>
                     <div class="value"><span id="pJoinDate"></span></div>
@@ -1683,6 +1689,8 @@
       const pPerfectQuizzes = document.getElementById('pPerfectQuizzes');
       if (pPerfectQuizzes) pPerfectQuizzes.textContent = perfectCount;
 
+      // ...existing code...
+
       // ── NEW: Activity-Streak Calculation (Last 100 Days) ───────────────────
       const hundredDaysAgo = new Date();
       hundredDaysAgo.setDate(hundredDaysAgo.getDate() - 100);
@@ -1695,6 +1703,7 @@
         .gte('played_at', hundredDaysAgo.toISOString()); // Limit to 100 days
 
       let streak = 0;
+      let longestStreak = 0;
       if (!resultsErr && Array.isArray(results)) {
         // 2) Build a set of distinct "YYYY-MM-DD" days
         const daysSet = new Set(
@@ -1703,14 +1712,16 @@
             .filter(Boolean)
         );
 
-        // 3) Starting from today, walk backward
-        let cursor = new Date();
-        const isoToday = cursor.toISOString().split('T')[0];
-        streak = daysSet.has(isoToday) ? 1 : 0;
+        // 3) Build a sorted array of unique days (descending)
+        const daysArr = Array.from(daysSet).sort((a, b) => b.localeCompare(a));
 
+        // 4) Calculate current streak (from today backward)
+        let cursor = new Date();
+        let iso = cursor.toISOString().split('T')[0];
+        streak = daysSet.has(iso) ? 1 : 0;
         while (true) {
           cursor.setDate(cursor.getDate() - 1);
-          const iso = cursor.toISOString().split('T')[0];
+          iso = cursor.toISOString().split('T')[0];
           if (daysSet.has(iso)) {
             streak += 1;
           } else {
@@ -1718,25 +1729,69 @@
           }
         }
 
-        // 4) Update the streak in the 'profiles' table
+        // 5) Calculate longest streak in the last 100 days
+        // Convert daysArr to ascending order for streak calculation
+        const sortedDays = Array.from(daysSet).sort();
+        let prev = null;
+        let currentStreak = 0;
+        longestStreak = 0;
+        for (const day of sortedDays) {
+          if (!prev) {
+            currentStreak = 1;
+          } else {
+            const prevDate = new Date(prev);
+            const currDate = new Date(day);
+            const diff = (currDate - prevDate) / (1000 * 60 * 60 * 24);
+            if (diff === 1) {
+              currentStreak += 1;
+            } else {
+              currentStreak = 1;
+            }
+          }
+          if (currentStreak > longestStreak) longestStreak = currentStreak;
+          prev = day;
+        }
+
+        // 6) Update the streaks in the 'profiles' table
         const { error: updateErr } = await sb
           .from('profiles')
-          .update({ streak_count: streak })  // Change this line to use the correct column name
+          .update({ streak_count: streak, longest_streak: longestStreak })
           .eq('id', user.id);
 
         if (updateErr) {
-          console.error('[loadProfile] Failed to update streak_count in profiles:', updateErr);
+          console.error('[loadProfile] Failed to update streaks in profiles:', updateErr);
         }
 
       } else {
         console.error('[loadProfile] quiz_results fetch error:', resultsErr);
       }
 
-      // 5) Write it into your <span id="pstreak">
-      const pStreak = document.getElementById('pstreak');
-      if (pStreak) {
-        pStreak.textContent = streak;
-      }
+// 7) Write it into your <span id="pstreak"> and <span id="longest_streak">
+const pStreak = document.getElementById('pstreak');
+if (pStreak) {
+  pStreak.textContent = streak;
+  // Add streak background class to parent card
+  const card = pStreak.closest('.profile-card');
+  if (card) {
+    // Remove any previous streak-X class
+    card.classList.remove(
+      'streak-3', 'streak-5', 'streak-7', 'streak-10', 'streak-14', 'streak-21'
+    );
+    // Add the appropriate class based on streak length
+    if (streak >= 21) card.classList.add('streak-21');
+    else if (streak >= 14) card.classList.add('streak-14');
+    else if (streak >= 10) card.classList.add('streak-10');
+    else if (streak >= 7) card.classList.add('streak-7');
+    else if (streak >= 5) card.classList.add('streak-5');
+    else if (streak >= 3) card.classList.add('streak-3');
+    // else: no class for streak < 3
+  }
+}
+const longestStreakSpan = document.getElementById('longest_streak');
+if (longestStreakSpan) {
+  longestStreakSpan.textContent = longestStreak;
+}
+      // ...existing code...
 
     }
 

@@ -8,6 +8,97 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { persistSession: true, autoRefreshToken: true }
 });
 
+
+// ── notifier + styles setup ────────────────────────────────────────
+;(function(){
+  // 1) create container (centered)
+  const container = document.createElement('div');
+  container.id = 'notification-container';
+  Object.assign(container.style, {
+    position:      'fixed',
+    top:           '1rem',
+    left:          '50%',
+    transform:     'translateX(-50%)',
+    width:         '300px',
+    zIndex:        10000,
+    pointerEvents: 'none',
+    display:       'flex',
+    flexDirection: 'column',
+    alignItems:    'center',
+  });
+  document.body.appendChild(container);
+
+  // 2) inject CSS for notifications
+  const css = document.createElement('style');
+  css.textContent = `
+    #notification-container .notification {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: linear-gradient(135deg, #2a2a2a, #1e1e1e);
+      color: #fff;
+      border-radius: 8px;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: auto;
+    }
+    #notification-container .notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #notification-container .notification img {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      margin-right: 0.75em;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    }
+    #notification-container .notification .message {
+      flex: 1;
+      line-height: 1.2;
+    }
+  `;
+  document.head.appendChild(css);
+
+  // 3) notify function
+  window.notify = function(message, duration = 3500, imageUrl = null) {
+    const msg = document.createElement('div');
+    msg.className = 'notification';
+
+    if (imageUrl) {
+      const img = document.createElement('img');
+      img.src = imageUrl;
+      img.alt = '';
+      msg.appendChild(img);
+    }
+
+    const span = document.createElement('div');
+    span.className = 'message';
+    span.textContent = message;
+    msg.appendChild(span);
+
+    container.appendChild(msg);
+
+    // animate in (slide down + fade in)
+    requestAnimationFrame(() => msg.classList.add('show'));
+
+    // fade out + remove
+    setTimeout(() => {
+      msg.classList.remove('show');
+      msg.addEventListener('transitionend', () => msg.remove(), { once: true });
+    }, duration);
+  };
+})();
+
+
+
 // Predeclare all badge IDs
 const BADGE_IDS = {
   safeBet:           'd08d8896-5d97-48ce-91a8-289e35a4997d',
@@ -59,6 +150,7 @@ const QUIZ_CATEGORIES = {
 };
 
 // 2️⃣ Helper: award a badge if not already earned, with debug logging
+// ...existing code...
 async function awardBadge(badgeId) {
   const { data: { user }, error: userErr } = await sb.auth.getUser();
   if (userErr || !user) {
@@ -84,6 +176,18 @@ async function awardBadge(badgeId) {
     return false;
   }
 
+  // Fetch badge info (for icon_url and name)
+  const { data: badge, error: badgeErr } = await sb
+    .from('badges')
+    .select('name, icon_url')
+    .eq('id', badgeId)
+    .single();
+
+  if (badgeErr) {
+    console.error('awardBadge(): error fetching badge info', badgeErr);
+    return false;
+  }
+
   const { data: inserted, error: insertErr } = await sb
     .from('user_badges')
     .insert({ user_id: userId, badge_id: badgeId, earned_at: new Date().toISOString() })
@@ -96,8 +200,10 @@ async function awardBadge(badgeId) {
   }
 
   console.log('awardBadge(): successfully awarded', inserted);
-  return true;
+  // Return badge info for notification
+  return badge;
 }
+// ...existing code...
 
 async function getUserProfile(userId) {
   const { data, error } = await sb
@@ -152,519 +258,447 @@ async function userCompletedAny(userId, quizIds) {
  * }
  */
 export async function checkAndAwardBadges(ctx) {
-  const { quizId, attained, attainable, completed, gaveUp = false, playedAt, timeTaken, timeAllowed } = ctx;
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) return;
-  const userId = user.id;
- 
-const profile = await getUserProfile(userId);
-const userTimeZone = profile?.time_zone || 'UTC';  // ✅ safe fallback
-const hour = getHourInTimeZone(playedAt, userTimeZone);
+  try {
+    const { quizId, attained, attainable, completed, gaveUp = false, playedAt, timeTaken, timeAllowed } = ctx;
+    const { data: { user }, error: userErr } = await sb.auth.getUser();
+    if (userErr || !user) return;
+    const userId = user.id;
 
-
-  // 1) Safe Bet: 3 passes in a row
-  const last3 = await sb
-    .from('quiz_results')
-    .select('completed, gave_up')
-    .eq('player', userId)
-    .order('played_at', { ascending: false })
-    .limit(3)
-    .then(res => res.data || []);
-  if (last3.length === 3 && last3.every(r => r.completed && !r.gave_up)) {
-    await awardBadge(BADGE_IDS.safeBet);
-  }
-
-  // 2) Early Bird: 6 AM–noon
-  if (hour >= 6 && hour < 12) await awardBadge(BADGE_IDS.earlyBird);
-
-  // 3) On Fire: 3 perfects
-  const perf3 = await sb
-    .from('quiz_results')
-    .select('attained_score, attainable_score, completed')
-    .eq('player', userId)
-    .order('played_at', { ascending: false })
-    .limit(3)
-    .then(res => res.data || []);
-  if (perf3.length === 3 && perf3.every(r => r.completed && r.attained_score === r.attainable_score)) {
-    await awardBadge(BADGE_IDS.onFire);
-  }
-
-
-    // 🆕 First Quiz: completed your first quiz
-  if (completed) {
-    const { count: firstCount } = await sb
-      .from('quiz_results')
-      .select('id', { count: 'exact', head: true })
-      .eq('player', userId)
-      .eq('completed', true);
-    if (firstCount === 1) {
-      await awardBadge(BADGE_IDS.firstQuiz);
+    let profile, userTimeZone, hour;
+    try {
+      profile = await getUserProfile(userId);
+      userTimeZone = profile?.time_zone || 'UTC';
+      hour = getHourInTimeZone(playedAt, userTimeZone);
+    } catch (err) {
+      console.error('Error fetching profile/timezone:', err);
+      userTimeZone = 'UTC';
+      hour = getHourInTimeZone(playedAt, userTimeZone);
     }
-  }
-  // 4) 10 Down & 5) 25 Strong
-  const { count: doneCount } = await sb
-    .from('quiz_results')
-    .select('id', { count: 'exact', head: true })
-    .eq('player', userId)
-    .eq('completed', true);
-  if (doneCount >= 10) await awardBadge(BADGE_IDS.tenDown);
-  if (doneCount >= 25) await awardBadge(BADGE_IDS.twentyFiveStrong);
 
-  // 6) Quick Learner
-  if (timeTaken != null && timeAllowed != null && timeTaken <= timeAllowed / 2) {
-    await awardBadge(BADGE_IDS.quickLearner);
-  }
+    // 1) Safe Bet: 3 passes in a row
+    try {
+      const last3 = await sb
+        .from('quiz_results')
+        .select('completed, gave_up')
+        .eq('player', userId)
+        .order('played_at', { ascending: false })
+        .limit(3)
+        .then(res => res.data || []);
+      if (last3.length === 3 && last3.every(r => r.completed && !r.gave_up)) {
+        const badge = await awardBadge(BADGE_IDS.safeBet);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Safe Bet badge error:', err); }
 
-  // 7) Comeback Kid
-  if (completed && gaveUp) {
-    const history = await sb
-      .from('quiz_results')
-      .select('gave_up, completed')
-      .eq('player', userId)
-      .eq('quiz', quizId)
-      .order('played_at', { ascending: true })
-      .then(res => res.data || []);
-    if (history.some(r => r.gave_up) && history.some(r => r.completed && !r.gave_up)) {
-      await awardBadge(BADGE_IDS.comebackKid);
-    }
-  }
+    // 2) Early Bird: 6 AM–noon
+    try {
+      if (hour >= 6 && hour < 12) {
+        const badge = await awardBadge(BADGE_IDS.earlyBird);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Early Bird badge error:', err); }
 
-  // 8) Precision Hit
-  if (completed && attained === attainable && attainable > 25) {
-    await awardBadge(BADGE_IDS.precisionHit);
-  }
+    // 3) On Fire: 3 perfects
+    try {
+      const perf3 = await sb
+        .from('quiz_results')
+        .select('attained_score, attainable_score, completed')
+        .eq('player', userId)
+        .order('played_at', { ascending: false })
+        .limit(3)
+        .then(res => res.data || []);
+      if (perf3.length === 3 && perf3.every(r => r.completed && r.attained_score === r.attainable_score)) {
+        const badge = await awardBadge(BADGE_IDS.onFire);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('On Fire badge error:', err); }
 
-  // 9) Night Owl
-  if (completed && hour < 6) await awardBadge(BADGE_IDS.nightOwl);
-
-  // 10) One Streak Wonder
-  const perf2 = await sb
-    .from('quiz_results')
-    .select('attained_score, attainable_score, completed')
-    .eq('player', userId)
-    .order('played_at', { ascending: false })
-    .limit(2)
-    .then(res => res.data || []);
-  if (perf2.length === 2 && perf2.every(r => r.completed && r.attained_score === r.attainable_score)) {
-    await awardBadge(BADGE_IDS.oneStreak);
-  }
-
-  // 11) Badge Collector
-  const { count: badgeCount } = await sb
-    .from('user_badges')
-    .select('badge_id', { count: 'exact', head: true })
-    .eq('user_id', userId);
-  if (badgeCount >= 5) await awardBadge(BADGE_IDS.collector);
-
-  // 12) Flag Master (perfect on any flag quiz)
-  if (completed && attained === attainable && await userCompletedAny(userId, QUIZ_CATEGORIES.flags)) {
-    await awardBadge(BADGE_IDS.flagMaster);
-  }
-
-  // 13–16) Topic badges (completed any quiz in category)
-  if (await userCompletedAny(userId, QUIZ_CATEGORIES.mountain)) await awardBadge(BADGE_IDS.mountain);
-  if (await userCompletedAny(userId, QUIZ_CATEGORIES.island))   await awardBadge(BADGE_IDS.island);
-  if (await userCompletedAny(userId, QUIZ_CATEGORIES.river))    await awardBadge(BADGE_IDS.river);
-  if (await userCompletedAny(userId, QUIZ_CATEGORIES.desert))   await awardBadge(BADGE_IDS.desert);
-
-  // 17) Global Grandmaster
-  const { count: allDone } = await sb
-    .from('quiz_results')
-    .select('quiz', { count: 'exact', head: true })
-    .eq('player', userId)
-    .eq('completed', true);
-  const { count: totalQuizzes } = await sb
-    .from('quizzes')
-    .select('id', { count: 'exact', head: true });
-  if (allDone >= totalQuizzes) await awardBadge(BADGE_IDS.globalMaster);
-
-  // 18) Seafarer
-  if (await userCompletedAny(userId, QUIZ_CATEGORIES.seafarer)) await awardBadge(BADGE_IDS.seafarer);
-
-  // 19) Ultimate GeoQuiz
-  if (
-    completed &&
-    QUIZ_CATEGORIES.ultimate.includes(quizId) &&
-    attained / attainable >= 0.5
-  ) {
-    await awardBadge(BADGE_IDS.ultimateGeo);
-  }
-  // ────────────────────────────────────────────────────────────────────────────
-// 1) Explorer: tried quizzes in 3 different categories
-// ────────────────────────────────────────────────────────────────────────────
-{
-  // 1a) fetch all completed quiz IDs
-  const { data: played } = await sb
-    .from('quiz_results')
-    .select('quiz')
-    .eq('player', userId)
-    .eq('completed', true);
-  const quizIds = (played || []).map(r => r.quiz);
-
-  if (quizIds.length > 0) {
-    // 1b) fetch categories for those quizzes
-    const { data: quizzes } = await sb
-      .from('quizzes')
-      .select('category')
-      .in('id', quizIds);
-    const categories = new Set((quizzes || []).map(q => q.category));
-
-    if (categories.size >= 3) {
-      await awardBadge(BADGE_IDS.explorer);
-    }
-  }
-}
-
-// ────────────────────────────────────────────────────────────────────────────
-// 2) Rising Star: achieved a perfect score on *any* quiz
-// ────────────────────────────────────────────────────────────────────────────
-{
-  const { data: allResults } = await sb
-    .from('quiz_results')
-    .select('attained_score, attainable_score')
-    .eq('player', userId);
-
-  if ((allResults || []).some(r => r.attained_score === r.attainable_score)) {
-    await awardBadge(BADGE_IDS.risingStar);
-  }
-}
-
-// ────────────────────────────────────────────────────────────────────────────
-// 3) Mastermind: completed *all* quizzes in *any one* category
-// ────────────────────────────────────────────────────────────────────────────
-{
-  // 3a) get list of categories
-  const { data: allQuizzes } = await sb.from('quizzes').select('id, category');
-  const byCategory = {};
-  (allQuizzes || []).forEach(q => {
-    byCategory[q.category] = byCategory[q.category] || [];
-    byCategory[q.category].push(q.id);
-  });
-
-  // 3b) for each category, compare counts
-  await Promise.all(Object.entries(byCategory).map(async ([cat, ids]) => {
-    // total quizzes in this category
-    const total = ids.length;
-    // completed by user
-    const { count: done } = await sb
-      .from('quiz_results')
-      .select('id', { head: true, count: 'exact' })
-      .eq('player', userId)
-      .eq('completed', true)
-      .in('quiz', ids);
-
-    if (done >= total && total > 0) {
-      await awardBadge(BADGE_IDS.mastermind);
-    }
-  }));
-}
-
-// ────────────────────────────────────────────────────────────────────────────
-// 4) Champion: completed 5 quizzes in a row
-// ────────────────────────────────────────────────────────────────────────────
-{
-  const { data: recent5 } = await sb
-    .from('quiz_results')
-    .select('completed')
-    .eq('player', userId)
-    .order('played_at', { ascending: false })
-    .limit(5);
-
-  if (
-    recent5 &&
-    recent5.length === 5 &&
-    recent5.every(r => r.completed)
-  ) {
-    await awardBadge(BADGE_IDS.champion);
-  }
-}
-
-// ────────────────────────────────────────────────────────────────────────────
-// 5) The Climber: improved your score after retrying the *same* quiz
-// ────────────────────────────────────────────────────────────────────────────
-{
-  const { data: history } = await sb
-    .from('quiz_results')
-    .select('quiz, attained_score, played_at')
-    .eq('player', userId)
-    .order('played_at', { ascending: true });
-
-  // group by quizId
-  const byQuiz = {};
-  (history || []).forEach(r => {
-    byQuiz[r.quiz] = byQuiz[r.quiz] || [];
-    byQuiz[r.quiz].push(r.attained_score);
-  });
-
-  // check any quiz where max score > first score
-  const improved = Object.values(byQuiz).some(scores => {
-    return scores.length >= 2 && Math.max(...scores) > scores[0];
-  });
-  if (improved) {
-    await awardBadge(BADGE_IDS.climber);
-  }
-}
-
-// ────────────────────────────────────────────────────────────────────────────
-// 6) Daily Drifter: did *the same* quiz twice in one day, ≥3 hours apart
-// ────────────────────────────────────────────────────────────────────────────
-{
-  const { data: attempts } = await sb
-    .from('quiz_results')
-    .select('quiz, played_at')
-    .eq('player', userId)
-    .order('played_at', { ascending: true });
-
-  // bucket by quizId + calendar date
-  const bucket = {};
-  (attempts || []).forEach(r => {
-    const date = new Date(r.played_at).toISOString().slice(0, 10);
-    const key  = `${r.quiz}::${date}`;
-    bucket[key] = bucket[key] || [];
-    bucket[key].push(new Date(r.played_at).getTime());
-  });
-
-  // for any bucket, check min‑max difference ≥ 3h
-  const threeHours = 3 * 60 * 60 * 1000;
-  const drifter = Object.values(bucket).some(times => {
-    if (times.length < 2) return false;
-    const minT = Math.min(...times);
-    const maxT = Math.max(...times);
-    return (maxT - minT) >= threeHours;
-  });
-  if (drifter) {
-    await awardBadge(BADGE_IDS.dailyDrifter);
-  }
-}
-
-// 3 Streak: completed 1 quiz per day for 3 consecutive days
-  {
-    const { data: results } = await sb
-      .from('quiz_results')
-      .select('played_at')
-      .eq('player', userId)
-      .eq('completed', true)
-      .order('played_at', { ascending: false });
-
-    if (results && results.length > 0) {
-      // Group by date string (e.g., "2025-07-21")
-      const daysPlayed = new Set(
-        results.map(r => new Date(r.played_at).toISOString().slice(0, 10))
-      );
-
-      const today = new Date();
-      let streak = 0;
-
-      for (let i = 0; i < 3; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() - i);
-        const isoDate = date.toISOString().slice(0, 10);
-        if (daysPlayed.has(isoDate)) {
-          streak++;
-        } else {
-          break; // streak broken
+    // First Quiz
+    try {
+      if (completed) {
+        const { count: firstCount } = await sb
+          .from('quiz_results')
+          .select('id', { count: 'exact', head: true })
+          .eq('player', userId)
+          .eq('completed', true);
+        if (firstCount === 1) {
+          const badge = await awardBadge(BADGE_IDS.firstQuiz);
+          if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
         }
       }
+    } catch (err) { console.error('First Quiz badge error:', err); }
 
-      if (streak === 3) {
-        await awardBadge(BADGE_IDS.streak3);
+    // 4) 10 Down & 5) 25 Strong
+    try {
+      const { count: doneCount } = await sb
+        .from('quiz_results')
+        .select('id', { count: 'exact', head: true })
+        .eq('player', userId)
+        .eq('completed', true);
+      if (doneCount >= 10) {
+        const badge = await awardBadge(BADGE_IDS.tenDown);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
       }
-    }
-  }
-  // 5 day streak
-    {
-    const { data: results } = await sb
-      .from('quiz_results')
-      .select('played_at')
-      .eq('player', userId)
-      .eq('completed', true)
-      .order('played_at', { ascending: false });
+      if (doneCount >= 25) {
+        const badge = await awardBadge(BADGE_IDS.twentyFiveStrong);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('10/25 badge error:', err); }
 
-    if (results && results.length > 0) {
-      // Group by date string (e.g., "2025-07-21")
-      const daysPlayed = new Set(
-        results.map(r => new Date(r.played_at).toISOString().slice(0, 10))
-      );
+    // 6) Quick Learner
+    try {
+      if (timeTaken != null && timeAllowed != null && timeTaken <= timeAllowed / 2) {
+        const badge = await awardBadge(BADGE_IDS.quickLearner);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Quick Learner badge error:', err); }
 
-      const today = new Date();
-      let streak = 0;
-
-      for (let i = 0; i < 5; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() - i);
-        const isoDate = date.toISOString().slice(0, 10);
-        if (daysPlayed.has(isoDate)) {
-          streak++;
-        } else {
-          break; // streak broken
+    // 7) Comeback Kid
+    try {
+      if (completed && gaveUp) {
+        const history = await sb
+          .from('quiz_results')
+          .select('gave_up, completed')
+          .eq('player', userId)
+          .eq('quiz', quizId)
+          .order('played_at', { ascending: true })
+          .then(res => res.data || []);
+        if (history.some(r => r.gave_up) && history.some(r => r.completed && !r.gave_up)) {
+          const badge = await awardBadge(BADGE_IDS.comebackKid);
+          if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
         }
       }
+    } catch (err) { console.error('Comeback Kid badge error:', err); }
 
-      if (streak === 5) {
-        await awardBadge(BADGE_IDS.streak3);
+    // 8) Precision Hit
+    try {
+      if (completed && attained === attainable && attainable > 25) {
+        const badge = await awardBadge(BADGE_IDS.precisionHit);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
       }
-    }
-  }
-  // 7 day streak
-    {
-    const { data: results } = await sb
-      .from('quiz_results')
-      .select('played_at')
-      .eq('player', userId)
-      .eq('completed', true)
-      .order('played_at', { ascending: false });
+    } catch (err) { console.error('Precision Hit badge error:', err); }
 
-    if (results && results.length > 0) {
-      // Group by date string (e.g., "2025-07-21")
-      const daysPlayed = new Set(
-        results.map(r => new Date(r.played_at).toISOString().slice(0, 10))
-      );
+    // 9) Night Owl
+    try {
+      if (completed && hour < 6) {
+        const badge = await awardBadge(BADGE_IDS.nightOwl);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Night Owl badge error:', err); }
 
-      const today = new Date();
-      let streak = 0;
+    // 10) One Streak Wonder
+    try {
+      const perf2 = await sb
+        .from('quiz_results')
+        .select('attained_score, attainable_score, completed')
+        .eq('player', userId)
+        .order('played_at', { ascending: false })
+        .limit(2)
+        .then(res => res.data || []);
+      if (perf2.length === 2 && perf2.every(r => r.completed && r.attained_score === r.attainable_score)) {
+        const badge = await awardBadge(BADGE_IDS.oneStreak);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('One Streak badge error:', err); }
 
-      for (let i = 0; i < 7; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() - i);
-        const isoDate = date.toISOString().slice(0, 10);
-        if (daysPlayed.has(isoDate)) {
-          streak++;
-        } else {
-          break; // streak broken
+    // 11) Badge Collector
+    try {
+      const { count: badgeCount } = await sb
+        .from('user_badges')
+        .select('badge_id', { count: 'exact', head: true })
+        .eq('user_id', userId);
+      if (badgeCount >= 5) {
+        const badge = await awardBadge(BADGE_IDS.collector);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Badge Collector error:', err); }
+
+    // …continue below…
+	    // 12) Flag Master
+    try {
+      if (completed && attained === attainable && await userCompletedAny(userId, QUIZ_CATEGORIES.flags)) {
+        const badge = await awardBadge(BADGE_IDS.flagMaster);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Flag Master badge error:', err); }
+
+    // 13–16) Topic badges
+    try {
+      if (await userCompletedAny(userId, QUIZ_CATEGORIES.mountain)) {
+        const badge = await awardBadge(BADGE_IDS.mountain);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+      if (await userCompletedAny(userId, QUIZ_CATEGORIES.island)) {
+        const badge = await awardBadge(BADGE_IDS.island);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+      if (await userCompletedAny(userId, QUIZ_CATEGORIES.river)) {
+        const badge = await awardBadge(BADGE_IDS.river);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+      if (await userCompletedAny(userId, QUIZ_CATEGORIES.desert)) {
+        const badge = await awardBadge(BADGE_IDS.desert);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Topic badges error:', err); }
+
+    // 17) Global Grandmaster
+    try {
+      const { count: allDone } = await sb
+        .from('quiz_results')
+        .select('quiz', { count: 'exact', head: true })
+        .eq('player', userId)
+        .eq('completed', true);
+      const { count: totalQuizzes } = await sb
+        .from('quizzes')
+        .select('id', { count: 'exact', head: true });
+      if (allDone >= totalQuizzes) {
+        const badge = await awardBadge(BADGE_IDS.globalMaster);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Global Grandmaster badge error:', err); }
+
+    // 18) Seafarer
+    try {
+      if (await userCompletedAny(userId, QUIZ_CATEGORIES.seafarer)) {
+        const badge = await awardBadge(BADGE_IDS.seafarer);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Seafarer badge error:', err); }
+
+    // 19) Ultimate GeoQuiz
+    try {
+      if (
+        completed &&
+        QUIZ_CATEGORIES.ultimate.includes(quizId) &&
+        attained / attainable >= 0.5
+      ) {
+        const badge = await awardBadge(BADGE_IDS.ultimateGeo);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Ultimate GeoQuiz badge error:', err); }
+
+    // Explorer badge
+    try {
+      const { data: played } = await sb
+        .from('quiz_results')
+        .select('quiz')
+        .eq('player', userId)
+        .eq('completed', true);
+      const quizIds = (played || []).map(r => r.quiz);
+
+      if (quizIds.length > 0) {
+        const { data: quizzes } = await sb
+          .from('quizzes')
+          .select('category')
+          .in('id', quizIds);
+        const categories = new Set((quizzes || []).map(q => q.category));
+        if (categories.size >= 3) {
+          const badge = await awardBadge(BADGE_IDS.explorer);
+          if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
         }
       }
+    } catch (err) { console.error('Explorer badge error:', err); }
 
-      if (streak === 7) {
-        await awardBadge(BADGE_IDS.streak3);
+    // Rising Star badge
+    try {
+      const { data: allResults } = await sb
+        .from('quiz_results')
+        .select('attained_score, attainable_score')
+        .eq('player', userId);
+
+      if ((allResults || []).some(r => r.attained_score === r.attainable_score)) {
+        const badge = await awardBadge(BADGE_IDS.risingStar);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
       }
-    }
-  }
-  // 10 day streak
-    {
-    const { data: results } = await sb
-      .from('quiz_results')
-      .select('played_at')
-      .eq('player', userId)
-      .eq('completed', true)
-      .order('played_at', { ascending: false });
+    } catch (err) { console.error('Rising Star badge error:', err); }
 
-    if (results && results.length > 0) {
-      // Group by date string (e.g., "2025-07-21")
-      const daysPlayed = new Set(
-        results.map(r => new Date(r.played_at).toISOString().slice(0, 10))
-      );
+    // Mastermind badge
+    try {
+      const { data: allQuizzes } = await sb.from('quizzes').select('id, category');
+      const byCategory = {};
+      (allQuizzes || []).forEach(q => {
+        byCategory[q.category] = byCategory[q.category] || [];
+        byCategory[q.category].push(q.id);
+      });
 
-      const today = new Date();
-      let streak = 0;
+      await Promise.all(Object.entries(byCategory).map(async ([cat, ids]) => {
+        const total = ids.length;
+        const { count: done } = await sb
+          .from('quiz_results')
+          .select('id', { head: true, count: 'exact' })
+          .eq('player', userId)
+          .eq('completed', true)
+          .in('quiz', ids);
 
-      for (let i = 0; i < 10; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() - i);
-        const isoDate = date.toISOString().slice(0, 10);
-        if (daysPlayed.has(isoDate)) {
-          streak++;
-        } else {
-          break; // streak broken
+        if (done >= total && total > 0) {
+          const badge = await awardBadge(BADGE_IDS.mastermind);
+          if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+        }
+      }));
+    } catch (err) { console.error('Mastermind badge error:', err); }
+
+    // Champion badge
+    try {
+      const { data: recent5 } = await sb
+        .from('quiz_results')
+        .select('completed')
+        .eq('player', userId)
+        .order('played_at', { ascending: false })
+        .limit(5);
+
+      if (
+        recent5 &&
+        recent5.length === 5 &&
+        recent5.every(r => r.completed)
+      ) {
+        const badge = await awardBadge(BADGE_IDS.champion);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Champion badge error:', err); }
+
+    // The Climber badge
+    try {
+      const { data: history } = await sb
+        .from('quiz_results')
+        .select('quiz, attained_score, played_at')
+        .eq('player', userId)
+        .order('played_at', { ascending: true });
+
+      const byQuiz = {};
+      (history || []).forEach(r => {
+        byQuiz[r.quiz] = byQuiz[r.quiz] || [];
+        byQuiz[r.quiz].push(r.attained_score);
+      });
+
+      const improved = Object.values(byQuiz).some(scores => {
+        return scores.length >= 2 && Math.max(...scores) > scores[0];
+      });
+      if (improved) {
+        const badge = await awardBadge(BADGE_IDS.climber);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Climber badge error:', err); }
+
+    // Daily Drifter badge
+    try {
+      const { data: attempts } = await sb
+        .from('quiz_results')
+        .select('quiz, played_at')
+        .eq('player', userId)
+        .order('played_at', { ascending: true });
+
+      const bucket = {};
+      (attempts || []).forEach(r => {
+        const date = new Date(r.played_at).toISOString().slice(0, 10);
+        const key  = `${r.quiz}::${date}`;
+        bucket[key] = bucket[key] || [];
+        bucket[key].push(new Date(r.played_at).getTime());
+      });
+
+      const threeHours = 3 * 60 * 60 * 1000;
+      const drifter = Object.values(bucket).some(times => {
+        if (times.length < 2) return false;
+        const minT = Math.min(...times);
+        const maxT = Math.max(...times);
+        return (maxT - minT) >= threeHours;
+      });
+      if (drifter) {
+        const badge = await awardBadge(BADGE_IDS.dailyDrifter);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Daily Drifter badge error:', err); }
+
+    // Streak badges
+    try {
+      const { data: profile, error } = await sb
+        .from('profiles')
+        .select('streak_count')
+        .eq('id', userId)
+        .single();
+
+      if (!error && profile?.streak_count >= 3) {
+        const badge = await awardBadge(BADGE_IDS.streak3);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+      if (!error && profile?.streak_count >= 5) {
+        const badge = await awardBadge(BADGE_IDS.streak5);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+      if (!error && profile?.streak_count >= 7) {
+        const badge = await awardBadge(BADGE_IDS.streak7);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+      if (!error && profile?.streak_count >= 10) {
+        const badge = await awardBadge(BADGE_IDS.streak10);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+      if (!error && profile?.streak_count >= 14) {
+        const badge = await awardBadge(BADGE_IDS.streak14);
+        if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
+      }
+    } catch (err) { console.error('Streak badge error:', err); }
+
+    // Weekend Warrior badge
+    try {
+      const { data: weekendResults, error } = await sb
+        .from('quiz_results')
+        .select('played_at')
+        .eq('player', userId)
+        .eq('completed', true);
+
+      if (!error && weekendResults) {
+        const weekendCount = weekendResults.reduce((count, r) => {
+          const day = new Date(r.played_at).getDay();
+          return (day === 0 || day === 6) ? count + 1 : count;
+        }, 0);
+
+        if (weekendCount >= 10) {
+          const badge = await awardBadge(BADGE_IDS.weekendWarrior);
+          if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
         }
       }
+    } catch (err) { console.error('Weekend Warrior badge error:', err); }
 
-      if (streak === 10) {
-        await awardBadge(BADGE_IDS.streak3);
-      }
-    }
-  }
-  // 14 day streak
-    {
-    const { data: results } = await sb
-      .from('quiz_results')
-      .select('played_at')
-      .eq('player', userId)
-      .eq('completed', true)
-      .order('played_at', { ascending: false });
+    // Insomniac badge
+    try {
+      const { data: nightQuizzes, error } = await sb
+        .from('quiz_results')
+        .select('played_at')
+        .eq('player', userId)
+        .eq('completed', true);
 
-    if (results && results.length > 0) {
-      // Group by date string (e.g., "2025-07-21")
-      const daysPlayed = new Set(
-        results.map(r => new Date(r.played_at).toISOString().slice(0, 10))
-      );
+      if (!error && nightQuizzes) {
+        const hasNightQuiz = nightQuizzes.some(r => {
+          const hour = new Date(r.played_at).getHours();
+          return hour >= 2 && hour < 5;
+        });
 
-      const today = new Date();
-      let streak = 0;
-
-      for (let i = 0; i < 14; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() - i);
-        const isoDate = date.toISOString().slice(0, 10);
-        if (daysPlayed.has(isoDate)) {
-          streak++;
-        } else {
-          break; // streak broken
+        if (hasNightQuiz) {
+          const badge = await awardBadge(BADGE_IDS.insomniac);
+          if (badge) notify(`🏅 You earned the "${badge.name}" badge!`, 4000, badge.icon_url);
         }
       }
-
-      if (streak === 14) {
-        await awardBadge(BADGE_IDS.streak3);
-      }
-    }
-  }
-  
-
-
-
-
-  // 21) Weekend Warrior: completed 10 quizzes on a weekend (Saturday or Sunday)
-{
-  const { data: weekendResults, error } = await sb
-    .from('quiz_results')
-    .select('played_at')
-    .eq('player', userId)
-    .eq('completed', true);
-
-  if (!error && weekendResults) {
-    const weekendCount = weekendResults.reduce((count, r) => {
-      const day = new Date(r.played_at).getDay(); // 0 = Sunday, 6 = Saturday
-      return (day === 0 || day === 6) ? count + 1 : count;
-    }, 0);
-
-    if (weekendCount >= 10) {
-      await awardBadge(BADGE_IDS.weekendWarrior);
-    }
+    } catch (err) { console.error('Insomniac badge error:', err); }
+  } catch (err) {
+    // Catch-all for any unexpected error
+    console.error('checkAndAwardBadges() unexpected error:', err);
   }
 }
-
-// INSOMNIAC PLAYER Completed a quiz between 2am and 5am
-{
-  const { data: nightQuizzes, error } = await sb
-    .from('quiz_results')
-    .select('played_at')
-    .eq('player', userId)
-    .eq('completed', true);
-
-  if (!error && nightQuizzes) {
-    const hasNightQuiz = nightQuizzes.some(r => {
-      const hour = new Date(r.played_at).getHours();
-      return hour >= 2 && hour < 5;
-    });
-
-    if (hasNightQuiz) {
-      await awardBadge(BADGE_IDS.insomniac);
-    }
-  }
-}
-
-
-}
-
 
 // ────────────────────────────────────────────────────────────────────────────
 // 7) The Hugo Badge: typed "hugo" into any input field
 // ────────────────────────────────────────────────────────────────────────────
 export function setupLiveBadgeListeners() {
   document.addEventListener('input', async e => {
-    if (e.target.tagName.toLowerCase() !== 'input') return;
-    const val = e.target.value.trim().toLowerCase();
-    if (val === 'hugo' || val === 'help me') {
-      await awardBadge(BADGE_IDS.hugo);
+    try {
+      if (e.target.tagName.toLowerCase() !== 'input') return;
+      const val = e.target.value.trim().toLowerCase();
+      if (val === 'hugo' || val === 'help me') {
+        await awardBadge(BADGE_IDS.hugo);
+      }
+    } catch (err) {
+      console.error('setupLiveBadgeListeners error:', err);
     }
   });
 }
