@@ -17,7 +17,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   container.id = 'notification-container';
   Object.assign(container.style, {
     position:      'fixed',
-    top:           '0.5rem', // closer to top
+    top:           '-3rem', // closer to top
     left:          '50%',
     transform:     'translateX(-50%)',
     width:         '420px',
@@ -49,7 +49,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       border-radius: 16px;
       color: #000;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: 600;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
       opacity: 0;
@@ -81,7 +81,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   document.head.appendChild(css);
 
   // 3) notify function
-  window.notify = function(message, duration = 3500, imageUrl = null) {
+  window.notify = function(message, duration = 4500, imageUrl = null) {
     const msg = document.createElement('div');
     msg.className = 'notification';
 
