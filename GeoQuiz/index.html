@@ -2334,8 +2334,15 @@ function addBadgeClickEvent() {
 
     // 2) Open modal + populate info + start 3D
 // Update openBadgeModal to handle 'longest-streak'
+// ...existing code...
 async function openBadgeModal(badgeId) {
- if (badgeId === 'longest-streak') {
+  const modalImgContainer = document.getElementById('modal-badge-img-container');
+  // Always reset modal container before rendering
+  if (modalImgContainer) {
+    modalImgContainer.innerHTML = '<canvas id="badgeCanvas"></canvas>';
+  }
+
+  if (badgeId === 'longest-streak') {
     const streakSpan = document.getElementById('longest-streak-number');
     const streakNum = streakSpan ? streakSpan.textContent : '0';
 
@@ -2346,7 +2353,6 @@ async function openBadgeModal(badgeId) {
       `Longest streak: ${streakNum} days`;
 
     // Show badge image + number in modal
-    const modalImgContainer = document.getElementById('modal-badge-img-container');
     if (modalImgContainer) {
       modalImgContainer.innerHTML = `
         <div style="position:relative;display:inline-block;">
@@ -2366,7 +2372,7 @@ async function openBadgeModal(badgeId) {
     }
 
     modal.classList.add('visible');
-    init3D(imgUrl);
+    init3D('https://pzyzdmndotuvbvfhxwad.supabase.co/storage/v1/object/public/badges//05DEBCB0-3E17-4B58-BCAB-94EE42840625.PNG-removebg-preview.png');
     return;
   }
 
@@ -2391,6 +2397,7 @@ async function openBadgeModal(badgeId) {
   modal.classList.add('visible');
   init3D(badge.icon_url);
 }
+// ...existing code...
 
     closeBtnBadge.onclick = (e) => {
       e.stopPropagation(); // Prevent bubbling to document
