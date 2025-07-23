@@ -1803,21 +1803,23 @@
       }
       // ...existing code...
       // ...existing code inside async function loadProfile(user)...
+      // ...existing code...
       // Calculate average accuracy
       const { data: accuracyRows, error: accuracyErr } = await sb
         .from('quiz_results')
-        .select('score, max_score')
+        .select('attained_score, attainable_score')
         .eq('player', user.id)
         .eq('completed', true);
 
       let avgAccuracy = 0;
       if (!accuracyErr && accuracyRows && accuracyRows.length > 0) {
-        const totalScore = accuracyRows.reduce((sum, r) => sum + (r.score || 0), 0);
-        const totalMax = accuracyRows.reduce((sum, r) => sum + (r.max_score || 0), 0);
+        const totalScore = accuracyRows.reduce((sum, r) => sum + (r.attained_score || 0), 0);
+        const totalMax = accuracyRows.reduce((sum, r) => sum + (r.attainable_score || 0), 0);
         avgAccuracy = totalMax > 0 ? Math.round((totalScore / totalMax) * 100) : 0;
       }
       const pAvgAccuracy = document.getElementById('pAvgAccuracy');
       if (pAvgAccuracy) pAvgAccuracy.textContent = avgAccuracy;
+      // ...existing
 
       // Calculate badges unlocked
       const { data: badges } = await sb.from('badges').select('id');
