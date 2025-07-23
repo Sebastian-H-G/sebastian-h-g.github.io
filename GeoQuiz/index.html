@@ -2249,26 +2249,28 @@
     const WIGGLE_AMPLITUDE = 0.7;
     const WIGGLE_SPEED = 0.02;
 
-    // 0 ) Show Longest Streak Badge 
-    async function loadStreakBadge() {
-      const user = await getUser()
-      if (!user) return
-      //Bob
-      const { data, error } = await sb
-        .from('profiles')
-        .select('longest_streak')
-        .eq('id', user.id)
-        .single()
+// ...existing code...
+// 0 ) Show Longest Streak Badge 
+async function loadStreakBadge() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return;
 
-      if (error || !data) return
+  const { data, error } = await sb
+    .from('profiles')
+    .select('longest_streak')
+    .eq('id', user.id)
+    .single();
 
-      const streak = data.longest_streak || 0
-      const badge = document.getElementById('longest-streak-badge')
-      if (badge) {
-        const longestStreakSpan = document.getElementById('longest-streak-number');
-        longestStreakSpan.textContent = streak
-      }
-    }
+  if (error || !data) return;
+
+  const streak = data.longest_streak || 0;
+  const badge = document.getElementById('longest-streak-badge');
+  if (badge) {
+    const longestStreakSpan = document.getElementById('longest-streak-number');
+    longestStreakSpan.textContent = streak;
+  }
+}
+// ...existing code...
 
 
     // 1) Load badges & render grid
