@@ -959,11 +959,11 @@ button:hover {
 }
 #longest-streak-badge #longest-streak-number {
 position: absolute;
-top: 62%;
+top: 55%;
 left: 50%;
 transform: translate(-50%, -50%);
 font-family: 'Bebas Neue', sans-serif;
-font-size: 6rem;
+font-size: 3rem;
 font-weight: 900;
 letter-spacing: 1px;
 white-space: nowrap;
