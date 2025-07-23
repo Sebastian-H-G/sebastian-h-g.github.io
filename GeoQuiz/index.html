@@ -205,11 +205,18 @@
 
 
 
-
-
         <div class="pane" data-index="2">
           <h1 class="pane-content-heading">Your Badges</h1>
-          <div class="grid" id="all-badges-grid"></div>
+          <div class="grid" id="all-badges-grid">
+
+            <div class="badge unlocked" id="longest-streak-badge">
+              <img
+                src="https://pzyzdmndotuvbvfhxwad.supabase.co/storage/v1/object/public/badges//05DEBCB0-3E17-4B58-BCAB-94EE42840625.PNG-removebg-preview.png"
+                alt="Longest Streak" title="Longest Streak"><span id="longest-streak-number"></span>
+              <div class="badge-title">Longest Streak</div>
+            </div>
+
+          </div>
         </div>
 
 
@@ -1766,31 +1773,31 @@
         console.error('[loadProfile] quiz_results fetch error:', resultsErr);
       }
 
-// 7) Write it into your <span id="pstreak"> and <span id="longest_streak">
-const pStreak = document.getElementById('pstreak');
-if (pStreak) {
-  pStreak.textContent = streak;
-  // Add streak background class to parent card
-  const card = pStreak.closest('.profile-card');
-  if (card) {
-    // Remove any previous streak-X class
-    card.classList.remove(
-      'streak-3', 'streak-5', 'streak-7', 'streak-10', 'streak-14', 'streak-21'
-    );
-    // Add the appropriate class based on streak length
-    if (streak >= 21) card.classList.add('streak-21');
-    else if (streak >= 14) card.classList.add('streak-14');
-    else if (streak >= 10) card.classList.add('streak-10');
-    else if (streak >= 7) card.classList.add('streak-7');
-    else if (streak >= 5) card.classList.add('streak-5');
-    else if (streak >= 3) card.classList.add('streak-3');
-    // else: no class for streak < 3
-  }
-}
-const longestStreakSpan = document.getElementById('longest_streak');
-if (longestStreakSpan) {
-  longestStreakSpan.textContent = longestStreak;
-}
+      // 7) Write it into your <span id="pstreak"> and <span id="longest_streak">
+      const pStreak = document.getElementById('pstreak');
+      if (pStreak) {
+        pStreak.textContent = streak;
+        // Add streak background class to parent card
+        const card = pStreak.closest('.profile-card');
+        if (card) {
+          // Remove any previous streak-X class
+          card.classList.remove(
+            'streak-3', 'streak-5', 'streak-7', 'streak-10', 'streak-14', 'streak-21'
+          );
+          // Add the appropriate class based on streak length
+          if (streak >= 21) card.classList.add('streak-21');
+          else if (streak >= 14) card.classList.add('streak-14');
+          else if (streak >= 10) card.classList.add('streak-10');
+          else if (streak >= 7) card.classList.add('streak-7');
+          else if (streak >= 5) card.classList.add('streak-5');
+          else if (streak >= 3) card.classList.add('streak-3');
+          // else: no class for streak < 3
+        }
+      }
+      const longestStreakSpan = document.getElementById('longest_streak');
+      if (longestStreakSpan) {
+        longestStreakSpan.textContent = longestStreak;
+      }
       // ...existing code...
 
     }
@@ -2199,7 +2206,6 @@ if (longestStreakSpan) {
     // ───────────────
     // BADGES GRID + MODAL + 3D LOGIC
     // ───────────────
-
     const grid = document.getElementById('all-badges-grid');
     const modal = document.getElementById('badge-modal');
     const closeBtnBadge = modal.querySelector('.badge-modal-close-btn');
@@ -2210,6 +2216,28 @@ if (longestStreakSpan) {
     const baseYaw = 0;
     const WIGGLE_AMPLITUDE = 0.7;
     const WIGGLE_SPEED = 0.02;
+
+    // 0 ) Show Longest Streak Badge 
+    async function loadStreakBadge() {
+      const user = await getUser()
+      if (!user) return
+      //Bob
+      const { data, error } = await sb
+        .from('profiles')
+        .select('longest_streak')
+        .eq('id', user.id)
+        .single()
+
+      if (error || !data) return
+
+      const streak = data.longest_streak || 0
+      const badge = document.getElementById('longest-streak-badge')
+      if (badge) {
+        const longestStreakSpan = document.getElementById('longest-streak-number');
+        longestStreakSpan.textContent = streak
+      }
+    }
+
 
     // 1) Load badges & render grid
     async function loadBadges() {

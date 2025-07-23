@@ -945,6 +945,46 @@ button:hover {
   color: #666;
 }
 
+
+
+
+#longest-streak-badge {
+   position: relative;
+  display: inline-block;
+}
+#longest-streak-badge img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+#longest-streak-badge #longest-streak-number {
+position: absolute;
+top: 62%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-family: 'Bebas Neue', sans-serif;
+font-size: 6rem;
+font-weight: 900;
+letter-spacing: 1px;
+white-space: nowrap;
+
+background: linear-gradient(135deg, #00c3ff, #3a00ff, #00c3ff);
+background-size: 300% 300%;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+animation: shimmer 2.5s infinite linear;
+
+text-shadow:
+0 0 4px rgba(0, 255, 255, 0.4),
+0 0 8px rgba(0, 200, 255, 0.3),
+0 0 12px rgba(0, 150, 255, 0.2);
+}
+
+@keyframes shimmer {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
 .avatar-display {
   position: relative;
   display: inline-block;
