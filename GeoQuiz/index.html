@@ -2291,7 +2291,6 @@
 
     function renderAllBadgesGrid() {
       grid.innerHTML = '';
-      loadStreakBadge();
       // Render the Longest Streak badge first
       const streakDiv = document.createElement('div');
       streakDiv.className = 'badge unlocked';
@@ -2304,7 +2303,7 @@
     <div class="badge-title">Longest Streak</div>
   `;
       grid.appendChild(streakDiv);
-
+      loadStreakBadge();
       // Render the rest of the badges
       const sorted = [...allBadges].sort((a, b) => {
         const aU = earnedIds.includes(a.id), bU = earnedIds.includes(b.id);
