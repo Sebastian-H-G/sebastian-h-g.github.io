@@ -165,6 +165,17 @@
                     <div class="value"><span id="pPerfectQuizzes"></span></div>
                     <div class="label">Perfect quizzes</div>
                   </div>
+                  <!-- Add these inside your .profile-grid, after the other cards -->
+                  <div class="profile-card">
+                    <span class="icon">📊</span>
+                    <div class="value"><span id="pAvgAccuracy"></span>%</div>
+                    <div class="label">Average Accuracy</div>
+                  </div>
+                  <div class="profile-card">
+                    <span class="icon">🏅</span>
+                    <div class="value"><span id="pBadgesUnlocked"></span></div>
+                    <div class="label">Badges Unlocked</div>
+                  </div>
                 </div>
               </div>
 
@@ -1799,7 +1810,34 @@
         longestStreakSpan.textContent = longestStreak;
       }
       // ...existing code...
+      // ...existing code inside async function loadProfile(user)...
+      // Calculate average accuracy
+      const { data: accuracyRows, error: accuracyErr } = await sb
+        .from('quiz_results')
+        .select('score, max_score')
+        .eq('player', user.id)
+        .eq('completed', true);
 
+      let avgAccuracy = 0;
+      if (!accuracyErr && accuracyRows && accuracyRows.length > 0) {
+        const totalScore = accuracyRows.reduce((sum, r) => sum + (r.score || 0), 0);
+        const totalMax = accuracyRows.reduce((sum, r) => sum + (r.max_score || 0), 0);
+        avgAccuracy = totalMax > 0 ? Math.round((totalScore / totalMax) * 100) : 0;
+      }
+      const pAvgAccuracy = document.getElementById('pAvgAccuracy');
+      if (pAvgAccuracy) pAvgAccuracy.textContent = avgAccuracy;
+
+      // Calculate badges unlocked
+      const { data: badges } = await sb.from('badges').select('id');
+      const { data: userbs } = await sb
+        .from('user_badges')
+        .select('badge_id')
+        .eq('user_id', user.id);
+      const unlocked = (userbs || []).length;
+      const total = (badges || []).length;
+      const pBadgesUnlocked = document.getElementById('pBadgesUnlocked');
+      if (pBadgesUnlocked) pBadgesUnlocked.textContent = `${unlocked} / ${total}`;
+      // ...existing code...
     }
 
 
@@ -2259,6 +2297,21 @@
 
     function renderAllBadgesGrid() {
       grid.innerHTML = '';
+
+      // Render the Longest Streak badge first
+      const streakDiv = document.createElement('div');
+      streakDiv.className = 'badge unlocked';
+      streakDiv.id = 'longest-streak-badge';
+      streakDiv.innerHTML = `
+    <img
+      src="https://pzyzdmndotuvbvfhxwad.supabase.co/storage/v1/object/public/badges//05DEBCB0-3E17-4B58-BCAB-94EE42840625.PNG-removebg-preview.png"
+      alt="Longest Streak" title="Longest Streak">
+    <span id="longest-streak-number"></span>
+    <div class="badge-title">Longest Streak</div>
+  `;
+      grid.appendChild(streakDiv);
+
+      // Render the rest of the badges
       const sorted = [...allBadges].sort((a, b) => {
         const aU = earnedIds.includes(a.id), bU = earnedIds.includes(b.id);
         return (aU === bU) ? 0 : (aU ? -1 : 1);
@@ -2268,13 +2321,12 @@
         div.className = 'badge ' + (earnedIds.includes(b.id) ? 'unlocked' : 'locked');
         div.dataset.id = b.id;
         div.innerHTML = `
-        <img src="${b.icon_url}" alt="${b.name}" title="${b.name}" />
-        <div class="badge-title">${b.name}</div>
-      `;
+      <img src="${b.icon_url}" alt="${b.name}" title="${b.name}" />
+      <div class="badge-title">${b.name}</div>
+    `;
         grid.append(div);
       });
     }
-
     function addBadgeClickEvent() {
       document.querySelectorAll('.badge').forEach(badge => {
         badge.onclick = () => openBadgeModal(badge.dataset.id);
