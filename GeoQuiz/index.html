@@ -1801,15 +1801,12 @@
       if (longestStreakSpan) {
         longestStreakSpan.textContent = longestStreak;
       }
-      // ...existing code...
-      // ...existing code inside async function loadProfile(user)...
-      // ...existing code...
+
       // Calculate average accuracy
       const { data: accuracyRows, error: accuracyErr } = await sb
         .from('quiz_results')
         .select('attained_score, attainable_score')
         .eq('player', user.id)
-        .eq('completed', true);
 
       let avgAccuracy = 0;
       if (!accuracyErr && accuracyRows && accuracyRows.length > 0) {
