@@ -963,7 +963,7 @@ top: 55%;
 left: 50%;
 transform: translate(-50%, -50%);
 font-family: 'Bebas Neue', sans-serif;
-font-size: 3rem;
+ font-size: clamp(1.2rem, 7vw, 2.5rem); 
 font-weight: 900;
 letter-spacing: 1px;
 white-space: nowrap;
