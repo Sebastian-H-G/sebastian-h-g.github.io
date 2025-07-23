@@ -219,14 +219,6 @@
         <div class="pane" data-index="2">
           <h1 class="pane-content-heading">Your Badges</h1>
           <div class="grid" id="all-badges-grid">
-
-            <div class="badge unlocked" id="longest-streak-badge">
-              <img
-                src="https://pzyzdmndotuvbvfhxwad.supabase.co/storage/v1/object/public/badges//05DEBCB0-3E17-4B58-BCAB-94EE42840625.PNG-removebg-preview.png"
-                alt="Longest Streak" title="Longest Streak"><span id="longest-streak-number"></span>
-              <div class="badge-title">Longest Streak</div>
-            </div>
-
           </div>
         </div>
 
@@ -2297,7 +2289,7 @@
 
     function renderAllBadgesGrid() {
       grid.innerHTML = '';
-
+      loadStreakBadge();
       // Render the Longest Streak badge first
       const streakDiv = document.createElement('div');
       streakDiv.className = 'badge unlocked';
