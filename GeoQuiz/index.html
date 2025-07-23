@@ -314,18 +314,18 @@
   </div>
 
   <div id="badge-modal" class="modal">
-<div class="badge-modal-content">
-  <span class="badge-modal-close-btn">&times;</span>
-  <div class="badge-canvas-container" id="modal-badge-img-container">
-    <!-- Will be filled by JS for Longest Streak badge -->
-    <canvas id="badgeCanvas"></canvas>
-  </div>
-  <div class="badge-info">
-    <h2 id="modal-badge-title"></h2>
-    <p id="modal-badge-description"></p>
-    <p id="modal-badge-earned-date"></p>
-  </div>
-</div>
+    <div class="badge-modal-content">
+      <span class="badge-modal-close-btn">&times;</span>
+      <div class="badge-canvas-container" id="modal-badge-img-container">
+        <!-- Will be filled by JS for Longest Streak badge -->
+        <canvas id="badgeCanvas"></canvas>
+      </div>
+      <div class="badge-info">
+        <h2 id="modal-badge-title"></h2>
+        <p id="modal-badge-description"></p>
+        <p id="modal-badge-earned-date"></p>
+      </div>
+    </div>
   </div>
 
 
@@ -2246,28 +2246,28 @@
     const WIGGLE_AMPLITUDE = 0.7;
     const WIGGLE_SPEED = 0.02;
 
-// ...existing code...
-// 0 ) Show Longest Streak Badge 
-async function loadStreakBadge() {
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) return;
+    // ...existing code...
+    // 0 ) Show Longest Streak Badge 
+    async function loadStreakBadge() {
+      const { data: { user } } = await sb.auth.getUser();
+      if (!user) return;
 
-  const { data, error } = await sb
-    .from('profiles')
-    .select('longest_streak')
-    .eq('id', user.id)
-    .single();
+      const { data, error } = await sb
+        .from('profiles')
+        .select('longest_streak')
+        .eq('id', user.id)
+        .single();
 
-  if (error || !data) return;
+      if (error || !data) return;
 
-  const streak = data.longest_streak || 0;
-  const badge = document.getElementById('longest-streak-badge');
-  if (badge) {
-    const longestStreakSpan = document.getElementById('longest-streak-number');
-    longestStreakSpan.textContent = streak;
-  }
-}
-// ...existing code...
+      const streak = data.longest_streak || 0;
+      const badge = document.getElementById('longest-streak-badge');
+      if (badge) {
+        const longestStreakSpan = document.getElementById('longest-streak-number');
+        longestStreakSpan.textContent = streak;
+      }
+    }
+    // ...existing code...
 
 
     // 1) Load badges & render grid
@@ -2319,85 +2319,87 @@ async function loadStreakBadge() {
         grid.append(div);
       });
     }
-function addBadgeClickEvent() {
-  document.querySelectorAll('.badge').forEach(badge => {
-    // For normal badges, use their data-id
-    badge.onclick = () => {
-      if (badge.id === 'longest-streak-badge') {
-        openBadgeModal('longest-streak');
-      } else {
-        openBadgeModal(badge.dataset.id);
-      }
-    };
-  });
-}
-
-    // 2) Open modal + populate info + start 3D
-// Update openBadgeModal to handle 'longest-streak'
-// ...existing code...
-async function openBadgeModal(badgeId) {
-  const modalImgContainer = document.getElementById('modal-badge-img-container');
-  // Always reset modal container before rendering
-  if (modalImgContainer) {
-    modalImgContainer.innerHTML = '<canvas id="badgeCanvas"></canvas>';
-  }
-
-  if (badgeId === 'longest-streak') {
-    const streakSpan = document.getElementById('longest-streak-number');
-    const streakNum = streakSpan ? streakSpan.textContent : '0';
-
-    document.getElementById('modal-badge-title').textContent = 'Longest Streak';
-    document.getElementById('modal-badge-description').textContent =
-      'Your personal record for the most consecutive days playing GeoQuiz!';
-    document.getElementById('modal-badge-earned-date').textContent =
-      `Longest streak: ${streakNum} days`;
-
-    // Show badge image + number in modal
-    if (modalImgContainer) {
-      modalImgContainer.innerHTML = `
-        <div style="position:relative;display:inline-block;">
-          <img
-            src="https://pzyzdmndotuvbvfhxwad.supabase.co/storage/v1/object/public/badges//05DEBCB0-3E17-4B58-BCAB-94EE42840625.PNG-removebg-preview.png"
-            alt="Longest Streak" title="Longest Streak" style="width:100%;height:auto;display:block;">
-          <span id="modal-longest-streak-number"
-            style="position:absolute;top:62%;left:50%;transform:translate(-50%,-50%);
-            font-family:'Bebas Neue',sans-serif; font-size: clamp(1.2rem, 7vw, 3rem); font-weight:900;letter-spacing:1px;white-space:nowrap;
-            background:linear-gradient(135deg,#00c3ff,#3a00ff,#00c3ff);background-size:300% 300%;
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 2.5s infinite linear;
-            text-shadow:0 0 4px rgba(0,255,255,0.4),0 0 8px rgba(0,200,255,0.3),0 0 12px rgba(0,150,255,0.2);">
-            ${streakNum}
-          </span>
-        </div>
-      `;
+    function addBadgeClickEvent() {
+      document.querySelectorAll('.badge').forEach(badge => {
+        // For normal badges, use their data-id
+        badge.onclick = () => {
+          if (badge.id === 'longest-streak-badge') {
+            openBadgeModal('longest-streak');
+          } else {
+            openBadgeModal(badge.dataset.id);
+          }
+        };
+      });
     }
 
-    modal.classList.add('visible');
-    init3D('https://pzyzdmndotuvbvfhxwad.supabase.co/storage/v1/object/public/badges//05DEBCB0-3E17-4B58-BCAB-94EE42840625.PNG-removebg-preview.png');
-    return;
-  }
+    // 2) Open modal + populate info + start 3D
+    // Update openBadgeModal to handle 'longest-streak'
+    // ...existing code...
+    async function openBadgeModal(badgeId) {
+      const modalImgContainer = document.getElementById('modal-badge-img-container');
+      // Always reset modal container before rendering
+      if (modalImgContainer) {
+        modalImgContainer.innerHTML = '<canvas id="badgeCanvas"></canvas>';
+      }
 
-  // ...existing code for DB badges...
-  const { data: badge } = await sb
-    .from('badges')
-    .select('name, description, icon_url')
-    .eq('id', badgeId)
-    .single();
-  const { data: { user } } = await sb.auth.getUser();
-  const { data: ub } = await sb
-    .from('user_badges')
-    .select('earned_at')
-    .eq('user_id', user.id)
-    .eq('badge_id', badgeId)
-    .single();
+      if (badgeId === 'longest-streak') {
+        const streakSpan = document.getElementById('longest-streak-number');
+        const streakNum = streakSpan ? streakSpan.textContent : '0';
 
-  document.getElementById('modal-badge-title').textContent = badge.name;
-  document.getElementById('modal-badge-description').textContent = badge.description;
-  const d = new Date(ub.earned_at);
-  document.getElementById('modal-badge-earned-date').textContent = 'Earned on: ' + d.toLocaleDateString();
-  modal.classList.add('visible');
-  init3D(badge.icon_url);
-}
-// ...existing code...
+        document.getElementById('modal-badge-title').textContent = 'Longest Streak';
+        document.getElementById('modal-badge-description').textContent =
+          'Your personal record for the most consecutive days playing GeoQuiz!';
+        document.getElementById('modal-badge-earned-date').textContent =
+          `Longest streak: ${streakNum} days`;
+
+        // Show badge image + number in modal
+        // ...inside openBadgeModal, for longest-streak...
+        if (modalImgContainer) {
+          modalImgContainer.innerHTML = `
+    <div style="position:relative;display:inline-block;">
+      <canvas id="badgeCanvas"></canvas>
+      <img
+        src="https://pzyzdmndotuvbvfhxwad.supabase.co/storage/v1/object/public/badges//05DEBCB0-3E17-4B58-BCAB-94EE42840625.PNG-removebg-preview.png"
+        alt="Longest Streak" title="Longest Streak" style="width:100%;height:auto;display:block;position:absolute;top:0;left:0;">
+      <span id="modal-longest-streak-number"
+        style="position:absolute;top:62%;left:50%;transform:translate(-50%,-50%);
+        font-family:'Bebas Neue',sans-serif; font-size: clamp(1.2rem, 7vw, 3rem); font-weight:900;letter-spacing:1px;white-space:nowrap;
+        background:linear-gradient(135deg,#00c3ff,#3a00ff,#00c3ff);background-size:300% 300%;
+        -webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 2.5s infinite linear;
+        text-shadow:0 0 4px rgba(0,255,255,0.4),0 0 8px rgba(0,200,255,0.3),0 0 12px rgba(0,150,255,0.2);">
+        ${streakNum}
+      </span>
+    </div>
+  `;
+        }
+
+        modal.classList.add('visible');
+        init3D('https://pzyzdmndotuvbvfhxwad.supabase.co/storage/v1/object/public/badges//05DEBCB0-3E17-4B58-BCAB-94EE42840625.PNG-removebg-preview.png');
+        return;
+      }
+
+      // ...existing code for DB badges...
+      const { data: badge } = await sb
+        .from('badges')
+        .select('name, description, icon_url')
+        .eq('id', badgeId)
+        .single();
+      const { data: { user } } = await sb.auth.getUser();
+      const { data: ub } = await sb
+        .from('user_badges')
+        .select('earned_at')
+        .eq('user_id', user.id)
+        .eq('badge_id', badgeId)
+        .single();
+
+      document.getElementById('modal-badge-title').textContent = badge.name;
+      document.getElementById('modal-badge-description').textContent = badge.description;
+      const d = new Date(ub.earned_at);
+      document.getElementById('modal-badge-earned-date').textContent = 'Earned on: ' + d.toLocaleDateString();
+      modal.classList.add('visible');
+      init3D(badge.icon_url);
+    }
+    // ...existing code...
 
     closeBtnBadge.onclick = (e) => {
       e.stopPropagation(); // Prevent bubbling to document
