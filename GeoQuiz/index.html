@@ -1852,12 +1852,12 @@
 
         sb.from('user_badges')
           .select('badge_id, earned_at')
-          .eq('player', user.id)               // or .eq('user_id', userId)
+          .eq('user_id', user.id)               // or .eq('user_id', userId)
           .order('earned_at', { ascending: false })
           .limit(1)
       ]);
 
-      // ── Determine the most-played quiz ID v ───────────────────────────────
+      // ── Determine the most-played quiz ID  ───────────────────────────────
       let bestQuizId = null;
       if (!quizErr && quizRows?.length) {
         const counts = quizRows.reduce((acc, { quiz }) => {
