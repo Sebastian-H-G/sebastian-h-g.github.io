@@ -176,6 +176,18 @@
                     <div class="value"><span id="pBadgesUnlocked"></span></div>
                     <div class="label">Badges Unlocked</div>
                   </div>
+                  <!-- Most recently earned badge -->
+                  <div class="profile-card">
+                    <span class="icon">🥇</span>
+                    <div class="value"><span id="pRecentBadge"></span></div>
+                    <div class="label">Recent Badge</div>
+                  </div>
+                  <!-- Quiz you’ve played the most -->
+                  <div class="profile-card">
+                    <span class="icon">🎮</span>
+                    <div class="value"><span id="pMostPlayedQuiz"></span></div>
+                    <div class="label">Top Quiz</div>
+                  </div>
                 </div>
               </div>
 
@@ -1828,7 +1840,80 @@
       const total = (badges || []).length;
       const pBadgesUnlocked = document.getElementById('pBadgesUnlocked');
       if (pBadgesUnlocked) pBadgesUnlocked.textContent = `${unlocked} / ${total}`;
-      // ...existing code...
+      // ── Load most-played quiz and recent badge ───────────────────────────
+      // 1) Fetch raw plays & raw badge row in parallel
+      const [
+        { data: quizRows, error: quizErr },
+        { data: recentBadgeRows, error: badgeErr }
+      ] = await Promise.all([
+        sb.from('quiz_results')
+          .select('quiz')
+          .eq('player', user.id),
+
+        sb.from('user_badges')
+          .select('badge_id, earned_at')
+          .eq('player', user.id)               // or .eq('user_id', userId)
+          .order('earned_at', { ascending: false })
+          .limit(1)
+      ]);
+
+      // ── Determine the most-played quiz ID v ───────────────────────────────
+      let bestQuizId = null;
+      if (!quizErr && quizRows?.length) {
+        const counts = quizRows.reduce((acc, { quiz }) => {
+          acc[quiz] = (acc[quiz] || 0) + 1;
+          return acc;
+        }, {});
+        bestQuizId = Object.entries(counts)
+          .sort(([, a], [, b]) => b - a)[0]?.[0] ?? null;
+      }
+
+      // ── Look up the quiz title ─────────────────────────────────────────
+      let topQuizTitle = '—';
+      if (bestQuizId) {
+        const { data: quizMeta, error: metaErr } = await sb
+          .from('quizzes')
+          .select('title')
+          .eq('id', bestQuizId)
+          .single();
+
+        if (!metaErr && quizMeta) {
+          topQuizTitle = quizMeta.title;
+        }
+      }
+      document.getElementById('pMostPlayedQuiz').textContent = topQuizTitle;
+
+
+      // ── Determine the most-recent badge ID ────────────────────────────
+      let recentBadgeId = null;
+      if (!badgeErr && recentBadgeRows?.length) {
+        recentBadgeId = recentBadgeRows[0].badge_id;
+      }
+
+      // ── Look up badge name + icon ──────────────────────────────────────
+      let badgeName = 'None', badgeIcon = '';
+      if (recentBadgeId) {
+        const { data: badgeMeta, error: badgeMetaErr } = await sb
+          .from('badges')
+          .select('name, icon_url')
+          .eq('id', recentBadgeId)
+          .single();
+
+        if (!badgeMetaErr && badgeMeta) {
+          badgeName = badgeMeta.name;
+          badgeIcon = badgeMeta.icon_url;
+        }
+      }
+
+      // ── Render badge: name + icon ──────────────────────────────────────
+      const badgeSpan = document.getElementById('pRecentBadge');
+      if (badgeSpan) {
+        if (badgeIcon) {
+          badgeSpan.innerHTML = `<img src="${badgeIcon}" alt="${badgeName}" class="badge-icon" /> ${badgeName}`;
+        } else {
+          badgeSpan.textContent = badgeName;
+        }
+      }
     }
 
 
@@ -2362,8 +2447,8 @@
         src="https://pzyzdmndotuvbvfhxwad.supabase.co/storage/v1/object/public/badges//05DEBCB0-3E17-4B58-BCAB-94EE42840625.PNG-removebg-preview.png"
         alt="Longest Streak" title="Longest Streak" style="width:100%;height:auto;display:block;position:absolute;top:0;left:0;">
       <span id="modal-longest-streak-number"
-        style="position:absolute;top:62%;left:50%;transform:translate(-50%,-50%);
-        font-family:'Bebas Neue',sans-serif; font-size: clamp(1.2rem, 7vw, 3rem); font-weight:900;letter-spacing:1px;white-space:nowrap;
+        style="position:absolute;top:110%;left:50%;transform:translate(-50%,-50%);
+        font-family:'Bebas Neue',sans-serif; font-size: clamp(2rem, 7vw, 3rem); font-weight:900;letter-spacing:1px;white-space:nowrap;
         background:linear-gradient(135deg,#00c3ff,#3a00ff,#00c3ff);background-size:300% 300%;
         -webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 2.5s infinite linear;
         text-shadow:0 0 4px rgba(0,255,255,0.4),0 0 8px rgba(0,200,255,0.3),0 0 12px rgba(0,150,255,0.2);">

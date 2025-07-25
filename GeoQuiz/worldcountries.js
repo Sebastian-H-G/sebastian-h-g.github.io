@@ -387,7 +387,7 @@ function checkCountry(countryName) {
         const originalCountryName = countries.find(c => c.toLowerCase() === normalizedCountryName.toLowerCase());
         correctCountries.push(originalCountryName);
         score++;
-         attainedScore = score; // <-- Add this line
+        attainedScore = score; // <-- Add this line
         scoreBoard.textContent = `Score: ${score} / 196`;
         document.querySelectorAll(`[title="${originalCountryName}"]`).forEach(path => {
             path.classList.add('correct');
