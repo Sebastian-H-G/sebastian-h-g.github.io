@@ -627,7 +627,7 @@ button:hover {
   object-fit: contain;
 }
 
-##most-played-thumb {
+#most-played-thumb {
     width: 2em;
   height: 2em;
   margin: 0 auto;
