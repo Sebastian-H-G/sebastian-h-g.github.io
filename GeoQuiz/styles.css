@@ -615,8 +615,16 @@ button:hover {
   height: 2em;
   fill: currentColor;
 }
+#badgeImg {
+  width: 2em;
+  height: 2em;
+  object-fit: contain;
+}
 .badge-icon {
+  width: 2em;
+  height: 2em;
   margin: 0 auto;
+  object-fit: contain;
 }
 
 
