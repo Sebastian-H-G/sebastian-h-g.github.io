@@ -184,7 +184,7 @@
                   </div>
                   <!-- Quiz you’ve played the most -->
                   <div class="profile-card">
-                    <span class="icon">🎮</span>
+                    <div class="icon"><span id="quiz_img"></span></div>
                     <div class="value"><span id="pMostPlayedQuiz"></span></div>
                     <div class="label">Top Quiz</div>
                   </div>
@@ -758,7 +758,8 @@
             </svg>
           </button>
           <div class="quiz-content">
-            <img src="Logos/Germany.JPEG" alt="Optimized" class="quiz-logo">
+            <img data-id="8bcfecf7-0d7c-4403-a2a6-6475f040873e" src="Logos/Germany.JPEG" alt="Optimized"
+              class="quiz-logo">
             <div>
               <h2>Deutschland Bundesländer</h2>
               <p>Wissen ist Macht: Stell dich dem Deutschland-Quiz und beweis es!</p>
@@ -1881,8 +1882,22 @@
           topQuizTitle = quizMeta.title;
         }
       }
-      document.getElementById('pMostPlayedQuiz').textContent = topQuizTitle;
-
+      const pMostPlayed = document.getElementById('pMostPlayedQuiz');
+      const quizImgContainer = document.getElementById('quiz_img');
+      if (pMostPlayed) pMostPlayed.textContent = topQuizTitle;
+      if (quizImgContainer) {
+        quizImgContainer.innerHTML = '';
+        const src = document.querySelector(`img[data-id="${bestQuizId}"]`)?.src;
+        if (src) {
+          const thumb = document.createElement('img');
+          thumb.src = src;
+          thumb.alt = topQuizTitle;
+          thumb.className = 'most-played-thumb';
+          quizImgContainer.appendChild(thumb);
+        } else {
+          quizImgContainer.textContent = '—';
+        }
+      }
 
       // ── Determine the most-recent badge ID ────────────────────────────
       let recentBadgeId = null;
@@ -1908,7 +1923,8 @@
       // ── Render badge: name + icon ──────────────────────────────────────
       const badgeSpan = document.getElementById('pRecentBadge');
       const badgeImg = document.getElementById('badge_img');
-      if (badgeSpan) {
+      if (badgeSpan && badgeImg) {
+        badgeImg.innerHTML = '';
         if (badgeIcon) {
           badgeImg.innerHTML = `<img src="${badgeIcon}" alt="${badgeName}" class="badge-icon" />`;
           badgeSpan.textContent = badgeName;
