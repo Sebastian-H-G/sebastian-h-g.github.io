@@ -576,7 +576,7 @@ button:hover {
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
-  margin-top: 2rem;
+  margin-top: 1rem;
   width: 100%;
 }
 
@@ -614,6 +614,9 @@ button:hover {
   width: 2em;
   height: 2em;
   fill: currentColor;
+}
+.badge-icon {
+  margin: 0 auto;
 }
 
 

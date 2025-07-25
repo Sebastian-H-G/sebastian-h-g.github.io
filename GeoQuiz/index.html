@@ -178,7 +178,7 @@
                   </div>
                   <!-- Most recently earned badge -->
                   <div class="profile-card">
-                    <span class="icon">🥇</span>
+                    <div class="icon recentBadge"><span id="badge_img"></span></div>
                     <div class="value"><span id="pRecentBadge"></span></div>
                     <div class="label">Recent Badge</div>
                   </div>
@@ -1907,11 +1907,14 @@
 
       // ── Render badge: name + icon ──────────────────────────────────────
       const badgeSpan = document.getElementById('pRecentBadge');
+      const badgeImg = document.getElementById('badge_img');
       if (badgeSpan) {
         if (badgeIcon) {
-          badgeSpan.innerHTML = `<img src="${badgeIcon}" alt="${badgeName}" class="badge-icon" /> ${badgeName}`;
+          badgeImg.innerHTML = `<img src="${badgeIcon}" alt="${badgeName}" class="badge-icon" />`;
+          badgeSpan.textContent = badgeName;
         } else {
           badgeSpan.textContent = badgeName;
+          badgeImg.textContent = '🥇';
         }
       }
     }
