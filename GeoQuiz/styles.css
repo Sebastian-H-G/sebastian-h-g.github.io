@@ -651,6 +651,8 @@ button:hover {
   /* Bigger min width */
   gap: 3rem;
   padding: 20px;
+  justify-content: center; /* horizontal centering of the entire grid */
+  align-content: center;   /* vertical centering of the entire grid */
   margin: 2.5rem auto 3rem auto;
 }
 
@@ -2173,8 +2175,8 @@ button {
   }
 
   #close-profile {
-    top: 0;
-    right: -15px;
+    top: -2px;
+    right: -17px;
   }
 
   .grid {
