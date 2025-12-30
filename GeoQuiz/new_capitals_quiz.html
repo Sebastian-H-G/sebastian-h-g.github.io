@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoQuiz - Capital Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .menu-section {
+            display: none;
+        }
+
+        .menu-section.active {
+            display: block;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-full {
+            grid-column: 1 / -1;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .option-btn {
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .option-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .option-btn.correct {
+            border-color: #10b981;
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .option-btn.incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+            color: #7f1d1d;
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .question-text {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .flag-display {
+            font-size: 5em;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .filter-section {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .filter-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .checkbox-label:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #667eea;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .results-section {
+            text-align: center;
+        }
+
+        .results-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .score-text {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #999;
+            font-size: 1.1em;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #7f1d1d;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #fca5a5;
+        }
+
+        .selected-difficulty {
+            border: 2px solid #667eea !important;
+            background: #e0e7ff !important;
+            color: #333 !important;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #6ee7b7;
+        }
+
+        .info-text {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .button-grid,
+            .option-grid,
+            .filter-options {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-full {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🌍 GeoQuiz</h1>
+
+        <!-- Main Menu -->
+        <div id="mainMenu" class="menu-section active">
+            <div class="button-grid">
+                <button class="btn-primary" onclick="showQuizSetup()">📚 Start Quiz</button>
+                <button class="btn-primary" onclick="showRevisionMode()">🔄 Revision Mode</button>
+                <button class="btn-secondary btn-full" onclick="showAbout()">ℹ️ About</button>
+            </div>
+        </div>
+
+        <!-- Quiz Setup -->
+        <div id="quizSetup" class="menu-section">
+            <h2 style="margin-bottom: 20px; color: #333;">Select Quiz Mode</h2>
+            <div class="button-grid">
+                <button class="btn-primary" onclick="selectMode('capital-selection')">🏛️ Country → Capital</button>
+                <button class="btn-primary" onclick="selectMode('country-selection')">🏙️ Capital → Country</button>
+                <button class="btn-primary" onclick="selectMode('flag-to-capital')">🚩 Flag → Capital</button>
+                <button class="btn-primary" onclick="selectMode('capital-to-flag')">🏛️ Capital → Flag</button>
+            </div>
+            <button class="btn-secondary btn-full" onclick="showMainMenu()">← Back</button>
+        </div>
+
+        <!-- Difficulty & Filter Selection -->
+        <div id="difficultySelection" class="menu-section">
+            <h2 style="margin-bottom: 20px; color: #333;">Select Difficulty</h2>
+            <div class="button-grid">
+                <button class="btn-primary" onclick="selectDifficulty('easy')">⭐ Easy</button>
+                <button class="btn-primary" onclick="selectDifficulty('medium')">⭐⭐ Medium</button>
+                <button class="btn-primary" onclick="selectDifficulty('hard')">⭐⭐⭐ Hard</button>
+                <button class="btn-primary" onclick="selectDifficulty('extreme')">⭐⭐⭐⭐ Extreme</button>
+            </div>
+            <!-- Add this inside the #difficultySelection div, just above the filter-section -->
+            <div id="questionCountSection" style="margin-bottom: 20px;">
+                <label for="questionCount" class="filter-label">Number of Questions</label>
+                <select id="questionCount" style="padding: 8px 12px; border-radius: 6px; font-size: 1em;">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="all">All</option>
+                </select>
+            </div>
+            <div class="filter-section">
+                <label class="filter-label">Filter by Continent (Optional)</label>
+                <div class="filter-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="Africa" onchange="updateContinentFilter()"> Africa
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="Asia" onchange="updateContinentFilter()"> Asia
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="Europe" onchange="updateContinentFilter()"> Europe
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="North America" onchange="updateContinentFilter()"> North America
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="South America" onchange="updateContinentFilter()"> South America
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="Oceania" onchange="updateContinentFilter()"> Oceania
+                    </label>
+                </div>
+            </div>
+
+            <div class="button-grid" style="margin-top: 30px;">
+                <button class="btn-success btn-full" onclick="startQuiz()">Start Quiz</button>
+            </div>
+            <button class="btn-secondary btn-full" onclick="showQuizSetup()">← Back</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quizScreen" class="menu-section">
+            <div class="score-display">
+                <span id="currentScore">0</span> / <span id="totalQuestions">10</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
+            </div>
+
+            <div id="questionContainer">
+                <div class="question-text" id="questionText"></div>
+                <div class="flag-display" id="flagDisplay"></div>
+                <div class="option-grid" id="optionsContainer"></div>
+            </div>
+
+            <div id="feedbackMessage"></div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="menu-section">
+            <div class="results-section">
+                <h2>Quiz Complete!</h2>
+                <div class="score-text" id="finalScore"></div>
+                <button class="btn-primary" onclick="showMainMenu()">🏠 Back to Menu</button>
+                <button class="btn-secondary" onclick="startNewQuiz()">🔄 Take Another Quiz</button>
+            </div>
+        </div>
+
+        <!-- Revision Mode Screen -->
+        <div id="revisionScreen" class="menu-section">
+            <div id="revisionContent"></div>
+            <button class="btn-secondary btn-full" style="margin-top: 20px;" onclick="showMainMenu()">← Back</button>
+        </div>
+
+        <!-- About Screen -->
+        <div id="aboutScreen" class="menu-section">
+            <h2 style="margin-bottom: 20px; color: #333;">About GeoQuiz</h2>
+            <p style="line-height: 1.6; color: #666; margin-bottom: 15px;">
+                GeoQuiz is an interactive platform to test and improve your knowledge of world capitals, countries, and
+                flags.
+            </p>
+            <p style="line-height: 1.6; color: #666; margin-bottom: 15px;">
+                <strong>Features:</strong>
+            </p>
+            <ul style="color: #666; margin-left: 20px; margin-bottom: 20px; line-height: 1.8;">
+                <li>4 different quiz modes</li>
+                <li>4 difficulty levels</li>
+                <li>Continent-based filtering</li>
+                <li>Revision mode for incorrect answers</li>
+            </ul>
+            <button class="btn-secondary btn-full" onclick="showMainMenu()">← Back</button>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+    <script>
+
+        // SUPABASE CONFIGURATION
+
+        const SUPABASE_URL = 'https://pzyzdmndotuvbvfhxwad.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA';
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function saveIncorrectAnswerToSupabase(item) {
+            let user_id = null;
+            // Try to get user if logged in (optional, safe for anonymous)
+            if (sb && sb.auth) {
+                try {
+                    const { data: { user } } = await sb.auth.getUser();
+                    if (user) user_id = user.id;
+                } catch (e) { }
+            }
+            // Insert into Supabase
+            await sb.from('capital_quiz_incorrect_answers').insert([{
+                user_id,
+                mode: item.mode,
+                difficulty: item.difficulty,
+                capital: item.capital,
+                country: item.country,
+                continent: item.continent || null,
+                timestamp: item.timestamp || new Date().toISOString()
+            }]);
+        }
+
+
+
+
+
+
+
+        // ============ DATA STRUCTURE ============
+        const capitalDatabase = [
+            // AFRICA
+            { capital: 'Cairo', country: 'Egypt', continent: 'Africa', flag: '🇪🇬', difficulty: 'easy' },
+            { capital: 'Abuja', country: 'Nigeria', continent: 'Africa', flag: '🇳🇬', difficulty: 'easy' },
+            { capital: 'Nairobi', country: 'Kenya', continent: 'Africa', flag: '🇰🇪', difficulty: 'medium' },
+            { capital: 'Pretoria', country: 'South Africa', continent: 'Africa', flag: '🇿🇦', difficulty: 'easy' },
+            { capital: 'Rabat', country: 'Morocco', continent: 'Africa', flag: '🇲🇦', difficulty: 'medium' },
+            { capital: 'Dakar', country: 'Senegal', continent: 'Africa', flag: '🇸🇳', difficulty: 'hard' },
+            { capital: 'Accra', country: 'Ghana', continent: 'Africa', flag: '🇬🇭', difficulty: 'medium' },
+            { capital: 'Kinshasa', country: 'Democratic Republic of the Congo', continent: 'Africa', flag: '🇨🇩', difficulty: 'hard' },
+            { capital: 'Addis Ababa', country: 'Ethiopia', continent: 'Africa', flag: '🇪🇹', difficulty: 'medium' },
+            { capital: 'Tunis', country: 'Tunisia', continent: 'Africa', flag: '🇹🇳', difficulty: 'hard' },
+
+            { capital: 'Algiers', country: 'Algeria', continent: 'Africa', flag: '🇩🇿', difficulty: 'easy' },
+            { capital: 'Tripoli', country: 'Libya', continent: 'Africa', flag: '🇱🇾', difficulty: 'medium' },
+            { capital: 'Khartoum', country: 'Sudan', continent: 'Africa', flag: '🇸🇩', difficulty: 'hard' },
+            { capital: 'Maputo', country: 'Mozambique', continent: 'Africa', flag: '🇲🇿', difficulty: 'hard' },
+            { capital: 'Luanda', country: 'Angola', continent: 'Africa', flag: '🇦🇴', difficulty: 'medium' },
+            { capital: 'Kigali', country: 'Rwanda', continent: 'Africa', flag: '🇷🇼', difficulty: 'hard' },
+            { capital: 'Bujumbura', country: 'Burundi', continent: 'Africa', flag: '🇧🇮', difficulty: 'hard' },
+            { capital: 'Harare', country: 'Zimbabwe', continent: 'Africa', flag: '🇿🇼', difficulty: 'medium' },
+            { capital: 'Lusaka', country: 'Zambia', continent: 'Africa', flag: '🇿🇲', difficulty: 'medium' },
+            { capital: 'Gaborone', country: 'Botswana', continent: 'Africa', flag: '🇧🇼', difficulty: 'hard' },
+            { capital: 'Windhoek', country: 'Namibia', continent: 'Africa', flag: '🇳🇦', difficulty: 'hard' },
+            { capital: 'Malabo', country: 'Equatorial Guinea', continent: 'Africa', flag: '🇬🇶', difficulty: 'hard' },
+            { capital: 'Brazzaville', country: 'Republic of the Congo', continent: 'Africa', flag: '🇨🇬', difficulty: 'hard' },
+            { capital: 'Freetown', country: 'Sierra Leone', continent: 'Africa', flag: '🇸🇱', difficulty: 'hard' },
+            { capital: 'Monrovia', country: 'Liberia', continent: 'Africa', flag: '🇱🇷', difficulty: 'hard' },
+            { capital: 'Bamako', country: 'Mali', continent: 'Africa', flag: '🇲🇱', difficulty: 'hard' },
+            { capital: 'Niamey', country: 'Niger', continent: 'Africa', flag: '🇳🇪', difficulty: 'hard' },
+            { capital: 'Ouagadougou', country: 'Burkina Faso', continent: 'Africa', flag: '🇧🇫', difficulty: 'hard' },
+            { capital: 'Dakar', country: 'Senegal', continent: 'Africa', flag: '🇸🇳', difficulty: 'hard' },
+            { capital: 'Conakry', country: 'Guinea', continent: 'Africa', flag: '🇬🇳', difficulty: 'hard' },
+            { capital: 'Bissau', country: 'Guinea-Bissau', continent: 'Africa', flag: '🇬🇼', difficulty: 'hard' },
+            { capital: 'Praia', country: 'Cape Verde', continent: 'Africa', flag: '🇨🇻', difficulty: 'hard' },
+            { capital: 'Moroni', country: 'Comoros', continent: 'Africa', flag: '🇰🇲', difficulty: 'hard' },
+            { capital: 'Antananarivo', country: 'Madagascar', continent: 'Africa', flag: '🇲🇬', difficulty: 'medium' },
+            { capital: 'Port Louis', country: 'Mauritius', continent: 'Africa', flag: '🇲🇺', difficulty: 'hard' },
+            { capital: 'Victoria', country: 'Seychelles', continent: 'Africa', flag: '🇸🇨', difficulty: 'hard' },
+            { capital: 'Tripoli', country: 'Libya', continent: 'Africa', flag: '🇱🇾', difficulty: 'medium' },
+            { capital: 'Asmara', country: 'Eritrea', continent: 'Africa', flag: '🇪🇷', difficulty: 'hard' },
+            { capital: 'Djibouti', country: 'Djibouti', continent: 'Africa', flag: '🇩🇯', difficulty: 'hard' },
+            { capital: 'São Tomé', country: 'Sao Tome and Principe', continent: 'Africa', flag: '🇸🇹', difficulty: 'hard' },
+            { capital: 'Bangui', country: 'Central African Republic', continent: 'Africa', flag: '🇨🇫', difficulty: 'hard' },
+            { capital: 'N’Djamena', country: 'Chad', continent: 'Africa', flag: '🇹🇩', difficulty: 'hard' },
+            { capital: 'Maseru', country: 'Lesotho', continent: 'Africa', flag: '🇱🇸', difficulty: 'hard' },
+            { capital: 'Mbabane', country: 'Eswatini', continent: 'Africa', flag: '🇸🇿', difficulty: 'hard' },
+            { capital: 'Juba', country: 'South Sudan', continent: 'Africa', flag: '🇸🇸', difficulty: 'hard' },
+            { capital: 'Mogadishu', country: 'Somalia', continent: 'Africa', flag: '🇸🇴', difficulty: 'hard' },
+            { capital: 'Yaoundé', country: 'Cameroon', continent: 'Africa', flag: '🇨🇲', difficulty: 'hard' },
+            { capital: 'Porto-Novo', country: 'Benin', continent: 'Africa', flag: '🇧🇯', difficulty: 'hard' },
+            { capital: 'Lomé', country: 'Togo', continent: 'Africa', flag: '🇹🇬', difficulty: 'hard' },
+            { capital: 'Banjul', country: 'Gambia', continent: 'Africa', flag: '🇬🇲', difficulty: 'hard' },
+            { capital: 'Yamoussoukro', country: 'Ivory Coast', continent: 'Africa', flag: '🇨🇮', difficulty: 'hard' },
+            { capital: 'Libreville', country: 'Gabon', continent: 'Africa', flag: '🇬🇦', difficulty: 'hard' },
+            { capital: 'Lilongwe', country: 'Malawi', continent: 'Africa', flag: '🇲🇼', difficulty: 'hard' },
+            { capital: 'Nouakchott', country: 'Mauritania', continent: 'Africa', flag: '🇲🇷', difficulty: 'hard' },
+
+
+
+            // ASIA
+            { capital: 'Beijing', country: 'China', continent: 'Asia', flag: '🇨🇳', difficulty: 'easy' },
+            { capital: 'Tokyo', country: 'Japan', continent: 'Asia', flag: '🇯🇵', difficulty: 'easy' },
+            { capital: 'Bangkok', country: 'Thailand', continent: 'Asia', flag: '🇹🇭', difficulty: 'medium' },
+            { capital: 'New Delhi', country: 'India', continent: 'Asia', flag: '🇮🇳', difficulty: 'easy' },
+            { capital: 'Seoul', country: 'South Korea', continent: 'Asia', flag: '🇰🇷', difficulty: 'easy' },
+            { capital: 'Singapore', country: 'Singapore', continent: 'Asia', flag: '🇸🇬', difficulty: 'medium' },
+            { capital: 'Jakarta', country: 'Indonesia', continent: 'Asia', flag: '🇮🇩', difficulty: 'medium' },
+            { capital: 'Manila', country: 'Philippines', continent: 'Asia', flag: '🇵🇭', difficulty: 'medium' },
+            { capital: 'Hanoi', country: 'Vietnam', continent: 'Asia', flag: '🇻🇳', difficulty: 'medium' },
+            { capital: 'Kuala Lumpur', country: 'Malaysia', continent: 'Asia', flag: '🇲🇾', difficulty: 'medium' },
+            { capital: 'Abu Dhabi', country: 'United Arab Emirates', continent: 'Asia', flag: '🇦🇪', difficulty: 'easy' },
+            { capital: 'Islamabad', country: 'Pakistan', continent: 'Asia', flag: '🇵🇰', difficulty: 'hard' },
+            { capital: 'Dhaka', country: 'Bangladesh', continent: 'Asia', flag: '🇧🇩', difficulty: 'hard' },
+            { capital: 'Colombo', country: 'Sri Lanka', continent: 'Asia', flag: '🇱🇰', difficulty: 'hard' },
+            { capital: 'Riyadh', country: 'Saudi Arabia', continent: 'Asia', flag: '🇸🇦', difficulty: 'medium' },
+            { capital: 'Baghdad', country: 'Iraq', continent: 'Asia', flag: '🇮🇶', difficulty: 'hard' },
+            { capital: 'Tehran', country: 'Iran', continent: 'Asia', flag: '🇮🇷', difficulty: 'medium' },
+            { capital: 'Damascus', country: 'Syria', continent: 'Asia', flag: '🇸🇾', difficulty: 'hard' },
+            { capital: 'Amman', country: 'Jordan', continent: 'Asia', flag: '🇯🇴', difficulty: 'hard' },
+            { capital: 'Beirut', country: 'Lebanon', continent: 'Asia', flag: '🇱🇧', difficulty: 'hard' },
+            { capital: 'Kuwait City', country: 'Kuwait', continent: 'Asia', flag: '🇰🇼', difficulty: 'hard' },
+            { capital: 'Doha', country: 'Qatar', continent: 'Asia', flag: '🇶🇦', difficulty: 'medium' },
+            { capital: 'Muscat', country: 'Oman', continent: 'Asia', flag: '🇴🇲', difficulty: 'medium' },
+            { capital: 'Manama', country: 'Bahrain', continent: 'Asia', flag: '🇧🇭', difficulty: 'hard' },
+            { capital: 'Yerevan', country: 'Armenia', continent: 'Asia', flag: '🇦🇲', difficulty: 'hard' },
+            { capital: 'Baku', country: 'Azerbaijan', continent: 'Asia', flag: '🇦🇿', difficulty: 'hard' },
+            { capital: 'Tbilisi', country: 'Georgia', continent: 'Asia', flag: '🇬🇪', difficulty: 'hard' },
+            { capital: 'Astana (Nur-Sultan)', country: 'Kazakhstan', continent: 'Asia', flag: '🇰🇿', difficulty: 'medium' },
+            { capital: 'Bishkek', country: 'Kyrgyzstan', continent: 'Asia', flag: '🇰🇬', difficulty: 'hard' },
+            { capital: 'Dushanbe', country: 'Tajikistan', continent: 'Asia', flag: '🇹🇯', difficulty: 'hard' },
+            { capital: 'Ashgabat', country: 'Turkmenistan', continent: 'Asia', flag: '🇹🇲', difficulty: 'hard' },
+            { capital: 'Ulaanbaatar', country: 'Mongolia', continent: 'Asia', flag: '🇲🇳', difficulty: 'medium' },
+            { capital: 'Malé', country: 'Maldives', continent: 'Asia', flag: '🇲🇻', difficulty: 'hard' },
+            { capital: 'Thimphu', country: 'Bhutan', continent: 'Asia', flag: '🇧🇹', difficulty: 'hard' },
+            { capital: 'Kathmandu', country: 'Nepal', continent: 'Asia', flag: '🇳🇵', difficulty: 'medium' },
+            { capital: 'Yogyakarta', country: 'Timor-Leste', continent: 'Asia', flag: '🇹🇱', difficulty: 'hard' },
+            { capital: 'Singapore', country: 'Singapore', continent: 'Asia', flag: '🇸🇬', difficulty: 'medium' },
+            { capital: 'Bandar Seri Begawan', country: 'Brunei', continent: 'Asia', flag: '🇧🇳', difficulty: 'hard' },
+            { capital: 'Pyongyang', country: 'North Korea', continent: 'Asia', flag: '🇰🇵', difficulty: 'hard' },
+            { capital: 'Sana’a', country: 'Yemen', continent: 'Asia', flag: '🇾🇪', difficulty: 'hard' },
+            { capital: 'Jerusalem', country: 'Israel', continent: 'Asia', flag: '🇮🇱', difficulty: 'medium' },
+            { capital: 'Ramallah', country: 'Palestine', continent: 'Asia', flag: '🇵🇸', difficulty: 'hard' },
+            { capital: 'Kabul', country: 'Afghanistan', continent: 'Asia', flag: '🇦🇫', difficulty: 'hard' },
+
+
+            // EUROPE
+            { capital: 'London', country: 'United Kingdom', continent: 'Europe', flag: '🇬🇧', difficulty: 'easy' },
+            { capital: 'Paris', country: 'France', continent: 'Europe', flag: '🇫🇷', difficulty: 'easy' },
+            { capital: 'Berlin', country: 'Germany', continent: 'Europe', flag: '🇩🇪', difficulty: 'easy' },
+            { capital: 'Rome', country: 'Italy', continent: 'Europe', flag: '🇮🇹', difficulty: 'easy' },
+            { capital: 'Madrid', country: 'Spain', continent: 'Europe', flag: '🇪🇸', difficulty: 'easy' },
+            { capital: 'Moscow', country: 'Russia', continent: 'Europe', flag: '🇷🇺', difficulty: 'easy' },
+            { capital: 'Vienna', country: 'Austria', continent: 'Europe', flag: '🇦🇹', difficulty: 'easy' },
+            { capital: 'Lisbon', country: 'Portugal', continent: 'Europe', flag: '🇵🇹', difficulty: 'easy' },
+            { capital: 'Athens', country: 'Greece', continent: 'Europe', flag: '🇬🇷', difficulty: 'easy' },
+
+            { capital: 'Brussels', country: 'Belgium', continent: 'Europe', flag: '🇧🇪', difficulty: 'medium' },
+            { capital: 'Amsterdam', country: 'Netherlands', continent: 'Europe', flag: '🇳🇱', difficulty: 'medium' },
+            { capital: 'Bern', country: 'Switzerland', continent: 'Europe', flag: '🇨🇭', difficulty: 'medium' },
+            { capital: 'Stockholm', country: 'Sweden', continent: 'Europe', flag: '🇸🇪', difficulty: 'medium' },
+            { capital: 'Oslo', country: 'Norway', continent: 'Europe', flag: '🇳🇴', difficulty: 'medium' },
+            { capital: 'Copenhagen', country: 'Denmark', continent: 'Europe', flag: '🇩🇰', difficulty: 'medium' },
+            { capital: 'Helsinki', country: 'Finland', continent: 'Europe', flag: '🇫🇮', difficulty: 'medium' },
+            { capital: 'Dublin', country: 'Ireland', continent: 'Europe', flag: '🇮🇪', difficulty: 'medium' },
+            { capital: 'Prague', country: 'Czech Republic', continent: 'Europe', flag: '🇨🇿', difficulty: 'medium' },
+            { capital: 'Warsaw', country: 'Poland', continent: 'Europe', flag: '🇵🇱', difficulty: 'medium' },
+            { capital: 'Budapest', country: 'Hungary', continent: 'Europe', flag: '🇭🇺', difficulty: 'medium' },
+            { capital: 'Nicosia', country: 'Cyprus', continent: 'Europe', flag: '🇨🇾', difficulty: 'medium' },
+
+
+            { capital: 'Bratislava', country: 'Slovakia', continent: 'Europe', flag: '🇸🇰', difficulty: 'hard' },
+            { capital: 'Ljubljana', country: 'Slovenia', continent: 'Europe', flag: '🇸🇮', difficulty: 'hard' },
+            { capital: 'Zagreb', country: 'Croatia', continent: 'Europe', flag: '🇭🇷', difficulty: 'hard' },
+            { capital: 'Sarajevo', country: 'Bosnia and Herzegovina', continent: 'Europe', flag: '🇧🇦', difficulty: 'hard' },
+            { capital: 'Belgrade', country: 'Serbia', continent: 'Europe', flag: '🇷🇸', difficulty: 'hard' },
+            { capital: 'Podgorica', country: 'Montenegro', continent: 'Europe', flag: '🇲🇪', difficulty: 'hard' },
+            { capital: 'Skopje', country: 'North Macedonia', continent: 'Europe', flag: '🇲🇰', difficulty: 'hard' },
+            { capital: 'Tirana', country: 'Albania', continent: 'Europe', flag: '🇦🇱', difficulty: 'hard' },
+            { capital: 'Sofia', country: 'Bulgaria', continent: 'Europe', flag: '🇧🇬', difficulty: 'hard' },
+            { capital: 'Bucharest', country: 'Romania', continent: 'Europe', flag: '🇷🇴', difficulty: 'hard' },
+            { capital: 'Chisinau', country: 'Moldova', continent: 'Europe', flag: '🇲🇩', difficulty: 'hard' },
+            { capital: 'Kyiv', country: 'Ukraine', continent: 'Europe', flag: '🇺🇦', difficulty: 'hard' },
+            { capital: 'Minsk', country: 'Belarus', continent: 'Europe', flag: '🇧🇾', difficulty: 'hard' },
+            { capital: 'Vilnius', country: 'Lithuania', continent: 'Europe', flag: '🇱🇹', difficulty: 'hard' },
+            { capital: 'Riga', country: 'Latvia', continent: 'Europe', flag: '🇱🇻', difficulty: 'hard' },
+            { capital: 'Tallinn', country: 'Estonia', continent: 'Europe', flag: '🇪🇪', difficulty: 'hard' },
+            { capital: 'Reykjavik', country: 'Iceland', continent: 'Europe', flag: '🇮🇸', difficulty: 'hard' },
+            { capital: 'Luxembourg', country: 'Luxembourg', continent: 'Europe', flag: '🇱🇺', difficulty: 'hard' },
+            { capital: 'Monaco', country: 'Monaco', continent: 'Europe', flag: '🇲🇨', difficulty: 'hard' },
+            { capital: 'Vaduz', country: 'Liechtenstein', continent: 'Europe', flag: '🇱🇮', difficulty: 'hard' },
+            { capital: 'San Marino', country: 'San Marino', continent: 'Europe', flag: '🇸🇲', difficulty: 'hard' },
+            { capital: 'Andorra la Vella', country: 'Andorra', continent: 'Europe', flag: '🇦🇩', difficulty: 'hard' },
+            { capital: 'Valletta', country: 'Malta', continent: 'Europe', flag: '🇲🇹', difficulty: 'hard' },
+            { capital: 'Vatican City', country: 'Vatican City', continent: 'Europe', flag: '🇻🇦', difficulty: 'hard' },
+            { capital: 'Pristina', country: 'Kosovo', continent: 'Europe', flag: '🇽🇰', difficulty: 'hard' },
+            // NORTH AMERICA
+            { capital: 'Washington, D.C.', country: 'United States', continent: 'North America', flag: '🇺🇸', difficulty: 'easy' },
+            { capital: 'Ottawa', country: 'Canada', continent: 'North America', flag: '🇨🇦', difficulty: 'medium' },
+            { capital: 'Mexico City', country: 'Mexico', continent: 'North America', flag: '🇲🇽', difficulty: 'easy' },
+            { capital: 'Havana', country: 'Cuba', continent: 'North America', flag: '🇨🇺', difficulty: 'medium' },
+            { capital: 'Kingston', country: 'Jamaica', continent: 'North America', flag: '🇯🇲', difficulty: 'hard' },
+            { capital: 'Belmopan', country: 'Belize', continent: 'North America', flag: '🇧🇿', difficulty: 'hard' },
+            { capital: 'San Salvador', country: 'El Salvador', continent: 'North America', flag: '🇸🇻', difficulty: 'hard' },
+            { capital: 'Guatemala City', country: 'Guatemala', continent: 'North America', flag: '🇬🇹', difficulty: 'medium' },
+            { capital: 'Tegucigalpa', country: 'Honduras', continent: 'North America', flag: '🇭🇳', difficulty: 'hard' },
+            { capital: 'Managua', country: 'Nicaragua', continent: 'North America', flag: '🇳🇮', difficulty: 'hard' },
+            { capital: 'San José', country: 'Costa Rica', continent: 'North America', flag: '🇨🇷', difficulty: 'medium' },
+            { capital: 'Panama City', country: 'Panama', continent: 'North America', flag: '🇵🇦', difficulty: 'medium' },
+            { capital: 'Haití', country: 'Haiti', continent: 'North America', flag: '🇭🇹', difficulty: 'hard' },
+            { capital: 'Port-au-Prince', country: 'Haiti', continent: 'North America', flag: '🇭🇹', difficulty: 'hard' },
+            { capital: 'Nassau', country: 'Bahamas', continent: 'North America', flag: '🇧🇸', difficulty: 'hard' },
+            { capital: 'Bridgetown', country: 'Barbados', continent: 'North America', flag: '🇧🇧', difficulty: 'hard' },
+            { capital: 'Roseau', country: 'Dominica', continent: 'North America', flag: '🇩🇲', difficulty: 'hard' },
+            { capital: 'St. George\'s', country: 'Grenada', continent: 'North America', flag: '🇬🇩', difficulty: 'hard' },
+            { capital: 'St. John\'s', country: 'Antigua and Barbuda', continent: 'North America', flag: '🇦🇬', difficulty: 'hard' },
+            { capital: 'Basseterre', country: 'Saint Kitts and Nevis', continent: 'North America', flag: '🇰🇳', difficulty: 'hard' },
+            { capital: 'Kingstown', country: 'Saint Vincent and the Grenadines', continent: 'North America', flag: '🇻🇨', difficulty: 'hard' },
+            { capital: 'Castries', country: 'Saint Lucia', continent: 'North America', flag: '🇱🇨', difficulty: 'hard' },
+            { capital: 'Belize City', country: 'Belize', continent: 'North America', flag: '🇧🇿', difficulty: 'hard' },
+            { capital: 'Havana', country: 'Cuba', continent: 'North America', flag: '🇨🇺', difficulty: 'medium' },
+            { capital: 'San Juan', country: 'Puerto Rico', continent: 'North America', flag: '🇵🇷', difficulty: 'medium' },
+            { capital: 'Santo Domingo', country: 'Dominican Republic', continent: 'North America', flag: '🇩🇴', difficulty: 'medium' },
+            { capital: 'Port of Spain', country: 'Trinidad and Tobago', continent: 'North America', flag: '🇹🇹', difficulty: 'medium' },
+
+            // SOUTH AMERICA
+            { capital: 'Brasília', country: 'Brazil', continent: 'South America', flag: '🇧🇷', difficulty: 'hard' },
+            { capital: 'Buenos Aires', country: 'Argentina', continent: 'South America', flag: '🇦🇷', difficulty: 'easy' },
+            { capital: 'Lima', country: 'Peru', continent: 'South America', flag: '🇵🇪', difficulty: 'medium' },
+            { capital: 'Bogotá', country: 'Colombia', continent: 'South America', flag: '🇨🇴', difficulty: 'medium' },
+            { capital: 'Santiago', country: 'Chile', continent: 'South America', flag: '🇨🇱', difficulty: 'medium' },
+            { capital: 'Caracas', country: 'Venezuela', continent: 'South America', flag: '🇻🇪', difficulty: 'hard' },
+            { capital: 'La Paz', country: 'Bolivia', continent: 'South America', flag: '🇧🇴', difficulty: 'hard' },
+            { capital: 'Montevideo', country: 'Uruguay', continent: 'South America', flag: '🇺🇾', difficulty: 'medium' },
+            { capital: 'Asunción', country: 'Paraguay', continent: 'South America', flag: '🇵🇾', difficulty: 'hard' },
+            { capital: 'Georgetown', country: 'Guyana', continent: 'South America', flag: '🇬🇾', difficulty: 'hard' },
+            { capital: 'Paramaribo', country: 'Suriname', continent: 'South America', flag: '🇸🇷', difficulty: 'hard' },
+            { capital: 'Cayenne', country: 'French Guiana', continent: 'South America', flag: '🇫🇷', difficulty: 'hard' },
+            // OCEANIA
+            { capital: 'Canberra', country: 'Australia', continent: 'Oceania', flag: '🇦🇺', difficulty: 'easy' },
+            { capital: 'Wellington', country: 'New Zealand', continent: 'Oceania', flag: '🇳🇿', difficulty: 'medium' },
+            { capital: 'Suva', country: 'Fiji', continent: 'Oceania', flag: '🇫🇯', difficulty: 'hard' },
+            { capital: 'Port Moresby', country: 'Papua New Guinea', continent: 'Oceania', flag: '🇵🇬', difficulty: 'medium' },
+            { capital: 'Honiara', country: 'Solomon Islands', continent: 'Oceania', flag: '🇸🇧', difficulty: 'hard' },
+            { capital: 'Ngerulmud', country: 'Palau', continent: 'Oceania', flag: '🇵🇼', difficulty: 'hard' },
+            { capital: 'Majuro', country: 'Marshall Islands', continent: 'Oceania', flag: '🇲🇭', difficulty: 'hard' },
+            { capital: 'Tarawa', country: 'Kiribati', continent: 'Oceania', flag: '🇰🇮', difficulty: 'hard' },
+            { capital: 'Apia', country: 'Samoa', continent: 'Oceania', flag: '🇼🇸', difficulty: 'hard' },
+            { capital: 'Nukuʻalofa', country: 'Tonga', continent: 'Oceania', flag: '🇹🇴', difficulty: 'hard' },
+            { capital: 'Yaren', country: 'Nauru', continent: 'Oceania', flag: '🇳🇷', difficulty: 'hard' },
+            { capital: 'Funafuti', country: 'Tuvalu', continent: 'Oceania', flag: '🇹🇻', difficulty: 'hard' },
+            { capital: 'Palikir', country: 'Federated States of Micronesia', continent: 'Oceania', flag: '🇫🇲', difficulty: 'hard' },
+            { capital: 'Nukuʻalofa', country: 'Tonga', continent: 'Oceania', flag: '🇹🇴', difficulty: 'hard' },
+        ];
+
+        // ============ STATE MANAGEMENT ============
+        let gameState = {
+            mode: null,
+            difficulty: null,
+            continentFilter: [],
+            currentQuestion: 0,
+            score: 0,
+            totalQuestions: 10,
+            questions: [],
+            incorrectAnswers: [],
+            isQuizRunning: false
+        };
+
+        // ============ MENU NAVIGATION ============
+        // ...existing code...
+        function showMenu(menuId) {
+            document.querySelectorAll('.menu-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(menuId).classList.add('active');
+        }
+        // ...existing code...
+
+        function showMainMenu() {
+            showMenu('mainMenu');
+            resetGameState();
+        }
+
+        function showQuizSetup() {
+            showMenu('quizSetup');
+        }
+
+        function showRevisionMode() {
+            showMenu('revisionScreen');
+            loadRevisionMode();
+        }
+
+        function showAbout() {
+            showMenu('aboutScreen');
+        }
+
+        function selectMode(mode) {
+            gameState.mode = mode;
+            gameState.difficulty = null; // Reset difficulty
+            // Remove selected-difficulty class from all buttons
+            document.querySelectorAll('#difficultySelection .btn-primary').forEach(btn => {
+                btn.classList.remove('selected-difficulty');
+            });
+            // Disable Start Quiz button
+
+            showMenu('difficultySelection');
+        }
+
+        function updateContinentFilter() {
+            const checkboxes = document.querySelectorAll('.filter-options input[type="checkbox"]');
+            gameState.continentFilter = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            updateQuestionCountVisibility();
+        }
+
+        function updateQuestionCountVisibility() {
+            const questionCountSection = document.getElementById('questionCountSection');
+            if (!questionCountSection) return;
+            // Always show the selector, never reset the value
+            questionCountSection.style.display = '';
+        }
+
+        function selectDifficulty(difficulty) {
+            gameState.difficulty = difficulty;
+            // Visual feedback for selected button
+            document.querySelectorAll('#difficultySelection .btn-primary').forEach(btn => {
+                btn.classList.remove('selected-difficulty');
+            });
+            // Find the button with the correct text and add the class
+            const btns = document.querySelectorAll('#difficultySelection .btn-primary');
+            btns.forEach(btn => {
+                if (
+                    (difficulty === 'easy' && btn.textContent.includes('Easy')) ||
+                    (difficulty === 'medium' && btn.textContent.includes('Medium')) ||
+                    (difficulty === 'hard' && btn.textContent.includes('Hard')) ||
+                    (difficulty === 'extreme' && btn.textContent.includes('Extreme'))
+                ) {
+                    btn.classList.add('selected-difficulty');
+                }
+            });
+            ;
+        }
+
+        // ============ QUIZ GENERATION ============
+        // Update getFilteredCapitals to handle all difficulties
+        function getFilteredCapitals() {
+            let filtered = capitalDatabase;
+
+            if (gameState.difficulty === 'hard' || gameState.difficulty === 'extreme') {
+                filtered = filtered.filter(c => c.difficulty === 'hard');
+            }
+
+            if (gameState.continentFilter.length > 0) {
+                filtered = filtered.filter(c => gameState.continentFilter.includes(c.continent));
+            }
+
+            return filtered;
+        }
+
+        function startQuiz() {
+            // Check if mode and difficulty are selected
+            if (!gameState.mode) {
+                alert('Please select a quiz mode.');
+                return;
+            }
+            if (!gameState.difficulty) {
+                alert('Please select a difficulty first!');
+                const diffSection = document.getElementById('difficultySelection');
+                if (diffSection) diffSection.scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            const filtered = getFilteredCapitals();
+
+            if (filtered.length < 4) {
+                alert('Not enough capitals available for this filter. Please adjust your selection.');
+                return;
+            }
+
+            // --- Handle "All" option ---
+            const questionCountSelect = document.getElementById('questionCount');
+            let totalQuestions;
+            if (questionCountSelect && questionCountSelect.value === "all") {
+                totalQuestions = filtered.length;
+            } else {
+                totalQuestions = parseInt(questionCountSelect.value, 10);
+                if (isNaN(totalQuestions) || totalQuestions > filtered.length) {
+                    totalQuestions = filtered.length;
+                }
+            }
+            gameState.totalQuestions = totalQuestions;
+
+            // --- Update quiz screen display ---
+            document.getElementById('totalQuestions').textContent = gameState.totalQuestions;
+
+            gameState.questions = generateQuestions(filtered, gameState.totalQuestions);
+            gameState.currentQuestion = 0;
+            gameState.score = 0;
+            gameState.isQuizRunning = true;
+
+            showMenu('quizScreen');
+            displayQuestion();
+        }
+
+        function generateQuestions(capitalsPool, count) {
+            const questions = [];
+            const usedIndices = new Set();
+
+            for (let i = 0; i < count; i++) {
+                let correctCapital;
+                let randomIndex;
+
+                do {
+                    randomIndex = Math.floor(Math.random() * capitalsPool.length);
+                } while (usedIndices.has(randomIndex) && usedIndices.size < capitalsPool.length);
+
+                if (usedIndices.size >= capitalsPool.length) break;
+
+                usedIndices.add(randomIndex);
+                correctCapital = capitalsPool[randomIndex];
+
+                const question = generateQuestion(correctCapital, capitalsPool);
+                questions.push(question);
+            }
+
+            return questions;
+        }
+
+        function generateQuestion(correctCapital, capitalsPool) {
+            const modes = {
+                'capital-selection': generateCapitalSelectionQuestion,
+                'country-selection': generateCountrySelectionQuestion,
+                'flag-to-capital': generateFlagToCapitalQuestion,
+                'capital-to-flag': generateCapitalToFlagQuestion
+            };
+
+            return modes[gameState.mode](correctCapital, capitalsPool);
+        }
+
+        function generateCapitalSelectionQuestion(correct, pool) {
+            const options = getIncorrectOptions(correct, pool, 'capital');
+            return {
+                type: 'capital-selection',
+                question: `What is the capital of ${correct.country}?`,
+                correct: correct.capital,
+                correctObj: correct,
+                options: shuffleArray([correct.capital, ...options]),
+                displayElement: correct.country
+            };
+        }
+
+        function generateCountrySelectionQuestion(correct, pool) {
+            const options = getIncorrectOptions(correct, pool, 'country');
+            return {
+                type: 'country-selection',
+                question: `${correct.capital} is the capital of which country?`,
+                correct: correct.country,
+                correctObj: correct,
+                options: shuffleArray([correct.country, ...options]),
+                displayElement: correct.capital
+            };
+        }
+
+        function generateFlagToCapitalQuestion(correct, pool) {
+            const options = getIncorrectOptions(correct, pool, 'capital');
+            return {
+                type: 'flag-to-capital',
+                question: 'What is the capital of this country?',
+                correct: correct.capital,
+                correctObj: correct,
+                options: shuffleArray([correct.capital, ...options]),
+                displayElement: correct.flag
+            };
+        }
+
+        function generateCapitalToFlagQuestion(correct, pool) {
+            const options = getIncorrectOptions(correct, pool, 'country');
+            const flagOptions = [correct.flag, ...options.map(country =>
+                pool.find(c => c.country === country).flag
+            )];
+
+            return {
+                type: 'capital-to-flag',
+                question: `What is the flag of ${correct.country}?`,
+                correct: correct.flag,
+                correctObj: correct,
+                options: shuffleArray(flagOptions),
+                displayElement: correct.capital
+            };
+        }
+
+        function getIncorrectOptions(correct, pool, type) {
+            let candidates;
+
+            if (gameState.difficulty === 'easy' || gameState.difficulty === 'hard') {
+                // Any random valid answers except the correct one
+                candidates = pool.filter(c => c.country !== correct.country);
+            } else if (gameState.difficulty === 'medium' || gameState.difficulty === 'extreme') {
+                // Only from the same continent, except the correct one
+                candidates = pool.filter(
+                    c => c.country !== correct.country && c.continent === correct.continent
+                );
+                // If not enough, fill with others
+                if (candidates.length < 3) {
+                    const additional = pool.filter(c => c.country !== correct.country && c.continent !== correct.continent);
+                    candidates = [...candidates, ...additional];
+                }
+            } else {
+                candidates = pool.filter(c => c.country !== correct.country);
+            }
+
+            const options = [];
+            while (options.length < 3 && candidates.length > 0) {
+                const randomIndex = Math.floor(Math.random() * candidates.length);
+                const option = candidates[randomIndex];
+                const value = type === 'capital' ? option.capital : option.country;
+
+                if (!options.includes(value)) {
+                    options.push(value);
+                }
+                candidates.splice(randomIndex, 1);
+            }
+
+            return options;
+        }
+
+        function shuffleArray(arr) {
+            const shuffled = [...arr];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // ============ QUIZ DISPLAY ============
+        function displayQuestion() {
+            if (gameState.currentQuestion >= gameState.questions.length) {
+                endQuiz();
+                return;
+            }
+
+            const question = gameState.questions[gameState.currentQuestion];
+            const questionText = document.getElementById('questionText');
+            const flagDisplay = document.getElementById('flagDisplay');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+
+            questionText.textContent = question.question;
+            feedbackMessage.innerHTML = '';
+
+            if (question.type.includes('flag')) {
+                flagDisplay.textContent = question.displayElement;
+                flagDisplay.style.display = 'block';
+            } else {
+                flagDisplay.textContent = '';
+                flagDisplay.style.display = 'none';
+            }
+
+            optionsContainer.innerHTML = '';
+            question.options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => answerQuestion(option, question);
+                optionsContainer.appendChild(btn);
+            });
+
+            updateProgress();
+        }
+
+        function answerQuestion(selected, question) {
+            const isCorrect = selected === question.correct;
+            const buttons = document.querySelectorAll('.option-btn');
+
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === question.correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === selected && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            if (isCorrect) {
+                gameState.score++;
+                feedbackMessage.innerHTML = '<div class="success-message">✓ Correct!</div>';
+            } else {
+                const incorrectItem = {
+                    mode: gameState.mode,
+                    difficulty: gameState.difficulty,
+                    capital: question.correctObj.capital,
+                    country: question.correctObj.country,
+                    continent: question.correctObj.continent, // add this if available
+                    timestamp: new Date().toISOString()
+                };
+                gameState.incorrectAnswers.push(incorrectItem);
+                saveIncorrectAnswerToSupabase(incorrectItem); // <-- Save to Supabase
+                feedbackMessage.innerHTML = `<div class="error-message">✗ Incorrect! The correct answer is ${question.correct}</div>`;
+            }
+
+            document.getElementById('currentScore').textContent = gameState.score;
+            setTimeout(() => {
+                gameState.currentQuestion++;
+                displayQuestion();
+            }, 2000);
+        }
+
+        function updateProgress() {
+            const progress = ((gameState.currentQuestion) / gameState.totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // ============ QUIZ END ============
+        function endQuiz() {
+            const percentage = (gameState.score / gameState.totalQuestions) * 100;
+            let message = '';
+
+            if (percentage === 100) message = '🎉 Perfect Score!';
+            else if (percentage >= 80) message = '🌟 Excellent!';
+            else if (percentage >= 60) message = '👍 Good Job!';
+            else if (percentage >= 40) message = '💪 Keep Practicing!';
+            else message = '📚 Keep Learning!';
+
+            document.getElementById('finalScore').innerHTML =
+                `${message}<br><strong>${gameState.score}/${gameState.totalQuestions}</strong> (${percentage.toFixed(0)}%)`;
+
+            gameState.isQuizRunning = false;
+            showMenu('resultsScreen');
+        }
+
+        function startNewQuiz() {
+            showQuizSetup();
+        }
+
+        // ============ REVISION MODE ============
+        function loadRevisionMode() {
+            const revisionContent = document.getElementById('revisionContent');
+
+            if (gameState.incorrectAnswers.length === 0) {
+                revisionContent.innerHTML = '<div class="info-text">No incorrect answers yet. Great job! 🎉</div>';
+                return;
+            }
+
+            let html = `<h2 style="color: #333; margin-bottom: 20px;">Revision Mode</h2>
+                        <p style="color: #666; margin-bottom: 15px;">
+                            You have <strong>${gameState.incorrectAnswers.length}</strong> incorrect answer(s) to review.
+                        </p>`;
+
+            gameState.incorrectAnswers.forEach((item, index) => {
+                html += `
+                    <div style="background: #f0f0f0; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <div style="font-weight: 600; color: #333; margin-bottom: 5px;">
+                            ${index + 1}. ${item.capital}, ${item.country}
+                        </div>
+                        <div style="font-size: 0.9em; color: #666;">
+                            Mode: ${item.mode.replace(/-/g, ' ')} | Difficulty: ${item.difficulty}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `<button class="btn-success btn-full" style="margin-top: 20px;" onclick="startRevisionQuiz()">
+                        Start Revision Quiz
+                     </button>`;
+
+            revisionContent.innerHTML = html;
+        }
+
+        function startRevisionQuiz() {
+            gameState.questions = gameState.incorrectAnswers.map(item => {
+                const capital = capitalDatabase.find(c => c.capital === item.capital);
+                return generateQuestion(capital, capitalDatabase);
+            });
+
+            gameState.currentQuestion = 0;
+            gameState.score = 0;
+            gameState.totalQuestions = gameState.questions.length;
+            gameState.isQuizRunning = true;
+            gameState.incorrectAnswers = [];
+
+            showMenu('quizScreen');
+            displayQuestion();
+        }
+
+        // ============ UTILITIES ============
+        function resetGameState() {
+            gameState = {
+                mode: null,
+                difficulty: null,
+                continentFilter: [],
+                currentQuestion: 0,
+                score: 0,
+                totalQuestions: 10,
+                questions: [],
+                incorrectAnswers: gameState.incorrectAnswers,
+                isQuizRunning: false
+            };
+        }
+        // Disable Start Quiz button by default, enable only after difficulty is selected
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('totalQuestions').textContent = gameState.totalQuestions;
+
+            // Question count selector logic
+            const questionCountSection = document.getElementById('questionCountSection');
+            const questionCountSelect = document.getElementById('questionCount');
+            if (questionCountSelect) {
+                questionCountSelect.value = "10";
+                questionCountSelect.addEventListener('change', function () {
+                    gameState.totalQuestions = parseInt(this.value, 10);
+                    document.getElementById('totalQuestions').textContent = gameState.totalQuestions;
+                });
+            }
+            // Initial show/hide
+            updateQuestionCountVisibility();
+        });
+    </script>
+</body>
+
+</html>
