@@ -1055,38 +1055,93 @@
         }
 
         // ============ REVISION MODE ============
-        function loadRevisionMode() {
-            const revisionContent = document.getElementById('revisionContent');
+        // Fetch incorrect answers from Supabase
+        async function fetchIncorrectAnswersFromSupabase() {
+            let user_id = null;
+            // Try to get user if logged in (optional, safe for anonymous)
+            if (sb && sb.auth) {
+                try {
+                    const { data: { user } } = await sb.auth.getUser();
+                    if (user) user_id = user.id;
+                } catch (e) { }
+            }
+            // Fetch from Supabase (optionally filter by user_id if you want)
+            let query = sb.from('capital_quiz_incorrect_answers').select('*').order('timestamp', { ascending: false });
+            if (user_id) {
+                query = query.eq('user_id', user_id);
+            }
+            const { data, error } = await query;
+            if (error) {
+                console.error('Error fetching incorrect answers:', error);
+                return [];
+            }
+            return data || [];
+        }
 
-            if (gameState.incorrectAnswers.length === 0) {
+        // Update loadRevisionMode to use Supabase data
+        async function loadRevisionMode() {
+            const revisionContent = document.getElementById('revisionContent');
+            revisionContent.innerHTML = '<div class="loading">Loading revision data...</div>';
+
+            // Fetch from Supabase
+            const incorrectAnswers = await fetchIncorrectAnswersFromSupabase();
+
+            if (!incorrectAnswers || incorrectAnswers.length === 0) {
                 revisionContent.innerHTML = '<div class="info-text">No incorrect answers yet. Great job! 🎉</div>';
                 return;
             }
 
             let html = `<h2 style="color: #333; margin-bottom: 20px;">Revision Mode</h2>
-                        <p style="color: #666; margin-bottom: 15px;">
-                            You have <strong>${gameState.incorrectAnswers.length}</strong> incorrect answer(s) to review.
-                        </p>`;
+                <p style="color: #666; margin-bottom: 15px;">
+                    You have <strong>${incorrectAnswers.length}</strong> incorrect answer(s) to review.
+                </p>`;
 
-            gameState.incorrectAnswers.forEach((item, index) => {
+            incorrectAnswers.forEach((item, index) => {
                 html += `
-                    <div style="background: #f0f0f0; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                        <div style="font-weight: 600; color: #333; margin-bottom: 5px;">
-                            ${index + 1}. ${item.capital}, ${item.country}
-                        </div>
-                        <div style="font-size: 0.9em; color: #666;">
-                            Mode: ${item.mode.replace(/-/g, ' ')} | Difficulty: ${item.difficulty}
-                        </div>
-                    </div>
-                `;
+            <div style="background: #f0f0f0; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                <div style="font-weight: 600; color: #333; margin-bottom: 5px;">
+                    ${index + 1}. ${item.capital}, ${item.country}
+                </div>
+                <div style="font-size: 0.9em; color: #666;">
+                    Mode: ${item.mode.replace(/-/g, ' ')} | Difficulty: ${item.difficulty}
+                </div>
+            </div>
+        `;
             });
 
-            html += `<button class="btn-success btn-full" style="margin-top: 20px;" onclick="startRevisionQuiz()">
-                        Start Revision Quiz
-                     </button>`;
+            // After fetching incorrectAnswers:
+            window.revisionIncorrectAnswers = incorrectAnswers;
+
+            // In your HTML:
+            html += `<button class="btn-success btn-full" style="margin-top: 20px;" onclick="startRevisionQuizFromSupabase()">
+    Start Revision Quiz
+ </button>`;
 
             revisionContent.innerHTML = html;
         }
+
+        // Optionally, update startRevisionQuiz to accept a list
+        // ...existing code...
+
+        function startRevisionQuizFromSupabase() {
+            const incorrectAnswers = window.revisionIncorrectAnswers || [];
+            gameState.questions = incorrectAnswers.map(item => {
+                const capital = capitalDatabase.find(c => c.capital === item.capital);
+                return generateQuestion(capital, capitalDatabase);
+            });
+
+            gameState.currentQuestion = 0;
+            gameState.score = 0;
+            gameState.totalQuestions = gameState.questions.length;
+            gameState.isQuizRunning = true;
+            gameState.incorrectAnswers = [];
+
+            showMenu('quizScreen');
+            displayQuestion();
+        }
+
+        // ...existing code...
+
 
         function startRevisionQuiz() {
             gameState.questions = gameState.incorrectAnswers.map(item => {
