@@ -422,9 +422,9 @@
         </div>
     </div>
 
-       <script type="module">
+    <script type="module">
         import { saveQuizResult } from './saveQuizResults.js';
-       </script>
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
     <script>
@@ -1163,6 +1163,7 @@
 
         function startRevisionQuizFromSupabase() {
             const incorrectAnswers = window.revisionIncorrectAnswers || [];
+            gameState.mode = "capital-selection"; // <-- Set a default mode
             gameState.questions = incorrectAnswers.map(item => {
                 const capital = capitalDatabase.find(c => c.capital === item.capital);
                 return generateQuestion(capital, capitalDatabase);
@@ -1177,7 +1178,6 @@
             showMenu('quizScreen');
             displayQuestion();
         }
-
         // ...existing code...
 
 
