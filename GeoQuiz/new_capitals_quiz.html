@@ -295,7 +295,7 @@
 
 <body>
     <div class="container">
-        <h1>Capital Quiz</h1>
+        <h1>Capitals Quiz</h1>
 
         <!-- Main Menu -->
         <div id="mainMenu" class="menu-section active">
@@ -1085,6 +1085,7 @@
 
         // ============ REVISION MODE ============
         // Fetch incorrect answers from Supabase
+        // ...existing code...
         async function fetchIncorrectAnswersFromSupabase() {
             let user_id = null;
             if (sb && sb.auth) {
@@ -1093,22 +1094,23 @@
                     if (user) user_id = user.id;
                 } catch (e) { }
             }
-            // Always fetch both: user_id = current user OR user_id is null (for anonymous)
-            let query = sb.from('capital_quiz_incorrect_answers')
-                .select('*')
-                .order('timestamp', { ascending: false });
-            if (user_id) {
-                query = query.or(`user_id.eq.${user_id},user_id.is.null`);
-            } else {
-                query = query.is('user_id', null);
+            if (!user_id) {
+                // Not logged in, show message or return empty
+                return [];
             }
-            const { data, error } = await query;
+            // Only fetch for the current user
+            const { data, error } = await sb
+                .from('capital_quiz_incorrect_answers')
+                .select('*')
+                .eq('user_id', user_id)
+                .order('timestamp', { ascending: false });
             if (error) {
                 console.error('Error fetching incorrect answers:', error);
                 return [];
             }
             return data || [];
         }
+        // ...existing code...
 
         // Update loadRevisionMode to use Supabase data
         async function loadRevisionMode() {
