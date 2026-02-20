@@ -72,10 +72,12 @@
 <!-- LOGIN -->
 <div class="container" id="loginSection">
   <h1>Pull-Up 40 Login</h1>
-  <input type="email" id="email" placeholder="Email" />
-  <input type="password" id="password" placeholder="Password" />
-  <button onclick="login()">Login</button>
-  <p id="loginError" style="color:red;"></p>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button type="submit">Login</button>
+    <p id="loginError" style="color:red;"></p>
+  </form>
 </div>
 
 <!-- DASHBOARD -->
@@ -109,12 +111,20 @@
   const SUPABASE_URL = "https://bhfqxpjtotlbrkzvagqg.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJoZnF4cGp0b3RsYnJrenZhZ3FnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTE0OTMsImV4cCI6MjA4NzE4NzQ5M30.iO-Pv5PKNdADb5NoPalmXcvO5d-3V49LEawjZ4QNc5k";
 
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  // Only create supabase if not already defined
+  let supabase;
+  if (!window.supabaseClient) {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    window.supabaseClient = supabase;
+  } else {
+    supabase = window.supabaseClient;
+  }
 
   let currentUser = null;
   let currentWorkoutId = null;
 
-  async function login() {
+  async function login(event) {
+    if (event) event.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
@@ -135,6 +145,19 @@
 
     loadTodayWorkout();
   }
+
+  // Expose functions to global scope for HTML event handlers
+  window.login = login;
+  window.logWorkout = logWorkout;
+  window.logout = logout;
+
+  // Attach login form submit event
+  document.addEventListener("DOMContentLoaded", function() {
+    const loginForm = document.getElementById("loginForm");
+    if (loginForm) {
+      loginForm.addEventListener("submit", login);
+    }
+  });
 
   async function loadTodayWorkout() {
     const today = new Date().toISOString().split("T")[0];
