@@ -16,7 +16,7 @@
     }
 
     .container {
-      max-width: 600px;
+      max-width: 650px;
       margin: 40px auto;
       padding: 20px;
       background: #1e293b;
@@ -60,10 +60,16 @@
       margin-top: 15px;
       border-radius: 10px;
     }
+
+    .small {
+      font-size: 14px;
+      opacity: 0.8;
+    }
   </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div class="container" id="loginSection">
   <h1>Pull-Up 40 Login</h1>
   <input type="email" id="email" placeholder="Email" />
@@ -72,32 +78,25 @@
   <p id="loginError" style="color:red;"></p>
 </div>
 
+<!-- DASHBOARD -->
 <div class="container hidden" id="dashboardSection">
   <h1>Dashboard</h1>
-  <h2>Today's Plan</h2>
 
-  <div class="card">
-    <p><strong>Workout Type:</strong> Heavy Day</p>
-    <p>5x5 Weighted Pull-Ups (Overhand Grip)</p>
+  <h2>Today's Plan</h2>
+  <div class="card" id="planCard">
+    Loading workout...
   </div>
 
   <h2>Log Workout</h2>
-
-  <select id="workoutType">
-    <option value="heavy">Heavy</option>
-    <option value="volume">Volume</option>
-    <option value="emom">EMOM</option>
-    <option value="ladder">Ladder</option>
-  </select>
-
-  <input type="number" id="reps" placeholder="Reps" />
-  <input type="number" id="weight" placeholder="Weight (optional)" />
 
   <select id="grip">
     <option value="overhand">Overhand</option>
     <option value="chin">Chin-Up</option>
     <option value="neutral">Neutral</option>
   </select>
+
+  <input type="number" id="reps" placeholder="Reps" />
+  <input type="number" id="weight" placeholder="Weight (optional)" />
 
   <button onclick="logWorkout()">Add Set</button>
 
@@ -134,23 +133,53 @@
     document.getElementById("loginSection").classList.add("hidden");
     document.getElementById("dashboardSection").classList.remove("hidden");
 
-    createWorkoutSession();
+    loadTodayWorkout();
   }
 
-  async function createWorkoutSession() {
+  async function loadTodayWorkout() {
+    const today = new Date().toISOString().split("T")[0];
+
     const { data, error } = await supabase
       .from("workouts")
-      .insert([
-        {
-          user_id: currentUser.id,
-          workout_type: "heavy",
-        },
-      ])
-      .select()
+      .select("*")
+      .eq("user_id", currentUser.id)
+      .eq("workout_date", today)
       .single();
 
-    if (!error) {
-      currentWorkoutId = data.id;
+    if (error || !data) {
+      document.getElementById("planCard").innerHTML =
+        "No workout scheduled for today.";
+      return;
+    }
+
+    currentWorkoutId = data.id;
+
+    document.getElementById("planCard").innerHTML = `
+      <strong>Week:</strong> ${data.week_number}<br>
+      <strong>Workout:</strong> ${data.workout_type.toUpperCase()}<br>
+      <strong>Description:</strong> ${data.description}<br>
+      <strong>Prescribed:</strong> ${data.prescribed_sets || '-'} sets × ${data.prescribed_reps || '-'} reps<br>
+      <strong>Grip:</strong> ${data.prescribed_grip}<br>
+      <strong>Weight:</strong> ${data.prescribed_weight}<br>
+    `;
+
+    loadExistingSets();
+  }
+
+  async function loadExistingSets() {
+    const { data } = await supabase
+      .from("sets")
+      .select("*")
+      .eq("workout_id", currentWorkoutId)
+      .order("created_at", { ascending: false });
+
+    const logList = document.getElementById("logList");
+    logList.innerHTML = "";
+
+    if (data) {
+      data.forEach(set => {
+        displayLog(set.reps, set.weight, set.grip);
+      });
     }
   }
 
@@ -158,9 +187,11 @@
     const reps = document.getElementById("reps").value;
     const weight = document.getElementById("weight").value || 0;
     const grip = document.getElementById("grip").value;
-    const workoutType = document.getElementById("workoutType").value;
 
-    if (!reps) return alert("Enter reps");
+    if (!reps) {
+      alert("Enter reps");
+      return;
+    }
 
     const { error } = await supabase.from("sets").insert([
       {
@@ -168,24 +199,25 @@
         reps: reps,
         weight: weight,
         grip: grip,
-        set_type: workoutType,
+        set_type: "normal",
       },
     ]);
 
     if (!error) {
-      displayLog(reps, weight, grip, workoutType);
+      displayLog(reps, weight, grip);
       document.getElementById("reps").value = "";
       document.getElementById("weight").value = "";
+    } else {
+      alert("Error saving set");
     }
   }
 
-  function displayLog(reps, weight, grip, type) {
+  function displayLog(reps, weight, grip) {
     const logList = document.getElementById("logList");
 
     const div = document.createElement("div");
-    div.className = "card";
+    div.className = "card small";
     div.innerHTML = `
-      <strong>${type.toUpperCase()}</strong><br>
       Reps: ${reps} | Weight: ${weight} | Grip: ${grip}
     `;
 
