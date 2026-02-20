@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pull-Up 40 Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #1e293b;
+      border-radius: 12px;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .logout {
+      background: #dc2626;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #334155;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="loginSection">
+  <h1>Pull-Up 40 Login</h1>
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Password" />
+  <button onclick="login()">Login</button>
+  <p id="loginError" style="color:red;"></p>
+</div>
+
+<div class="container hidden" id="dashboardSection">
+  <h1>Dashboard</h1>
+  <h2>Today's Plan</h2>
+
+  <div class="card">
+    <p><strong>Workout Type:</strong> Heavy Day</p>
+    <p>5x5 Weighted Pull-Ups (Overhand Grip)</p>
+  </div>
+
+  <h2>Log Workout</h2>
+
+  <select id="workoutType">
+    <option value="heavy">Heavy</option>
+    <option value="volume">Volume</option>
+    <option value="emom">EMOM</option>
+    <option value="ladder">Ladder</option>
+  </select>
+
+  <input type="number" id="reps" placeholder="Reps" />
+  <input type="number" id="weight" placeholder="Weight (optional)" />
+
+  <select id="grip">
+    <option value="overhand">Overhand</option>
+    <option value="chin">Chin-Up</option>
+    <option value="neutral">Neutral</option>
+  </select>
+
+  <button onclick="logWorkout()">Add Set</button>
+
+  <div id="logList"></div>
+
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<script>
+  const SUPABASE_URL = "https://bhfqxpjtotlbrkzvagqg.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJoZnF4cGp0b3RsYnJrenZhZ3FnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTE0OTMsImV4cCI6MjA4NzE4NzQ5M30.iO-Pv5PKNdADb5NoPalmXcvO5d-3V49LEawjZ4QNc5k";
+
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let currentUser = null;
+  let currentWorkoutId = null;
+
+  async function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      document.getElementById("loginError").innerText = error.message;
+      return;
+    }
+
+    currentUser = data.user;
+
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("dashboardSection").classList.remove("hidden");
+
+    createWorkoutSession();
+  }
+
+  async function createWorkoutSession() {
+    const { data, error } = await supabase
+      .from("workouts")
+      .insert([
+        {
+          user_id: currentUser.id,
+          workout_type: "heavy",
+        },
+      ])
+      .select()
+      .single();
+
+    if (!error) {
+      currentWorkoutId = data.id;
+    }
+  }
+
+  async function logWorkout() {
+    const reps = document.getElementById("reps").value;
+    const weight = document.getElementById("weight").value || 0;
+    const grip = document.getElementById("grip").value;
+    const workoutType = document.getElementById("workoutType").value;
+
+    if (!reps) return alert("Enter reps");
+
+    const { error } = await supabase.from("sets").insert([
+      {
+        workout_id: currentWorkoutId,
+        reps: reps,
+        weight: weight,
+        grip: grip,
+        set_type: workoutType,
+      },
+    ]);
+
+    if (!error) {
+      displayLog(reps, weight, grip, workoutType);
+      document.getElementById("reps").value = "";
+      document.getElementById("weight").value = "";
+    }
+  }
+
+  function displayLog(reps, weight, grip, type) {
+    const logList = document.getElementById("logList");
+
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <strong>${type.toUpperCase()}</strong><br>
+      Reps: ${reps} | Weight: ${weight} | Grip: ${grip}
+    `;
+
+    logList.prepend(div);
+  }
+
+  async function logout() {
+    await supabase.auth.signOut();
+    location.reload();
+  }
+</script>
+
+</body>
+</html>
