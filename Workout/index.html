@@ -1,183 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pull-Up 40 Tracker</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pull-Up 40 Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      margin: 0;
-      padding: 0;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
 
-    .container {
-      max-width: 650px;
-      margin: 40px auto;
-      padding: 20px;
-      background: #1e293b;
-      border-radius: 12px;
-    }
+        .container {
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1e293b;
+            border-radius: 12px;
+        }
 
-    h1, h2 {
-      text-align: center;
-    }
+        h1,
+        h2 {
+            text-align: center;
+        }
 
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 8px;
-      border: none;
-    }
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: none;
+        }
 
-    button {
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
-    }
+        button {
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
 
-    button:hover {
-      background: #1d4ed8;
-    }
+        button:hover {
+            background: #1d4ed8;
+        }
 
-    .hidden {
-      display: none;
-    }
+        .hidden {
+            display: none;
+        }
 
-    .logout {
-      background: #dc2626;
-      margin-top: 20px;
-    }
+        .logout {
+            background: #dc2626;
+            margin-top: 20px;
+        }
 
-    .card {
-      background: #334155;
-      padding: 15px;
-      margin-top: 15px;
-      border-radius: 10px;
-    }
+        .card {
+            background: #334155;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 10px;
+        }
 
-    .small {
-      font-size: 14px;
-      opacity: 0.8;
-    }
-  </style>
+        .small {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- LOGIN -->
-<div class="container" id="loginSection">
-  <h1>Pull-Up 40 Login</h1>
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-    <p id="loginError" style="color:red;"></p>
-  </form>
-</div>
+    <!-- LOGIN -->
+    <div class="container" id="loginSection">
+        <h1>Pull-Up 40 Login</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email" required />
+            <input type="password" id="password" placeholder="Password" required />
+            <button type="submit">Login</button>
+            <p id="loginError" style="color:red;"></p>
+        </form>
+    </div>
 
-<!-- DASHBOARD -->
-<div class="container hidden" id="dashboardSection">
-  <h1>Dashboard</h1>
+    <!-- DASHBOARD -->
+    <div class="container hidden" id="dashboardSection">
+        <h1>Dashboard</h1>
 
-  <h2>Today's Plan</h2>
-  <div class="card" id="planCard">
-    Loading workout...
-  </div>
+        <h2>Today's Plan</h2>
+        <div class="card" id="planCard">
+            Loading workout...
+        </div>
 
-  <h2>Log Workout</h2>
+        <h2>Log Workout</h2>
 
-  <select id="grip">
-    <option value="overhand">Overhand</option>
-    <option value="chin">Chin-Up</option>
-    <option value="neutral">Neutral</option>
-  </select>
+        <select id="grip">
+            <option value="overhand">Overhand</option>
+            <option value="chin">Chin-Up</option>
+            <option value="neutral">Neutral</option>
+        </select>
 
-  <input type="number" id="reps" placeholder="Reps" />
-  <input type="number" id="weight" placeholder="Weight (optional)" />
+        <input type="number" id="reps" placeholder="Reps" />
+        <input type="number" id="weight" placeholder="Weight (optional)" />
 
-  <button onclick="logWorkout()">Add Set</button>
+        <button onclick="logWorkout()">Add Set</button>
 
-  <div id="logList"></div>
+        <div id="logList"></div>
 
-  <button class="logout" onclick="logout()">Logout</button>
-</div>
+        <button class="logout" onclick="logout()">Logout</button>
+    </div>
 
-<script>
-  const SUPABASE_URL = "https://bhfqxpjtotlbrkzvagqg.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJoZnF4cGp0b3RsYnJrenZhZ3FnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTE0OTMsImV4cCI6MjA4NzE4NzQ5M30.iO-Pv5PKNdADb5NoPalmXcvO5d-3V49LEawjZ4QNc5k";
+    <script>
 
-  // Only create supabase if not already defined
-  let supabase;
-  if (!window.supabaseClient) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    window.supabaseClient = supabase;
-  } else {
-    supabase = window.supabaseClient;
-  }
+        // Only declare supabase once globally
+        if (!window._supabaseInstance) {
+            const SUPABASE_URL = 'https://bhfqxpjtotlbrkzvagqg.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJoZnF4cGp0b3RsYnJrenZhZ3FnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTE0OTMsImV4cCI6MjA4NzE4NzQ5M30.iO-Pv5PKNdADb5NoPalmXcvO5d-3V49LEawjZ4QNc5k';
+            window._supabaseInstance = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+        var supabase = window._supabaseInstance;
 
-  let currentUser = null;
-  let currentWorkoutId = null;
+        let currentUser = null;
+        let currentWorkoutId = null;
 
-  async function login(event) {
-    if (event) event.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+        async function login(event) {
+            if (event) event.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
 
-    if (error) {
-      document.getElementById("loginError").innerText = error.message;
-      return;
-    }
+            if (error) {
+                document.getElementById("loginError").innerText = error.message;
+                return;
+            }
 
-    currentUser = data.user;
+            currentUser = data.user;
 
-    document.getElementById("loginSection").classList.add("hidden");
-    document.getElementById("dashboardSection").classList.remove("hidden");
+            document.getElementById("loginSection").classList.add("hidden");
+            document.getElementById("dashboardSection").classList.remove("hidden");
 
-    loadTodayWorkout();
-  }
+            loadTodayWorkout();
+        }
 
-  // Expose functions to global scope for HTML event handlers
-  window.login = login;
-  window.logWorkout = logWorkout;
-  window.logout = logout;
+        // Expose functions to global scope for HTML event handlers
+        window.login = login;
+        window.logWorkout = logWorkout;
+        window.logout = logout;
 
-  // Attach login form submit event
-  document.addEventListener("DOMContentLoaded", function() {
-    const loginForm = document.getElementById("loginForm");
-    if (loginForm) {
-      loginForm.addEventListener("submit", login);
-    }
-  });
+        // Attach login form submit event
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginForm = document.getElementById("loginForm");
+            if (loginForm) {
+                loginForm.addEventListener("submit", login);
+            }
+        });
 
-  async function loadTodayWorkout() {
-    const today = new Date().toISOString().split("T")[0];
+        async function loadTodayWorkout() {
+            const today = new Date().toISOString().split("T")[0];
 
-    const { data, error } = await supabase
-      .from("workouts")
-      .select("*")
-      .eq("user_id", currentUser.id)
-      .eq("workout_date", today)
-      .single();
+            const { data, error } = await supabase
+                .from("workouts")
+                .select("*")
+                .eq("user_id", currentUser.id)
+                .eq("workout_date", today)
+                .single();
 
-    if (error || !data) {
-      document.getElementById("planCard").innerHTML =
-        "No workout scheduled for today.";
-      return;
-    }
+            if (error || !data) {
+                document.getElementById("planCard").innerHTML =
+                    "No workout scheduled for today.";
+                return;
+            }
 
-    currentWorkoutId = data.id;
+            currentWorkoutId = data.id;
 
-    document.getElementById("planCard").innerHTML = `
+            document.getElementById("planCard").innerHTML = `
       <strong>Week:</strong> ${data.week_number}<br>
       <strong>Workout:</strong> ${data.workout_type.toUpperCase()}<br>
       <strong>Description:</strong> ${data.description}<br>
@@ -186,72 +188,73 @@
       <strong>Weight:</strong> ${data.prescribed_weight}<br>
     `;
 
-    loadExistingSets();
-  }
+            loadExistingSets();
+        }
 
-  async function loadExistingSets() {
-    const { data } = await supabase
-      .from("sets")
-      .select("*")
-      .eq("workout_id", currentWorkoutId)
-      .order("created_at", { ascending: false });
+        async function loadExistingSets() {
+            const { data } = await supabase
+                .from("sets")
+                .select("*")
+                .eq("workout_id", currentWorkoutId)
+                .order("created_at", { ascending: false });
 
-    const logList = document.getElementById("logList");
-    logList.innerHTML = "";
+            const logList = document.getElementById("logList");
+            logList.innerHTML = "";
 
-    if (data) {
-      data.forEach(set => {
-        displayLog(set.reps, set.weight, set.grip);
-      });
-    }
-  }
+            if (data) {
+                data.forEach(set => {
+                    displayLog(set.reps, set.weight, set.grip);
+                });
+            }
+        }
 
-  async function logWorkout() {
-    const reps = document.getElementById("reps").value;
-    const weight = document.getElementById("weight").value || 0;
-    const grip = document.getElementById("grip").value;
+        async function logWorkout() {
+            const reps = document.getElementById("reps").value;
+            const weight = document.getElementById("weight").value || 0;
+            const grip = document.getElementById("grip").value;
 
-    if (!reps) {
-      alert("Enter reps");
-      return;
-    }
+            if (!reps) {
+                alert("Enter reps");
+                return;
+            }
 
-    const { error } = await supabase.from("sets").insert([
-      {
-        workout_id: currentWorkoutId,
-        reps: reps,
-        weight: weight,
-        grip: grip,
-        set_type: "normal",
-      },
-    ]);
+            const { error } = await supabase.from("sets").insert([
+                {
+                    workout_id: currentWorkoutId,
+                    reps: reps,
+                    weight: weight,
+                    grip: grip,
+                    set_type: "normal",
+                },
+            ]);
 
-    if (!error) {
-      displayLog(reps, weight, grip);
-      document.getElementById("reps").value = "";
-      document.getElementById("weight").value = "";
-    } else {
-      alert("Error saving set");
-    }
-  }
+            if (!error) {
+                displayLog(reps, weight, grip);
+                document.getElementById("reps").value = "";
+                document.getElementById("weight").value = "";
+            } else {
+                alert("Error saving set");
+            }
+        }
 
-  function displayLog(reps, weight, grip) {
-    const logList = document.getElementById("logList");
+        function displayLog(reps, weight, grip) {
+            const logList = document.getElementById("logList");
 
-    const div = document.createElement("div");
-    div.className = "card small";
-    div.innerHTML = `
+            const div = document.createElement("div");
+            div.className = "card small";
+            div.innerHTML = `
       Reps: ${reps} | Weight: ${weight} | Grip: ${grip}
     `;
 
-    logList.prepend(div);
-  }
+            logList.prepend(div);
+        }
 
-  async function logout() {
-    await supabase.auth.signOut();
-    location.reload();
-  }
-</script>
+        async function logout() {
+            await supabase.auth.signOut();
+            location.reload();
+        }
+    </script>
 
 </body>
+
 </html>
