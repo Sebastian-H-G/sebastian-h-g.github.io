@@ -166,8 +166,10 @@
             padding: 12px;
             border-radius: 10px;
             border: none;
-            background: linear-gradient(90deg, #2563eb 60%, #60a5fa 100%);
-            color: #fff;
+            background: #e0e7ef;
+            color: #2563eb;
+            box-shadow: 0 2px 8px 0 rgba(37, 99, 235, 0.10);
+            border: 1px solid #2563eb;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
@@ -454,13 +456,16 @@
             currentWorkoutId = data.id;
 
             document.getElementById("planCard").innerHTML = `
-      <strong>Week:</strong> ${data.week_number}<br>
-      <strong>Workout:</strong> ${data.workout_type.toUpperCase()}<br>
-      <strong>Description:</strong> ${data.description}<br>
-      <strong>Prescribed:</strong> ${data.prescribed_sets || '-'} sets × ${data.prescribed_reps || '-'} reps<br>
-      <strong>Grip:</strong> ${data.prescribed_grip}<br>
-      <strong>Weight:</strong> ${data.prescribed_weight}<br>
-    `;
+                <div class="plan-detail">
+                    <div><span class="plan-label">Week:</span> <span class="plan-value">${data.week_number}</span></div>
+                    <div><span class="plan-label">Workout:</span> <span class="plan-value">${data.workout_type.toUpperCase()}</span></div>
+                    <div><span class="plan-label">Description:</span> <span class="plan-value">${data.description}</span></div>
+                    <div><span class="plan-label">Prescribed:</span> <span class="plan-value">${data.prescribed_sets || '-'} sets × ${data.prescribed_reps || '-'} reps</span></div>
+                    <div><span class="plan-label">Grip:</span> <span class="plan-value">${data.prescribed_grip}</span></div>
+                    <div><span class="plan-label">Weight:</span> <span class="plan-value">${data.prescribed_weight}</span></div>
+                    <div><span class="plan-label">Date:</span> <span class="plan-value">${data.workout_date}</span></div>
+                </div>
+            `;
 
             loadExistingSets();
         }
