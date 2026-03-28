@@ -3,10 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>Geodle Clone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+/* Make input font-weight less bold and ensure it is not overwritten */
+#guessInput {
+  font-family: 'Sora', Arial, sans-serif !important;
+  font-weight: 500 !important;
+}
+
 body {
-  font-family: Arial;
+  font-family: 'Sora', Arial, sans-serif;
   text-align: center;
+  background: #f8f4ee;
 }
 
 #results {
@@ -17,10 +25,14 @@ body {
   background: #fff;
   border: 2px solid #000000;
   border-radius: 18px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  /* 3D black shadow effect to match .card */
+  box-shadow:
+    0 2px 0 0 #222,
+    0 2px 0 0 #111,
+    0 8px 16px 0 #00000033;
   margin: 24px auto;
   padding: 0;
-  max-width: 560px;
+  max-width: 650px;
   width: 100%;
   text-align: left;
   position: relative;
@@ -72,7 +84,11 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 1em;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  /* 3D black shadow effect */
+  box-shadow:
+    0 2px 0 0 #222, /* strong bottom shadow */
+    0 2px 0 0 #111, /* deeper shadow */
+    0 8px 16px 0 #00000033; /* soft blur for realism */
   position: relative;
   border-width: 2px;
 }
@@ -97,6 +113,7 @@ body {
   font-size: 0.85em;
   color: #000000;
   font-weight: 600;
+  opacity: .5;
   margin-bottom: 2px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -168,8 +185,8 @@ body {
 <h1>Geodle 🌍</h1>
 
 
-<div style="position:relative;max-width:560px;width:100%;margin:0 auto;">
-  <input type="text" id="guessInput" placeholder="Enter a country..." autocomplete="off" style="width:100%;font-size:1.3em;padding:12px 24px;border-radius:16px;border:2px solid #222;outline:none;box-sizing:border-box;">
+<div style="position:relative;max-width:650px;width:100%;margin:0 auto;">
+  <input type="text" id="guessInput" placeholder="Enter a country..." autocomplete="off" style="width:100%;font-size:1.3em;padding:15px 30px;border-radius:16px;border:2px solid #222;outline:none;box-sizing:border-box;">
   <div id="suggestions" style="position:absolute;top:110%;left:0;right:0;z-index:10;"></div>
 </div>
 
@@ -364,7 +381,7 @@ function renderResult(guess) {
 
   // Inner wrapper for padding
   const inner = document.createElement("div");
-  inner.style.padding = "18px 24px 12px 24px";
+  inner.style.padding = "18px 24px 24px 24px";
 
   // Header: flag, name, guess number
   const header = document.createElement("div");
@@ -402,21 +419,24 @@ function renderResult(guess) {
   const grid = document.createElement("div");
   grid.className = "stats-grid";
 
+  // If correct country, force all cards green
+  const allGreen = guess.name === targetCountry.name;
+
   // Continent
-  grid.appendChild(createCard("KONTINENT", guess.continent, guess.continent === targetCountry.continent ? "green" : "red"));
+  grid.appendChild(createCard("CONTINENT", guess.continent, allGreen ? "green" : (guess.continent === targetCountry.continent ? "green" : "red")));
   // Landlocked
-  grid.appendChild(createCard("BINNENLAND", guess.landlocked ? "Ja" : "Nein", guess.landlocked === targetCountry.landlocked ? "green" : "red"));
+  grid.appendChild(createCard("LANDLOCKED", guess.landlocked ? "Ja" : "Nein", allGreen ? "green" : (guess.landlocked === targetCountry.landlocked ? "green" : "red")));
   // Neighbor
   const isNeighbor = Array.isArray(targetCountry.borders)
     ? targetCountry.borders.includes(guess.abbreviation)
     : false;
-  grid.appendChild(createCard("NACHBAR", isNeighbor ? "Ja" : "Nein", isNeighbor ? "green" : "red"));
+  grid.appendChild(createCard("NEIGHBOR", isNeighbor ? "Ja" : "Nein", allGreen ? "green" : (isNeighbor ? "green" : "red")));
   // Avg Temp
-  grid.appendChild(createCard("AVG TEMP", formatTemp(guess.avg_temp), compareNumeric(guess.avg_temp, targetCountry.avg_temp)));
+  grid.appendChild(createCard("AVG TEMP", formatTemp(guess.avg_temp), allGreen ? "green" : compareNumeric(guess.avg_temp, targetCountry.avg_temp)));
   // Population
-  grid.appendChild(createCard("BEVÖLKERUNG", formatPopulation(guess.population), compareNumeric(guess.population, targetCountry.population)));
+  grid.appendChild(createCard("POPULATION", formatPopulation(guess.population), allGreen ? "green" : compareNumeric(guess.population, targetCountry.population)));
   // Area
-  grid.appendChild(createCard("FLÄCHE", formatArea(guess.area_sq_km), compareNumeric(guess.area_sq_km, targetCountry.area_sq_km)));
+  grid.appendChild(createCard("LAND AREA", formatArea(guess.area_sq_km), allGreen ? "green" : compareNumeric(guess.area_sq_km, targetCountry.area_sq_km)));
 
   inner.appendChild(grid);
   cardGroup.appendChild(inner);
@@ -443,39 +463,43 @@ function createCard(label, value, className) {
   valueDiv.style.display = "flex";
   valueDiv.style.alignItems = "center";
   // SVG arrow markup
-  const arrowSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-left:3px;"><path d="M216.49,104.49l-80,80a12,12,0,0,1-17,0l-80-80a12,12,0,0,1,17-17L128,159l71.51-71.52a12,12,0,0,1,17,17Z"></path></svg>';
+  const arrowSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-right:6px;"><path d="M216.49,104.49l-80,80a12,12,0,0,1-17,0l-80-80a12,12,0,0,1,17-17L128,159l71.51-71.52a12,12,0,0,1,17,17Z"></path></svg>';
   // SVG X markup for wrong
-  const xSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-left:3px;"><path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"></path></svg>';
+  const xSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-right:6px;"><path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"></path></svg>';
   // SVG checkmark for correct
-  const checkSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-left:3px;"><path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"></path></svg>';
+  const checkSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-right:6px;"><path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"></path></svg>';
+  // Prevent wrapping between icon and value
+  const iconValueWrapper = document.createElement("span");
+  iconValueWrapper.style.whiteSpace = "nowrap";
   if (className && className.includes("arrow-up")) {
-    valueDiv.innerText = value;
     // Up arrow: rotate SVG 180deg
     const upArrow = document.createElement("span");
     upArrow.innerHTML = arrowSVG;
     upArrow.firstChild.style.transform = "rotate(180deg)";
-    valueDiv.appendChild(upArrow);
+    iconValueWrapper.appendChild(upArrow);
+    iconValueWrapper.appendChild(document.createTextNode(value));
   } else if (className && className.includes("arrow-down")) {
-    valueDiv.innerText = value;
     // Down arrow: normal SVG
     const downArrow = document.createElement("span");
     downArrow.innerHTML = arrowSVG;
-    valueDiv.appendChild(downArrow);
+    iconValueWrapper.appendChild(downArrow);
+    iconValueWrapper.appendChild(document.createTextNode(value));
   } else if (className && className.includes("red")) {
-    valueDiv.innerText = value;
     // Wrong X SVG
     const xIcon = document.createElement("span");
     xIcon.innerHTML = xSVG;
-    valueDiv.appendChild(xIcon);
+    iconValueWrapper.appendChild(xIcon);
+    iconValueWrapper.appendChild(document.createTextNode(value));
   } else if (className && className.includes("green")) {
-    valueDiv.innerText = value;
     // Correct checkmark SVG
     const checkIcon = document.createElement("span");
     checkIcon.innerHTML = checkSVG;
-    valueDiv.appendChild(checkIcon);
+    iconValueWrapper.appendChild(checkIcon);
+    iconValueWrapper.appendChild(document.createTextNode(value));
   } else {
-    valueDiv.innerText = value;
+    iconValueWrapper.innerText = value;
   }
+  valueDiv.appendChild(iconValueWrapper);
   div.appendChild(labelDiv);
   div.appendChild(valueDiv);
   return div;
