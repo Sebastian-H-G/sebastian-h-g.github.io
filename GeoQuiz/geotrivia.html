@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Geodle Clone</title>
+  <title>CountryGuess</title>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
 /* Make input font-weight less bold and ensure it is not overwritten */
@@ -124,8 +124,41 @@ body {
   font-weight: bold;
 }
 
+/* Card appear animation */
+.card-appear {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: opacity 0.38s cubic-bezier(.4,1.4,.6,1), transform 0.38s cubic-bezier(.4,1.4,.6,1);
+}
+.card-appear.card-appear-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
 
-
+/* Wave animation for correct guess */
+.card-wave {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: cardWaveUp 0.55s cubic-bezier(.4,1.4,.6,1) forwards;
+}
+@keyframes cardWaveUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-30px) scale(1.05);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-18px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
 
 @media (max-width: 480px) {
@@ -182,7 +215,7 @@ body {
 </head>
 <body>
 
-<h1>Geodle 🌍</h1>
+<h1>CountryGuess<img src="Logos/countyguess_no_bg.png" alt="logo"></h1>
 
 
 <div style="position:relative;max-width:650px;width:100%;margin:0 auto;">
@@ -192,6 +225,16 @@ body {
 
 
 <div id="results"></div>
+
+<!-- Win Modal -->
+<div id="winModal" style="display:none;position:fixed;z-index:10000;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);color:#fff;align-items:center;justify-content:center;flex-direction:column;font-family:'Sora',Arial,sans-serif;">
+  <div style="background:#fff;color:#222;padding:40px 32px 32px 32px;border-radius:32px;box-shadow:0 8px 32px #000a;max-width:90vw;min-width:260px;display:flex;flex-direction:column;align-items:center;">
+    <div id="winFlag" style="font-size:4em;margin-bottom:18px;"></div>
+    <div id="winText" style="font-size:2em;font-weight:700;margin-bottom:10px;"></div>
+    <div id="winGuesses" style="font-size:1.2em;margin-bottom:18px;"></div>
+    <button id="playAgainBtn" style="font-family:'Sora',Arial,sans-serif;font-size:1.2em;padding:12px 32px;border-radius:16px;border:none;background:#8ccd60;color:#222;font-weight:700;box-shadow:0 2px 8px #0003;cursor:pointer;transition:background 0.2s;">Play Again</button>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>const SUPABASE_URL = "https://pzyzdmndotuvbvfhxwad.supabase.co";
@@ -233,16 +276,28 @@ async function loadTarget() {
 
     targetCountry = data;
 
-    // Fetch all country names and german names for autocomplete
+    // Fetch all country names, german names, and different spellings for autocomplete
     const { data: allNames, error: namesError } = await supabaseClient
       .from("countries")
-      .select("name, german_name")
+      .select("name, german_name, different_spellings")
       .eq("country", true);
     if (!namesError && Array.isArray(allNames)) {
       allCountryNames = allNames.map(row => row.name);
       allGermanNames = allNames.map(row => row.german_name || "");
       germanToEnglish = {};
       englishByGerman = {};
+      // Build a list of all spellings for each country
+      window.countrySpellings = allNames.map(row => {
+        let spellings = [row.name];
+        if (row.german_name) spellings.push(row.german_name);
+        if (row.different_spellings) {
+          // Accept comma or semicolon separated, trim whitespace
+          let extra = row.different_spellings.split(/[,;]/).map(s => s.trim()).filter(Boolean);
+          spellings = spellings.concat(extra);
+        }
+        return { name: row.name, spellings };
+      });
+      // For backwards compatibility
       allNames.forEach(row => {
         if (row.german_name && row.name) {
           germanToEnglish[row.german_name.toLowerCase()] = row.name;
@@ -263,10 +318,13 @@ loadTarget();
 // Autocomplete suggestions logic
 const guessInput = document.getElementById("guessInput");
 const suggestionsDiv = document.getElementById("suggestions");
-
+// Helper to remove accents and lowercase
+function normalizeString(str) {
+  return str ? str.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase() : "";
+}
 
 guessInput.addEventListener("input", function() {
-  const value = this.value.trim().toLowerCase();
+  const value = normalizeString(this.value.trim());
   suggestionsDiv.innerHTML = "";
   if (!value || allCountryNames.length === 0) return;
 
@@ -282,16 +340,24 @@ guessInput.addEventListener("input", function() {
     // return;
   }
 
-  // Show suggestions: English names that start with input, or if input matches start of a German name, show the English equivalent
-  let matches = allCountryNames.filter(name => name.toLowerCase().startsWith(value));
-  // If no English matches, try German partial matches
-  if (matches.length === 0 && value.length > 1) {
-    const germanMatches = allGermanNames
-      .map((german, i) => ({german, english: allCountryNames[i]}))
-      .filter(row => row.german && row.german.toLowerCase().startsWith(value));
-    matches = germanMatches.map(row => row.english);
+  // Prioritize suggestions: main name startsWith > main name contains > other spellings
+  let startsWithMatches = [];
+  let containsMatches = [];
+  let secondaryMatches = [];
+  if (window.countrySpellings) {
+    for (const entry of window.countrySpellings) {
+      const mainNorm = normalizeString(entry.name);
+      if (mainNorm.startsWith(value)) {
+        startsWithMatches.push(entry.name);
+      } else if (mainNorm.includes(value)) {
+        containsMatches.push(entry.name);
+      } else if (entry.spellings.some(sp => sp !== entry.name && normalizeString(sp).includes(value))) {
+        secondaryMatches.push(entry.name);
+      }
+    }
   }
-  if (matches.length === 0) return;
+  const allMatches = startsWithMatches.concat(containsMatches, secondaryMatches);
+  if (allMatches.length === 0) return;
   const list = document.createElement("div");
   list.style.background = "#fff";
   list.style.border = "2px solid #222";
@@ -300,7 +366,7 @@ guessInput.addEventListener("input", function() {
   list.style.overflowY = "auto";
   list.style.maxHeight = "260px";
   list.style.marginTop = "4px";
-  matches.slice(0, 10).forEach(name => {
+  allMatches.slice(0, 10).forEach(name => {
     const item = document.createElement("div");
     item.innerText = name;
     item.style.padding = "16px 18px";
@@ -331,19 +397,24 @@ guessInput.addEventListener("blur", function() {
 
 // 🎮 Submit guess
 async function submitGuess() {
-  const guessName = document.getElementById("guessInput").value.trim();
+  const guessNameRaw = document.getElementById("guessInput").value.trim();
+  if (!guessNameRaw) return;
 
-  if (!guessName) return;
-
+  // We'll fetch all possible matches and do accent-insensitive match in JS
   try {
-    const { data: guess, error } = await supabaseClient
+    const { data: possible, error } = await supabaseClient
       .from("countries")
       .select("name, continent, avg_temp, population, area_sq_km, borders, flag, landlocked, abbreviation")
-      .eq("country", true)
-      .ilike("name", guessName)
-      .single();
+      .eq("country", true);
 
-    if (error || !guess) {
+    if (error || !possible || !Array.isArray(possible)) {
+      alert("Country not found!");
+      return;
+    }
+
+    // Find the country with accent-insensitive match
+    const guess = possible.find(row => normalizeString(row.name) === normalizeString(guessNameRaw));
+    if (!guess) {
       alert("Country not found!");
       return;
     }
@@ -415,6 +486,7 @@ function renderResult(guess) {
 
   inner.appendChild(header);
 
+
   // Stats grid
   const grid = document.createElement("div");
   grid.className = "stats-grid";
@@ -422,33 +494,84 @@ function renderResult(guess) {
   // If correct country, force all cards green
   const allGreen = guess.name === targetCountry.name;
 
-  // Continent
-  grid.appendChild(createCard("CONTINENT", guess.continent, allGreen ? "green" : (guess.continent === targetCountry.continent ? "green" : "red")));
-  // Landlocked
-  grid.appendChild(createCard("LANDLOCKED", guess.landlocked ? "Ja" : "Nein", allGreen ? "green" : (guess.landlocked === targetCountry.landlocked ? "green" : "red")));
-  // Neighbor
-  const isNeighbor = Array.isArray(targetCountry.borders)
-    ? targetCountry.borders.includes(guess.abbreviation)
-    : false;
-  grid.appendChild(createCard("NEIGHBOR", isNeighbor ? "Ja" : "Nein", allGreen ? "green" : (isNeighbor ? "green" : "red")));
-  // Avg Temp
-  grid.appendChild(createCard("AVG TEMP", formatTemp(guess.avg_temp), allGreen ? "green" : compareNumeric(guess.avg_temp, targetCountry.avg_temp)));
-  // Population
-  grid.appendChild(createCard("POPULATION", formatPopulation(guess.population), allGreen ? "green" : compareNumeric(guess.population, targetCountry.population)));
-  // Area
-  grid.appendChild(createCard("LAND AREA", formatArea(guess.area_sq_km), allGreen ? "green" : compareNumeric(guess.area_sq_km, targetCountry.area_sq_km)));
+  // Prepare card data
+  const cardData = [
+    ["CONTINENT", guess.continent, allGreen ? "green" : (guess.continent === targetCountry.continent ? "green" : "red")],
+    ["LANDLOCKED", guess.landlocked ? "Yes" : "No", allGreen ? "green" : (guess.landlocked === targetCountry.landlocked ? "green" : "red")],
+    ["NEIGHBOR", (Array.isArray(targetCountry.borders) ? targetCountry.borders.includes(guess.abbreviation) : false) ? "Yes" : "No", allGreen ? "green" : ((Array.isArray(targetCountry.borders) ? targetCountry.borders.includes(guess.abbreviation) : false) ? "green" : "red")],
+    ["AVG TEMP", formatTemp(guess.avg_temp), allGreen ? "green" : compareNumeric(guess.avg_temp, targetCountry.avg_temp)],
+    ["POPULATION", formatPopulation(guess.population), allGreen ? "green" : compareNumeric(guess.population, targetCountry.population)],
+    ["LAND AREA", formatArea(guess.area_sq_km), allGreen ? "green" : compareNumeric(guess.area_sq_km, targetCountry.area_sq_km)]
+  ];
+
+  // Create cards with animation classes, but don't activate yet
+  const cardEls = cardData.map(([label, value, className]) => {
+    const el = createCard(label, value, className);
+    el.classList.add('card-appear');
+    grid.appendChild(el);
+    return el;
+  });
 
   inner.appendChild(grid);
   cardGroup.appendChild(inner);
-
   document.getElementById("results").prepend(cardGroup);
+
+  // Animate cards
+  if (allGreen) {
+    // Wave animation for correct guess
+    requestAnimationFrame(() => {
+      cardEls.forEach((el, i) => {
+        setTimeout(() => {
+          el.classList.remove('card-appear', 'card-appear-active');
+          el.classList.add('card-wave');
+        }, 80 * i);
+      });
+    });
+  } else {
+    // Normal appear animation
+    requestAnimationFrame(() => {
+      cardEls.forEach((el, i) => {
+        setTimeout(() => {
+          el.classList.add('card-appear-active');
+        }, 120 * i);
+      });
+    });
+  }
 
   // 🏆 Win condition
   if (guess.name === targetCountry.name) {
     setTimeout(() => {
-      alert("🎉 Correct! The country was " + targetCountry.name);
-    }, 200);
+      showWinModal(targetCountry, guessCount);
+    }, 1800); // Delay modal for 1s to let animation play
   }
+// Show win modal
+function showWinModal(country, guesses) {
+  const modal = document.getElementById('winModal');
+  document.body.style.overflow = 'hidden';
+  modal.style.display = 'flex';
+  // Set flag
+  document.getElementById('winFlag').textContent = country.flag || '';
+  // Set name
+  document.getElementById('winText').textContent = `You guessed ${country.name}!`;
+  // Set guesses
+  document.getElementById('winGuesses').textContent = `in ${guesses} guess${guesses === 1 ? '' : 'es'} — congrats!`;
+}
+
+// Play again button logic
+document.getElementById('playAgainBtn').onclick = function() {
+  // Hide modal
+  document.getElementById('winModal').style.display = 'none';
+  document.body.style.overflow = '';
+  // Reset game state
+  document.getElementById('results').innerHTML = '';
+  guessedAbbreviations = [];
+  guessCount = 0;
+  // Reload a new target
+  loadTarget();
+  // Clear input
+  guessInput.value = '';
+  guessInput.focus();
+};
 }
 
 // 🧩 Card creator (label, value, className)
