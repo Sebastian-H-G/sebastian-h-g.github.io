@@ -103,9 +103,63 @@ body {
 }
 .card-value {
   font-size: 1.13em;
+  text-align: center; 
   font-weight: bold;
 }
 
+
+
+
+
+@media (max-width: 480px) {
+  .guess-card {
+    max-width: 100%;
+    width: 90vw;
+    margin: 18px auto;
+  }
+  .guess-card > div {
+    padding-left: 4vw !important;
+    padding-right: 4vw !important;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  #results {
+    margin-top: 12px;
+  }
+  .guess-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  #guessInput {
+    width: 90vw !important;
+    font-size: 1.1em;
+    padding-left: 6vw !important;
+    padding-right: 6vw !important;
+  }
+  #suggestions {
+    left: 0;
+    right: 0;
+    width: 90vw !important;
+    min-width: unset;
+    max-width: unset;
+  }
+  div[style*="max-width:560px"],
+  div[style*="max-width: 560px"],
+  div[style*="max-width:620px"],
+  div[style*="max-width: 620px"] {
+    max-width: 100% !important;
+    width: 90vw !important;
+    min-width: unset !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  body {
+    padding: 0;
+  }
+}
 
     </style>
 </head>
