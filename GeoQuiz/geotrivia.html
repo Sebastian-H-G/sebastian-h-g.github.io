@@ -369,6 +369,8 @@ body {
     </style>
 </head>
 <body style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#f8f4ee;">
+ <input type="checkbox" id="hapticTrigger" style="position:absolute;opacity:0;pointer-events:none;">
+<label for="hapticTrigger" style="display:none;"></label>
   <!-- Main container for dynamic content -->
   <div id="mainContent"></div>
   <!-- Bottom navbar -->
@@ -430,6 +432,29 @@ body {
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
+
+function triggerVibration(pattern = 50) {
+  // ✅ Standard vibration (Android, etc.)
+  if ("vibrate" in navigator) {
+    navigator.vibrate(pattern);
+  }
+
+  // ⚠️ Safari iOS hack (toggle checkbox to trigger haptic)
+  const el = document.getElementById("hapticTrigger");
+  if (el) {
+    el.checked = !el.checked;
+  }
+}
+
+// Attach to navbar buttons
+document.getElementById("navHome").addEventListener("click", () => {
+  triggerVibration(40); // short tap
+});
+
+document.getElementById("navStats").addEventListener("click", () => {
+  triggerVibration([20, 30, 20]); // double pulse
+});
+
   // --- SPA Navigation State ---
   const mainContent = document.getElementById('mainContent');
   const bottomNav = document.getElementById('bottomNav');
