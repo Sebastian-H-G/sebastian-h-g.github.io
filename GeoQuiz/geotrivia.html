@@ -5,6 +5,154 @@
   <title>CountryGuess</title>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+/* --- SPA Main Layout --- */
+#mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Bottom Navbar --- */
+#bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 64px;
+  background: #fff;
+  border-top: 2px solid #eee;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 10001;
+  box-shadow: 0 -2px 12px #0001;
+}
+#bottomNav button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+/* --- Start Screen Game Cards --- */
+.start-screen-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 64px);
+  width: 100vw;
+}
+.game-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  align-items: center;
+  justify-content: center;
+}
+.game-card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px #0002;
+  border: 2px solid #222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 48px;
+  cursor: pointer;
+  transition: box-shadow .2s;
+  max-width: 340px;
+}
+.game-card img {
+  height: 64px;
+  margin-bottom: 12px;
+}
+.game-card span {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #222;
+}
+
+/* --- Template Pages --- */
+.template-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 64px);
+  width: 100vw;
+}
+.template-page h1 {
+  font-size: 2.2em;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.template-page p {
+  color: #888;
+}
+
+/* --- Guess the Country Game Container --- */
+#guessCountryGameContainer {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Guess the Country Page Buttons --- */
+.gtc-topbar {
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 12px 12px 0 12px;
+  box-sizing: border-box;
+}
+.gtc-back-btn {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px 6px 2px;
+  border-radius: 50%;
+  transition: background 0.15s;
+}
+.gtc-back-btn:hover {
+  background: #eee;
+}
+.gtc-giveup-btn {
+  background: #ff6b6b;
+  color: #fff;
+  border: none;
+  outline: none;
+  border-radius: 16px;
+  font-family: 'Sora', Arial, sans-serif;
+  font-size: 1.1em;
+  font-weight: 700;
+  padding: 10px 28px;
+  margin: 0;
+  box-shadow: 0 2px 8px #0002;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.gtc-giveup-btn:hover {
+  background: #e05555;
+}
 /* Resize and align the logo image in the h1 */
 h1 img {
   height: 1.7em;
@@ -220,439 +368,485 @@ body {
 
     </style>
 </head>
-<body>
+<body style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#f8f4ee;">
+  <!-- Main container for dynamic content -->
+  <div id="mainContent"></div>
+  <!-- Bottom navbar -->
+  <nav id="bottomNav">
+    <button id="navHome">
+      <!-- Home icon SVG -->
+      <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V9h6v12"/></svg>
+    </button>
+    <button id="navStats">
+      <!-- Stats icon SVG -->
+      <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="8"/><rect x="10" y="8" width="4" height="12"/><rect x="17" y="4" width="4" height="16"/></svg>
+    </button>
+  </nav>
 
-<h1>CountryGuess<img src="Logos/countyguess_no_bg.png" alt="logo"></h1>
+  <!-- Templates for the two games and stats -->
+  <template id="startScreen">
+    <div class="start-screen-container">
+      <div class="game-cards">
+        <div id="gameGuessCountry" class="game-card">
+          <img src="../Logos/countyguess_no_bg.png" alt="Guess the Country Logo">
+          <span>Guess the Country</span>
+        </div>
+        <div id="gameGeoConnections" class="game-card">
+          <img src="../Logos/geoconnections_logo.png" alt="GeoConnections Logo">
+          <span>GeoConnections</span>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template id="geoConnectionsPage">
+    <div class="template-page">
+      <h1>GeoConnections</h1>
+      <p>(Coming soon)</p>
+    </div>
+  </template>
+  <template id="statsPage">
+    <div class="template-page">
+      <h1>Stats</h1>
+      <p>(No stats yet)</p>
+    </div>
+  </template>
+  <template id="guessCountryGame">
+    <div id="guessCountryGameContainer">
+      <!-- The original Guess the Country game will be rendered here -->
+    </div>
+  </template>
 
+  <!-- The original Guess the Country game markup is now rendered dynamically -->
 
-<div style="position:relative;max-width:650px;width:100%;margin:0 auto;">
-  <input type="text" id="guessInput" placeholder="Enter a country..." autocomplete="off" style="width:100%;font-size:1.3em;padding:15px 30px;border-radius:16px;border:2px solid #222;outline:none;box-sizing:border-box;">
-  <div id="suggestions" style="position:absolute;top:110%;left:0;right:0;z-index:10;"></div>
-</div>
-
-
-<div id="results"></div>
-
-<!-- Win Modal -->
-<div id="winModal" style="display:none;position:fixed;z-index:10000;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);color:#fff;align-items:center;justify-content:center;flex-direction:column;font-family:'Sora',Arial,sans-serif;">
-  <div style="background:#fff;color:#222;padding:40px 32px 32px 32px;border-radius:32px;box-shadow:0 8px 32px #000a;max-width:90vw;min-width:260px;display:flex;flex-direction:column;align-items:center;">
-    <div id="winFlag" style="font-size:4em;margin-bottom:18px;"></div>
-    <div id="winText" style="font-size:2em;font-weight:700;margin-bottom:10px;"></div>
-    <div id="winGuesses" style="font-size:1.2em;margin-bottom:18px;"></div>
-    <button id="playAgainBtn" style="font-family:'Sora',Arial,sans-serif;font-size:1.2em;padding:12px 32px;border-radius:16px;border:none;background:#8ccd60;color:#222;font-weight:700;box-shadow:0 2px 8px #0003;cursor:pointer;transition:background 0.2s;">Play Again</button>
+  <!-- Win Modal (kept outside for overlay) -->
+  <div id="winModal" style="display:none;position:fixed;z-index:10000;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);color:#fff;align-items:center;justify-content:center;flex-direction:column;font-family:'Sora',Arial,sans-serif;">
+    <div style="background:#fff;color:#222;padding:40px 32px 32px 32px;border-radius:32px;box-shadow:0 8px 32px #000a;max-width:90vw;min-width:260px;display:flex;flex-direction:column;align-items:center;">
+      <div id="winFlag" style="font-size:4em;margin-bottom:18px;"></div>
+      <div id="winText" style="font-size:2em;font-weight:700;margin-bottom:10px;"></div>
+      <div id="winGuesses" style="font-size:1.2em;margin-bottom:18px;"></div>
+      <button id="playAgainBtn" style="font-family:'Sora',Arial,sans-serif;font-size:1.2em;padding:12px 32px;border-radius:16px;border:none;background:#8ccd60;color:#222;font-weight:700;box-shadow:0 2px 8px #0003;cursor:pointer;transition:background 0.2s;">Play Again</button>
+    </div>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script>const SUPABASE_URL = "https://pzyzdmndotuvbvfhxwad.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA";
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+  // --- SPA Navigation State ---
+  const mainContent = document.getElementById('mainContent');
+  const bottomNav = document.getElementById('bottomNav');
+  const templates = {
+    start: document.getElementById('startScreen'),
+    guess: document.getElementById('guessCountryGame'),
+    geo: document.getElementById('geoConnectionsPage'),
+    stats: document.getElementById('statsPage')
+  };
 
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  // Render the start screen
+  function showStartScreen() {
+    mainContent.innerHTML = '';
+    mainContent.appendChild(templates.start.content.cloneNode(true));
+    bottomNav.style.display = 'flex';
+    // Add event listeners for game selection
+    setTimeout(() => {
+      document.getElementById('gameGuessCountry').onclick = showGuessCountryGame;
+      document.getElementById('gameGeoConnections').onclick = showGeoConnections;
+    }, 0);
+  }
 
-let targetCountry = null;
-let guessedAbbreviations = [];
-let allCountryNames = [];
-let germanToEnglish = {};
-let allGermanNames = [];
-let englishByGerman = {};
+  // Render Guess the Country game
+  function showGuessCountryGame() {
+    mainContent.innerHTML = '';
+    // Hide navbar
+    bottomNav.style.display = 'none';
+    // Render the game container
+    const gameDiv = document.createElement('div');
+    gameDiv.id = 'guessCountryGameContainer';
+    // Insert the original game markup with topbar and buttons
+    gameDiv.innerHTML = `
+      <div class="gtc-topbar">
+        <button class="gtc-back-btn" id="gtcBackBtn" title="Back to Home" aria-label="Back to Home">
+          <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="gtc-giveup-btn" id="giveUpBtn" type="button">Give Up</button>
+      </div>
+      <h1>CountryGuess<img src="../Logos/countyguess_no_bg.png" alt="logo"></h1>
+      <div style="position:relative;max-width:650px;width:100%;margin:0 auto;">
+        <input type="text" id="guessInput" placeholder="Enter a country..." autocomplete="off" style="width:100%;font-size:1.3em;padding:15px 30px;border-radius:16px;border:2px solid #222;outline:none;box-sizing:border-box;">
+        <div id="suggestions" style="position:absolute;top:110%;left:0;right:0;z-index:10;"></div>
+      </div>
+      <div id="results"></div>
+    `;
+    mainContent.appendChild(gameDiv);
+    // Add event for back button
+    setTimeout(() => {
+      document.getElementById('gtcBackBtn').onclick = showStartScreen;
+    }, 0);
+    // Re-initialize the game logic
+    setTimeout(initGuessCountryGame, 0);
+  }
 
+  // Render GeoConnections placeholder
+  function showGeoConnections() {
+    mainContent.innerHTML = '';
+    bottomNav.style.display = 'none';
+    mainContent.appendChild(templates.geo.content.cloneNode(true));
+  }
 
-// 🎯 Load random target country (ONLY real countries) and all country names for autocomplete
-async function loadTarget() {
-  try {
-    // Step 1: get count of valid countries
-    const { count, error: countError } = await supabaseClient
-      .from("countries")
-      .select("*", { count: "exact", head: true })
-      .eq("country", true);
+  // Render Stats page
+  function showStats() {
+    mainContent.innerHTML = '';
+    mainContent.appendChild(templates.stats.content.cloneNode(true));
+    bottomNav.style.display = 'flex';
+  }
 
-    if (countError) throw countError;
+  // Navbar event listeners
+  document.getElementById('navHome').onclick = showStartScreen;
+  document.getElementById('navStats').onclick = showStats;
 
-    // Step 2: pick random index
-    const randomIndex = Math.floor(Math.random() * count);
+  // --- Guess the Country Game Logic (moved into function for SPA) ---
+  let SUPABASE_URL = "https://pzyzdmndotuvbvfhxwad.supabase.co";
+  let SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXpkbW5kb3R1dmJ2Zmh4d2FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDUxNzIsImV4cCI6MjA2MjM4MTE3Mn0.UpltfEmKUgYINeWP4aHPOkYT8cOx6nVi0cdE5bMAjqA";
+  let supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  let targetCountry = null;
+  let guessedAbbreviations = [];
+  let allCountryNames = [];
+  let germanToEnglish = {};
+  let allGermanNames = [];
+  let englishByGerman = {};
+  let guessCount = 0;
 
-    // Step 3: fetch ONE country with only needed columns
-    const { data, error } = await supabaseClient
-      .from("countries")
-      .select("name, continent, avg_temp, population, area_sq_km, borders, flag, landlocked, abbreviation")
-      .eq("country", true)
-      .range(randomIndex, randomIndex)
-      .single();
-
-    if (error) throw error;
-
-    targetCountry = data;
-
-    // Fetch all country names, german names, and different spellings for autocomplete
-    const { data: allNames, error: namesError } = await supabaseClient
-      .from("countries")
-      .select("name, german_name, different_spellings")
-      .eq("country", true);
-    if (!namesError && Array.isArray(allNames)) {
-      allCountryNames = allNames.map(row => row.name);
-      allGermanNames = allNames.map(row => row.german_name || "");
-      germanToEnglish = {};
-      englishByGerman = {};
-      // Build a list of all spellings for each country
-      window.countrySpellings = allNames.map(row => {
-        let spellings = [row.name];
-        if (row.german_name) spellings.push(row.german_name);
-        if (row.different_spellings) {
-          // Accept comma or semicolon separated, trim whitespace
-          let extra = row.different_spellings.split(/[,;]/).map(s => s.trim()).filter(Boolean);
-          spellings = spellings.concat(extra);
-        }
-        return { name: row.name, spellings };
-      });
-      // For backwards compatibility
-      allNames.forEach(row => {
-        if (row.german_name && row.name) {
-          germanToEnglish[row.german_name.toLowerCase()] = row.name;
-          englishByGerman[row.german_name.toLowerCase()] = row.name;
-        }
-      });
+  function initGuessCountryGame() {
+    // Reset state
+    targetCountry = null;
+    guessedAbbreviations = [];
+    allCountryNames = [];
+    germanToEnglish = {};
+    allGermanNames = [];
+    englishByGerman = {};
+    guessCount = 0;
+    // Load target and autocomplete
+    loadTarget();
+    // Setup input listeners
+    const guessInput = document.getElementById("guessInput");
+    const suggestionsDiv = document.getElementById("suggestions");
+    guessInput.addEventListener("input", onGuessInput);
+    guessInput.addEventListener("blur", function() {
+      setTimeout(() => { suggestionsDiv.innerHTML = ""; }, 120);
+    });
+    guessInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") submitGuess();
+    });
+    // Give Up button logic
+    const giveUpBtn = document.getElementById('giveUpBtn');
+    if (giveUpBtn) {
+      giveUpBtn.onclick = function() {
+        if (!targetCountry) return;
+        // Show the answer in a modal-like alert, then go back to home
+        alert(`The answer was: ${targetCountry.name}`);
+        showStartScreen();
+      };
     }
-
-    console.log("Target:", targetCountry.name); // debug
-
-  } catch (err) {
-    console.error("Error loading target:", err);
-  }
-}
-
-loadTarget();
-
-// Autocomplete suggestions logic
-const guessInput = document.getElementById("guessInput");
-const suggestionsDiv = document.getElementById("suggestions");
-// Helper to remove accents and lowercase
-function normalizeString(str) {
-  return str ? str.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase() : "";
-}
-
-guessInput.addEventListener("input", function() {
-  const value = normalizeString(this.value.trim());
-  suggestionsDiv.innerHTML = "";
-  if (!value || allCountryNames.length === 0) return;
-
-  // If input matches a German name exactly, replace input with English but do NOT auto-submit
-  if (germanToEnglish[value]) {
-    guessInput.value = germanToEnglish[value];
-    // Don't submitGuess here, just update the input
-    // suggestionsDiv.innerHTML = "";
-    // setTimeout(() => {
-    //   submitGuess();
-    //   setTimeout(() => { guessInput.value = ""; }, 10);
-    // }, 50);
-    // return;
   }
 
-  // Prioritize suggestions: main name startsWith > main name contains > other spellings
-  let startsWithMatches = [];
-  let containsMatches = [];
-  let secondaryMatches = [];
-  if (window.countrySpellings) {
-    for (const entry of window.countrySpellings) {
-      const mainNorm = normalizeString(entry.name);
-      if (mainNorm.startsWith(value)) {
-        startsWithMatches.push(entry.name);
-      } else if (mainNorm.includes(value)) {
-        containsMatches.push(entry.name);
-      } else if (entry.spellings.some(sp => sp !== entry.name && normalizeString(sp).includes(value))) {
-        secondaryMatches.push(entry.name);
+  // --- Original game logic (adapted for SPA) ---
+  async function loadTarget() {
+    try {
+      const { count, error: countError } = await supabaseClient
+        .from("countries")
+        .select("*", { count: "exact", head: true })
+        .eq("country", true);
+      if (countError) throw countError;
+      const randomIndex = Math.floor(Math.random() * count);
+      const { data, error } = await supabaseClient
+        .from("countries")
+        .select("name, continent, avg_temp, population, area_sq_km, borders, flag, landlocked, abbreviation")
+        .eq("country", true)
+        .range(randomIndex, randomIndex)
+        .single();
+      if (error) throw error;
+      targetCountry = data;
+      // Fetch all country names, german names, and different spellings for autocomplete
+      const { data: allNames, error: namesError } = await supabaseClient
+        .from("countries")
+        .select("name, german_name, different_spellings")
+        .eq("country", true);
+      if (!namesError && Array.isArray(allNames)) {
+        allCountryNames = allNames.map(row => row.name);
+        allGermanNames = allNames.map(row => row.german_name || "");
+        germanToEnglish = {};
+        englishByGerman = {};
+        window.countrySpellings = allNames.map(row => {
+          let spellings = [row.name];
+          if (row.german_name) spellings.push(row.german_name);
+          if (row.different_spellings) {
+            let extra = row.different_spellings.split(/[,;]/).map(s => s.trim()).filter(Boolean);
+            spellings = spellings.concat(extra);
+          }
+          return { name: row.name, spellings };
+        });
+        allNames.forEach(row => {
+          if (row.german_name && row.name) {
+            germanToEnglish[row.german_name.toLowerCase()] = row.name;
+            englishByGerman[row.german_name.toLowerCase()] = row.name;
+          }
+        });
+      }
+    } catch (err) {
+      console.error("Error loading target:", err);
+    }
+  }
+
+  function normalizeString(str) {
+    return str ? str.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase() : "";
+  }
+
+  function onGuessInput() {
+    const guessInput = document.getElementById("guessInput");
+    const suggestionsDiv = document.getElementById("suggestions");
+    const value = normalizeString(guessInput.value.trim());
+    suggestionsDiv.innerHTML = "";
+    if (!value || allCountryNames.length === 0) return;
+    if (germanToEnglish[value]) {
+      guessInput.value = germanToEnglish[value];
+    }
+    let startsWithMatches = [];
+    let containsMatches = [];
+    let secondaryMatches = [];
+    if (window.countrySpellings) {
+      for (const entry of window.countrySpellings) {
+        const mainNorm = normalizeString(entry.name);
+        if (mainNorm.startsWith(value)) {
+          startsWithMatches.push(entry.name);
+        } else if (mainNorm.includes(value)) {
+          containsMatches.push(entry.name);
+        } else if (entry.spellings.some(sp => sp !== entry.name && normalizeString(sp).includes(value))) {
+          secondaryMatches.push(entry.name);
+        }
       }
     }
+    const allMatches = startsWithMatches.concat(containsMatches, secondaryMatches);
+    if (allMatches.length === 0) return;
+    const list = document.createElement("div");
+    list.style.background = "#fff";
+    list.style.border = "2px solid #222";
+    list.style.borderRadius = "16px";
+    list.style.boxShadow = "0 2px 8px rgba(0,0,0,0.07)";
+    list.style.overflowY = "auto";
+    list.style.maxHeight = "260px";
+    list.style.marginTop = "4px";
+    allMatches.slice(0, 10).forEach(name => {
+      const item = document.createElement("div");
+      item.innerText = name;
+      item.style.padding = "16px 18px";
+      item.style.fontWeight = "bold";
+      item.style.fontSize = "1.2em";
+      item.style.cursor = "pointer";
+      item.style.borderBottom = "1px solid #aaa";
+      item.addEventListener("mousedown", function(e) {
+        e.preventDefault();
+        guessInput.value = name;
+        suggestionsDiv.innerHTML = "";
+        guessInput.focus();
+        submitGuess();
+        setTimeout(() => { guessInput.value = ""; }, 10);
+      });
+      list.appendChild(item);
+    });
+    if (list.lastChild) list.lastChild.style.borderBottom = "none";
+    suggestionsDiv.appendChild(list);
   }
-  const allMatches = startsWithMatches.concat(containsMatches, secondaryMatches);
-  if (allMatches.length === 0) return;
-  const list = document.createElement("div");
-  list.style.background = "#fff";
-  list.style.border = "2px solid #222";
-  list.style.borderRadius = "16px";
-  list.style.boxShadow = "0 2px 8px rgba(0,0,0,0.07)";
-  list.style.overflowY = "auto";
-  list.style.maxHeight = "260px";
-  list.style.marginTop = "4px";
-  allMatches.slice(0, 10).forEach(name => {
-    const item = document.createElement("div");
-    item.innerText = name;
-    item.style.padding = "16px 18px";
-    item.style.fontWeight = "bold";
-    item.style.fontSize = "1.2em";
-    item.style.cursor = "pointer";
-    item.style.borderBottom = "1px solid #aaa";
-    item.addEventListener("mousedown", function(e) {
-      e.preventDefault();
-      guessInput.value = name;
-      suggestionsDiv.innerHTML = "";
+
+  async function submitGuess() {
+    const guessInput = document.getElementById("guessInput");
+    const guessNameRaw = guessInput.value.trim();
+    if (!guessNameRaw) return;
+    try {
+      const { data: possible, error } = await supabaseClient
+        .from("countries")
+        .select("name, continent, avg_temp, population, area_sq_km, borders, flag, landlocked, abbreviation")
+        .eq("country", true);
+      if (error || !possible || !Array.isArray(possible)) {
+        alert("Country not found!");
+        return;
+      }
+      const guess = possible.find(row => normalizeString(row.name) === normalizeString(guessNameRaw));
+      if (!guess) {
+        alert("Country not found!");
+        return;
+      }
+      if (guessedAbbreviations.includes(guess.abbreviation)) {
+        alert("You already guessed this country!");
+        return;
+      }
+      guessedAbbreviations.push(guess.abbreviation);
+      renderResult(guess);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  function compareNumeric(guessVal, targetVal) {
+    if (guessVal === targetVal) return "green";
+    return guessVal < targetVal ? "neutral arrow-up" : "neutral arrow-down";
+  }
+
+  function renderResult(guess) {
+    guessCount++;
+    const cardGroup = document.createElement("div");
+    cardGroup.className = "guess-card";
+    const inner = document.createElement("div");
+    inner.style.padding = "18px 24px 24px 24px";
+    const header = document.createElement("div");
+    header.className = "guess-header";
+    if (guess.flag) {
+      const flagSpan = document.createElement("span");
+      flagSpan.className = "guess-flag";
+      flagSpan.style.display = "inline-flex";
+      flagSpan.style.alignItems = "center";
+      flagSpan.style.justifyContent = "center";
+      flagSpan.style.fontSize = "2em";
+      flagSpan.style.width = "38px";
+      flagSpan.style.height = "26px";
+      flagSpan.textContent = guess.flag;
+      header.appendChild(flagSpan);
+    }
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "guess-title";
+    nameSpan.innerText = guess.name;
+    header.appendChild(nameSpan);
+    const numSpan = document.createElement("span");
+    numSpan.className = "guess-number";
+    numSpan.innerText = `#${guessCount}`;
+    header.appendChild(numSpan);
+    inner.appendChild(header);
+    const grid = document.createElement("div");
+    grid.className = "stats-grid";
+    const allGreen = guess.name === targetCountry.name;
+    const cardData = [
+      ["CONTINENT", guess.continent, allGreen ? "green" : (guess.continent === targetCountry.continent ? "green" : "red")],
+      ["LANDLOCKED", guess.landlocked ? "Yes" : "No", allGreen ? "green" : (guess.landlocked === targetCountry.landlocked ? "green" : "red")],
+      ["NEIGHBOR", (Array.isArray(targetCountry.borders) ? targetCountry.borders.includes(guess.abbreviation) : false) ? "Yes" : "No", allGreen ? "green" : ((Array.isArray(targetCountry.borders) ? targetCountry.borders.includes(guess.abbreviation) : false) ? "green" : "red")],
+      ["AVG TEMP", formatTemp(guess.avg_temp), allGreen ? "green" : compareNumeric(guess.avg_temp, targetCountry.avg_temp)],
+      ["POPULATION", formatPopulation(guess.population), allGreen ? "green" : compareNumeric(guess.population, targetCountry.population)],
+      ["LAND AREA", formatArea(guess.area_sq_km), allGreen ? "green" : compareNumeric(guess.area_sq_km, targetCountry.area_sq_km)]
+    ];
+    const cardEls = cardData.map(([label, value, className]) => {
+      const el = createCard(label, value, className);
+      el.classList.add('card-appear');
+      grid.appendChild(el);
+      return el;
+    });
+    inner.appendChild(grid);
+    cardGroup.appendChild(inner);
+    document.getElementById("results").prepend(cardGroup);
+    if (allGreen) {
+      requestAnimationFrame(() => {
+        cardEls.forEach((el, i) => {
+          setTimeout(() => {
+            el.classList.remove('card-appear', 'card-appear-active');
+            el.classList.add('card-wave');
+          }, 80 * i);
+        });
+      });
+    } else {
+      requestAnimationFrame(() => {
+        cardEls.forEach((el, i) => {
+          setTimeout(() => {
+            el.classList.add('card-appear-active');
+          }, 120 * i);
+        });
+      });
+    }
+    if (guess.name === targetCountry.name) {
+      setTimeout(() => {
+        showWinModal(targetCountry, guessCount);
+      }, 1800);
+    }
+    // Play again button logic
+    document.getElementById('playAgainBtn').onclick = function() {
+      document.getElementById('winModal').style.display = 'none';
+      document.body.style.overflow = '';
+      document.getElementById('results').innerHTML = '';
+      guessedAbbreviations = [];
+      guessCount = 0;
+      loadTarget();
+      guessInput.value = '';
       guessInput.focus();
-      submitGuess();
-      setTimeout(() => { guessInput.value = ""; }, 10);
-    });
-    list.appendChild(item);
-  });
-  // Remove last border
-  if (list.lastChild) list.lastChild.style.borderBottom = "none";
-  suggestionsDiv.appendChild(list);
-});
+    };
+  }
 
-// Hide suggestions on blur (with slight delay for click)
-guessInput.addEventListener("blur", function() {
-  setTimeout(() => { suggestionsDiv.innerHTML = ""; }, 120);
-});
+  function showWinModal(country, guesses) {
+    const modal = document.getElementById('winModal');
+    document.body.style.overflow = 'hidden';
+    modal.style.display = 'flex';
+    document.getElementById('winFlag').textContent = country.flag || '';
+    document.getElementById('winText').textContent = `You guessed ${country.name}!`;
+    document.getElementById('winGuesses').textContent = `in ${guesses} guess${guesses === 1 ? '' : 'es'} — congrats!`;
+  }
 
-
-// 🎮 Submit guess
-async function submitGuess() {
-  const guessNameRaw = document.getElementById("guessInput").value.trim();
-  if (!guessNameRaw) return;
-
-  // We'll fetch all possible matches and do accent-insensitive match in JS
-  try {
-    const { data: possible, error } = await supabaseClient
-      .from("countries")
-      .select("name, continent, avg_temp, population, area_sq_km, borders, flag, landlocked, abbreviation")
-      .eq("country", true);
-
-    if (error || !possible || !Array.isArray(possible)) {
-      alert("Country not found!");
-      return;
+  function createCard(label, value, className) {
+    const div = document.createElement("div");
+    div.className = "card " + className;
+    const labelDiv = document.createElement("div");
+    labelDiv.className = "card-label";
+    labelDiv.innerText = label;
+    const valueDiv = document.createElement("div");
+    valueDiv.className = "card-value";
+    valueDiv.style.display = "flex";
+    valueDiv.style.alignItems = "center";
+    const arrowSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-right:6px;"><path d="M216.49,104.49l-80,80a12,12,0,0,1-17,0l-80-80a12,12,0,0,1,17-17L128,159l71.51-71.52a12,12,0,0,1,17,17Z"></path></svg>';
+    const xSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-right:6px;"><path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"></path></svg>';
+    const checkSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-right:6px;"><path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"></path></svg>';
+    const iconValueWrapper = document.createElement("span");
+    iconValueWrapper.style.whiteSpace = "nowrap";
+    if (className && className.includes("arrow-up")) {
+      const upArrow = document.createElement("span");
+      upArrow.innerHTML = arrowSVG;
+      upArrow.firstChild.style.transform = "rotate(180deg)";
+      iconValueWrapper.appendChild(upArrow);
+      iconValueWrapper.appendChild(document.createTextNode(value));
+    } else if (className && className.includes("arrow-down")) {
+      const downArrow = document.createElement("span");
+      downArrow.innerHTML = arrowSVG;
+      iconValueWrapper.appendChild(downArrow);
+      iconValueWrapper.appendChild(document.createTextNode(value));
+    } else if (className && className.includes("red")) {
+      const xIcon = document.createElement("span");
+      xIcon.innerHTML = xSVG;
+      iconValueWrapper.appendChild(xIcon);
+      iconValueWrapper.appendChild(document.createTextNode(value));
+    } else if (className && className.includes("green")) {
+      const checkIcon = document.createElement("span");
+      checkIcon.innerHTML = checkSVG;
+      iconValueWrapper.appendChild(checkIcon);
+      iconValueWrapper.appendChild(document.createTextNode(value));
+    } else {
+      iconValueWrapper.innerText = value;
     }
-
-    // Find the country with accent-insensitive match
-    const guess = possible.find(row => normalizeString(row.name) === normalizeString(guessNameRaw));
-    if (!guess) {
-      alert("Country not found!");
-      return;
-    }
-
-    // Prevent duplicate guesses by abbreviation
-    if (guessedAbbreviations.includes(guess.abbreviation)) {
-      alert("You already guessed this country!");
-      return;
-    }
-    guessedAbbreviations.push(guess.abbreviation);
-
-    renderResult(guess);
-
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-
-// 🔍 Comparison helper
-function compareNumeric(guessVal, targetVal) {
-  if (guessVal === targetVal) return "green";
-
-  return guessVal < targetVal
-    ? "neutral arrow-up"
-    : "neutral arrow-down";
-}
-
-let guessCount = 0;
-function renderResult(guess) {
-  guessCount++;
-  // Card group container
-  const cardGroup = document.createElement("div");
-  cardGroup.className = "guess-card";
-
-  // Inner wrapper for padding
-  const inner = document.createElement("div");
-  inner.style.padding = "18px 24px 24px 24px";
-
-  // Header: flag, name, guess number
-  const header = document.createElement("div");
-  header.className = "guess-header";
-
-  // Flag (render as text/emoji from the flag column)
-  if (guess.flag) {
-    const flagSpan = document.createElement("span");
-    flagSpan.className = "guess-flag";
-    flagSpan.style.display = "inline-flex";
-    flagSpan.style.alignItems = "center";
-    flagSpan.style.justifyContent = "center";
-    flagSpan.style.fontSize = "2em";
-    flagSpan.style.width = "38px";
-    flagSpan.style.height = "26px";
-    flagSpan.textContent = guess.flag;
-    header.appendChild(flagSpan);
+    valueDiv.appendChild(iconValueWrapper);
+    div.appendChild(labelDiv);
+    div.appendChild(valueDiv);
+    return div;
   }
 
-  // Name
-  const nameSpan = document.createElement("span");
-  nameSpan.className = "guess-title";
-  nameSpan.innerText = guess.name;
-  header.appendChild(nameSpan);
-
-  // Guess number
-  const numSpan = document.createElement("span");
-  numSpan.className = "guess-number";
-  numSpan.innerText = `#${guessCount}`;
-  header.appendChild(numSpan);
-
-  inner.appendChild(header);
-
-
-  // Stats grid
-  const grid = document.createElement("div");
-  grid.className = "stats-grid";
-
-  // If correct country, force all cards green
-  const allGreen = guess.name === targetCountry.name;
-
-  // Prepare card data
-  const cardData = [
-    ["CONTINENT", guess.continent, allGreen ? "green" : (guess.continent === targetCountry.continent ? "green" : "red")],
-    ["LANDLOCKED", guess.landlocked ? "Yes" : "No", allGreen ? "green" : (guess.landlocked === targetCountry.landlocked ? "green" : "red")],
-    ["NEIGHBOR", (Array.isArray(targetCountry.borders) ? targetCountry.borders.includes(guess.abbreviation) : false) ? "Yes" : "No", allGreen ? "green" : ((Array.isArray(targetCountry.borders) ? targetCountry.borders.includes(guess.abbreviation) : false) ? "green" : "red")],
-    ["AVG TEMP", formatTemp(guess.avg_temp), allGreen ? "green" : compareNumeric(guess.avg_temp, targetCountry.avg_temp)],
-    ["POPULATION", formatPopulation(guess.population), allGreen ? "green" : compareNumeric(guess.population, targetCountry.population)],
-    ["LAND AREA", formatArea(guess.area_sq_km), allGreen ? "green" : compareNumeric(guess.area_sq_km, targetCountry.area_sq_km)]
-  ];
-
-  // Create cards with animation classes, but don't activate yet
-  const cardEls = cardData.map(([label, value, className]) => {
-    const el = createCard(label, value, className);
-    el.classList.add('card-appear');
-    grid.appendChild(el);
-    return el;
-  });
-
-  inner.appendChild(grid);
-  cardGroup.appendChild(inner);
-  document.getElementById("results").prepend(cardGroup);
-
-  // Animate cards
-  if (allGreen) {
-    // Wave animation for correct guess
-    requestAnimationFrame(() => {
-      cardEls.forEach((el, i) => {
-        setTimeout(() => {
-          el.classList.remove('card-appear', 'card-appear-active');
-          el.classList.add('card-wave');
-        }, 80 * i);
-      });
-    });
-  } else {
-    // Normal appear animation
-    requestAnimationFrame(() => {
-      cardEls.forEach((el, i) => {
-        setTimeout(() => {
-          el.classList.add('card-appear-active');
-        }, 120 * i);
-      });
-    });
+  function formatTemp(temp) {
+    if (temp === undefined || temp === null) return "?";
+    return temp.toFixed(1) + "°C";
+  }
+  function formatPopulation(pop) {
+    if (pop === undefined || pop === null) return "?";
+    if (pop >= 1_000_000) return (pop / 1_000_000).toFixed(1) + "M";
+    if (pop >= 1_000) return Math.round(pop / 1_000) + "K";
+    return pop;
+  }
+  function formatArea(area) {
+    if (area === undefined || area === null) return "?";
+    if (area >= 1_000_000) return (area / 1_000_000).toFixed(1) + "M";
+    if (area >= 1_000) return Math.round(area / 1_000) + "K";
+    return area;
   }
 
-  // 🏆 Win condition
-  if (guess.name === targetCountry.name) {
-    setTimeout(() => {
-      showWinModal(targetCountry, guessCount);
-    }, 1800); // Delay modal for 1s to let animation play
-  }
-// Show win modal
-function showWinModal(country, guesses) {
-  const modal = document.getElementById('winModal');
-  document.body.style.overflow = 'hidden';
-  modal.style.display = 'flex';
-  // Set flag
-  document.getElementById('winFlag').textContent = country.flag || '';
-  // Set name
-  document.getElementById('winText').textContent = `You guessed ${country.name}!`;
-  // Set guesses
-  document.getElementById('winGuesses').textContent = `in ${guesses} guess${guesses === 1 ? '' : 'es'} — congrats!`;
-}
-
-// Play again button logic
-document.getElementById('playAgainBtn').onclick = function() {
-  // Hide modal
-  document.getElementById('winModal').style.display = 'none';
-  document.body.style.overflow = '';
-  // Reset game state
-  document.getElementById('results').innerHTML = '';
-  guessedAbbreviations = [];
-  guessCount = 0;
-  // Reload a new target
-  loadTarget();
-  // Clear input
-  guessInput.value = '';
-  guessInput.focus();
-};
-}
-
-// 🧩 Card creator (label, value, className)
-function createCard(label, value, className) {
-  const div = document.createElement("div");
-  div.className = "card " + className;
-  const labelDiv = document.createElement("div");
-  labelDiv.className = "card-label";
-  labelDiv.innerText = label;
-  const valueDiv = document.createElement("div");
-  valueDiv.className = "card-value";
-  valueDiv.style.display = "flex";
-  valueDiv.style.alignItems = "center";
-  // SVG arrow markup
-  const arrowSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-right:6px;"><path d="M216.49,104.49l-80,80a12,12,0,0,1-17,0l-80-80a12,12,0,0,1,17-17L128,159l71.51-71.52a12,12,0,0,1,17,17Z"></path></svg>';
-  // SVG X markup for wrong
-  const xSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-right:6px;"><path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"></path></svg>';
-  // SVG checkmark for correct
-  const checkSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" font-weight="bold" height="14" fill="currentColor" viewBox="0 0 256 256" class="shrink-0" style="margin-right:6px;"><path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"></path></svg>';
-  // Prevent wrapping between icon and value
-  const iconValueWrapper = document.createElement("span");
-  iconValueWrapper.style.whiteSpace = "nowrap";
-  if (className && className.includes("arrow-up")) {
-    // Up arrow: rotate SVG 180deg
-    const upArrow = document.createElement("span");
-    upArrow.innerHTML = arrowSVG;
-    upArrow.firstChild.style.transform = "rotate(180deg)";
-    iconValueWrapper.appendChild(upArrow);
-    iconValueWrapper.appendChild(document.createTextNode(value));
-  } else if (className && className.includes("arrow-down")) {
-    // Down arrow: normal SVG
-    const downArrow = document.createElement("span");
-    downArrow.innerHTML = arrowSVG;
-    iconValueWrapper.appendChild(downArrow);
-    iconValueWrapper.appendChild(document.createTextNode(value));
-  } else if (className && className.includes("red")) {
-    // Wrong X SVG
-    const xIcon = document.createElement("span");
-    xIcon.innerHTML = xSVG;
-    iconValueWrapper.appendChild(xIcon);
-    iconValueWrapper.appendChild(document.createTextNode(value));
-  } else if (className && className.includes("green")) {
-    // Correct checkmark SVG
-    const checkIcon = document.createElement("span");
-    checkIcon.innerHTML = checkSVG;
-    iconValueWrapper.appendChild(checkIcon);
-    iconValueWrapper.appendChild(document.createTextNode(value));
-  } else {
-    iconValueWrapper.innerText = value;
-  }
-  valueDiv.appendChild(iconValueWrapper);
-  div.appendChild(labelDiv);
-  div.appendChild(valueDiv);
-  return div;
-}
-
-// Format helpers
-function formatTemp(temp) {
-  if (temp === undefined || temp === null) return "?";
-  return temp.toFixed(1) + "°C";
-}
-function formatPopulation(pop) {
-  if (pop === undefined || pop === null) return "?";
-  if (pop >= 1_000_000) return (pop / 1_000_000).toFixed(1) + "M";
-  if (pop >= 1_000) return Math.round(pop / 1_000) + "K";
-  return pop;
-}
-function formatArea(area) {
-  if (area === undefined || area === null) return "?";
-  if (area >= 1_000_000) return (area / 1_000_000).toFixed(1) + "M";
-  if (area >= 1_000) return Math.round(area / 1_000) + "K";
-  return area;
-}
-</script>
-
+  // --- Initial load ---
+  showStartScreen();
+  </script>
 </body>
 </html>
