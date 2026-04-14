@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Haptic Demo</title>
+  <title>Vibration Safari test
+  </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -30,46 +31,68 @@
     button:active {
       transform: scale(0.95);
     }
+
+    /* tiny invisible interactive element */
+    #haptic-proxy {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
 
-  <button id="btn">Tap me</button>
+<button id="btn">Tap me</button>
 
-  <script>
-    // Create reusable hidden "switch" element (Safari haptic trigger)
-    const hapticEl = (() => {
-      const el = document.createElement("input");
-      el.type = "checkbox";
-      el.setAttribute("switch", "");
+<!-- proxy element -->
+<input id="haptic-proxy" type="checkbox" switch>
 
-      el.style.position = "absolute";
-      el.style.opacity = "0";
-      el.style.pointerEvents = "none";
+<script>
+const hapticEl = document.getElementById("haptic-proxy");
 
-      document.body.appendChild(el);
-      return el;
-    })();
+function triggerHaptic(e) {
+  // --- iOS Safari attempts ---
 
-    // Main haptic function
-    function triggerHaptic(duration = 10) {
-      // Safari iOS (hack)
-      try {
-        hapticEl.click();
-      } catch (e) {}
+  try {
+    // 1. Force state change (important)
+    hapticEl.checked = !hapticEl.checked;
 
-      // Fallback (Android / supported browsers)
-      if (navigator.vibrate) {
-        navigator.vibrate(duration);
-        console.log(`Triggered vibration for ${duration}ms`);
-      }
+    // 2. Temporarily allow interaction + move under finger
+    if (e && e.touches && e.touches[0]) {
+      const touch = e.touches[0];
+      hapticEl.style.left = touch.clientX + "px";
+      hapticEl.style.top = touch.clientY + "px";
+    } else if (e) {
+      hapticEl.style.left = e.clientX + "px";
+      hapticEl.style.top = e.clientY + "px";
     }
 
-    // Example interaction
-    document.getElementById("btn").addEventListener("click", () => {
-      triggerHaptic(10);
-    });
-  </script>
+    hapticEl.style.pointerEvents = "auto";
+
+    // 3. Trigger click
+    hapticEl.click();
+
+    // 4. Reset
+    hapticEl.style.pointerEvents = "none";
+
+  } catch (err) {
+    // ignore
+  }
+
+  // --- Android / supported browsers ---
+  if (navigator.vibrate) {
+    navigator.vibrate(10);
+  }
+}
+
+// Use BOTH touch and click for better coverage
+const btn = document.getElementById("btn");
+
+btn.addEventListener("touchstart", triggerHaptic, { passive: true });
+btn.addEventListener("click", triggerHaptic);
+</script>
 
 </body>
 </html>
