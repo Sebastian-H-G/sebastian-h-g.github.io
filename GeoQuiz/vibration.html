@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Haptic Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #111;
+      color: white;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 12px;
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+
+  <button id="btn">Tap me</button>
+
+  <script>
+    // Create reusable hidden "switch" element (Safari haptic trigger)
+    const hapticEl = (() => {
+      const el = document.createElement("input");
+      el.type = "checkbox";
+      el.setAttribute("switch", "");
+
+      el.style.position = "absolute";
+      el.style.opacity = "0";
+      el.style.pointerEvents = "none";
+
+      document.body.appendChild(el);
+      return el;
+    })();
+
+    // Main haptic function
+    function triggerHaptic(duration = 10) {
+      // Safari iOS (hack)
+      try {
+        hapticEl.click();
+      } catch (e) {}
+
+      // Fallback (Android / supported browsers)
+      if (navigator.vibrate) {
+        navigator.vibrate(duration);
+        console.log(`Triggered vibration for ${duration}ms`);
+      }
+    }
+
+    // Example interaction
+    document.getElementById("btn").addEventListener("click", () => {
+      triggerHaptic(10);
+    });
+  </script>
+
+</body>
+</html>
