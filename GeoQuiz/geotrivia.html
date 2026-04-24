@@ -10,7 +10,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -117,7 +117,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
-  padding: 12px 12px 0 12px;
+  padding: 0px 12px 0 12px;
   box-sizing: border-box;
 }
 .gtc-back-btn {
@@ -390,11 +390,11 @@ body {
     <div class="start-screen-container">
       <div class="game-cards">
         <div id="gameGuessCountry" class="game-card">
-          <img src="../Logos/countyguess_no_bg.png" alt="Guess the Country Logo">
+          <img src="Logos/countyguess_no_bg.png" alt="Guess the Country Logo">
           <span>Guess the Country</span>
         </div>
         <div id="gameGeoConnections" class="game-card">
-          <img src="../Logos/geoconnections_logo.png" alt="GeoConnections Logo">
+          <img src="Logos/geoconnections_logo.png" alt="GeoConnections Logo">
           <span>GeoConnections</span>
         </div>
       </div>
@@ -404,6 +404,7 @@ body {
     <div class="template-page">
       <h1>GeoConnections</h1>
       <p>(Coming soon)</p>
+    
     </div>
   </template>
   <template id="statsPage">
@@ -412,10 +413,26 @@ body {
       <p>(No stats yet)</p>
     </div>
   </template>
-  <template id="guessCountryGame">
-    <div id="guessCountryGameContainer">
-      <!-- The original Guess the Country game will be rendered here -->
+
+  <!-- Guess the Country Game Markup Template -->
+  <template id="guessCountryGameMarkup">
+    <div class="gtc-topbar">
+      <button class="gtc-back-btn" id="gtcBackBtn" title="Back to Home" aria-label="Back to Home">
+        <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="gtc-giveup-btn" id="giveUpBtn" type="button">Give Up</button>
     </div>
+    <h1>CountryGuess<img src="Logos/countyguess_no_bg.png" alt="logo"></h1>
+    <div style="position:relative;max-width:650px;width:100%;margin:0 auto;">
+      <input type="text" id="guessInput" placeholder="Enter a country..." autocomplete="off" style="width:100%;font-size:1.3em;padding:15px 30px;border-radius:16px;border:2px solid #222;outline:none;box-sizing:border-box;">
+      <div id="suggestions" style="position:absolute;top:110%;left:0;right:0;z-index:10;"></div>
+    </div>
+    <div id="results"></div>
+  </template>
+
+  <!-- Placeholder for SPA template system, not used for markup anymore -->
+  <template id="guessCountryGame">
+    <div id="guessCountryGameContainer"></div>
   </template>
 
   <!-- The original Guess the Country game markup is now rendered dynamically -->
@@ -485,21 +502,11 @@ document.getElementById("navStats").addEventListener("click", () => {
     // Render the game container
     const gameDiv = document.createElement('div');
     gameDiv.id = 'guessCountryGameContainer';
-    // Insert the original game markup with topbar and buttons
-    gameDiv.innerHTML = `
-      <div class="gtc-topbar">
-        <button class="gtc-back-btn" id="gtcBackBtn" title="Back to Home" aria-label="Back to Home">
-          <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <button class="gtc-giveup-btn" id="giveUpBtn" type="button">Give Up</button>
-      </div>
-      <h1>CountryGuess<img src="../Logos/countyguess_no_bg.png" alt="logo"></h1>
-      <div style="position:relative;max-width:650px;width:100%;margin:0 auto;">
-        <input type="text" id="guessInput" placeholder="Enter a country..." autocomplete="off" style="width:100%;font-size:1.3em;padding:15px 30px;border-radius:16px;border:2px solid #222;outline:none;box-sizing:border-box;">
-        <div id="suggestions" style="position:absolute;top:110%;left:0;right:0;z-index:10;"></div>
-      </div>
-      <div id="results"></div>
-    `;
+    // Clone the template markup and append
+    const template = document.getElementById('guessCountryGameMarkup');
+    if (template) {
+      gameDiv.appendChild(template.content.cloneNode(true));
+    }
     mainContent.appendChild(gameDiv);
     // Add event for back button
     setTimeout(() => {
@@ -558,7 +565,7 @@ document.getElementById("navStats").addEventListener("click", () => {
       setTimeout(() => { suggestionsDiv.innerHTML = ""; }, 120);
     });
     guessInput.addEventListener("keydown", function(e) {
-      if (e.key === "Enter") submitGuess();
+      if (e.key === "Enter") submitGuess(); suggestionsDiv.innerHTML = "";
     });
     // Give Up button logic
     const giveUpBtn = document.getElementById('giveUpBtn');
@@ -690,12 +697,12 @@ document.getElementById("navStats").addEventListener("click", () => {
         .select("name, continent, avg_temp, population, area_sq_km, borders, flag, landlocked, abbreviation")
         .eq("country", true);
       if (error || !possible || !Array.isArray(possible)) {
-        alert("Country not found!");
+        // alert("Country not found!");
         return;
       }
       const guess = possible.find(row => normalizeString(row.name) === normalizeString(guessNameRaw));
       if (!guess) {
-        alert("Country not found!");
+        // alert("Country not found!");
         return;
       }
       if (guessedAbbreviations.includes(guess.abbreviation)) {
@@ -723,16 +730,14 @@ document.getElementById("navStats").addEventListener("click", () => {
     const header = document.createElement("div");
     header.className = "guess-header";
     if (guess.flag) {
-      const flagSpan = document.createElement("span");
-      flagSpan.className = "guess-flag";
-      flagSpan.style.display = "inline-flex";
-      flagSpan.style.alignItems = "center";
-      flagSpan.style.justifyContent = "center";
-      flagSpan.style.fontSize = "2em";
-      flagSpan.style.width = "38px";
-      flagSpan.style.height = "26px";
-      flagSpan.textContent = guess.flag;
-      header.appendChild(flagSpan);
+      const flagimg = document.createElement("img");
+      flagimg.src = guess.flag;
+      flagimg.alt = "Flag";
+      flagimg.style.display = "inline-flex";
+      flagimg.style.alignItems = "center";
+      flagimg.style.justifyContent = "center";
+      flagimg.style.fontSize = "2em";
+      header.appendChild(flagimg);
     }
     const nameSpan = document.createElement("span");
     nameSpan.className = "guess-title";
@@ -803,7 +808,7 @@ document.getElementById("navStats").addEventListener("click", () => {
     const modal = document.getElementById('winModal');
     document.body.style.overflow = 'hidden';
     modal.style.display = 'flex';
-    document.getElementById('winFlag').textContent = country.flag || '';
+    document.getElementById('winFlag').src = country.flag || '';
     document.getElementById('winText').textContent = `You guessed ${country.name}!`;
     document.getElementById('winGuesses').textContent = `in ${guesses} guess${guesses === 1 ? '' : 'es'} — congrats!`;
   }
