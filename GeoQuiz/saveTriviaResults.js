@@ -42,6 +42,7 @@ supabase.auth.onAuthStateChange((event, session) => {
  * @param {string} params.game_id
  * @param {number} params.guessCount
  * @param {number} params.mistakes
+ * @param {string} params.target_country
  * @param {boolean} params.gave_up - whether the user gave up on the quiz
  * @returns {Promise<{data: Object, error: Error|null}>}
  */
@@ -49,13 +50,15 @@ export async function saveTriviaResult({
   game_id,
   guessCount,
   mistakes,
-  gave_up
+  gave_up, 
+  target_country,
 }) {
   console.log('[quizApi] saveTriviaResult called with:', {
     game_id,
     guessCount,
     mistakes,
-    gave_up
+    gave_up,
+    target_country,
   });
 
   // Ensure fresh user info
@@ -83,6 +86,7 @@ const { data, error } = await supabase
     score: guessCount,
     mistakes: mistakes, // <-- add this line
     gave_up: gave_up,
+    country_guessed: target_country, // <-- add this line
     played_at: new Date().toISOString()
   }])
   .select()
