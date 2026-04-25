@@ -6,6 +6,9 @@
   <title>CountryGuess</title>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+html, body {
+  overflow-x: hidden;
+}
 /* --- SPA Main Layout --- */
 #mainContent {
   flex: 1;
@@ -297,6 +300,108 @@ body {
   transform: translateY(0) scale(1);
   animation: cardWaveUp 0.55s cubic-bezier(.4,1.4,.6,1) forwards;
 }
+
+
+#winPage {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+  color: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: 'Sora', Arial, sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(.4,1.4,.6,1);
+}
+#winPage.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+#winPage .win-content {
+  color: #222;
+  padding: 40px 32px 32px 32px;
+  border-radius: 32px;
+  max-width: 90vw;
+  min-width: 860px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(40px);
+  opacity: 0;
+  transition: transform 0.5s cubic-bezier(.4,1.4,.6,1), opacity 0.5s cubic-bezier(.4,1.4,.6,1);
+}
+#winPage.active .win-content {
+  transform: translateY(0);
+  opacity: 1;
+}
+#winPage .win-topbar {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 18px;
+}
+#winPage .win-back-btn {
+  background: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  padding: 6px 10px 6px 2px;
+  border-radius: 50%;
+  transition: background 0.15s;
+  margin-right: 8px;
+}
+#winPage .win-back-btn:hover {
+  background: #eee;
+}
+#winPage .win-flag {
+  font-size: 4em;
+  margin-bottom: 18px;
+}
+#winPage .win-flag img {
+  width: 200px;
+  height: auto;
+  border: 1px solid #ccc;
+  max-height: 220px;
+}
+#winPage .win-text {
+  font-size: 2em;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+#winPage .win-guesses {
+  font-size: 1.2em;
+  margin-bottom: 18px;
+}
+#winPage .win-play-again {
+  font-family: 'Sora', Arial, sans-serif;
+  font-size: 1.2em;
+  padding: 12px 32px;
+  border-radius: 16px;
+  border: none;
+  background: #8ccd60;
+  color: #222;
+  font-weight: 700;
+  box-shadow: 0 2px 8px #0003;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+#winPage .win-play-again:hover {
+  background: #7bbf54;
+}
+
 @keyframes cardWaveUp {
   0% {
     opacity: 1;
@@ -439,17 +544,27 @@ body {
   <!-- The original Guess the Country game markup is now rendered dynamically -->
 
   <!-- Win Modal (kept outside for overlay) -->
-  <div id="winModal" style="display:none;position:fixed;z-index:10000;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);color:#fff;align-items:center;justify-content:center;flex-direction:column;font-family:'Sora',Arial,sans-serif;">
-    <div style="background:#fff;color:#222;padding:40px 32px 32px 32px;border-radius:32px;box-shadow:0 8px 32px #000a;max-width:90vw;min-width:260px;display:flex;flex-direction:column;align-items:center;">
-      <div id="winFlag" style="font-size:4em;margin-bottom:18px;"><img src="guess.flag" alt=""></div>
-      <div id="winText" style="font-size:2em;font-weight:700;margin-bottom:10px;"></div>
-      <div id="winGuesses" style="font-size:1.2em;margin-bottom:18px;"></div>
-      <button id="playAgainBtn" style="font-family:'Sora',Arial,sans-serif;font-size:1.2em;padding:12px 32px;border-radius:16px;border:none;background:#8ccd60;color:#222;font-weight:700;box-shadow:0 2px 8px #0003;cursor:pointer;transition:background 0.2s;">Play Again</button>
+  <div id="winPage">
+    <button class="win-back-btn" id="winBackBtn" title="Back to Home" aria-label="Back to Home">
+          <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+    <div class="win-content">
+      <div class="win-topbar">
+      </div>
+      <div class="win-flag"><img id="winFlagImg" src="guess.flag" alt=""></div>
+      <div class="win-text" id="winText"></div>
+      <div class="win-guesses" id="winGuesses"></div>
+      <button class="win-play-again" id="playAgainBtn">Play Again</button>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
+  <script type="module">
+import { saveTriviaResult } from './saveTriviaResults.js';
+
+const game_id = "7d5e5850-518b-4c07-91e7-aecde9de0490";
+let gave_up = false;
+let mistakes = 0;
 
 function triggerVibration(pattern = 50) {
   // ✅ Standard vibration (Android, etc.)
@@ -575,6 +690,8 @@ document.getElementById("navStats").addEventListener("click", () => {
         if (!targetCountry) return;
         // Show the answer in a modal-like alert, then go back to home
         alert(`The answer was: ${targetCountry.name}`);
+        gave_up = true;
+        onQuizComplete();
         showStartScreen();
       };
     }
@@ -795,28 +912,45 @@ document.getElementById("navStats").addEventListener("click", () => {
     if (guess.name === targetCountry.name) {
       setTimeout(() => {
         showWinModal(targetCountry, guessCount);
+        onQuizComplete();
       }, 1800);
     }
-    // Play again button logic
-    document.getElementById('playAgainBtn').onclick = function() {
-      document.getElementById('winModal').style.display = 'none';
-      document.body.style.overflow = '';
-      document.getElementById('results').innerHTML = '';
-      guessedAbbreviations = [];
-      guessCount = 0;
-      loadTarget();
-      guessInput.value = '';
-      guessInput.focus();
-    };
   }
 
   function showWinModal(country, guesses) {
-    const modal = document.getElementById('winModal');
+    // Animate win page in
+    const winPage = document.getElementById('winPage');
+    winPage.classList.add('active');
     document.body.style.overflow = 'hidden';
-    modal.style.display = 'flex';
-    document.getElementById('winFlag').src = country.flag || '';
+    // Set the flag image src
+    const img = document.getElementById('winFlagImg');
+    if (img) {
+      img.src = country.flag || '';
+      img.alt = country.name + ' flag';
+    }
     document.getElementById('winText').textContent = `You guessed ${country.name}!`;
     document.getElementById('winGuesses').textContent = `in ${guesses} guess${guesses === 1 ? '' : 'es'} — congrats!`;
+    // Play again button logic
+    document.getElementById('playAgainBtn').onclick = function() {
+      winPage.classList.remove('active');
+      setTimeout(() => {
+        document.body.style.overflow = '';
+        document.getElementById('results').innerHTML = '';
+        guessedAbbreviations = [];
+        guessCount = 0;
+        loadTarget();
+        guessInput.value = '';
+        guessInput.focus();
+      }, 500);
+    };
+    // Back button logic
+    document.getElementById('winBackBtn').onclick = function() {
+      winPage.classList.remove('active');
+      setTimeout(() => {
+        document.body.style.overflow = '';
+        showStartScreen();
+      }, 500);
+    };
   }
 
   function createCard(label, value, className) {
@@ -883,6 +1017,39 @@ document.getElementById("navStats").addEventListener("click", () => {
 
   // --- Initial load ---
   showStartScreen();
+
+
+// ...existing code...
+async function onQuizComplete() {
+  try {
+    // 1) Save the quiz result
+    const { data: savedResult, error } = await saveTriviaResult({
+      game_id,
+      guessCount,
+      gave_up,
+      mistakes,
+    });
+    if (error) throw error;
+    console.log('Result saved:', savedResult);
+
+    // 2) Run badge checks
+    //    We need to pass exactly the shape checkAndAwardBadges() expects:
+    // await checkAndAwardBadges({
+    //  game_id:     savedResult.game_id,
+    //  guessCount:   savedResult.guessCount,
+    //  gave_up:     savedResult.gave_up,
+    //  mistakes:    savedResult.mistakes,
+    //  played_at:   savedResult.played_at || new Date().toISOString(),
+    //  });
+    
+   } catch (err) {
+     // 3) Then update your UI (e.g. show results + any new badges)
+     console.error('Save failed:', err.message);
+   }
+}
+// ...existing code...
+
+
   </script>
 </body>
 </html>
