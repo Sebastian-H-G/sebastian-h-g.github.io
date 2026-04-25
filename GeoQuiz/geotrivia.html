@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CountryGuess</title>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -440,7 +441,7 @@ body {
   <!-- Win Modal (kept outside for overlay) -->
   <div id="winModal" style="display:none;position:fixed;z-index:10000;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);color:#fff;align-items:center;justify-content:center;flex-direction:column;font-family:'Sora',Arial,sans-serif;">
     <div style="background:#fff;color:#222;padding:40px 32px 32px 32px;border-radius:32px;box-shadow:0 8px 32px #000a;max-width:90vw;min-width:260px;display:flex;flex-direction:column;align-items:center;">
-      <div id="winFlag" style="font-size:4em;margin-bottom:18px;"></div>
+      <div id="winFlag" style="font-size:4em;margin-bottom:18px;"><img src="guess.flag" alt=""></div>
       <div id="winText" style="font-size:2em;font-weight:700;margin-bottom:10px;"></div>
       <div id="winGuesses" style="font-size:1.2em;margin-bottom:18px;"></div>
       <button id="playAgainBtn" style="font-family:'Sora',Arial,sans-serif;font-size:1.2em;padding:12px 32px;border-radius:16px;border:none;background:#8ccd60;color:#222;font-weight:700;box-shadow:0 2px 8px #0003;cursor:pointer;transition:background 0.2s;">Play Again</button>
