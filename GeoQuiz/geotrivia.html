@@ -1021,6 +1021,7 @@ document.getElementById("navStats").addEventListener("click", () => {
 
 // ...existing code...
 async function onQuizComplete() {
+  console.log('onQuizComplete called with:', { game_id, guessCount, gave_up, mistakes });
   try {
     // 1) Save the quiz result
     const { data: savedResult, error } = await saveTriviaResult({
