@@ -75,17 +75,18 @@ export async function saveTriviaResult({
   console.log('[quizApi] Inserting quiz result for user:', userId);
 
   // Perform the insert, select back the single row
-  const { data, error } = await supabase
-    .from('trivia_results')
-    .insert([{
-      player_id:           userId,
-      game_id:          game_id,
-      score:            guessCount,
-      gave_up:          gave_up,
-      played_at:        new Date().toISOString()
-    }])
-    .select()    // <<-- ADDED to fetch the inserted row
-    .single();   // <<-- ADDED so data is one object, not an array
+const { data, error } = await supabase
+  .from('trivia_results')
+  .insert([{
+    player_id: userId,
+    game_id: game_id,
+    score: guessCount,
+    mistakes: mistakes, // <-- add this line
+    gave_up: gave_up,
+    played_at: new Date().toISOString()
+  }])
+  .select()
+  .single();
 
   console.log('[quizApi] Insert response:', { data, error });
   if (error) {
