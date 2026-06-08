@@ -196,6 +196,31 @@ body.game-mode #bottomNav {
   background: #eee;
 }
 
+/* Move the topbar to overlay so heading/input sit near the top */
+.gtc-topbar {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  right: 12px;
+  margin-bottom: 0;
+  z-index: 150;
+  padding: 6px 8px;
+}
+
+/* Container for the Guess page: allow absolute topbar and small padding */
+#guessCountryGameContainer {
+  position: relative;
+  padding-top: 12px;
+  width: 100%;
+}
+
+/* Heading and input moved up */
+#guessCountryGameContainer h1 {
+  margin: 20px 0 4px 0;
+  padding-top: 2px;
+}
+.guess-input-wrapper { margin: 4px auto 0; position: relative; max-width: 88vw; width:100%; }
+
 /* Back buttons (go back) icon colors */
 .gtc-back-btn, .quiz-back-btn, .win-back-btn { color: var(--icon-inactive); }
 .gtc-back-btn svg, .quiz-back-btn svg, .win-back-btn svg { stroke: currentColor !important; transition: color .12s ease, stroke .12s ease; }
@@ -211,7 +236,7 @@ body.game-mode #bottomNav {
   font-size: 1.1em;
   font-weight: 700;
   padding: 10px 20px;
-  margin: 8px 8px;
+  margin: 5px 20px 0 0;
   box-shadow: 0 2px 8px #0002;
   cursor: pointer;
   transition: background 0.18s;
@@ -1095,7 +1120,7 @@ body {
       <button class="gtc-giveup-btn" id="giveUpBtn" type="button">Give Up</button>
     </div>
     <h1>CountryGuess<img src="Logos/countyguess_no_bg.png" alt="logo"></h1>
-    <div style="position:relative;max-width:88vw;width:100%;margin:8px auto 0;">
+    <div class="guess-input-wrapper">
       <input type="text" id="guessInput" placeholder="Enter a country..." autocomplete="off" style="width:100%;font-size:1.3em;padding:15px 30px;border-radius:16px;border:2px solid #222;outline:none;box-sizing:border-box;">
       <div id="suggestions" style="position:absolute;top:110%;left:0;right:0;z-index:10;"></div>
     </div>
