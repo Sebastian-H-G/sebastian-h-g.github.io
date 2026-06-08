@@ -42,6 +42,8 @@ document.getElementById("navStats").addEventListener("click", () => {
     mainContent.appendChild(templates.start.content.cloneNode(true));
     bottomNav.style.display = 'flex';
     document.body.classList.remove('game-mode');
+    // set home nav active
+    setActiveNav('navHome');
     // Add event listeners for game selection
     setTimeout(() => {
       document.getElementById('gameGuessCountry').onclick = showGuessCountryGame;
@@ -54,6 +56,8 @@ document.getElementById("navStats").addEventListener("click", () => {
     mainContent.innerHTML = '';
     // Hide navbar
     bottomNav.style.display = 'none';
+    // clear active nav when in-game
+    setActiveNav(null);
     // Render the game container
     const gameDiv = document.createElement('div');
     gameDiv.id = 'guessCountryGameContainer';
@@ -76,6 +80,8 @@ document.getElementById("navStats").addEventListener("click", () => {
     mainContent.innerHTML = '';
     bottomNav.style.display = 'none';
     document.body.classList.add('game-mode');
+    // clear active nav when in-game
+    setActiveNav(null);
     mainContent.appendChild(templates.geo.content.cloneNode(true));
     // Initialize the GeoDecide game
     setTimeout(async () => {
@@ -90,11 +96,49 @@ document.getElementById("navStats").addEventListener("click", () => {
     mainContent.appendChild(templates.stats.content.cloneNode(true));
     bottomNav.style.display = 'flex';
     document.body.classList.remove('game-mode');
+    // set stats nav active
+    setActiveNav('navStats');
   }
 
-  // Navbar event listeners
-  document.getElementById('navHome').onclick = showStartScreen;
-  document.getElementById('navStats').onclick = showStats;
+  // Navbar event listeners: update URL hash so links can deep-link
+  document.getElementById('navHome').onclick = () => { location.hash = '#home'; };
+  document.getElementById('navStats').onclick = () => { location.hash = '#stats'; };
+
+  // helper to set active nav button (id) or clear (null)
+  function setActiveNav(id) {
+    try {
+      const btns = bottomNav.querySelectorAll('button');
+      btns.forEach(b => {
+        if (id && b.id === id) {
+          b.classList.add('active');
+          b.setAttribute('aria-pressed', 'true');
+        } else {
+          b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
+        }
+      });
+    } catch (e) { /* ignore */ }
+  }
+
+  // Routing: map location.hash to pages so direct links work
+  function routeFromHash() {
+    const h = (location.hash || '').replace('#', '').toLowerCase();
+    if (h === 'guess') {
+      showGuessCountryGame();
+    } else if (h === 'geo') {
+      showGeoDecide();
+    } else if (h === 'stats') {
+      showStats();
+    } else {
+      // default/home
+      showStartScreen();
+    }
+  }
+
+  // handle back/forward and initial load
+  window.addEventListener('hashchange', routeFromHash);
+  // route once on load
+  routeFromHash();
 
   // Handle navigation from GeoDecide game
   window.addEventListener('navigateToHome', () => {
@@ -227,21 +271,11 @@ document.getElementById("navStats").addEventListener("click", () => {
     const allMatches = startsWithMatches.concat(containsMatches, secondaryMatches);
     if (allMatches.length === 0) return;
     const list = document.createElement("div");
-    list.style.background = "#fff";
-    list.style.border = "2px solid #222";
-    list.style.borderRadius = "16px";
-    list.style.boxShadow = "0 2px 8px rgba(0,0,0,0.07)";
-    list.style.overflowY = "auto";
-    list.style.maxHeight = "260px";
-    list.style.marginTop = "4px";
+    list.className = 'suggestions-list';
     allMatches.slice(0, 10).forEach(name => {
       const item = document.createElement("div");
       item.innerText = name;
-      item.style.padding = "16px 18px";
-      item.style.fontWeight = "bold";
-      item.style.fontSize = "1.2em";
-      item.style.cursor = "pointer";
-      item.style.borderBottom = "1px solid #aaa";
+      item.className = 'suggestion-item';
       item.addEventListener("mousedown", function(e) {
         e.preventDefault();
         guessInput.value = name;
@@ -468,9 +502,69 @@ document.getElementById("navStats").addEventListener("click", () => {
 
   // --- Initial load ---
   showStartScreen();
+// Debug helpers — set `targetCountry` manually from the browser console for testing
+window.setTargetCountryDirect = function(obj) {
+  targetCountry = obj;
+  guessedAbbreviations = [];
+  guessCount = 0;
+  const resEl = document.getElementById('results');
+  if (resEl) resEl.innerHTML = '';
+  console.log('targetCountry set (direct):', targetCountry);
+};
 
-
-// ...existing code...
+window.setTargetCountryByName = async function(name) {
+  if (!name) return console.warn('Provide a country name or abbreviation');
+  try {
+    // Try exact / case-insensitive match first
+    let res = await supabaseClient
+      .from('countries')
+      .select('name, continent, avg_temp, population, area_sq_km, borders, flag, landlocked, abbreviation')
+      .eq('country', true)
+      .ilike('name', name)
+      .limit(1)
+      .single();
+    if (res.error || !res.data) {
+      // fallback: partial match
+      res = await supabaseClient
+        .from('countries')
+        .select('name, continent, avg_temp, population, area_sq_km, borders, flag, landlocked, abbreviation')
+        .eq('country', true)
+        .ilike('name', `%${name}%`)
+        .limit(1)
+        .single();
+    }
+    if (res && res.data) {
+      targetCountry = res.data;
+      guessedAbbreviations = [];
+      guessCount = 0;
+      const resEl = document.getElementById('results');
+      if (resEl) resEl.innerHTML = '';
+      console.log('targetCountry set (by name):', targetCountry);
+      return targetCountry;
+    }
+    // try abbreviation fallback
+    const abbr = String(name).trim().toUpperCase();
+    const abbrRes = await supabaseClient
+      .from('countries')
+      .select('name, continent, avg_temp, population, area_sq_km, borders, flag, landlocked, abbreviation')
+      .eq('country', true)
+      .eq('abbreviation', abbr)
+      .limit(1)
+      .single();
+    if (abbrRes && abbrRes.data) {
+      targetCountry = abbrRes.data;
+      guessedAbbreviations = [];
+      guessCount = 0;
+      const resEl = document.getElementById('results');
+      if (resEl) resEl.innerHTML = '';
+      console.log('targetCountry set (by abbreviation):', targetCountry);
+      return targetCountry;
+    }
+    console.warn('No country found for', name);
+  } catch (err) {
+    console.error('Error setting targetCountry:', err);
+  }
+};
 async function onQuizComplete() {
   console.log('onQuizComplete called with:', { game_id, guessCount, gave_up, mistakes });
   try {
