@@ -280,9 +280,10 @@ document.getElementById("navStats").addEventListener("click", () => {
         e.preventDefault();
         guessInput.value = name;
         suggestionsDiv.innerHTML = "";
+        guessInput.blur();
         guessInput.focus();
         submitGuess();
-        setTimeout(() => { guessInput.value = ""; }, 10);
+        setTimeout(() => { guessInput.value = ""; guessInput.blur(); }, 10);
       });
       list.appendChild(item);
     });
