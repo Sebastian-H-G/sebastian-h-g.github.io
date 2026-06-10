@@ -559,12 +559,6 @@
       max-width: none;
     }
 
-    /* Mobile override: use larger relative width (iPhone widths) */
-    @media (max-width: 480px) {
-      :root {
-        --guess-width: 90vw;
-      }
-    }
 
     .guess-card {
       background: var(--card-bg);
@@ -942,8 +936,13 @@
     }
 
 
-    /* Win modal responsive tweaks for small screens */
-    @media (max-width: 428px) {
+
+
+    @media (max-width: 480px) {
+
+            :root {
+        --guess-width: 90vw;
+      }
       #winPage .win-content {
         width: 94vw;
         min-width: unset;
@@ -969,10 +968,7 @@
         top: 12px;
         left: 12px;
       }
-    }
 
-
-    @media (max-width: 480px) {
       .guess-card {
         max-width: 100%;
         width: 90vw;
@@ -981,8 +977,7 @@
       }
 
       .guess-card>div {
-        padding-left: 4vw !important;
-        padding-right: 4vw !important;
+        padding: 7px 4px !important;
       }
 
       /* Force a 3x2 grid for the six stat cards and reduce sizes to fit small screens */
