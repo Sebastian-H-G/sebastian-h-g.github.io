@@ -1,1036 +1,1412 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CountryGuess</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-html, body {
-  overflow-x: hidden; /* prevent horizontal scroll */
-  overflow-y: auto;   /* allow vertical scrolling */
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-}
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-/* Color variables for light / dark themes */
-:root {
-  --bg: #f8f4ee;
-  --text: #222222;
-  --muted: #000000;
-  --card-bg: #ffffff;
-  --card-border: #222222;
-  --accent: #8ccd60;
-  --navbar-bg: #ffffff;
-  --container-bg: #ffffff;
-  /* icon colors (light mode defaults) */
-  --icon-active: #222222;
-  --icon-inactive: #b3b3b3;
-  --icon-hover: #000000;
-}
-
-.dark-mode {
-  --bg: #1e1e1f;            /* Background */
-  --navbar-bg: #262627;     /* Navbar */
-  --container-bg: #2b2b2c;  /* Container */
-  --card-bg: #323233;       /* Card background */
-  --card-border: #00000033; /* 20% black */
-  --card-shadow: #00000055; /* card shadow */
-  --accent-success: #6fae4f;
-  --accent-error: #b84a4a;
-  --accent: var(--accent-success);
-  --text: #d6d6d6;          /* Card text */
-  --card-label: #f5f5f5;    /* Card label */
-  --muted: #d0d0d0;
-  --input-bg: #3a3a3b;
-  --input-text: #ffffff;
-  --input-placeholder: #8a8a8a;
-  background-color: var(--bg);
-  color: var(--text);
-    --icon-active: #e6e6e6;
-  --icon-inactive: #b3b3b3;
-  --icon-hover: #ffffff;
-}
-/* --- SPA Main Layout --- */
-#mainContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-/* --- Bottom Navbar --- */
-#bottomNav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 64px;
-  background: var(--navbar-bg, var(--card-bg));
-  border-top: 2px solid rgba(255,255,255,0.04);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 10001;
-  box-shadow: 0 -2px 12px #0001;
-}
-body.game-mode #bottomNav {
-  display: none !important;
-  height: 0 !important;
-}
-#bottomNav button {
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0 16px;
-}
-
-/* Navbar icon coloring using CSS variables */
-#bottomNav button svg { stroke: currentColor !important; color: var(--icon-inactive); transition: stroke .12s ease, color .12s ease; }
-#bottomNav button.active svg, #bottomNav button[aria-pressed="true"] svg { color: var(--icon-active); stroke: currentColor !important; }
-#bottomNav button:hover svg { color: var(--icon-hover); stroke: currentColor !important; }
-
-/* --- Start Screen Game Cards --- */
-.start-screen-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - 64px);
-  width: 100%;
-}
-.game-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
-  align-items: center;
-  justify-content: center;
-}
-.game-card {
-  background: var(--card-bg);
-  border-radius: 24px;
-  box-shadow: 0 4px 24px var(--card-shadow);
-  border: 2px solid var(--card-border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 32px 48px;
-  cursor: pointer;
-  transition: box-shadow .2s;
-  width: 60vw;
-}
-.game-card img {
-  height: 64px;
-  margin-bottom: 12px;
-}
-.game-card svg { stroke: currentColor !important; }
-.game-card span {
-  font-size: 1.5em;
-  font-weight: 700;
-  color: var(--text);
-}
-
-/* --- Template Pages --- */
-.template-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - 64px);
-  width: 100%;
-}
-.template-page h1 {
-  font-size: 2.2em;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-.template-page p {
-  color: var(--muted);
-}
-
-/* --- Guess the Country Game Container --- */
-#guessCountryGameContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* --- Guess the Country Page Buttons --- */
-.gtc-topbar {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  padding: 0px 12px 0 12px;
-  box-sizing: border-box;
-}
-.gtc-back-btn {
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 10px 6px 2px;
-  border-radius: 50%;
-  transition: background 0.15s;
-}
-.gtc-back-btn:hover {
-  background: #eee;
-}
-
-/* Move the topbar to overlay so heading/input sit near the top */
-.gtc-topbar {
-  position: absolute;
-  top: 8px;
-  left: 12px;
-  right: 12px;
-  margin-bottom: 0;
-  z-index: 150;
-  padding: 6px 8px;
-}
-
-/* Container for the Guess page: allow absolute topbar and small padding */
-#guessCountryGameContainer {
-  position: relative;
-  padding-top: 12px;
-  width: 100%;
-}
-
-/* Heading and input moved up */
-#guessCountryGameContainer h1 {
-  margin: 20px 0 4px 0;
-  padding-top: 2px;
-}
-.guess-input-wrapper { margin: 4px auto 0; position: relative; max-width: 88vw; width:100%; }
-
-/* Back buttons (go back) icon colors */
-.gtc-back-btn, .quiz-back-btn, .win-back-btn { color: var(--icon-inactive); }
-.gtc-back-btn svg, .quiz-back-btn svg, .win-back-btn svg { stroke: currentColor !important; transition: color .12s ease, stroke .12s ease; }
-.gtc-back-btn:hover, .quiz-back-btn:hover, .win-back-btn:hover { color: var(--icon-hover); }
-.gtc-back-btn.active, .quiz-back-btn.active, .win-back-btn.active, .gtc-back-btn[aria-pressed="true"], .quiz-back-btn[aria-pressed="true"], .win-back-btn[aria-pressed="true"] { color: var(--icon-active); }
-.gtc-giveup-btn {
-  background: var(--accent-error);
-  color: var(--input-text);
-  border: none;
-  outline: none;
-  border-radius: 16px;
-  font-family: 'Sora', Arial, sans-serif;
-  font-size: 1.1em;
-  font-weight: 700;
-  padding: 10px 20px;
-  margin: 5px 20px 0 0;
-  box-shadow: 0 2px 8px #0002;
-  cursor: pointer;
-  transition: background 0.18s;
-}
-.gtc-giveup-btn:hover {
-  filter: brightness(0.95);
-}
-/* Resize and align the logo image in the h1 */
-h1 img {
-  height: 1.7em;
-  vertical-align: middle;
-  margin-left: 10px;
-  margin-bottom: 4px;
-}
-/* Make input font-weight less bold and ensure it is not overwritten */
-#guessInput {
-  font-family: 'Sora', Arial, sans-serif !important;
-  font-weight: 500 !important;
-  display: block;
-  width: 88vw !important;
-  max-width: 570px;
-  margin: 6px auto;
-}
-
-/* input theming */
-#guessInput::placeholder { color: var(--input-placeholder); }
-.dark-mode #guessInput { background: var(--input-bg); color: var(--input-text); border-color: var(--card-border); }
-.dark-mode #guessInput::placeholder { color: var(--input-placeholder); }
-
-body {
-  font-family: 'Sora', Arial, sans-serif;
-  text-align: center;
-  background: var(--bg);
-  color: var(--text);
-}
-
-#results {
-  margin-top: 20px;
-}
-
-.guess-card {
-  background: var(--card-bg);
-  border: 2px solid var(--card-border);
-  border-radius: 18px;
-  /* 3D black shadow effect to match .card */
-  box-shadow:
-    0 2px 0 0 #222,
-    0 2px 0 0 #111,
-    0 8px 16px 0 #00000033;
-  margin: 24px auto;
-  padding: 0;
-  max-width: 570px;
-  width: 88vw;
-  text-align: left;
-  position: relative;
-}
-
-/* Suggestions list styling (compact) */
-.suggestions-list {
-  background: var(--card-bg);
-  border: 2px solid var(--card-border);
-  border-radius: 16px;
-  box-shadow: 0 2px 8px var(--card-shadow);
-  overflow-y: auto;
-  max-height: 260px;
-  margin: 4px auto 0 auto;
-  width: 88vw !important;
-  max-width: 640px;
-}
-.suggestions-list .suggestion-item {
-  padding: 16px 18px;
-  font-weight: bold;
-  font-size: 1.2em;
-  cursor: pointer;
-  border-bottom: 1px solid #aaa;
-}
-.suggestions-list .suggestion-item:last-child { border-bottom: none; }
-.dark-mode .suggestions-list { background: var(--card-bg); border: 2px solid var(--card-border); box-shadow: 0 2px 8px var(--card-shadow); }
-.dark-mode .suggestions-list .suggestion-item { border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text); }
-
-/* Apple-style toggle */
-.apple-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-}
-.apple-toggle .label { font-weight:700; color:var(--text); }
-.apple-toggle .switch {
-  width: 52px; height: 32px; position: relative; border-radius: 999px; background: #d0d5d9; transition: background .18s; cursor: pointer; border: 1px solid rgba(0,0,0,0.06);
-}
-.apple-toggle .switch .knob { position:absolute; top:3px; left:3px; width:26px; height:26px; border-radius:50%; background:white; box-shadow:0 2px 6px rgba(0,0,0,0.12); transition: transform .18s; }
-.apple-toggle input[type=checkbox] { display:none; }
-.apple-toggle input[type=checkbox]:checked + .switch { background: var(--accent); }
-.apple-toggle input[type=checkbox]:checked + .switch .knob { transform: translateX(20px); }
-
-.guess-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.guess-flag {
-  width: 38px;
-  height: 26px;
-  border-radius: 4px;
-  margin-right: 14px;
-  border: 1px solid #eee;
-  object-fit: cover;
-}
-
-.guess-title {
-  font-size: 1.35em;
-  font-weight: 900;
-  margin-right: 10px;
-}
-
-.guess-number {
-  color: #aaa;
-  font-size: 1.1em;
-  font-weight: bold;
-  margin-left: auto;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-.card {
-  border-radius: 10px;
-  border: 2px solid #bbb;
-  background: var(--card-bg);
-  padding: 12px 8px 8px 12px;
-  min-width: 100px;
-  min-height: 56px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 1em;
-  /* 3D black shadow effect */
-  box-shadow:
-    0 2px 0 0 #222, /* strong bottom shadow */
-    0 2px 0 0 #111, /* deeper shadow */
-    0 8px 16px 0 #00000033; /* soft blur for realism */
-  position: relative;
-  border-width: 2px;
-.card.green {
-  background: var(--accent);
-  border-color: var(--card-border);
-  color: var(--text);
-}
-.card.red {
-  background: #ff6b6b;
-  border-color: var(--card-border);
-  color: var(--text);
-}
-.card.neutral {
-  background: none;
-  border-color: var(--card-border);
-  color: var(--text);
-}
-
-}
-
-.card.green {
-  background: var(--accent);
-  border-color: var(--card-border);
-  color: var(--text);
-}
-.card.red {
-  background: #ff6b6b;
-  border-color: var(--card-border);
-  color: var(--text);
-}
-.card.neutral {
-  background: none;
-  border-color: var(--card-border);
-  color: var(--text);
-}
-
-.card-label {
-  font-size: 0.70em;
-  color: var(--muted);
-  font-weight: 600;
-  opacity: .9;
-  margin-bottom: 2px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.card-value {
-  font-size: 1em;
-  text-align: center; 
-  font-weight: bold;
-}
-
-/* Card appear animation */
-.card-appear {
-  opacity: 0;
-  transform: translateY(30px) scale(0.98);
-  transition: opacity 0.38s cubic-bezier(.4,1.4,.6,1), transform 0.38s cubic-bezier(.4,1.4,.6,1);
-}
-.card-appear.card-appear-active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-/* Wave animation for correct guess */
-.card-wave {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  animation: cardWaveUp 0.55s cubic-bezier(.4,1.4,.6,1) forwards;
-}
-
-
-#winPage {
-  position: fixed;
-  z-index: 10000;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: var(--card-bg);
-  color: var(--text);
-  overflow-y: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  font-family: 'Sora', Arial, sans-serif;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s cubic-bezier(.4,1.4,.6,1);
-}
-#winPage.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-#winPage .win-content {
-  background: var(--card-bg);
-  max-width: 90vw;
-  min-width: 860px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transform: translateY(40px);
-  opacity: 0;
-  transition: transform 0.5s cubic-bezier(.4,1.4,.6,1), opacity 0.5s cubic-bezier(.4,1.4,.6,1);
-}
-#winPage.active .win-content {
-  color: var(--text);
-  opacity: 1;
-}
-#winPage .win-topbar {
-  width: 100%;
-  display: flex;
-  color: var(--text);
-  align-items: center;
-  margin-bottom: 18px;
-}
-#winPage .win-back-btn {
-  color: var(--muted);
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background: var(--accent);
-  color: var(--text);
-  cursor: pointer;
-  display: flex;
-  padding: 6px 10px 6px 2px;
-  border-radius: 50%;
-  transition: background 0.15s;
-  margin-right: 8px;
-}
-#winPage .win-back-btn:hover {
-  background: #eee;
-}
-#winPage .win-flag {
-  font-size: 4em;
-  margin-bottom: 18px;
-}
-#winPage .win-flag img {
-  width: 200px;
-  height: auto;
-  border: 1px solid #ccc;
-  max-height: 220px;
-}
-#winPage .win-text {
-  font-size: 2em;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-#winPage .win-guesses {
-  font-size: 1.2em;
-  margin-bottom: 18px;
-}
-#winPage .win-play-again {
-  font-family: 'Sora', Arial, sans-serif;
-  font-size: 1.2em;
-  padding: 12px 32px;
-  border-radius: 16px;
-  border: none;
-  background: var(--accent);
-  color: var(--text);
-  font-weight: 700;
-  box-shadow: 0 2px 8px #0003;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 8px;
-}
-#winPage .win-play-again:hover {
-  background: #7bbf54;
-}
-
-@keyframes cardWaveUp {
-  0% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  40% {
-    opacity: 1;
-    transform: translateY(-30px) scale(1.05);
-  }
-  70% {
-    opacity: 1;
-    transform: translateY(-18px) scale(1.02);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-
-@media (max-width: 480px) {
-  .guess-card {
-    max-width: 100%;
-    width: 90vw;
-    margin: 18px auto;
-  }
-  .guess-card > div {
-    padding-left: 4vw !important;
-    padding-right: 4vw !important;
-  }
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  #results {
-    margin-top: 12px;
-  }
-  .guess-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-  #guessInput {
-    width: 90vw !important;
-    font-size: 1.1em;
-    padding-left: 6vw !important;
-    padding-right: 6vw !important;
-  }
-  #suggestions {
-    left: 0;
-    right: 0;
-    width: 90vw !important;
-    min-width: unset;
-    max-width: unset;
-  }
-  div[style*="max-width:560px"],
-  div[style*="max-width: 560px"],
-  div[style*="max-width:620px"],
-  div[style*="max-width: 620px"] {
-    max-width: 100% !important;
-    width: 90vw !important;
-    min-width: unset !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-  body {
-    padding: 0;
-  }
-}
-
-/* CSS for GeoDecide */
-/* --- Geography Quiz Game --- */
-.quiz-container {
-  width: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0;
-  overflow-y: auto;
-}
-
-.quiz-topbar {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 16px 12px;
-  box-sizing: border-box;
-  background: var(--card-bg);
-  border-bottom: 2px solid rgba(255,255,255,0.04);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.quiz-back-btn {
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 10px 6px 2px;
-  border-radius: 50%;
-  transition: background 0.15s;
-  position: absolute;
-  top: 16px;
-  left: 12px;
-}
-
-.quiz-back-btn:hover {
-  background: rgba(255,255,255,0.03);
-}
-
-.quiz-category {
-  font-size: 1.1em;
-  font-weight: 700;
-  color: var(--text);
-  flex: 1;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.quiz-score {
-  position: absolute;
-  top: 16px;
-  right: 12px;
-  padding: 8px 18px;
-  border-radius: 12px;
-  background: rgba(60, 60, 60, 0.25);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: black;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-#roundCounter {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.quiz-category-display {
-
-  font-size: 1.3em;
-  font-weight: 700;
-  color: var(--text);
-}
-
-.quiz-game-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  height: 100vh;
-  width: 100%;
-  min-height: 0;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.country-card {
-  background: var(--card-bg);
-  border-radius: 20px;
-  border: 1px solid var(--card-border);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: auto; /* nur hier scrollen falls nötig */
-  padding: 24px;
-  width: 100%;
-  max-width: 320px;
-  gap: 12px;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.country-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-
-.country-card.top-card {
-  animation: slideInTop 0.4s ease-out;
-}
-
-.country-card.bottom-card {
-  animation: slideInBottom 0.4s ease-out;
-}
-
-.country-flag {
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  overflow: hidden;
-}
-
-.country-flag img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.country-name {
-  font-size: 1.4em;
-  font-weight: 700;
-  color: var(--text);
-}
-
-.country-value {
-  font-size: 1.8em;
-  font-weight: 900;
-  color: var(--text);
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.country-value.hidden-value {
-  position: relative;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 2;
-  width: 80px;
-  height: 60px;
-  border-radius: 10px;
-}
-
-
-
-.country-value.visible-value {
-  color: var(--text);
-}
-
-.vs-indicator {
-  font-size: 1.2em;
-  font-weight: 700;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.quiz-buttons {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  width: 100%;
-  padding: 0 20px 20px 20px;
-  box-sizing: border-box;
-}
-
-.quiz-action-btn {
-  flex: 1;
-  max-width: 200px;
-  padding: 16px 24px;
-  font-size: 1.1em;
-  font-weight: 700;
-  border: 2px solid var(--card-border);
-  border-radius: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.2s;
-  font-family: 'Sora', Arial, sans-serif;
-  box-shadow: 0 2px 0 0 #222, 0 2px 0 0 #111, 0 4px 8px 0 #00000033;
-}
-
-.quiz-action-btn.higher-btn {
-  background: #8ccd60;
-  color: #222;
-}
-
-.quiz-action-btn.higher-btn:hover {
-  background: #7bbf54;
-  transform: translateY(-2px);
-}
-
-.quiz-action-btn.higher-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 0 0 0 #222, 0 2px 0 0 #111, 0 2px 4px 0 #00000033;
-}
-
-.quiz-action-btn.lower-btn {
-  background: #ff6b6b;
-  color: #222;
-}
-
-.quiz-action-btn.lower-btn:hover {
-  background: #e05555;
-  transform: translateY(-2px);
-}
-
-.quiz-action-btn.lower-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 0 0 0 #222, 0 2px 0 0 #111, 0 2px 4px 0 #00000033;
-}
-
-.quiz-instruction {
-  font-size: 1em;
-  font-weight: 600;
-  color: #555;
-  margin: 0 20px 8px 20px;
-}
-
-.quiz-feedback {
-  font-size: 1.2em;
-  font-weight: 700;
-  min-height: 28px;
-  margin: 0 20px 20px 20px;
-  text-align: center;
-}
-
-.quiz-feedback.correct {
-  color: #8ccd60;
-}
-
-.quiz-feedback.incorrect {
-  color: #ff6b6b;
-}
-
-@keyframes slideInTop {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInBottom {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 480px) {
-  .quiz-category {
-    font-size: 0.9em;
-  }
-  .quiz-score {
-    font-size: 0.9em;
-  }
-  .country-card {
-    max-width: 100%;
-    width: 90vw;
-  }
-  .quiz-buttons {
-    flex-direction: column;
-    padding: 0 20px 20px 20px;
-  }
-  .quiz-action-btn {
-    max-width: none;
-    width: 100%;
-  }
-}
-
-/* Game Over Modal */
-.quiz-game-over-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.quiz-game-over-modal.active {
-  opacity: 1;
-}
-
-.quiz-game-over-content {
-  background: #fff;
-  border: 2px solid #222;
-  border-radius: 24px;
-  padding: 40px 32px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  max-width: 90vw;
-  text-align: center;
-  transform: scale(0.9);
-  transition: transform 0.3s ease;
-}
-
-.quiz-game-over-modal.active .quiz-game-over-content {
-  transform: scale(1);
-}
-
-.quiz-game-over-title {
-  font-size: 2em;
-  font-weight: 700;
-  color: #222;
-  margin-bottom: 16px;
-}
-
-.quiz-game-over-score {
-  font-size: 1.6em;
-  font-weight: 600;
-  color: #222;
-  margin-bottom: 12px;
-}
-
-.quiz-game-over-score span {
-  font-weight: 900;
-  color: #8ccd60;
-}
-
-.quiz-game-over-message {
-  font-size: 1.1em;
-  color: #666;
-  margin-bottom: 28px;
-}
-
-.quiz-game-over-btn {
-  font-family: 'Sora', Arial, sans-serif;
-  font-size: 1.1em;
-  font-weight: 700;
-  padding: 14px 32px;
-  border: 2px solid #222;
-  border-radius: 14px;
-  background: #8ccd60;
-  color: #222;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin: 8px;
-  box-shadow: 0 2px 0 0 #222, 0 2px 0 0 #111, 0 4px 8px 0 #00000033;
-}
-
-.quiz-game-over-btn:hover {
-  background: #7bbf54;
-  transform: translateY(-2px);
-}
-
-.quiz-game-over-btn.secondary {
-  background: #f0f0f0;
-  color: #222;
-}
-
-.quiz-game-over-btn.secondary:hover {
-  background: #e0e0e0;
-}
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Dynamic favicon: paste an image anywhere on the page to set it as the site icon -->
+  <link id="dynamicFavicon" rel="icon" href="Logos/countyguess_no_bg.png">
+  <script>
+    (function(){
+      // Listen for paste events and, if an image is present, set it as the favicon
+      const link = document.getElementById('dynamicFavicon');
+      window.addEventListener('paste', async (ev) => {
+        try {
+          const items = ev.clipboardData && ev.clipboardData.items;
+          if (!items) return;
+          for (const it of items) {
+            if (it.kind === 'file' && it.type.startsWith('image/')) {
+              const file = it.getAsFile();
+              const reader = new FileReader();
+              reader.onload = () => {
+                try { link.href = reader.result; } catch (e) { console.error(e); }
+              };
+              reader.readAsDataURL(file);
+              // stop after first image
+              break;
+            }
+          }
+        } catch (e) { console.error('Paste handling error', e); }
+      });
+    })();
+  </script>
+  <style>
+    html,
+    body {
+      overflow-x: hidden;
+      /* prevent horizontal scroll */
+      overflow-y: auto;
+      /* allow vertical scrolling */
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* Color variables for light / dark themes */
+    :root {
+      --bg: #f8f4ee;
+      --text: #222222;
+      --muted: #000000;
+      --card-bg: #ffffff;
+      --card-border: #222222;
+      --accent: #8ccd60;
+      --wrapper-top-height: 0px;
+      /* Width used by Guess-the-Country page elements (change this to adjust) */
+      --guess-width: 70vw;
+      --guess-max-width: 700px;
+      --navbar-bg: #ffffff;
+      --container-bg: #ffffff;
+      /* icon colors (light mode defaults) */
+      --icon-active: #222222;
+      --icon-inactive: #b3b3b3;
+      --icon-hover: #000000;
+    }
+
+    .dark-mode {
+      --bg: #1e1e1f;
+      /* Background */
+      --navbar-bg: #262627;
+      /* Navbar */
+      --container-bg: #2b2b2c;
+      /* Container */
+      --card-bg: #323233;
+      /* Card background */
+      --card-border: #00000033;
+      /* 20% black */
+      --card-shadow: #00000055;
+      /* card shadow */
+      --accent-success: #6fae4f;
+      --accent-error: #b84a4a;
+      --accent: var(--accent-success);
+      --text: #d6d6d6;
+      /* Card text */
+      --card-label: #f5f5f5;
+      /* Card label */
+      --muted: #d0d0d0;
+      --input-bg: #3a3a3b;
+      --input-text: #ffffff;
+      --input-placeholder: #8a8a8a;
+      background-color: var(--bg);
+      color: var(--text);
+      --icon-active: #e6e6e6;
+      --icon-inactive: #b3b3b3;
+      --icon-hover: #ffffff;
+    }
+
+    /* --- SPA Main Layout --- */
+    #mainContent {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* --- Bottom Navbar --- */
+    #bottomNav {
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      background: var(--navbar-bg, var(--card-bg));
+      border-top: 2px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 10001;
+      box-shadow: 0 -2px 12px #0001;
+    }
+
+    body.game-mode #bottomNav {
+      display: none !important;
+      height: 0 !important;
+    }
+
+    #bottomNav button {
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+    }
+
+    /* Navbar icon coloring using CSS variables */
+    #bottomNav button svg {
+      stroke: currentColor !important;
+      color: var(--icon-inactive);
+      transition: stroke .12s ease, color .12s ease;
+    }
+
+    #bottomNav button.active svg,
+    #bottomNav button[aria-pressed="true"] svg {
+      color: var(--icon-active);
+      stroke: currentColor !important;
+    }
+
+    #bottomNav button:hover svg {
+      color: var(--icon-hover);
+      stroke: currentColor !important;
+    }
+
+    /* --- Start Screen Game Cards --- */
+    .start-screen-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 64px);
+      width: 100%;
+    }
+
+    .game-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 4px 24px var(--card-shadow);
+      border: 2px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 48px;
+      cursor: pointer;
+      transition: box-shadow .2s;
+      width: 60vw;
+    }
+
+    .game-card img {
+      height: 64px;
+      margin-bottom: 12px;
+    }
+
+    .game-card svg {
+      stroke: currentColor !important;
+    }
+
+    .game-card span {
+      font-size: 1.5em;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* --- Template Pages --- */
+    .template-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 64px);
+      width: 100%;
+    }
+
+    .template-page h1 {
+      font-size: 2.2em;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .template-page p {
+      color: var(--muted);
+    }
+
+    #wrapper-top {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--bg);
+      z-index: 2000;
+      /* ensure top wrapper sits above results */
+    }
+
+    /* --- Guess the Country Game Container --- */
+    #guessCountryGameContainer {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* --- Guess the Country Page Buttons --- */
+    .gtc-topbar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 0px 12px 0 12px;
+      box-sizing: border-box;
+    }
+
+    .gtc-back-btn {
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px 6px 2px;
+      border-radius: 50%;
+      transition: background 0.15s;
+    }
+
+    .gtc-back-btn:hover {
+      background: #eee;
+    }
+
+    /* Move the topbar to overlay so heading/input sit near the top */
+    .gtc-topbar {
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      right: 12px;
+      margin-bottom: 0;
+      z-index: 150;
+      padding: 6px 8px;
+    }
+
+    /* Container for the Guess page: allow absolute topbar and small padding */
+    #guessCountryGameContainer {
+      position: relative;
+      padding-top: 12px;
+      width: 100%;
+    }
+
+    /* Heading and input moved up */
+    #guessCountryGameContainer h1 {
+      margin: 20px 0 4px 0;
+      padding-top: 2px;
+    }
+
+    .guess-input-wrapper {
+      margin: 4px auto 0;
+      position: relative;
+      max-width: 88vw;
+      width: 100%;
+    }
+
+    /* Back buttons (go back) icon colors */
+    .gtc-back-btn,
+    .quiz-back-btn,
+    .win-back-btn {
+      color: var(--icon-inactive);
+    }
+
+    .gtc-back-btn svg,
+    .quiz-back-btn svg,
+    .win-back-btn svg {
+      stroke: currentColor !important;
+      transition: color .12s ease, stroke .12s ease;
+    }
+
+    .gtc-back-btn:hover,
+    .quiz-back-btn:hover,
+    .win-back-btn:hover {
+      color: var(--icon-hover);
+    }
+
+    .gtc-back-btn.active,
+    .quiz-back-btn.active,
+    .win-back-btn.active,
+    .gtc-back-btn[aria-pressed="true"],
+    .quiz-back-btn[aria-pressed="true"],
+    .win-back-btn[aria-pressed="true"] {
+      color: var(--icon-active);
+    }
+
+    .gtc-giveup-btn {
+      border: none;
+      outline: none;
+      background: transparent;
+      /* remove background */
+      border-radius: 16px;
+      font-family: 'Sora', Arial, sans-serif;
+      font-size: 1.1em;
+      font-weight: 700;
+      padding: 8px 12px;
+      /* tighter padding to match icon */
+      margin: 0;
+      box-shadow: none;
+      /* remove shadow */
+      cursor: pointer;
+      transition: background 0.18s, transform 0.12s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gtc-giveup-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Larger, slightly thicker pictogram for the give-up button */
+    .gtc-giveup-btn .forbidden-icon {
+      width: 22px;
+      height: 22px;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    .gtc-giveup-btn .forbidden-icon path {
+      stroke: #FF4F19;
+      stroke-width: 12;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+
+    /* Results container animation: gentle slide up from slightly below */
+    #results {
+      margin-top: var(--wrapper-top-height);
+      transition: opacity 180ms ease, transform 200ms ease;
+      opacity: 1;
+      position: relative;
+      z-index: 1;
+      /* keep results below the top wrapper and suggestions */
+    }
+
+    @keyframes resultsSlideUp {
+      0% {
+        transform: translateY(10px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .results-pop {
+      animation: resultsSlideUp 180ms ease-out both;
+    }
+
+    #confettiCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2000000000;
+    }
+
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-20vh) rotateZ(0deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100vh) rotateZ(720deg);
+        opacity: 0;
+      }
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      z-index: 50000000000;
+      background-color: #f00;
+      /* initial color */
+      pointer-events: none;
+      animation: confetti-fall 1s linear forwards;
+    }
+
+    /* Resize and align the logo image in the h1 */
+    h1 img {
+      height: 1.7em;
+      vertical-align: middle;
+      margin-left: 10px;
+      margin-bottom: 4px;
+    }
+
+    /* Make input font-weight less bold and ensure it is not overwritten */
+    #guessInput {
+      font-family: 'Sora', Arial, sans-serif !important;
+      font-weight: 500 !important;
+      display: block;
+      width: 100% !important;
+      /* fill the wrapper width set below */
+      max-width: none;
+      margin: 6px auto;
+    }
+
+    /* input theming */
+    #guessInput::placeholder {
+      color: var(--input-placeholder);
+    }
+
+    .dark-mode #guessInput {
+      background: var(--input-bg);
+      color: var(--input-text);
+      border-color: var(--card-border);
+    }
+
+    .dark-mode #guessInput::placeholder {
+      color: var(--input-placeholder);
+    }
+
+    body {
+      font-family: 'Sora', Arial, sans-serif;
+      text-align: center;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    #results {
+      margin-top: var(--wrapper-top-height);
+    }
+
+    /* Apply consistent page width for Guess-the-Country elements */
+    /* Center topbar, title, input wrapper, suggestions and cards */
+    #wrapper-top>h1,
+    #wrapper-top .gtc-topbar,
+    #wrapper-top .guess-input-wrapper,
+    .guess-card,
+    .suggestions-list {
+      width: var(--guess-width);
+      max-width: var(--guess-max-width);
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
+    }
+
+    /* Position the topbar centered instead of spanning full width */
+    .gtc-topbar {
+      position: absolute;
+      top: 8px;
+      left: 0;
+      right: 0;
+      width: var(--guess-width);
+      max-width: var(--guess-max-width);
+      margin: 0 auto 0 auto;
+      /* center without transform */
+      z-index: 150;
+      padding: 6px 8px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Ensure topbar buttons and icons stay inside the centered width and scale predictably */
+    .gtc-topbar button {
+      flex: 0 0 auto;
+    }
+
+    .gtc-topbar button svg {
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+
+    /* Suggestions should fill the wrapper and align with input edges */
+    .guess-input-wrapper {
+      position: relative;
+    }
+
+    .guess-input-wrapper {
+      width: var(--guess-width);
+      max-width: var(--guess-max-width);
+      margin: 4px auto 0;
+    }
+
+    .suggestions-list {
+      width: 100%;
+      max-width: none;
+    }
+
+    /* Cards should use the same width and stay centered */
+    .guess-card {
+      width: 100%;
+      max-width: none;
+    }
+
+    /* Mobile override: use larger relative width (iPhone widths) */
+    @media (max-width: 480px) {
+      :root {
+        --guess-width: 90vw;
+      }
+    }
+
+    .guess-card {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 18px;
+      /* 3D black shadow effect to match .card */
+      box-shadow:
+        0 2px 0 0 #222,
+        0 2px 0 0 #111,
+        0 8px 16px 0 #00000033;
+      margin: 24px auto;
+      padding: 0;
+      /* use shared guess width so cards match input and suggestions */
+      width: var(--guess-width);
+      max-width: var(--guess-max-width);
+      text-align: left;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    /* Suggestions list styling (compact) */
+    .suggestions-list {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 16px;
+      box-shadow: 0 2px 8px var(--card-shadow);
+      overflow-y: auto;
+      max-height: 260px;
+      margin: 4px auto 0 auto;
+      /* fill the input wrapper width so edges align exactly */
+      width: 100%;
+      max-width: none;
+      box-sizing: border-box;
+      z-index: 3001;
+      /* above wrapper-top */
+    }
+
+    .suggestions-list .suggestion-item {
+      padding: 16px 18px;
+      font-weight: bold;
+      font-size: 1.2em;
+      cursor: pointer;
+      border-bottom: 1px solid #aaa;
+    }
+
+    .suggestions-list .suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .dark-mode .suggestions-list {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      box-shadow: 0 2px 8px var(--card-shadow);
+    }
+
+    .dark-mode .suggestions-list .suggestion-item {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: var(--text);
+    }
+
+    /* Apple-style toggle */
+    .apple-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .apple-toggle .label {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .apple-toggle .switch {
+      width: 52px;
+      height: 32px;
+      position: relative;
+      border-radius: 999px;
+      background: #d0d5d9;
+      transition: background .18s;
+      cursor: pointer;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .apple-toggle .switch .knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      transition: transform .18s;
+    }
+
+    .apple-toggle input[type=checkbox] {
+      display: none;
+    }
+
+    .apple-toggle input[type=checkbox]:checked+.switch {
+      background: var(--accent);
+    }
+
+    .apple-toggle input[type=checkbox]:checked+.switch .knob {
+      transform: translateX(20px);
+    }
+
+    .guess-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .guess-flag {
+      width: 38px;
+      height: 26px;
+      border-radius: 4px;
+      margin-right: 14px;
+      border: 1px solid #eee;
+      object-fit: cover;
+    }
+
+    .guess-title {
+      font-size: 1.35em;
+      font-weight: 900;
+      margin-right: 10px;
+    }
+
+    .guess-number {
+      color: #aaa;
+      font-size: 1.1em;
+      font-weight: bold;
+      margin-left: auto;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      border-radius: 10px;
+      border: 2px solid #bbb;
+      background: var(--card-bg);
+      padding: 12px 8px 8px 12px;
+      min-width: 100px;
+      min-height: 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 1em;
+      /* 3D black shadow effect */
+      box-shadow:
+        0 2px 0 0 #222,
+        /* strong bottom shadow */
+        0 2px 0 0 #111,
+        /* deeper shadow */
+        0 8px 16px 0 #00000033;
+      /* soft blur for realism */
+      position: relative;
+      border-width: 2px;
+
+      .card.green {
+        background: var(--accent);
+        border-color: var(--card-border);
+        color: var(--text);
+      }
+
+      .card.red {
+        background: #ff6b6b;
+        border-color: var(--card-border);
+        color: var(--text);
+      }
+
+      .card.neutral {
+        background: none;
+        border-color: var(--card-border);
+        color: var(--text);
+      }
+
+    }
+
+    .card.green {
+      background: var(--accent);
+      border-color: var(--card-border);
+      color: var(--text);
+    }
+
+    .card.red {
+      background: #ff6b6b;
+      border-color: var(--card-border);
+      color: var(--text);
+    }
+
+    .card.neutral {
+      background: none;
+      border-color: var(--card-border);
+      color: var(--text);
+    }
+
+    .card-label {
+      font-size: 0.70em;
+      color: var(--muted);
+      font-weight: 600;
+      opacity: .9;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .card-value {
+      font-size: 1em;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* Card appear animation */
+    .card-appear {
+      opacity: 0;
+      transform: translateY(30px) scale(0.98);
+      transition: opacity 0.38s cubic-bezier(.4, 1.4, .6, 1), transform 0.38s cubic-bezier(.4, 1.4, .6, 1);
+    }
+
+    .card-appear.card-appear-active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Wave animation for correct guess */
+    .card-wave {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      animation: cardWaveUp 0.55s cubic-bezier(.4, 1.4, .6, 1) forwards;
+    }
+
+
+    #winPage {
+      position: fixed;
+      z-index: 10000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: var(--card-bg);
+      color: var(--text);
+      overflow-y: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-family: 'Sora', Arial, sans-serif;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s cubic-bezier(.4, 1.4, .6, 1);
+    }
+
+    #winPage.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #winPage .win-content {
+      background: var(--card-bg);
+      max-width: 90vw;
+      min-width: 860px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translateY(40px);
+      opacity: 0;
+      transition: transform 0.5s cubic-bezier(.4, 1.4, .6, 1), opacity 0.5s cubic-bezier(.4, 1.4, .6, 1);
+    }
+
+    #winPage.active .win-content {
+      color: var(--text);
+      opacity: 1;
+    }
+
+    #winPage .win-topbar {
+      width: 100%;
+      display: flex;
+      color: var(--text);
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    #winPage .win-back-btn {
+      color: var(--muted);
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--accent);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      padding: 6px 10px 6px 2px;
+      border-radius: 50%;
+      transition: background 0.15s;
+      margin-right: 8px;
+    }
+
+    #winPage .win-back-btn:hover {
+      background: #eee;
+    }
+
+    #winPage .win-flag {
+      font-size: 4em;
+      margin-bottom: 18px;
+    }
+
+    #winPage .win-flag img {
+      width: 200px;
+      height: auto;
+      border: 1px solid #ccc;
+      max-height: 220px;
+    }
+
+    #winPage .win-text {
+      font-size: 2em;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    #winPage .win-guesses {
+      font-size: 1.2em;
+      margin-bottom: 18px;
+    }
+
+    #winPage .win-play-again {
+      font-family: 'Sora', Arial, sans-serif;
+      font-size: 1.2em;
+      padding: 12px 32px;
+      border-radius: 16px;
+      border: none;
+      background: var(--accent);
+      color: var(--text);
+      font-weight: 700;
+      box-shadow: 0 2px 8px #0003;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+
+    #winPage .win-play-again:hover {
+      background: #7bbf54;
+    }
+
+    @keyframes cardWaveUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      40% {
+        opacity: 1;
+        transform: translateY(-30px) scale(1.05);
+      }
+
+      70% {
+        opacity: 1;
+        transform: translateY(-18px) scale(1.02);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+
+    @media (max-width: 480px) {
+      .guess-card {
+        max-width: 100%;
+        width: 90vw;
+        margin: 18px auto;
+      }
+
+      .guess-card>div {
+        padding-left: 4vw !important;
+        padding-right: 4vw !important;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      #results {
+        margin-top: 12px;
+      }
+
+      .guess-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      #guessInput {
+        width: 90vw !important;
+        font-size: 1.1em;
+        padding-left: 6vw !important;
+        padding-right: 6vw !important;
+      }
+
+      #suggestions {
+        left: 0;
+        right: 0;
+        width: 90vw !important;
+        min-width: unset;
+        max-width: unset;
+      }
+
+      div[style*="max-width:560px"],
+      div[style*="max-width: 560px"],
+      div[style*="max-width:620px"],
+      div[style*="max-width: 620px"] {
+        max-width: 100% !important;
+        width: 90vw !important;
+        min-width: unset !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      body {
+        padding: 0;
+      }
+    }
+
+    /* CSS for GeoDecide */
+    /* --- Geography Quiz Game --- */
+    .quiz-container {
+      width: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+      overflow-y: auto;
+    }
+
+    .quiz-topbar {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px 12px;
+      box-sizing: border-box;
+      background: var(--card-bg);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .quiz-back-btn {
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px 6px 2px;
+      border-radius: 50%;
+      transition: background 0.15s;
+      position: absolute;
+      top: 16px;
+      left: 12px;
+    }
+
+    .quiz-back-btn:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .quiz-category {
+      font-size: 1.1em;
+      font-weight: 700;
+      color: var(--text);
+      flex: 1;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .quiz-score {
+      position: absolute;
+      top: 16px;
+      right: 12px;
+      padding: 8px 18px;
+      border-radius: 12px;
+      background: rgba(60, 60, 60, 0.25);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: black;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    #roundCounter {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .quiz-category-display {
+
+      font-size: 1.3em;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .quiz-game-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      height: 100vh;
+      width: 100%;
+      min-height: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .country-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: auto;
+      /* nur hier scrollen falls nötig */
+      padding: 24px;
+      width: 100%;
+      max-width: 320px;
+      gap: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .country-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .country-card.top-card {
+      animation: slideInTop 0.4s ease-out;
+    }
+
+    .country-card.bottom-card {
+      animation: slideInBottom 0.4s ease-out;
+    }
+
+    .country-flag {
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      overflow: hidden;
+    }
+
+    .country-flag img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .country-name {
+      font-size: 1.4em;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .country-value {
+      font-size: 1.8em;
+      font-weight: 900;
+      color: var(--text);
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .country-value.hidden-value {
+      position: relative;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 2;
+      width: 80px;
+      height: 60px;
+      border-radius: 10px;
+    }
+
+
+
+    .country-value.visible-value {
+      color: var(--text);
+    }
+
+    .vs-indicator {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .quiz-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      width: 100%;
+      padding: 0 20px 20px 20px;
+      box-sizing: border-box;
+    }
+
+    .quiz-action-btn {
+      flex: 1;
+      max-width: 200px;
+      padding: 16px 24px;
+      font-size: 1.1em;
+      font-weight: 700;
+      border: 2px solid var(--card-border);
+      border-radius: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      font-family: 'Sora', Arial, sans-serif;
+      box-shadow: 0 2px 0 0 #222, 0 2px 0 0 #111, 0 4px 8px 0 #00000033;
+    }
+
+    .quiz-action-btn.higher-btn {
+      background: #8ccd60;
+      color: #222;
+    }
+
+    .quiz-action-btn.higher-btn:hover {
+      background: #7bbf54;
+      transform: translateY(-2px);
+    }
+
+    .quiz-action-btn.higher-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 0 0 0 #222, 0 2px 0 0 #111, 0 2px 4px 0 #00000033;
+    }
+
+    .quiz-action-btn.lower-btn {
+      background: #ff6b6b;
+      color: #222;
+    }
+
+    .quiz-action-btn.lower-btn:hover {
+      background: #e05555;
+      transform: translateY(-2px);
+    }
+
+    .quiz-action-btn.lower-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 0 0 0 #222, 0 2px 0 0 #111, 0 2px 4px 0 #00000033;
+    }
+
+    .quiz-instruction {
+      font-size: 1em;
+      font-weight: 600;
+      color: #555;
+      margin: 0 20px 8px 20px;
+    }
+
+    .quiz-feedback {
+      font-size: 1.2em;
+      font-weight: 700;
+      min-height: 28px;
+      margin: 0 20px 20px 20px;
+      text-align: center;
+    }
+
+    .quiz-feedback.correct {
+      color: #8ccd60;
+    }
+
+    .quiz-feedback.incorrect {
+      color: #ff6b6b;
+    }
+
+    @keyframes slideInTop {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInBottom {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .quiz-category {
+        font-size: 0.9em;
+      }
+
+      .quiz-score {
+        font-size: 0.9em;
+      }
+
+      .country-card {
+        max-width: 100%;
+        width: 90vw;
+      }
+
+      .quiz-buttons {
+        flex-direction: column;
+        padding: 0 20px 20px 20px;
+      }
+
+      .quiz-action-btn {
+        max-width: none;
+        width: 100%;
+      }
+    }
+
+    /* Game Over Modal */
+    .quiz-game-over-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .quiz-game-over-modal.active {
+      opacity: 1;
+    }
+
+    .quiz-game-over-content {
+      background: #fff;
+      border: 2px solid #222;
+      border-radius: 24px;
+      padding: 40px 32px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      max-width: 90vw;
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .quiz-game-over-modal.active .quiz-game-over-content {
+      transform: scale(1);
+    }
+
+    .quiz-game-over-title {
+      font-size: 2em;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 16px;
+    }
+
+    .quiz-game-over-score {
+      font-size: 1.6em;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 12px;
+    }
+
+    .quiz-game-over-score span {
+      font-weight: 900;
+      color: #8ccd60;
+    }
+
+    .quiz-game-over-message {
+      font-size: 1.1em;
+      color: #666;
+      margin-bottom: 28px;
+    }
+
+    .quiz-game-over-btn {
+      font-family: 'Sora', Arial, sans-serif;
+      font-size: 1.1em;
+      font-weight: 700;
+      padding: 14px 32px;
+      border: 2px solid #222;
+      border-radius: 14px;
+      background: #8ccd60;
+      color: #222;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin: 8px;
+      box-shadow: 0 2px 0 0 #222, 0 2px 0 0 #111, 0 4px 8px 0 #00000033;
+    }
+
+    .quiz-game-over-btn:hover {
+      background: #7bbf54;
+      transform: translateY(-2px);
+    }
+
+    .quiz-game-over-btn.secondary {
+      background: #f0f0f0;
+      color: #222;
+    }
+
+    .quiz-game-over-btn.secondary:hover {
+      background: #e0e0e0;
+    }
   </style>
 </head>
-<body style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:var(--bg);color:var(--text);">
- <input type="checkbox" id="hapticTrigger" style="position:absolute;opacity:0;pointer-events:none;">
-<label for="hapticTrigger" style="display:none;"></label>
+
+<body
+  style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:var(--bg);color:var(--text);">
+  <input type="checkbox" id="hapticTrigger" style="position:absolute;opacity:0;pointer-events:none;">
+  <label for="hapticTrigger" style="display:none;"></label>
   <!-- Main container for dynamic content -->
   <div id="mainContent"></div>
   <!-- Bottom navbar -->
   <nav id="bottomNav">
     <button id="navHome">
       <!-- Home icon SVG -->
-      <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V9h6v12"/></svg>
+      <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round"
+        stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M3 12L12 3l9 9" />
+        <path d="M9 21V9h6v12" />
+      </svg>
     </button>
     <button id="navStats">
       <!-- Stats icon SVG -->
-      <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="8"/><rect x="10" y="8" width="4" height="12"/><rect x="17" y="4" width="4" height="16"/></svg>
+      <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round"
+        stroke-linejoin="round" viewBox="0 0 24 24">
+        <rect x="3" y="12" width="4" height="8" />
+        <rect x="10" y="8" width="4" height="12" />
+        <rect x="17" y="4" width="4" height="16" />
+      </svg>
     </button>
     <!-- theme toggle moved to Stats page -->
   </nav>
@@ -1051,50 +1427,55 @@ body {
     </div>
   </template>
   <template id="geoDicidePage">
-      
- <div class="quiz-container">
-  <h1>GeoDecide <img src="Logos/GeoDecide.png" alt="GeoDecide Logo"></h1>
-    <!-- Back Button -->
-    <button class="quiz-back-btn" id="quizBackBtn" title="Back to Home" aria-label="Back to Home">
-      <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <!-- Score -->
-    <div class="quiz-score">
-      <span id="roundCounter">1/15</span>
-    </div>
-    <!-- Category -->
-    <div class="quiz-category-display">
-      <span id="quizCategory">Loading category...</span>
-    </div>
 
-    <!-- Main Game Area -->
-    <div class="quiz-game-area">
-      <!-- Top Country (Hidden Value) -->
-      <div id="topCountryCard" class="country-card top-card" role="button" tabindex="0" aria-label="Select if the top country has the higher value">
-        <div class="country-flag">
-          <img id="topCountryFlag" src="" alt="Country flag">
-        </div>
-        <div class="country-name" id="topCountryName">Loading...</div>
-        <div class="country-value hidden-value" id="topCountryValue"></div>
+    <div class="quiz-container">
+      <h1>GeoDecide <img src="Logos/GeoDecide.png" alt="GeoDecide Logo"></h1>
+      <!-- Back Button -->
+      <button class="quiz-back-btn" id="quizBackBtn" title="Back to Home" aria-label="Back to Home">
+        <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round"
+          stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+      <!-- Score -->
+      <div class="quiz-score">
+        <span id="roundCounter">1/15</span>
+      </div>
+      <!-- Category -->
+      <div class="quiz-category-display">
+        <span id="quizCategory">Loading category...</span>
       </div>
 
-      <!-- VS Indicator -->
-      <div class="vs-indicator">VS</div>
-
-      <!-- Bottom Country (Visible Value) -->
-      <div id="bottomCountryCard" class="country-card bottom-card" role="button" tabindex="0" aria-label="Select if the bottom country has the higher value">
-        <div class="country-flag">
-          <img id="bottomCountryFlag" src="" alt="Country flag">
+      <!-- Main Game Area -->
+      <div class="quiz-game-area">
+        <!-- Top Country (Hidden Value) -->
+        <div id="topCountryCard" class="country-card top-card" role="button" tabindex="0"
+          aria-label="Select if the top country has the higher value">
+          <div class="country-flag">
+            <img id="topCountryFlag" src="" alt="Country flag">
+          </div>
+          <div class="country-name" id="topCountryName">Loading...</div>
+          <div class="country-value hidden-value" id="topCountryValue"></div>
         </div>
-        <div class="country-name" id="bottomCountryName">Loading...</div>
-        <div class="country-value visible-value" id="bottomCountryValue">-</div>
+
+        <!-- VS Indicator -->
+        <div class="vs-indicator">VS</div>
+
+        <!-- Bottom Country (Visible Value) -->
+        <div id="bottomCountryCard" class="country-card bottom-card" role="button" tabindex="0"
+          aria-label="Select if the bottom country has the higher value">
+          <div class="country-flag">
+            <img id="bottomCountryFlag" src="" alt="Country flag">
+          </div>
+          <div class="country-name" id="bottomCountryName">Loading...</div>
+          <div class="country-value visible-value" id="bottomCountryValue">-</div>
+        </div>
       </div>
+
+      <div class="quiz-instruction"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
     </div>
 
-    <div class="quiz-instruction"></div>
-    <div class="quiz-feedback" id="quizFeedback"></div>
-  </div>
-    
   </template>
   <template id="statsPage">
     <div class="template-page">
@@ -1107,22 +1488,39 @@ body {
           <span class="switch"><span class="knob"></span></span>
         </label>
       </div>
+        <!-- please add here stats that get retrieved from supabse (bob) -->
     </div>
   </template>
 
   <!-- Guess the Country Game Markup Template -->
   <template id="guessCountryGameMarkup">
-    <div class="gtc-topbar">
-      <button class="gtc-back-btn" id="gtcBackBtn" title="Back to Home" aria-label="Back to Home">
-        <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <button class="gtc-giveup-btn" id="giveUpBtn" type="button">Give Up</button>
+    <div id="wrapper-top">
+      <div class="gtc-topbar">
+        <button class="gtc-back-btn" id="gtcBackBtn" title="Back to Home" aria-label="Back to Home">
+          <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <button class="gtc-giveup-btn" id="giveUpBtn" type="button" aria-label="Give Up">
+          <svg class="forbidden-icon" width="22" height="22" viewBox="0 0 512 512" aria-hidden="true" focusable="false"
+            xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"
+            style="vertical-align:middle;margin-right:6px;">
+            <path style="fill:#FF6643;"
+              d="M256,0C114.84,0,0,114.842,0,256s114.84,256,256,256s256-114.842,256-256S397.16,0,256,0z   M256,49.548c48.011,0,92.246,16.473,127.351,44.065L93.613,383.351C66.022,348.246,49.548,304.011,49.548,256  C49.548,142.163,142.163,49.548,256,49.548z M256,462.452c-48.011,0-92.246-16.473-127.351-44.065l289.738-289.738  c27.592,35.105,44.065,79.34,44.065,127.351C462.452,369.837,369.837,462.452,256,462.452z" />
+            <path style="fill:#FF4F19;"
+              d="M256,0v49.548c48.011,0,92.246,16.473,127.351,44.065L256,220.964v70.071l162.387-162.387  c27.592,35.105,44.065,79.34,44.065,127.351c0,113.837-92.614,206.452-206.452,206.452V512c141.16,0,256-114.842,256-256  S397.16,0,256,0z" />
+          </svg>
+        </button>
+      </div>
+      <h1>CountryGuess<img src="Logos/countyguess_no_bg.png" alt="logo"></h1>
+      <div class="guess-input-wrapper">
+        <input type="text" id="guessInput" placeholder="Enter a country..." autocomplete="off"
+          style="width:100%;font-size:1.3em;padding:15px 30px;border-radius:16px;border:2px solid #222;outline:none;box-sizing:border-box;">
+        <div id="suggestions" style="position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:3000;"></div>
+      </div>
     </div>
-    <h1>CountryGuess<img src="Logos/countyguess_no_bg.png" alt="logo"></h1>
-    <div class="guess-input-wrapper">
-      <input type="text" id="guessInput" placeholder="Enter a country..." autocomplete="off" style="width:100%;font-size:1.3em;padding:15px 30px;border-radius:16px;border:2px solid #222;outline:none;box-sizing:border-box;">
-      <div id="suggestions" style="position:absolute;top:110%;left:0;right:0;z-index:10;"></div>
-    </div>
+
     <div id="results"></div>
   </template>
 
@@ -1136,8 +1534,11 @@ body {
   <!-- Win Modal (kept outside for overlay) -->
   <div id="winPage">
     <button class="win-back-btn" id="winBackBtn" title="Back to Home" aria-label="Back to Home">
-          <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
+      <svg width="32" height="32" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round"
+        stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M15 18l-6-6 6-6" />
+      </svg>
+    </button>
     <div class="win-content">
       <div class="win-topbar">
       </div>
@@ -1148,13 +1549,57 @@ body {
     </div>
   </div>
 
+  <canvas id="confettiCanvas"></canvas>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script type="module" src="guessCountry.js"></script>
   <script type="module" src="geoDecide.js"></script>
 
   <script>
+    function updateWrapperHeight() {
+      const el = document.getElementById('wrapper-top');
+      if (!el) return;
+      const h = Math.round(el.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--wrapper-top-height', `${h}px`);
+    }
+
+    window.addEventListener('load', updateWrapperHeight);
+    window.addEventListener('resize', updateWrapperHeight);
+
+    // Ensure we attach a ResizeObserver when the #wrapper-top element appears
+    function setupWrapperObserver() {
+      const attach = (el) => {
+        try { updateWrapperHeight(); } catch (e) { }
+        if (el && 'ResizeObserver' in window) {
+          new ResizeObserver(updateWrapperHeight).observe(el);
+        }
+      };
+
+      // If it's already in the DOM, attach immediately
+      const existing = document.getElementById('wrapper-top');
+      if (existing) { attach(existing); return; }
+
+      // Otherwise observe mutations and attach when inserted
+      const mo = new MutationObserver((records, observer) => {
+        for (const r of records) {
+          for (const n of r.addedNodes) {
+            if (!n) continue;
+            if (n.nodeType !== Node.ELEMENT_NODE) continue;
+            const el = n.id === 'wrapper-top' ? n : n.querySelector && n.querySelector('#wrapper-top');
+            if (el) {
+              attach(el);
+              observer.disconnect();
+              return;
+            }
+          }
+        }
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    }
+
+    setupWrapperObserver();
     // Auto-enable dark mode if the user prefers it or previously set
-    (function(){
+    (function () {
       try {
         const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (localStorage.getItem('darkMode') === '1' || prefersDark) {
@@ -1165,20 +1610,20 @@ body {
   </script>
   <script>
     // Theme toggle handling (attach when toggle appears in DOM)
-    (function(){
-      function attachToggle(el){
+    (function () {
+      function attachToggle(el) {
         if (!el) return;
         // initialize checked state
-        try{
+        try {
           const saved = localStorage.getItem('darkMode');
           if (saved === '1') el.checked = true;
           else if (saved === '0') el.checked = false;
           else el.checked = document.body.classList.contains('dark-mode');
-        } catch(e){}
+        } catch (e) { }
         el.addEventListener('change', () => {
           const isDark = el.checked;
           document.body.classList.toggle('dark-mode', isDark);
-          try{ localStorage.setItem('darkMode', isDark ? '1' : '0'); } catch(e){}
+          try { localStorage.setItem('darkMode', isDark ? '1' : '0'); } catch (e) { }
         });
       }
 
@@ -1202,4 +1647,5 @@ body {
   </script>
 
 </body>
+
 </html>

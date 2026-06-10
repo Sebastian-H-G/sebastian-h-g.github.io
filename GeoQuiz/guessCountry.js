@@ -183,11 +183,10 @@ document.getElementById("navStats").addEventListener("click", () => {
     if (giveUpBtn) {
       giveUpBtn.onclick = function() {
         if (!targetCountry) return;
-        // Show the answer in a modal-like alert, then go back to home
-        alert(`The answer was: ${targetCountry.name}`);
+        // Show the win modal with a "gave up" message instead of an alert
         gave_up = true;
         onQuizComplete();
-        showStartScreen();
+        showWinModal(targetCountry, guessCount, true);
       };
     }
   }
@@ -280,9 +279,8 @@ document.getElementById("navStats").addEventListener("click", () => {
         e.preventDefault();
         guessInput.value = name;
         suggestionsDiv.innerHTML = "";
-        guessInput.focus();
+        // Submit the selected suggestion; do NOT re-focus the input
         submitGuess();
-        setTimeout(() => { guessInput.value = ""; }, 10);
       });
       list.appendChild(item);
     });
@@ -292,6 +290,7 @@ document.getElementById("navStats").addEventListener("click", () => {
 
   async function submitGuess() {
     const guessInput = document.getElementById("guessInput");
+    const suggestionsDiv = document.getElementById("suggestions");
     const guessNameRaw = guessInput.value.trim();
     if (!guessNameRaw) return;
     try {
@@ -314,6 +313,11 @@ document.getElementById("navStats").addEventListener("click", () => {
       }
       guessedAbbreviations.push(guess.abbreviation);
       renderResult(guess);
+      // After a successful (valid) submission, clear and blur the input
+      try {
+        if (guessInput) { guessInput.value = ''; guessInput.blur(); }
+        if (suggestionsDiv) { suggestionsDiv.innerHTML = ''; }
+      } catch (e) { /* ignore focus-related errors */ }
     } catch (err) {
       console.error(err);
     }
@@ -375,7 +379,18 @@ document.getElementById("navStats").addEventListener("click", () => {
     });
     inner.appendChild(grid);
     cardGroup.appendChild(inner);
-    document.getElementById("results").prepend(cardGroup);
+    const resultsEl = document.getElementById("results");
+    // Trigger a subtle pop animation on the results container
+    if (resultsEl) {
+      resultsEl.classList.remove('results-pop');
+      // Force reflow to restart animation
+      void resultsEl.offsetWidth;
+      resultsEl.classList.add('results-pop');
+      resultsEl.prepend(cardGroup);
+      setTimeout(() => { resultsEl.classList.remove('results-pop'); }, 500);
+    } else {
+      document.getElementById("results").prepend(cardGroup);
+    }
     if (allGreen) {
       requestAnimationFrame(() => {
         cardEls.forEach((el, i) => {
@@ -403,40 +418,99 @@ document.getElementById("navStats").addEventListener("click", () => {
   }
 
   function showWinModal(country, guesses) {
-    // Animate win page in
+    createConfetti();
+    // Animate win page in. If called with gaveUp=true, show a different message.
+    // The optional third parameter (gaveUp) is passed via arguments.
+    const gaveUp = arguments.length >= 3 && !!arguments[2];
     const winPage = document.getElementById('winPage');
+    // Remember previous body overflow so we can restore it when modal closes
+    try {
+      const prevOverflow = document.body.style.overflow || '';
+      winPage.dataset.prevOverflow = prevOverflow;
+    } catch (e) { /* ignore */ }
     winPage.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    // Disable page scrolling while modal is active
+    try { document.body.style.overflow = 'hidden'; } catch (e) { /* ignore */ }
     // Set the flag image src
     const img = document.getElementById('winFlagImg');
     if (img) {
       img.src = country.flag || '';
       img.alt = country.name + ' flag';
     }
-    document.getElementById('winText').textContent = `You guessed ${country.name}!`;
-    document.getElementById('winGuesses').textContent = `in ${guesses} guess${guesses === 1 ? '' : 'es'} — congrats!`;
-    // Play again button logic
-    document.getElementById('playAgainBtn').onclick = function() {
+    // Update texts depending on gaveUp
+    if (gaveUp) {
+      document.getElementById('winText').textContent = `You gave up — the answer was ${country.name}.`;
+      document.getElementById('winGuesses').textContent = `You gave up after ${guesses} guess${guesses === 1 ? '' : 'es'}.`;
+    } else {
+      document.getElementById('winText').textContent = `You guessed ${country.name}!`;
+      document.getElementById('winGuesses').textContent = `in ${guesses} guess${guesses === 1 ? '' : 'es'} — congrats!`;
+    }
+    // Play again button logic — use local query for guessInput to avoid relying on outer scope
+    const playAgainBtn = document.getElementById('playAgainBtn');
+    playAgainBtn.onclick = function() {
       winPage.classList.remove('active');
       setTimeout(() => {
-        document.body.style.overflow = '';
+        // Restore previous overflow value (if any)
+        try {
+          const prev = winPage.dataset.prevOverflow || '';
+          document.body.style.overflow = prev;
+          delete winPage.dataset.prevOverflow;
+        } catch (e) { /* ignore */ }
         document.getElementById('results').innerHTML = '';
         guessedAbbreviations = [];
         guessCount = 0;
         loadTarget();
-        guessInput.value = '';
-        guessInput.focus();
+        const guessInputEl = document.getElementById('guessInput');
+        if (guessInputEl) { guessInputEl.value = ''; guessInputEl.focus(); }
       }, 500);
     };
     // Back button logic
     document.getElementById('winBackBtn').onclick = function() {
       winPage.classList.remove('active');
       setTimeout(() => {
-        document.body.style.overflow = '';
+        try {
+          const prev = winPage.dataset.prevOverflow || '';
+          document.body.style.overflow = prev;
+          delete winPage.dataset.prevOverflow;
+        } catch (e) { /* ignore */ }
         showStartScreen();
       }, 500);
     };
   }
+
+
+function createConfetti() {
+const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+
+function createPiece() {
+    const piece = document.createElement('div');
+    piece.classList.add('confetti');
+    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.width = Math.random() * 20 + 'px';
+    piece.style.height = Math.random() * 20 + 'px';
+    piece.style.left = (Math.random() * window.innerWidth) + 'px';
+    piece.style.top = '-20px';
+    piece.style.animationDuration = '2s'; // Set animation duration to 3 seconds
+    document.body.appendChild(piece);
+    piece.addEventListener('animationend', function() {
+        piece.parentNode.removeChild(piece);
+    });
+}
+
+// Adjust the number of confetti pieces
+const totalPieces = 800;
+const interval = 5; // milliseconds
+
+let i = 0;
+let intervalId = setInterval(function() {
+    createPiece();
+    i++;
+    if (i >= totalPieces) {
+        clearInterval(intervalId);
+    }
+}, interval);
+}
+
 
   function createCard(label, value, className) {
     const div = document.createElement("div");
