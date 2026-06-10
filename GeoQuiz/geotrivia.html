@@ -544,10 +544,15 @@
       max-width: none;
     }
 
-    /* Mobile override: use larger relative width (iPhone widths) */
-    @media (max-width: 480px) {
+    /* Mobile override: use larger relative width (iPhone widths) and reduce side gutters */
+    @media (max-width: 428px) {
       :root {
-        --guess-width: 90vw;
+        --guess-width: 96vw;
+      }
+      /* small consistent page padding to avoid edge clipping on iPhone */
+      body {
+        padding-left: 6px;
+        padding-right: 6px;
       }
     }
 
@@ -957,17 +962,17 @@
     }
 
 
-    @media (max-width: 480px) {
+    @media (max-width: 428px) {
       .guess-card {
         max-width: 100%;
-        width: 90vw;
+        width: var(--guess-width);
         font-size: 0.95em;
         margin: 18px auto;
       }
 
       .guess-card>div {
-        padding-left: 4vw !important;
-        padding-right: 4vw !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
       }
 
       .stats-grid {
@@ -976,7 +981,7 @@
       }
 
       #results {
-        margin-top: 12px;
+        margin-top: var(--wrapper-top-height);
       }
 
       .guess-header {
@@ -986,16 +991,16 @@
       }
 
       #guessInput {
-        width: 90vw !important;
+        width: var(--guess-width) !important;
         font-size: 1.1em;
-        padding-left: 6vw !important;
-        padding-right: 6vw !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
       }
 
       #suggestions {
         left: 0;
         right: 0;
-        width: 90vw !important;
+        width: var(--guess-width) !important;
         min-width: unset;
         max-width: unset;
       }
@@ -1005,14 +1010,15 @@
       div[style*="max-width:620px"],
       div[style*="max-width: 620px"] {
         max-width: 100% !important;
-        width: 90vw !important;
+        width: var(--guess-width) !important;
         min-width: unset !important;
         margin-left: auto !important;
         margin-right: auto !important;
       }
 
       body {
-        padding: 0;
+        padding-left: 6px;
+        padding-right: 6px;
       }
     }
 
