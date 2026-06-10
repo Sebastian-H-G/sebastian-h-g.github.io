@@ -418,10 +418,11 @@ document.getElementById("navStats").addEventListener("click", () => {
   }
 
   function showWinModal(country, guesses) {
-    createConfetti();
+    // Only create confetti for actual wins, not when the player gave up.
+    const gaveUp = arguments.length >= 3 && !!arguments[2];
+    if (!gaveUp) createConfetti();
     // Animate win page in. If called with gaveUp=true, show a different message.
     // The optional third parameter (gaveUp) is passed via arguments.
-    const gaveUp = arguments.length >= 3 && !!arguments[2];
     const winPage = document.getElementById('winPage');
     // Remember previous body overflow so we can restore it when modal closes
     try {
@@ -498,8 +499,8 @@ function createPiece() {
 }
 
 // Adjust the number of confetti pieces
-const totalPieces = 800;
-const interval = 5; // milliseconds
+const totalPieces = 500;
+const interval = 3; // milliseconds
 
 let i = 0;
 let intervalId = setInterval(function() {
