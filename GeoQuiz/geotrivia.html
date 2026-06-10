@@ -544,20 +544,10 @@
       max-width: none;
     }
 
-    /* Mobile override: use full viewport width minus small gutters */
-    @media (max-width: 428px) {
+    /* Mobile override: use larger relative width (iPhone widths) */
+    @media (max-width: 480px) {
       :root {
-        --guess-width: calc(100vw - 12px);
-      }
-      /* remove body padding to avoid double-gutters; use --guess-width for layout */
-      body {
-        padding-left: 0;
-        padding-right: 0;
-      }
-      /* reduce input internal padding on small screens to maximize usable width */
-      .guess-input-wrapper input#guessInput {
-        padding: 12px 14px !important;
-        font-size: 1.05em !important;
+        --guess-width: 90vw;
       }
     }
 
@@ -967,17 +957,17 @@
     }
 
 
-    @media (max-width: 428px) {
+    @media (max-width: 480px) {
       .guess-card {
         max-width: 100%;
-        width: var(--guess-width);
+        width: 90vw;
         font-size: 0.95em;
         margin: 18px auto;
       }
 
       .guess-card>div {
-        padding-left: 12px !important;
-        padding-right: 12px !important;
+        padding-left: 4vw !important;
+        padding-right: 4vw !important;
       }
 
       .stats-grid {
@@ -996,16 +986,16 @@
       }
 
       #guessInput {
-        width: var(--guess-width) !important;
+        width: 90vw !important;
         font-size: 1.1em;
-        padding-left: 12px !important;
-        padding-right: 12px !important;
+        padding-left: 6vw !important;
+        padding-right: 6vw !important;
       }
 
       #suggestions {
         left: 0;
         right: 0;
-        width: var(--guess-width) !important;
+        width: 90vw !important;
         min-width: unset;
         max-width: unset;
       }
@@ -1015,15 +1005,14 @@
       div[style*="max-width:620px"],
       div[style*="max-width: 620px"] {
         max-width: 100% !important;
-        width: var(--guess-width) !important;
+        width: 90vw !important;
         min-width: unset !important;
         margin-left: auto !important;
         margin-right: auto !important;
       }
 
       body {
-        padding-left: 6px;
-        padding-right: 6px;
+        padding: 0;
       }
     }
 
