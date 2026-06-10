@@ -386,6 +386,18 @@
       position: relative;
       z-index: 1;
       /* keep results below the top wrapper and suggestions */
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: min(100%, calc(3 * var(--guess-width)));
+      max-width: calc(3 * var(--guess-max-width));
+      margin-left: auto;
+      margin-right: auto;
+      padding: 8px;
+      box-sizing: border-box;
+      /* show at most two rows visually; extra results will scroll inside this area */
+      max-height: 88vh;
+      overflow-y: auto;
     }
 
     @keyframes resultsSlideUp {
@@ -542,6 +554,7 @@
     .guess-card {
       width: 100%;
       max-width: none;
+      margin: 0;
     }
 
     /* Mobile override: use larger relative width (iPhone widths) */
@@ -954,6 +967,21 @@
         top: 12px;
         left: 12px;
       }
+      /* Force results grid to remain 3 columns on small screens; reduce card font sizes to fit 3x2 */
+      #results {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        width: 96vw;
+        max-width: none;
+        padding: 6px;
+      }
+      .guess-card {
+        font-size: 0.85em;
+        margin: 6px 0;
+      }
+      .guess-card .guess-title { font-size: 1.05em; }
+      .card-label { font-size: 0.62em; }
+      .card-value { font-size: 0.95em; }
     }
 
 
