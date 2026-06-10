@@ -10,14 +10,19 @@
   <link id="dynamicFavicon" rel="icon" href="Logos/countyguess_no_bg.png">
   <script>
     (function(){
-      // Listen for paste events and, if an image is present, set it as the favicon
+      // Only enable the paste->favicon behavior on the geotrivia page
       const link = document.getElementById('dynamicFavicon');
-      window.addEventListener('paste', async (ev) => {
+      const isGeoPage = (typeof location !== 'undefined' && location.pathname && location.pathname.endsWith('geotrivia.html')) || !!document.getElementById('guessCountryGameMarkup');
+      if (!link || !isGeoPage) return;
+
+      const originalHref = link.href;
+
+      async function handlePaste(ev) {
         try {
           const items = ev.clipboardData && ev.clipboardData.items;
           if (!items) return;
           for (const it of items) {
-            if (it.kind === 'file' && it.type.startsWith('image/')) {
+            if (it.kind === 'file' && it.type && it.type.startsWith('image/')) {
               const file = it.getAsFile();
               const reader = new FileReader();
               reader.onload = () => {
@@ -29,7 +34,17 @@
             }
           }
         } catch (e) { console.error('Paste handling error', e); }
-      });
+      }
+
+      window.addEventListener('paste', handlePaste);
+
+      // Restore original favicon when leaving this page so other pages keep their icons
+      function restoreOriginal() {
+        try { if (originalHref) link.href = originalHref; } catch (e) { /* ignore */ }
+      }
+      window.addEventListener('pagehide', restoreOriginal);
+      window.addEventListener('beforeunload', restoreOriginal);
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') restoreOriginal(); });
     })();
   </script>
   <style>
