@@ -1659,12 +1659,45 @@
     }
 
     setupWrapperObserver();
-    // Auto-enable dark mode if the user prefers it or previously set
+    // Auto-enable dark mode if the user prefers it or previously set.
+    // Also listen for system preference changes and update the toggle when present.
     (function () {
       try {
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (localStorage.getItem('darkMode') === '1' || prefersDark) {
-          document.body.classList.add('dark-mode');
+        const mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+        const saved = localStorage.getItem('darkMode');
+        const apply = (isDark) => document.body.classList.toggle('dark-mode', !!isDark);
+
+        if (saved === '1') apply(true);
+        else if (saved === '0') apply(false);
+        else if (mq) apply(mq.matches);
+
+        // Keep toggle in sync if it exists
+        function updateToggleState(isDark) {
+          const t = document.getElementById('themeToggle');
+          if (t) t.checked = !!isDark;
+        }
+
+        // Initial sync
+        updateToggleState(document.body.classList.contains('dark-mode'));
+
+        // Listen for system preference changes
+        if (mq && 'addEventListener' in mq) {
+          mq.addEventListener('change', (e) => {
+            // Only apply system change if user hasn't explicitly saved a preference
+            const savedNow = localStorage.getItem('darkMode');
+            if (savedNow === null) {
+              apply(e.matches);
+              updateToggleState(e.matches);
+            }
+          });
+        } else if (mq && 'addListener' in mq) {
+          mq.addListener((e) => {
+            const savedNow = localStorage.getItem('darkMode');
+            if (savedNow === null) {
+              apply(e.matches);
+              updateToggleState(e.matches);
+            }
+          });
         }
       } catch (e) { /* ignore */ }
     })();
