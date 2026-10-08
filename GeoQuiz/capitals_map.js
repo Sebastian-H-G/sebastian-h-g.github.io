@@ -53,7 +53,7 @@ const capitals = {
     "quito": "Ecuador",
     "cairo": "Egypt",
     "san salvador": "El Salvador",
-    "malabo": "Equatorial Guinea",
+    "ciudad de la paz": "Equatorial Guinea",
     "asmara": "Eritrea",
     "tallinn": "Estonia",
     "lobamba": "Eswatini",
@@ -260,7 +260,7 @@ const capitals = {
     "quito": "quito",
     "kairo": "cairo",
     "san salvador": "san salvador",
-    "malabo": "malabo",
+    "ciudad de la paz": "ciudad de la paz",
     "asmara": "asmara",
     "tallinn": "tallinn",
     "lobamba": "lobamba",
@@ -454,8 +454,8 @@ function normalizeCountryName(name) {
 
 function createTables() {
     const continentCapitals = {
-        africa: ["Algiers", "Luanda", "Porto-Novo or Cotonou", "Gaborone", "Ouagadougou", "Bujumbura", "Yaoundé", "Praia", "Bangui", "N'Djamena", "Moroni", "Kinshasa", "Djibouti", "Cairo", "Malabo", "Asmara", "Mbabane", "Addis Ababa", "Libreville", "Banjul", "Accra", "Conakry", "Bissau", "Yamoussoukro", "Nairobi", "Maseru", "Monrovia", "Tripoli", "Antananarivo", "Lilongwe", "Bamako", "Nouakchott", "Port Louis", "Rabat", "Maputo", "Windhoek", "Niamey", "Abuja", "Brazzaville", "Kigali", "São Tomé", "Dakar", "Victoria", "Freetown", "Mogadishu", "Pretoria, Cape Town or Bloemfontein", "Juba", "Khartoum", "Dodoma", "Lomé", "Tunis", "Kampala", "Lusaka", "Harare"],
-        asia: ["Kabul", "Yerevan", "Baku", "Manama", "Dhaka", "Thimphu", "Bandar Seri Begawan", "Phnom Penh", "Beijing", "Nicosia", "Dili", "Tbilisi", "New Delhi", "Jakarta", "Tehran", "Baghdad", "Jerusalem", "Tokyo", "Amman", "Nur-Sultan", "Kuwait City", "Bishkek", "Vientiane", "Beirut", "Kuala Lumpur", "Malé", "Ulaanbaatar", "Naypyidaw", "Kathmandu", "Pyongyang", "Muscat", "Islamabad", "Manila", "Doha", "Riyadh", "Singapore", "Seoul", "Colombo", "Damascus", "Taipei", "Dushanbe", "Bangkok", "Ankara", "Ashgabat", "Abu Dhabi", "Tashkent", "Hanoi", "Sanaa"],
+        africa: ["Algiers", "Luanda", "Porto-Novo or Cotonou", "Gaborone", "Ouagadougou", "Gitega", "Yaoundé", "Praia", "Bangui", "N'Djamena", "Moroni", "Kinshasa", "Djibouti", "Cairo", "Ciudad de la Paz", "Asmara", "Mbabane", "Addis Ababa", "Libreville", "Banjul", "Accra", "Conakry", "Bissau", "Yamoussoukro", "Nairobi", "Maseru", "Monrovia", "Tripoli", "Antananarivo", "Lilongwe", "Bamako", "Nouakchott", "Port Louis", "Rabat", "Maputo", "Windhoek", "Niamey", "Abuja", "Brazzaville", "Kigali", "São Tomé", "Dakar", "Victoria", "Freetown", "Mogadishu", "Pretoria, Cape Town or Bloemfontein", "Juba", "Khartoum", "Dodoma", "Lomé", "Tunis", "Kampala", "Lusaka", "Harare"],
+        asia: ["Kabul", "Yerevan", "Baku", "Manama", "Dhaka", "Thimphu", "Bandar Seri Begawan", "Phnom Penh", "Beijing", "Nicosia", "Dili", "Tbilisi", "New Delhi", "Jakarta", "Tehran", "Baghdad", "Jerusalem", "Tokyo", "Amman", "Astana", "Kuwait City", "Bishkek", "Vientiane", "Beirut", "Kuala Lumpur", "Malé", "Ulaanbaatar", "Naypyidaw", "Kathmandu", "Pyongyang", "Muscat", "Islamabad", "Manila", "Doha", "Riyadh", "Singapore", "Seoul", "Colombo", "Damascus", "Taipei", "Dushanbe", "Bangkok", "Ankara", "Ashgabat", "Abu Dhabi", "Tashkent", "Hanoi", "Sanaa"],
         europe: ["Tirana", "Andorra la Vella", "Vienna", "Minsk", "Brussels", "Sarajevo", "Sofia", "Zagreb", "Prague", "Copenhagen", "Tallinn", "Helsinki", "Paris", "Berlin", "Athens", "Budapest", "Reykjavik", "Dublin", "Rome", "Pristina", "Riga", "Vaduz", "Vilnius", "Luxembourg", "Valletta", "Chișinău", "Monaco", "Podgorica", "Amsterdam", "Skopje", "Oslo", "Warsaw", "Lisbon", "Bucharest", "Moscow", "San Marino", "Belgrade", "Bratislava", "Ljubljana", "Madrid", "Stockholm", "Bern", "Kyiv", "London", "Vatican City"],
         northAmerica: ["Saint John's", "Nassau", "Bridgetown", "Belmopan", "Ottawa", "San José", "Havana", "Roseau", "Santo Domingo", "San Salvador", "St. George's", "Guatemala City", "Port-au-Prince", "Tegucigalpa", "Kingston", "Mexico City", "Managua", "Panama City", "Basseterre", "Castries", "Kingstown", "Port of Spain", "Washington, D.C."],
         southAmerica: ["Buenos Aires", "Sucre or La Paz", "Brasília", "Santiago", "Bogotá", "Quito", "Georgetown", "Asunción", "Lima", "Paramaribo", "Montevideo", "Caracas"],

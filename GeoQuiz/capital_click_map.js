@@ -53,7 +53,7 @@ const capitals = {
     "quito": "Ecuador",
     "cairo": "Egypt",
     "san salvador": "El Salvador",
-    "malabo": "Equatorial Guinea",
+    "ciudad de la paz": "Equatorial Guinea",
     "asmara": "Eritrea",
     "tallinn": "Estonia",
     "lobamba": "Eswatini",
